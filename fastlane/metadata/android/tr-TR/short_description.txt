@@ -1,1 +1,0 @@
-Sevdiğiniz uygulamaları kolay başlatmak için basit özelleştirilebilir başlatıcı
