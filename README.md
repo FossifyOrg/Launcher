@@ -22,7 +22,7 @@ Features:
 - Enjoy!
 
 Check out the full suite of apps here:
-https://github.com/FossifyX
+https://github.com/FossifyOrg
 
 <div style="display:flex;">
 <img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" width="30%">
