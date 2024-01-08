@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
     <string name="app_launcher_name">Peluncur</string>
     <string name="launcher_settings">Pengaturan Peluncur</string>
     <string name="app_info">Info aplikasi</string>
@@ -11,8 +10,4 @@
     <string name="manage_hidden_icons">Kelola ikon tersembunyi</string>
     <string name="hidden_icons">Ikon tersembunyi</string>
     <string name="hidden_icons_placeholder">Beberapa aplikasi tidak dapat di-uninstal karena keterbatasan sistem, tetapi Anda masih dapat menyembunyikan ikon mereka untuk menyembunyikannya.</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

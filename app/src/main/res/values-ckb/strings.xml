@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
-    <string name="app_launcher_name">Launcher</string>
     <string name="launcher_settings">ڕێکخستنەکان</string>
     <string name="app_info">زانیاری بەرنامە</string>
     <string name="touch_hold_widget">ماوەیەک دەست ڕاگرە لەسەر کورتکراوەکە بۆ زیادکردن بۆسەر شاشەی سەرەکی</string>
@@ -15,8 +13,4 @@
     <string name="close_app_drawer_on_app_open">داخستنی پیشاندەری بەرنامەکان لەکاتی کردنەوەی بەرنامەکاندا</string>
     <string name="home_screen_settings">شاشەی سەرەکی</string>
     <string name="widget_too_big">قەبارەی کورتکراوەکە زۆر گەورەیە بۆ زیادکردنی بۆ شاشەی سەرەکی</string>
-    <!--
-        Haven't found some strings? There's more at
-        https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res
-    -->
 </resources>

@@ -13,6 +13,5 @@
     <string name="hidden_icons_placeholder">Certaines applications ne peuvent pas être désinstallées en raison de restrictions du système, mais vous pouvez au moins masquer leurs icônes pour éviter de les voir.</string>
     <string name="app_drawer_settings">Tiroir d\'appli</string>
     <string name="close_app_drawer_on_app_open">Fermer le tiroir de l\'appli à l\'ouverture d\'une application</string>
-    <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">Le widget est trop grand pour la taille actuelle de l\'écran</string>
 </resources>

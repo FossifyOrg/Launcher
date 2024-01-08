@@ -4,15 +4,10 @@
     <string name="app_launcher_name">ലോഞ്ചർ</string>
     <string name="launcher_settings">ലോഞ്ചർ ക്രമീകരണങ്ങൾ</string>
     <string name="app_info">പ്രയോഗ വിവരം</string>
-    <string name="touch_hold_widget">Long press the widget and drag it on your home screen</string>
     <string name="uninstall">അൺഇൻസ്റ്റാൾ ചെയ്യുക</string>
     <string name="hide_icon">ബിംബം മറയ്ക്കുക</string>
     <string name="add_hidden_icons">മറഞ്ഞിരിക്കുന്ന ബിംബം ചേർക്കുക</string>
     <string name="manage_hidden_icons">മറഞ്ഞിരിക്കുന്ന ബിംബം കൈകാര്യം ചെയ്യുക</string>
     <string name="hidden_icons">മറഞ്ഞിരിക്കുന്ന ബിംബ</string>
     <string name="hidden_icons_placeholder">സിസ്റ്റം നിയന്ത്രണങ്ങൾ കാരണം ചില ആപ്പുകൾ അൺഇൻസ്‌റ്റാൾ ചെയ്യാൻ കഴിയില്ല, എന്നാൽ അവ കാണാതിരിക്കാൻ നിങ്ങൾക്ക് അവയുടെ ഐക്കണുകളെങ്കിലും മറയ്‌ക്കാം.</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

@@ -11,8 +11,4 @@
     <string name="manage_hidden_icons">لُکاۓ آئیکون دیاں سیٹنگاں</string>
     <string name="hidden_icons">لُکاۓ آئیکون</string>
     <string name="hidden_icons_placeholder">سِسٹم پابندیاں کرکے کجھ اَیپاں اݨ‌اینسٹال کر نہیں سکیاں، پر تسیں آئیکون لُکا سکدے او۔</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
     <string name="app_launcher_name">App-starter</string>
     <string name="launcher_settings">Innstillinger for App-starter</string>
     <string name="app_info">Programinfo</string>
@@ -11,8 +10,4 @@
     <string name="manage_hidden_icons">Håndter skjulte ikoner</string>
     <string name="hidden_icons">Skjulte ikoner</string>
     <string name="hidden_icons_placeholder">Noen apper kan ikke avinstalleres pga. systemrestriksjoner, men du kan i det minste skjule deres ikoner for å unngå å se dem.</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

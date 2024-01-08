@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
     <string name="app_launcher_name">ⵜⴰⵎⵣⵡⴰⵔⵓⵜ</string>
     <string name="launcher_settings">ⵜⵉⵙⵖⴰⵍ ⵏ ⵜⵎⵣⵡⴰⵔⵓⵜ</string>
     <string name="app_info">ⵉⵏⵖⵎⵉⵙⵏ ⵅⴼ ⵜⵙⵏⵙⵉ</string>
@@ -11,8 +10,4 @@
     <string name="manage_hidden_icons">ⴰⵙⵡⵓⴷⴷⵓ ⵏ ⵜⵙⵓⵔⴰ ⵉⴼⴼⵔⵏ</string>
     <string name="hidden_icons">ⵜⵉⵙⵓⵔⴰ ⵉⴼⴼⵔⵏ</string>
     <string name="hidden_icons_placeholder">ⵓⵔ ⵜⵣⵔⵉⵏ ⵜⵓⵙⵙⵔⴰ ⵏ ⴽⵔⴰ ⵏ ⵜⵙⵏⵙⵉⵡⵉⵏ ⵙ ⵜⵎⵏⵜⵉⵍⵜ ⵏ ⵉⵙⵍⴳⵏⵏ ⵏ ⵓⵏⴳⵔⴰⵡ, ⵎⴰⵛⴰ ⵜⵣⵔⵉ ⵜⵓⴼⴼⵔⴰ ⵏ ⵜⵙⵓⵔⴰ ⵏⵏⵙⵏⵜ ⵃⵎⴰ ⵓⵔ ⴷ ⵜⵜⴹⵀⴰⵕⵏⵜ.</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
     <string name="app_launcher_name">Lançador</string>
     <string name="launcher_settings">Definições</string>
     <string name="app_info">Info da aplicação</string>
@@ -13,10 +12,5 @@
     <string name="hidden_icons_placeholder">Algumas aplicações não podem ser desinstaladas mas pode ocultar os seus ícones.</string>
     <string name="app_drawer_settings">Menu de aplicações</string>
     <string name="close_app_drawer_on_app_open">Fechar menu de aplicações ao abrir uma aplicação</string>
-    <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">O Widget é muito grande para o ecrã disponível</string>
-    <!--
-        Haven't found some strings? There's more at
-        https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res
-    -->
 </resources>
