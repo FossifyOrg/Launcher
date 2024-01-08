@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="launcher_settings">Parametros de lanceator</string>
+    <string name="hidden_icons">Icones celate</string>
+    <string name="hide_icon">Celar le icone</string>
+    <string name="close_app_drawer_on_app_open">Clauder le tiratorio al aperir un application</string>
+    <string name="app_drawer_settings">Tiratorio de applicationes</string>
+    <string name="app_info">Information super le application</string>
+    <string name="app_launcher_name">Lanceator</string>
+    <string name="uninstall">Disinstallar</string>
+    <string name="home_screen_settings">Schermo de initio</string>
+    <string name="manage_hidden_icons">Gerer le icones celate</string>
+    <string name="widget_too_big">Le widget es troppo grande pro le dimension actual del schermo de initio</string>
+    <string name="add_hidden_icons">Adder icones celate</string>
+</resources>

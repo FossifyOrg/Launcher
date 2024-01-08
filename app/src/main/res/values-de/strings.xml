@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Einfacher Launcher</string>
+    <string name="app_launcher_name">Launcher</string>
     <string name="launcher_settings">Launcher-Einstellungen</string>
     <string name="app_info">App-Infos</string>
-    <string name="touch_hold_widget">Drücken Sie lange auf das Widget und ziehen Sie es auf Ihren Startbildschirm</string>
+    <string name="touch_hold_widget">Drücke lange auf das Widget und ziehe es auf deinen Startbildschirm</string>
     <string name="uninstall">Deinstallieren</string>
     <string name="hide_icon">Symbol ausblenden</string>
     <string name="add_hidden_icons">Ausgeblendete Symbole hinzufügen</string>
