@@ -14,4 +14,5 @@
     <string name="close_app_drawer_on_app_open">Zamykaj szufladę aplikacji przy uruchomieniu aplikacji</string>
     <string name="home_screen_settings">Ekran główny</string>
     <string name="widget_too_big">Widżet jest za duży dla aktualnego rozmiaru ekranu głównego</string>
+    <string name="app_launcher_name">Launcher</string>
 </resources>
