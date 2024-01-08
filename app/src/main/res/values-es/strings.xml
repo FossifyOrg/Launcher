@@ -14,4 +14,5 @@
     <string name="app_drawer_settings">Cajón de aplicaciones</string>
     <string name="close_app_drawer_on_app_open">Cerrar el cajón de aplicaciones al abrir una aplicación</string>
     <string name="widget_too_big">El widget es demasiado grande para el tamaño actual de la pantalla de inicio</string>
+    <string name="home_screen_settings">Pantalla de inicio</string>
 </resources>
