@@ -11,8 +11,4 @@
     <string name="manage_hidden_icons">非表示アイコンの管理</string>
     <string name="hidden_icons">非表示のアイコン</string>
     <string name="hidden_icons_placeholder">一部のアプリはシステムの制限によりアンインストールできませんが、非表示によって表示されないようにすることはできます。</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

@@ -13,6 +13,5 @@
     <string name="hidden_icons_placeholder">Algunas aplicaciones no se pueden desinstalar debido a las restricciones del sistema, pero al menos puedes ocultar sus iconos para evitar verlas.</string>
     <string name="app_drawer_settings">Cajón de aplicaciones</string>
     <string name="close_app_drawer_on_app_open">Cerrar el cajón de aplicaciones al abrir una aplicación</string>
-    <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">El widget es demasiado grande para el tamaño actual de la pantalla de inicio</string>
 </resources>

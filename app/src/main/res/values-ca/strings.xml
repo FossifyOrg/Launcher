@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
     <string name="app_launcher_name">Llançador</string>
     <string name="launcher_settings">Configuració del llançador</string>
     <string name="app_info">Informació de l\'aplicació</string>
@@ -13,6 +12,5 @@
     <string name="hidden_icons_placeholder">Algunes aplicacions no es poden desinstal·lar a causa de les restriccions del sistema, però almenys podeu ocultar les seves icones per evitar que es vegin.</string>
     <string name="app_drawer_settings">Calaix d\'aplicacions</string>
     <string name="close_app_drawer_on_app_open">Tanca el calaix d\'aplicacions en obrir una aplicació</string>
-    <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">El giny és massa gros per a la mida de la pantalla d\'inici actual</string>
 </resources>

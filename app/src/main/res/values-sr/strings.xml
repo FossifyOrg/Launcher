@@ -11,8 +11,4 @@
     <string name="manage_hidden_icons">Управљајте скривеним иконама</string>
     <string name="hidden_icons">Скривене иконе</string>
     <string name="hidden_icons_placeholder">Неке апликације се не могу деинсталирати због системских ограничења, али можете барем сакрити њихове иконе да их не видите.</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>

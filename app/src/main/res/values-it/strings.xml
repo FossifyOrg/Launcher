@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Launcher Semplice</string>
-    <string name="app_launcher_name">Launcher</string>
     <string name="launcher_settings">Impostazioni del launcher</string>
     <string name="app_info">Informazioni sull\'app</string>
     <string name="touch_hold_widget">Premi a lungo il widget e trascinalo sulla schermata iniziale</string>
@@ -13,6 +12,5 @@
     <string name="hidden_icons_placeholder">Alcune applicazioni non possono essere disinstallate a causa di restrizioni di sistema, ma è possibile almeno nascondere le loro icone per evitare di vederle.</string>
     <string name="app_drawer_settings">Cassetto app</string>
     <string name="close_app_drawer_on_app_open">Chiudi il cassetto app all\'apertura di un\'app</string>
-    <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">Il widget è troppo grande per le dimensioni attuali della schermata principale</string>
 </resources>

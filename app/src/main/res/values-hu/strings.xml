@@ -13,6 +13,5 @@
     <string name="hidden_icons_placeholder">Egyes alkalmazások rendszerkorlátozások miatt nem távolíthatók el, de legalább elrejtheti az ikonjaikat, hogy ne lássa őket.</string>
     <string name="app_drawer_settings">Alkalmazásfiók</string>
     <string name="close_app_drawer_on_app_open">Alkalmazásfiók bezárása egy alkalmazás megnyitásakor</string>
-    <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">A modul túl nagy az aktuális kezdőképernyő méretéhez</string>
 </resources>

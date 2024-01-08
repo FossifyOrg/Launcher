@@ -6,13 +6,4 @@
     <string name="app_info">Informații despre aplicație</string>
     <string name="touch_hold_widget">Apăsați lung pe widget și trageți-l pe ecranul principal</string>
     <string name="uninstall">Dezinstalați</string>
-    <string name="hide_icon">Hide icon</string>
-    <string name="add_hidden_icons">Add hidden icons</string>
-    <string name="manage_hidden_icons">Manage hidden icons</string>
-    <string name="hidden_icons">Hidden icons</string>
-    <string name="hidden_icons_placeholder">Some apps cannot be uninstalled due to system restrictions, but you can at least hide their icons to avoid seeing them.</string>
-    <string name="app_drawer_settings">App drawer</string>
-    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
-    <string name="home_screen_settings">Home screen</string>
-    <string name="widget_too_big">Widget is too big for current home screen size</string>
-</resources>
+    </resources>
