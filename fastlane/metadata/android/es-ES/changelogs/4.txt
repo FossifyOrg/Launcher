@@ -1,0 +1,3 @@
+* Se ha añadido soporte para aplicaciones que crean múltiples iconos, no sólo el lanzador.
+ * Soporte adecuado para la personalización del color
+ * Se han añadido algunas mejoras de estabilidad, UX y traducción
