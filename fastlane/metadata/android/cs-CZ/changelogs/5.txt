@@ -1,0 +1,3 @@
+* Lowered the required OS version to 8, Oreo
+ * Add some move threshold to make long pressing easier
+ * Added some stability and translation improvements
