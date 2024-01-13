@@ -11,4 +11,8 @@
     <string name="manage_hidden_icons">Spravovat skryté ikony</string>
     <string name="hidden_icons">Skryté ikony</string>
     <string name="hidden_icons_placeholder">Některé aplikace nelze kvůli systémovým omezením odinstalovat. Ale můžete alespoň skrýt jejich ikony, abyste je neviděli.</string>
-    </resources>
+    <string name="home_screen_settings">Domovská obrazovka</string>
+    <string name="widget_too_big">Widget je příliš velký na aktuální velikost domovské obrazovky</string>
+    <string name="app_drawer_settings">Nabídka aplikací</string>
+    <string name="close_app_drawer_on_app_open">Zavřít nabídku aplikací po otevření aplikace</string>
+</resources>
