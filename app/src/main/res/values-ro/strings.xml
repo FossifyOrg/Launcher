@@ -6,4 +6,13 @@
     <string name="app_info">Informații despre aplicație</string>
     <string name="touch_hold_widget">Apăsați lung pe widget și trageți-l pe ecranul principal</string>
     <string name="uninstall">Dezinstalați</string>
+    <string name="hide_icon">Ascundeți iconița</string>
+    <string name="add_hidden_icons">Adăugați iconițe ascunse</string>
+    <string name="manage_hidden_icons">Administrați iconițele ascunse</string>
+    <string name="hidden_icons">Iconițe ascunse</string>
+    <string name="hidden_icons_placeholder">Unele aplicații nu pot fi dezinstalate din cauza restricțiilor de sistem, dar puteți ascunde iconițele lor pentru a nu le vedea.</string>
+    <string name="app_drawer_settings">Sertar de aplicații</string>
+    <string name="close_app_drawer_on_app_open">Închideți sertarul de aplicații la deschiderea unei aplicații</string>
+    <string name="home_screen_settings">Ecran principal</string>
+    <string name="widget_too_big">Widget-ul este prea mare pentru dimensiunea ecranului principal</string>
     </resources>
