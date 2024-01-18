@@ -1166,7 +1166,11 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 // show the app icon itself at dragging, move it above the finger a bit to make it visible
                 val drawableX = (draggedItemCurrentCoords.first - iconSize / 1.5f).toInt()
                 val drawableY = (draggedItemCurrentCoords.second - iconSize / 1.2f).toInt()
-                val newDrawable = draggedItem!!.drawable?.constantState?.newDrawable()?.mutate()
+                val newDrawable = if (draggedItem?.type == ITEM_TYPE_FOLDER) {
+                    draggedItem!!.toFolder().generateDrawable()
+                } else {
+                    draggedItem!!.drawable?.constantState?.newDrawable()?.mutate()
+                }
                 newDrawable?.setBounds(drawableX, drawableY, drawableX + iconSize, drawableY + iconSize)
                 newDrawable?.draw(canvas)
             } else if (draggedItem!!.type == ITEM_TYPE_WIDGET) {
