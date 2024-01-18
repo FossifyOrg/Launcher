@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Jednostavan pokretač</string>
+    <string name="app_launcher_name">Pokretač</string>
+    <string name="launcher_settings">Postavke pokretača</string>
+    <string name="app_info">Informacije o aplikaciji</string>
+    <string name="touch_hold_widget">Pritisni widget i povuci ga na početni ekran</string>
+    <string name="uninstall">Deinstaliraj</string>
+    <string name="hide_icon">Sakrij ikonu</string>
+    <string name="add_hidden_icons">Dodajte skrivene ikone</string>
+    <string name="manage_hidden_icons">Upravljanje skrivenim ikonama</string>
+    <string name="hidden_icons">Skrivene ikone</string>
+    <string name="hidden_icons_placeholder">Neke aplikacije se ne mogu deinstalirati zbog ograničenja sistema, ali njihove ikone možeš sakriti.</string>
+</resources>
