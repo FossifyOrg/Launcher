@@ -14,4 +14,5 @@
     <string name="app_drawer_settings">Tiroir d\'appli</string>
     <string name="close_app_drawer_on_app_open">Fermer le tiroir de l\'appli à l\'ouverture d\'une application</string>
     <string name="widget_too_big">Le widget est trop grand pour la taille actuelle de l\'écran</string>
+    <string name="home_screen_settings">Écran d\'accueil</string>
 </resources>
