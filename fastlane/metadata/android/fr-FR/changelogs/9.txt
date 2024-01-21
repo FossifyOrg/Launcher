@@ -1,0 +1,7 @@
+* Permet de créer plusieurs pages d'écran d'accueil
+ * Ajout de la prise en charge des dossiers
+ * Ajout de la prise en charge des raccourcis
+ * Ajout d'une recherche
+ * Permet de modifier le nombre de lignes et de colonnes
+ * Amélioration de l'accessibilité du talkback
+ * Améliorations de l'interface utilisateur, de la traduction et de la stabilité
