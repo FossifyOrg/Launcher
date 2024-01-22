@@ -93,7 +93,12 @@ android {
         checkReleaseBuilds = false
         abortOnError = true
         warningsAsErrors = true
+        baseline = file("lint-baseline.xml")
     }
+}
+
+detekt {
+    baseline = file("detekt-baseline.xml")
 }
 
 dependencies {
