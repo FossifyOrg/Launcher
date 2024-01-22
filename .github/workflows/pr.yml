@@ -10,8 +10,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-java@v4
-              java-version: 17
-              distribution: 'temurin'
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
             - name: Run Android lint
               run: ./gradlew lint
 
@@ -20,8 +21,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-java@v4
-              java-version: 17
-              distribution: 'temurin'
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
             - name: Run detekt checks
               run: ./gradlew detekt
 
@@ -30,7 +32,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-java@v4
-              java-version: 17
-              distribution: 'temurin'
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
             - name: Run tests
               run: ./gradlew :app:testCoreDebugUnitTest
