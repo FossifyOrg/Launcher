@@ -1,7 +1,8 @@
 name: PR
 
 on:
-    pull_request: [ main ]
+    pull_request: 
+        branches: [ main ]
 
 jobs:
     android-lint:
