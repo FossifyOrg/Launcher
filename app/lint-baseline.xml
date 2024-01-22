@@ -64,39 +64,6 @@
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of androidx.room:room-compiler than 2.6.0-alpha02 is available: 2.6.1"
-        errorLine1="room = &quot;2.6.0-alpha02&quot;"
-        errorLine2="       ~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Projects/Community/Fossify/Simple-Launcher/gradle/libs.versions.toml"
-            line="9"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.room:room-ktx than 2.6.0-alpha02 is available: 2.6.1"
-        errorLine1="room = &quot;2.6.0-alpha02&quot;"
-        errorLine2="       ~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Projects/Community/Fossify/Simple-Launcher/gradle/libs.versions.toml"
-            line="9"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.room:room-runtime than 2.6.0-alpha02 is available: 2.6.1"
-        errorLine1="room = &quot;2.6.0-alpha02&quot;"
-        errorLine2="       ~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Projects/Community/Fossify/Simple-Launcher/gradle/libs.versions.toml"
-            line="9"
-            column="8"/>
-    </issue>
-
-    <issue
         id="LockedOrientationActivity"
         message="Expecting `android:screenOrientation=&quot;unspecified&quot;` or `&quot;fullSensor&quot;` for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices"
         errorLine1="            android:screenOrientation=&quot;portrait&quot;"
