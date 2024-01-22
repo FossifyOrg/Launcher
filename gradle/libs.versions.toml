@@ -6,7 +6,7 @@ ksp = "1.9.0-1.0.12"
 #Detekt
 detekt = "1.23.3"
 #Room
-room = "2.6.0-alpha02"
+room = "2.6.1"
 #Simple tools
 simple-commons = "c573613da9"
 #Gradle
