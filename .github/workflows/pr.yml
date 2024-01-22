@@ -1,0 +1,26 @@
+name: PR
+
+on:
+    pull_request: [ main ]
+
+jobs:
+    android-lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run Android lint
+              run: ./gradlew lint
+
+    detekt:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run detekt checks
+              run: ./gradlew detekt
+
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run tests
+              run: ./gradlew :app:testCoreDebugUnitTest
