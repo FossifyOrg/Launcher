@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Trình khởi chạy Fossify</string>
+    <string name="app_launcher_name">Trình khởi chạy</string>
+    <string name="launcher_settings">Cài đặt trình khởi chạy</string>
+    <string name="app_info">Thông tin ứng dụng</string>
+    <string name="touch_hold_widget">Nhấn giữ tiện ích và kéo nó vào màn hình chính của bạn</string>
+    <string name="uninstall">Gỡ cài đặt</string>
+    <string name="hide_icon">Ẩn biểu tượng</string>
+    <string name="manage_hidden_icons">Quản lí biểu tượng đã ẩn</string>
+    <string name="add_hidden_icons">Thêm biểu tượng đã ẩn</string>
+    <string name="hidden_icons">Biểu tượng đã ẩn</string>
+    <string name="hidden_icons_placeholder">Một số ứng dụng không thể bị gỡ cài đặt do giới hạn của hệ thống, nhưng bạn vẫn có thể ẩn biểu tượng của chúng để khỏi nhìn thấy chúng.</string>
+    <string name="app_drawer_settings">Ngăn kéo ứng dụng</string>
+    <string name="close_app_drawer_on_app_open">Đóng ngăn kéo ứng dụng khi mở ứng dụng</string>
+    <string name="home_screen_settings">Màn hình chính</string>
+    <string name="widget_too_big">Tiện ích này quá lớn với kích thước màn hình chính hiện tại</string>
 </resources>
