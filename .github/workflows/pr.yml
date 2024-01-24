@@ -1,7 +1,7 @@
 name: PR
 
 on:
-    pull_request: 
+    pull_request:
         branches: [ main ]
 
 jobs:
@@ -15,6 +15,12 @@ jobs:
                   distribution: 'temurin'
             - name: Run Android lint
               run: ./gradlew lint
+            - name: Upload results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: 'lint-results'
+                  path: 'app/build/intermediates/lint_intermediate_text_report/coreDebug/lint-results-coreDebug.txt'
+
 
     detekt:
         runs-on: ubuntu-latest
