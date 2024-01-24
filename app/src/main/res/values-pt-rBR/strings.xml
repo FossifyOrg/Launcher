@@ -9,4 +9,9 @@
     <string name="manage_hidden_icons">Gerenciar ícones ocultos</string>
     <string name="hidden_icons">Ícones ocultos</string>
     <string name="hidden_icons_placeholder">Alguns aplicativos não podem ser desinstalados devido a restrições do sistema, mas você pode ao menos ocultar seus ícones para evitar vê-los.</string>
-    </resources>
+    <string name="app_drawer_settings">Gaveta de aplicativos</string>
+    <string name="close_app_drawer_on_app_open">Fechar gaveta de aplicativos ao abrir um aplicativo</string>
+    <string name="home_screen_settings">Tela inicial</string>
+    <string name="widget_too_big">O widget é muito grande para o tamanho atual da tela inicial</string>
+    <string name="app_name">Lançador Simples</string>
+</resources>

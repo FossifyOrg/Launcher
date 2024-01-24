@@ -1,0 +1,7 @@
+* Permitir la creación de múltiples páginas de pantalla de inicio
+ * Añadido soporte para carpetas
+ * Soporte para accesos directos
+ * Búsqueda añadida
+ * Permitir cambiar el recuento de filas y columnas
+ * Mejora de la accesibilidad
+ * Se han añadido algunas mejoras de UX, traducción y estabilidad

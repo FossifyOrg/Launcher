@@ -1,0 +1,3 @@
+* Réduction de la version du système d'exploitation requise à 8 (Oreo)
+ * Ajout d'un seuil de déplacement pour faciliter les appuis longs
+ * Ajout de quelques améliorations au niveau de la stabilité et de la traduction

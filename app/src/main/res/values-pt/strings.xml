@@ -9,8 +9,10 @@
     <string name="add_hidden_icons">Adicionar ícones ocultos</string>
     <string name="manage_hidden_icons">Gerir ícones ocultos</string>
     <string name="hidden_icons">Ícones ocultos</string>
-    <string name="hidden_icons_placeholder">Algumas aplicações não podem ser desinstaladas mas pode ocultar os seus ícones.</string>
+    <string name="hidden_icons_placeholder">Algumas aplicações não podem ser desinstaladas, mas pode ocultar os seus ícones.</string>
     <string name="app_drawer_settings">Menu de aplicações</string>
     <string name="close_app_drawer_on_app_open">Fechar menu de aplicações ao abrir uma aplicação</string>
-    <string name="widget_too_big">O Widget é muito grande para o ecrã disponível</string>
+    <string name="widget_too_big">O widget é muito grande para o ecrã disponível</string>
+    <string name="app_name">Lançador</string>
+    <string name="home_screen_settings">Ecrã inicial</string>
 </resources>

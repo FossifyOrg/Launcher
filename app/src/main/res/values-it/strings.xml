@@ -13,4 +13,6 @@
     <string name="app_drawer_settings">Cassetto app</string>
     <string name="close_app_drawer_on_app_open">Chiudi il cassetto app all\'apertura di un\'app</string>
     <string name="widget_too_big">Il widget è troppo grande per le dimensioni attuali della schermata principale</string>
+    <string name="app_launcher_name">Launcher</string>
+    <string name="home_screen_settings">Schermata iniziale</string>
 </resources>

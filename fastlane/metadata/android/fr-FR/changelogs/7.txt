@@ -1,0 +1,2 @@
+* Possibilité de cacher les icônes non désirées
+ * Ajout de quelques améliorations au niveau de la traduction et de l'interface utilisateur
