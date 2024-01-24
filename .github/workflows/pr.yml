@@ -14,7 +14,17 @@ jobs:
                   java-version: 17
                   distribution: 'temurin'
             - name: Run Android lint
+              id: lint
               run: ./gradlew lint
+            - name: Update baseline
+              if: ${{ failure() && steps.lint.conclusion == 'failure' }}
+              run: ./gradlew updateLintBaseline
+            - name: Upload new baseline
+              uses: actions/upload-artifact@v4
+              if: ${{ failure() && steps.lint.conclusion == 'failure' }}
+              with:
+                  name: 'new-lint-baseline'
+                  path: 'app/lint-baseline.xml'
             - name: Upload results
               uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
