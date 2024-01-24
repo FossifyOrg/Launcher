@@ -17,6 +17,7 @@ jobs:
               run: ./gradlew lint
             - name: Upload results
               uses: actions/upload-artifact@v4
+              if: ${{ !cancelled() }}
               with:
                   name: 'lint-results'
                   path: 'app/build/intermediates/lint_intermediate_text_report/coreDebug/lint-results-coreDebug.txt'
