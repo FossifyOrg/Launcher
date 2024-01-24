@@ -12,4 +12,5 @@
     <string name="manage_hidden_icons">Gerer le icones celate</string>
     <string name="widget_too_big">Le widget es troppo grande pro le dimension actual del schermo de initio</string>
     <string name="add_hidden_icons">Adder icones celate</string>
+    <string name="hidden_icons_placeholder">Alcun applicationes non pote esser disinstallate a causa de restrictiones del systema, ma tu pote al minus celar lor icones pro evitar vider los.</string>
 </resources>
