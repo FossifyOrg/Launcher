@@ -54,3 +54,19 @@ jobs:
                   distribution: 'temurin'
             - name: Run tests
               run: ./gradlew :app:testCoreDebugUnitTest
+
+    testing_build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
+            - name: Run tests
+              run: ./gradlew assembleCoreDebug
+            - name: Upload APK
+              uses: actions/upload-artifact@v4
+              with:
+                  name: 'unsigned-app-debug'
+                  path: 'app/build/outputs/apk/core/debug/launcher-core-debug.apk'
