@@ -63,7 +63,7 @@ jobs:
               with:
                   java-version: 17
                   distribution: 'temurin'
-            - name: Run tests
+            - name: Build debug APK
               run: ./gradlew assembleCoreDebug
             - name: Upload APK
               uses: actions/upload-artifact@v4
