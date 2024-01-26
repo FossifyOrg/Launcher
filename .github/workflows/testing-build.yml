@@ -23,8 +23,3 @@ jobs:
               with:
                   name: 'unsigned-app-debug'
                   path: 'app/build/outputs/apk/**/*.apk'
-            - name: Post a comment with APK url
-              uses: thollander/actions-comment-pull-request@v2
-              with:
-                  message: |
-                      A new testing build has been prepared based on ${{ github.sha }}! [Download it here](${{ steps.upload.outputs.artifact-url }}).
