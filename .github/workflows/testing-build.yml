@@ -16,13 +16,13 @@ jobs:
                   java-version: 17
                   distribution: 'temurin'
             - name: Build debug APK
-              run: ./gradlew assembleCoreDebug
+              run: ./gradlew assemblePrepaidDebug
             - name: Upload APK
               id: upload
               uses: actions/upload-artifact@v4
               with:
                   name: 'unsigned-app-debug'
-                  path: 'app/build/outputs/apk/core/debug/launcher-core-debug.apk'
+                  path: 'app/build/outputs/apk/**/*.apk'
             - name: Post a comment with APK url
               uses: thollander/actions-comment-pull-request@v2
               with:
