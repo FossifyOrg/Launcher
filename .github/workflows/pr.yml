@@ -1,0 +1,56 @@
+name: PR
+
+on:
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    android-lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
+            - name: Run Android lint
+              id: lint
+              run: ./gradlew lint
+            - name: Update baseline
+              if: ${{ failure() && steps.lint.conclusion == 'failure' }}
+              run: ./gradlew updateLintBaseline
+            - name: Upload new baseline
+              uses: actions/upload-artifact@v4
+              if: ${{ failure() && steps.lint.conclusion == 'failure' }}
+              with:
+                  name: 'new-lint-baseline'
+                  path: 'app/lint-baseline.xml'
+            - name: Upload results
+              uses: actions/upload-artifact@v4
+              if: ${{ !cancelled() }}
+              with:
+                  name: 'lint-results'
+                  path: 'app/build/intermediates/lint_intermediate_text_report/coreDebug/lint-results-coreDebug.txt'
+
+
+    detekt:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
+            - name: Run detekt checks
+              run: ./gradlew detekt
+
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
+            - name: Run tests
+              run: ./gradlew :app:testCoreDebugUnitTest

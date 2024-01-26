@@ -1,0 +1,25 @@
+name: Testing build (on PR)
+
+on:
+    pull_request:
+        branches: [ main ]
+        types: [ labeled, opened, synchronize, reopened ]
+
+jobs:
+    testing_build:
+        runs-on: ubuntu-latest
+        if: contains(github.event.pull_request.labels.*.name, 'testers needed')
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                  java-version: 17
+                  distribution: 'temurin'
+            - name: Build debug APK
+              run: ./gradlew assemblePrepaidDebug
+            - name: Upload APK
+              id: upload
+              uses: actions/upload-artifact@v4
+              with:
+                  name: 'unsigned-app-debug'
+                  path: 'app/build/outputs/apk/**/*.apk'
