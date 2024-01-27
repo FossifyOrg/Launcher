@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Jednostavan pokretač</string>
+    <string name="app_name">Jednostavni pokretač</string>
     <string name="app_launcher_name">Pokretač</string>
     <string name="launcher_settings">Postavke pokretača</string>
     <string name="app_info">Informacije o aplikaciji</string>
@@ -11,4 +11,8 @@
     <string name="manage_hidden_icons">Upravljanje skrivenim ikonama</string>
     <string name="hidden_icons">Skrivene ikone</string>
     <string name="hidden_icons_placeholder">Neke aplikacije se ne mogu deinstalirati zbog ograničenja sustava, ali njihove ikone možeš sakriti.</string>
-    </resources>
+    <string name="home_screen_settings">Početni ekran</string>
+    <string name="app_drawer_settings">Ladica aplikacije</string>
+    <string name="close_app_drawer_on_app_open">Zatvori ladicu aplikacija pri otvaranju aplikacije</string>
+    <string name="widget_too_big">Widget je prevelik za trenutnu veličinu početnog ekrana</string>
+</resources>
