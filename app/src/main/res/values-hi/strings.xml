@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">लांचर</string>
+    <string name="launcher_settings">लॉन्चर सेटिंग्स</string>
+    <string name="app_info">ऐप जानकारी</string>
+    <string name="touch_hold_widget">विजेट को देर तक दबाकर रखें और इसे अपनी होम स्क्रीन पर खींचें</string>
+    <string name="uninstall">अनइंस्टॉल करें</string>
+    <string name="hide_icon">ऑइकन छुपायें</string>
+    <string name="add_hidden_icons">छिपे हुए आइकन जोड़ें</string>
+    <string name="manage_hidden_icons">छुपे हुए आइकन प्रबंधित करें</string>
+    <string name="hidden_icons">छिपे हुए आइकन</string>
+    <string name="hidden_icons_placeholder">सिस्टम प्रतिबंधों के कारण कुछ ऐप्स को अनइंस्टॉल नहीं किया जा सकता है, लेकिन आप उन्हें देखने से बचने के लिए कम से कम उनके आइकन छिपा सकते हैं।</string>
+    <string name="app_drawer_settings">ऐप ड्रॉअर</string>
+    <string name="close_app_drawer_on_app_open">ऐप खोलने पर ऐप ड्रॉअर बंद कर दें</string>
+    <string name="home_screen_settings">होम स्क्रीन</string>
+    <string name="widget_too_big">वर्तमान होम स्क्रीन आकार के लिए विजेट बहुत बड़ा है</string>
+    <string name="app_name">Simple Launcher</string>
+</resources>
