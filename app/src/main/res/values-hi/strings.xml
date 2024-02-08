@@ -14,5 +14,5 @@
     <string name="close_app_drawer_on_app_open">ऐप खोलने पर ऐप ड्रॉअर बंद कर दें</string>
     <string name="home_screen_settings">होम स्क्रीन</string>
     <string name="widget_too_big">वर्तमान होम स्क्रीन आकार के लिए विजेट बहुत बड़ा है</string>
-    <string name="app_name">Simple Launcher</string>
+    <string name="app_name">Fossify Launcher</string>
 </resources>
