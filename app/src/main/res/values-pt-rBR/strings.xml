@@ -14,4 +14,5 @@
     <string name="home_screen_settings">Tela inicial</string>
     <string name="widget_too_big">O widget é muito grande para o tamanho atual da tela inicial</string>
     <string name="app_name">Lançador Simples</string>
+    <string name="app_launcher_name">Início</string>
 </resources>
