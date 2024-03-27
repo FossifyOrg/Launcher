@@ -10,4 +10,7 @@
     <string name="manage_hidden_icons">Kelola ikon tersembunyi</string>
     <string name="hidden_icons">Ikon tersembunyi</string>
     <string name="hidden_icons_placeholder">Beberapa aplikasi tidak dapat di-uninstal karena keterbatasan sistem, tetapi Anda masih dapat menyembunyikan ikon mereka untuk menyembunyikannya.</string>
-    </resources>
+    <string name="app_name">Peluncur Fossify</string>
+    <string name="close_app_drawer_on_app_open">Tutup laci aplikasi saat membuka aplikasi</string>
+    <string name="app_drawer_settings">Laci aplikasi</string>
+</resources>

@@ -14,4 +14,5 @@
     <string name="close_app_drawer_on_app_open">App-overzicht sluiten na het kiezen van een app</string>
     <string name="home_screen_settings">Beginscherm</string>
     <string name="widget_too_big">Widget is te groot voor de huidige afmetingen van het beginscherm</string>
+    <string name="app_launcher_name">Launcher</string>
 </resources>
