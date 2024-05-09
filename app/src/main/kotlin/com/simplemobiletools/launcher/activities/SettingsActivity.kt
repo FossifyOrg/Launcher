@@ -47,6 +47,7 @@ class SettingsActivity : SimpleActivity() {
         setupHomeColumnCount()
         setupLanguage()
         setupManageHiddenIcons()
+        setupLockedHomeScreen()
         updateTextColors(binding.settingsHolder)
 
         arrayOf(
@@ -56,6 +57,15 @@ class SettingsActivity : SimpleActivity() {
             binding.settingsHomeScreenLabel
         ).forEach {
             it.setTextColor(getProperPrimaryColor())
+        }
+    }
+
+    private fun setupLockedHomeScreen() {
+        val lockedHomeScreen = config.lockedHomeScreen
+        binding.settingsLockHomeScreen.isChecked = lockedHomeScreen
+        binding.settingsLockHomeScreenHolder.setOnClickListener {
+            binding.settingsLockHomeScreen.toggle()
+            config.lockedHomeScreen = binding.settingsLockHomeScreen.isChecked
         }
     }
 

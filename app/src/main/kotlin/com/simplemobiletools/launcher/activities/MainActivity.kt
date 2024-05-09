@@ -286,7 +286,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     hasFingerMoved(event)
                 }
 
-                if (mLongPressedIcon != null && (mOpenPopupMenu != null) && hasFingerMoved) {
+                if (mLongPressedIcon != null && (mOpenPopupMenu != null) && hasFingerMoved && !config.lockedHomeScreen) {
                     mOpenPopupMenu?.dismiss()
                     mOpenPopupMenu = null
                     binding.homeScreenGrid.root.itemDraggingStarted(mLongPressedIcon!!)
@@ -515,7 +515,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     fun homeScreenLongPressed(eventX: Float, eventY: Float) {
-        if (isAllAppsFragmentExpanded()) {
+        if (isAllAppsFragmentExpanded() || config.lockedHomeScreen) {
             return
         }
 
@@ -619,7 +619,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         binding.homeScreenPopupMenuAnchor.x = x
         binding.homeScreenPopupMenuAnchor.y = anchorY
 
-        if (mOpenPopupMenu == null) {
+        if (mOpenPopupMenu == null && !config.lockedHomeScreen) {
             mOpenPopupMenu = handleGridItemPopupMenu(binding.homeScreenPopupMenuAnchor, gridItem, isOnAllAppsFragment, menuListener)
         }
     }
