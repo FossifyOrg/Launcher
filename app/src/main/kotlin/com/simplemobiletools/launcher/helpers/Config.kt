@@ -32,4 +32,8 @@ class Config(context: Context) : BaseConfig(context) {
     var closeAppDrawer: Boolean
         get() = prefs.getBoolean(CLOSE_APP_DRAWER, false)
         set(closeAppDrawer) = prefs.edit().putBoolean(CLOSE_APP_DRAWER, closeAppDrawer).apply()
+
+    var lockedHomeScreen: Boolean
+        get() = prefs.getBoolean(LOCKED_HOME_SCREEN, false)
+        set(lockedHomeScreen) = prefs.edit().putBoolean(LOCKED_HOME_SCREEN, lockedHomeScreen).apply()
 }
