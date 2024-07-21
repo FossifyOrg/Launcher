@@ -1,0 +1,1 @@
+Praktiline ja kohandatav käivitaja oma lemmikrakenduste hõlpsaks käivitamiseks
