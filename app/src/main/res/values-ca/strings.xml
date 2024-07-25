@@ -9,8 +9,9 @@
     <string name="add_hidden_icons">Afegeix icones ocultes</string>
     <string name="manage_hidden_icons">Gestiona les icones ocultes</string>
     <string name="hidden_icons">Icones ocultes</string>
-    <string name="hidden_icons_placeholder">Algunes aplicacions no es poden desinstal·lar a causa de les restriccions del sistema, però almenys podeu ocultar les seves icones per evitar que es vegin.</string>
+    <string name="hidden_icons_placeholder">Algunes aplicacions no es poden desinstal·lar a causa de les restriccions del sistema, però almenys podeu ocultar les seves icones per a evitar que es vegin.</string>
     <string name="app_drawer_settings">Calaix d\'aplicacions</string>
     <string name="close_app_drawer_on_app_open">Tanca el calaix d\'aplicacions en obrir una aplicació</string>
     <string name="widget_too_big">El giny és massa gros per a la mida de la pantalla d\'inici actual</string>
+    <string name="home_screen_settings">Pantalla inicial</string>
 </resources>
