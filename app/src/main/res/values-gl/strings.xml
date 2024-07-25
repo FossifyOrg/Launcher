@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Lanzador Sinxelo</string>
     <string name="app_launcher_name">Lanzador</string>
     <string name="launcher_settings">Configuración do lanzador</string>
     <string name="app_info">Información da aplicación</string>
@@ -11,4 +10,4 @@
     <string name="manage_hidden_icons">Xestionar iconas ocultas</string>
     <string name="hidden_icons">Iconas ocultas</string>
     <string name="hidden_icons_placeholder">Algunhas aplicacións non se poden desinstalar debido ás restricións do sistema, pero polo menos podes ocultar as súas iconas para evitar velas.</string>
-    </resources>
+</resources>

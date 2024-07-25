@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Launcher</string>
     <string name="app_launcher_name">Launcher</string>
     <string name="launcher_settings">Launcher Settings</string>
     <string name="app_info">App info</string>

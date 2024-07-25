@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Trình khởi chạy Fossify</string>
     <string name="app_launcher_name">Trình khởi chạy</string>
     <string name="launcher_settings">Cài đặt trình khởi chạy</string>
     <string name="app_info">Thông tin ứng dụng</string>

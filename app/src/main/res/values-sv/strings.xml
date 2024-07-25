@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simpelt startprogram</string>
     <string name="app_launcher_name">Startprogram</string>
     <string name="launcher_settings">Inställningar för startprogrammet</string>
     <string name="app_info">Appinformation</string>

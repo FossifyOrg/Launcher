@@ -1,2 +1,0 @@
-Added initial support for shortcuts
-Fixed some navigation issues

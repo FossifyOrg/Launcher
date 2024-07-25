@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Abiarazle sinplea</string>
     <string name="app_launcher_name">Abiarazlea</string>
     <string name="touch_hold_widget">Luze sakatu trepeta eta arrastatu hasierako pantailara</string>
     <string name="uninstall">Desinstalatu</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Jednoduchý spúšťač</string>
     <string name="app_launcher_name">Spúšťač</string>
     <string name="launcher_settings">Nastavenia Spúšťača</string>
     <string name="app_info">Informácie o apke</string>

@@ -1,3 +1,0 @@
-* Bajó la versión de SO requerida a 8, Oreo.
- * Añadido algún umbral de movimiento para facilitar las pulsaciones largas
- * Añadidas algunas mejoras de estabilidad y traducción

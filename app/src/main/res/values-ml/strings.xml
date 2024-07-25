@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ലളിതമായ ലോഞ്ചർ</string>
     <string name="app_launcher_name">ലോഞ്ചർ</string>
     <string name="launcher_settings">ലോഞ്ചർ ക്രമീകരണങ്ങൾ</string>
     <string name="app_info">പ്രയോഗ വിവരം</string>
@@ -10,4 +9,4 @@
     <string name="manage_hidden_icons">മറഞ്ഞിരിക്കുന്ന ബിംബം കൈകാര്യം ചെയ്യുക</string>
     <string name="hidden_icons">മറഞ്ഞിരിക്കുന്ന ബിംബ</string>
     <string name="hidden_icons_placeholder">സിസ്റ്റം നിയന്ത്രണങ്ങൾ കാരണം ചില ആപ്പുകൾ അൺഇൻസ്‌റ്റാൾ ചെയ്യാൻ കഴിയില്ല, എന്നാൽ അവ കാണാതിരിക്കാൻ നിങ്ങൾക്ക് അവയുടെ ഐക്കണുകളെങ്കിലും മറയ്‌ക്കാം.</string>
-    </resources>
+</resources>

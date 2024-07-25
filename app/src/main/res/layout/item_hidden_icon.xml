@@ -12,7 +12,7 @@
     android:paddingEnd="@dimen/small_margin"
     android:paddingBottom="@dimen/small_margin">
 
-    <com.simplemobiletools.commons.views.MySquareImageView
+    <org.fossify.commons.views.MySquareImageView
         android:id="@+id/hidden_icon"
         android:layout_width="match_parent"
         android:layout_height="@dimen/launcher_icon_size"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Launcher Semplice</string>
     <string name="launcher_settings">Impostazioni del launcher</string>
     <string name="app_info">Informazioni sull\'app</string>
     <string name="touch_hold_widget">Premi a lungo il widget e trascinalo sulla schermata iniziale</string>

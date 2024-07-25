@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">簡易啟動器</string>
     <string name="app_launcher_name">啟動器</string>
     <string name="launcher_settings">啟動器設定</string>
     <string name="app_info">應用程式資訊</string>
@@ -12,4 +11,4 @@
     <string name="hidden_icons">隱藏圖示</string>
     <string name="hidden_icons_placeholder">由於系統限制，有些應用程式無法被移除，但您至少可以將它們的圖示隱藏起來，避免看到它們。</string>
     <string name="app_drawer_settings">應用程式抽屜</string>
-    </resources>
+</resources>

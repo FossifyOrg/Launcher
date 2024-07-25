@@ -1,515 +1,269 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <issues format="6" by="lint 8.1.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.1.1)" variant="all" version="8.1.1">
 
-    <issue
-        id="NewApi"
-        message="`android:enforceNavigationBarContrast` requires API level 29 (current min is 26)"
+    <issue id="NewApi" message="`android:enforceNavigationBarContrast` requires API level 29 (current min is 26)"
         errorLine1="        &lt;item name=&quot;android:enforceNavigationBarContrast&quot;>false&lt;/item>"
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/styles.xml"
-            line="12"
-            column="15"/>
+        <location file="src/main/res/values/styles.xml" line="12" column="15" />
     </issue>
 
-    <issue
-        id="NewApi"
-        message="`android:enforceStatusBarContrast` requires API level 29 (current min is 26)"
+    <issue id="NewApi" message="`android:enforceStatusBarContrast` requires API level 29 (current min is 26)"
         errorLine1="        &lt;item name=&quot;android:enforceStatusBarContrast&quot;>false&lt;/item>"
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/styles.xml"
-            line="13"
-            column="15"/>
+        <location file="src/main/res/values/styles.xml" line="13" column="15" />
     </issue>
 
-    <issue
-        id="NewApi"
-        message="`android:windowLayoutInDisplayCutoutMode` requires API level 27 (current min is 26)"
+    <issue id="NewApi" message="`android:windowLayoutInDisplayCutoutMode` requires API level 27 (current min is 26)"
         errorLine1="        &lt;item name=&quot;android:windowLayoutInDisplayCutoutMode&quot;>shortEdges&lt;/item>"
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/styles.xml"
-            line="14"
-            column="15"/>
+        <location file="src/main/res/values/styles.xml" line="14" column="15" />
     </issue>
 
-    <issue
-        id="NotificationPermission"
-        message="When targeting Android 13 or higher, posting a permission requires holding the `POST_NOTIFICATIONS` permission (usage from com.simplemobiletools.commons.asynctasks.CopyMoveTask)">
-        <location
-            file="src/main/AndroidManifest.xml"/>
+    <issue id="NotificationPermission"
+        message="When targeting Android 13 or higher, posting a permission requires holding the `POST_NOTIFICATIONS` permission (usage from org.fossify.commons.asynctasks.CopyMoveTask)">
+        <location file="src/main/AndroidManifest.xml" />
     </issue>
 
-    <issue
-        id="UnusedAttribute"
-        message="Attribute `localeConfig` is only used in API level 33 and higher (current min is 26)"
-        errorLine1="        android:localeConfig=&quot;@xml/locale_config&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/AndroidManifest.xml"
-            line="30"
-            column="9"/>
+    <issue id="UnusedAttribute" message="Attribute `localeConfig` is only used in API level 33 and higher (current min is 26)"
+        errorLine1="        android:localeConfig=&quot;@xml/locale_config&quot;" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/AndroidManifest.xml" line="30" column="9" />
     </issue>
 
-    <issue
-        id="CustomSplashScreen"
-        message="The application should not provide its own launch screen"
-        errorLine1="class SplashActivity : BaseSplashActivity() {"
+    <issue id="CustomSplashScreen" message="The application should not provide its own launch screen" errorLine1="class SplashActivity : BaseSplashActivity() {"
         errorLine2="      ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/activities/SplashActivity.kt"
-            line="6"
-            column="7"/>
+        <location file="src/main/kotlin/org/fossify/launcher/activities/SplashActivity.kt" line="6" column="7" />
     </issue>
 
-    <issue
-        id="LockedOrientationActivity"
+    <issue id="LockedOrientationActivity"
         message="Expecting `android:screenOrientation=&quot;unspecified&quot;` or `&quot;fullSensor&quot;` for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices"
-        errorLine1="            android:screenOrientation=&quot;portrait&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/AndroidManifest.xml"
-            line="47"
-            column="13"/>
+        errorLine1="            android:screenOrientation=&quot;portrait&quot;" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/AndroidManifest.xml" line="47" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;app_launcher_name&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nl&quot; (Dutch), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;ckb&quot;, &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;app_launcher_name&quot;>Launcher_debug&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/debug/res/values/strings.xml"
-            line="3"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;app_launcher_name&quot;>Launcher_debug&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/debug/res/values/strings.xml" line="3" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;app_name&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;ia&quot; (Interlingua), &quot;mk&quot; (Macedonian), &quot;in&quot; (Indonesian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;nb&quot; (Norwegian Bokmål), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ca&quot; (Catalan), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;ckb&quot;, &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;app_name&quot;>Simple Launcher&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="3"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;app_name&quot;>Simple Launcher&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="3" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;app_launcher_name&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nl&quot; (Dutch), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;ckb&quot;, &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;app_launcher_name&quot;>Launcher&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="4"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;app_launcher_name&quot;>Launcher&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="4" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;launcher_settings&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;launcher_settings&quot;>Launcher Settings&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="5"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;launcher_settings&quot;>Launcher Settings&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="5" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;app_info&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;app_info&quot;>App info&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="6"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;app_info&quot;>App info&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="6" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;touch_hold_widget&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;ia&quot; (Interlingua), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
         errorLine1="    &lt;string name=&quot;touch_hold_widget&quot;>Long press the widget and drag it on your home screen&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="7"
-            column="13"/>
+        <location file="src/main/res/values/strings.xml" line="7" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;uninstall&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;uninstall&quot;>Uninstall&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="8"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;uninstall&quot;>Uninstall&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="8" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;hide_icon&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;hide_icon&quot;>Hide icon&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="9"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;hide_icon&quot;>Hide icon&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="9" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;add_hidden_icons&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;add_hidden_icons&quot;>Add hidden icons&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="10"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;add_hidden_icons&quot;>Add hidden icons&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="10" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;manage_hidden_icons&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;manage_hidden_icons&quot;>Manage hidden icons&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="11"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;manage_hidden_icons&quot;>Manage hidden icons&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="11" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;hidden_icons&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;hidden_icons&quot;>Hidden icons&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="12"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;hidden_icons&quot;>Hidden icons&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="12" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;hidden_icons_placeholder&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;eu&quot; (Basque), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;si&quot; (Sinhala), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
         errorLine1="    &lt;string name=&quot;hidden_icons_placeholder&quot;>Some apps cannot be uninstalled due to system restrictions, but you can at least hide their icons to avoid seeing them.&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="13"
-            column="13"/>
+        <location file="src/main/res/values/strings.xml" line="13" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;app_drawer_settings&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;in&quot; (Indonesian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;iw&quot; (Hebrew), &quot;eu&quot; (Basque), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;bs&quot; (Bosnian), &quot;si&quot; (Sinhala), &quot;sl&quot; (Slovenian), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ltg&quot;, &quot;sr&quot; (Serbian), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;gl&quot; (Galician), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;app_drawer_settings&quot;>App drawer&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="14"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;app_drawer_settings&quot;>App drawer&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="14" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;close_app_drawer_on_app_open&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;in&quot; (Indonesian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;iw&quot; (Hebrew), &quot;eu&quot; (Basque), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;bs&quot; (Bosnian), &quot;si&quot; (Sinhala), &quot;sl&quot; (Slovenian), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ltg&quot;, &quot;sr&quot; (Serbian), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;gl&quot; (Galician), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
         errorLine1="    &lt;string name=&quot;close_app_drawer_on_app_open&quot;>Close app drawer on opening an app&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="15"
-            column="13"/>
+        <location file="src/main/res/values/strings.xml" line="15" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;home_screen_settings&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;in&quot; (Indonesian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;iw&quot; (Hebrew), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;bs&quot; (Bosnian), &quot;si&quot; (Sinhala), &quot;sl&quot; (Slovenian), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ca&quot; (Catalan), &quot;ltg&quot;, &quot;sr&quot; (Serbian), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;gl&quot; (Galician), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
-        errorLine1="    &lt;string name=&quot;home_screen_settings&quot;>Home screen&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="16"
-            column="13"/>
+        errorLine1="    &lt;string name=&quot;home_screen_settings&quot;>Home screen&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="16" column="13" />
     </issue>
 
-    <issue
-        id="MissingTranslation"
+    <issue id="MissingTranslation"
         message="&quot;widget_too_big&quot; is not translated in &quot;hi&quot; (Hindi), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;in&quot; (Indonesian), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;iw&quot; (Hebrew), &quot;eu&quot; (Basque), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;bs&quot; (Bosnian), &quot;si&quot; (Sinhala), &quot;sl&quot; (Slovenian), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ltg&quot;, &quot;sr&quot; (Serbian), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;gl&quot; (Galician), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;da&quot; (Danish)"
         errorLine1="    &lt;string name=&quot;widget_too_big&quot;>Widget is too big for current home screen size&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="17"
-            column="13"/>
+        <location file="src/main/res/values/strings.xml" line="17" column="13" />
     </issue>
 
-    <issue
-        id="NotifyDataSetChanged"
+    <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="        notifyDataSetChanged()"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/adapters/FolderIconsAdapter.kt"
-            line="107"
-            column="9"/>
+        errorLine1="        notifyDataSetChanged()" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/adapters/FolderIconsAdapter.kt" line="107" column="9" />
     </issue>
 
-    <issue
-        id="NotifyDataSetChanged"
+    <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="            notifyDataSetChanged()"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/adapters/LaunchersAdapter.kt"
-            line="83"
-            column="13"/>
+        errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/adapters/LaunchersAdapter.kt" line="83" column="13" />
     </issue>
 
-    <issue
-        id="NotifyDataSetChanged"
+    <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="            notifyDataSetChanged()"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/adapters/LaunchersAdapter.kt"
-            line="92"
-            column="13"/>
+        errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/adapters/LaunchersAdapter.kt" line="92" column="13" />
     </issue>
 
-    <issue
-        id="NotifyDataSetChanged"
+    <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="            notifyDataSetChanged()"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/adapters/LaunchersAdapter.kt"
-            line="99"
-            column="13"/>
+        errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/adapters/LaunchersAdapter.kt" line="99" column="13" />
     </issue>
 
-    <issue
-        id="NotifyDataSetChanged"
+    <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="            notifyDataSetChanged()"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/adapters/WidgetsAdapter.kt"
-            line="120"
-            column="13"/>
+        errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/adapters/WidgetsAdapter.kt" line="120" column="13" />
     </issue>
 
-    <issue
-        id="NotifyDataSetChanged"
+    <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="            notifyDataSetChanged()"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/adapters/WidgetsAdapter.kt"
-            line="127"
-            column="13"/>
+        errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/adapters/WidgetsAdapter.kt" line="127" column="13" />
     </issue>
 
-    <issue
-        id="ObsoleteSdkInt"
+    <issue id="ObsoleteSdkInt"
         message="This folder configuration (`v26`) is unnecessary; `minSdkVersion` is 26. Merge all the resources in this folder into `mipmap-anydpi`.">
-        <location
-            file="src/main/res/mipmap-anydpi-v26"/>
+        <location file="src/main/res/mipmap-anydpi-v26" />
     </issue>
 
-    <issue
-        id="VectorPath"
+    <issue id="VectorPath"
         message="Very long vector path (937 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector."
         errorLine1="    &lt;path android:fillColor=&quot;#FFFFFFFF&quot; android:pathData=&quot;M16.952 32.327c-0.206 0-0.377-0.068-0.512-0.202-0.135-0.136-0.203-0.307-0.203-0.513v-8.838l-1.429 1.096c-0.159 0.127-0.334 0.175-0.524 0.143-0.191-0.032-0.349-0.127-0.476-0.286-0.127-0.159-0.175-0.334-0.143-0.524 0.032-0.191 0.127-0.349 0.286-0.476l2.287-1.739v-2.001c0-0.206 0.067-0.377 0.202-0.512s0.306-0.202 0.512-0.202c0.206 0 0.377 0.068 0.512 0.202 0.135 0.135 0.202 0.306 0.202 0.512v0.905l5.765-4.383c0.064-0.048 0.131-0.083 0.202-0.107 0.071-0.024 0.147-0.036 0.226-0.036 0.079 0 0.155 0.012 0.226 0.036 0.071 0.024 0.139 0.06 0.202 0.107l9.505 7.242c0.159 0.127 0.25 0.286 0.274 0.476 0.024 0.191-0.028 0.365-0.155 0.524-0.127 0.159-0.282 0.25-0.465 0.274-0.183 0.024-0.353-0.028-0.512-0.155l-1.453-1.096v8.838c0 0.206-0.068 0.377-0.202 0.512-0.135 0.135-0.306 0.202-0.512 0.202h-4.35a1 1 44.991 0 1-1-1l-0.001-2.941a1.001 1.001 45.025 0 0-1-1.001l-1.114-0.001a0.999 0.999 135.043 0 0-1 0.999l-0.001 2.944a1 1 135.009 0 1-1 1z&quot;/>"
         errorLine2="                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/drawable/ic_launcher_monochrome.xml"
-            line="2"
-            column="59"/>
+        <location file="src/main/res/drawable/ic_launcher_monochrome.xml" line="2" column="59" />
     </issue>
 
-    <issue
-        id="Overdraw"
+    <issue id="Overdraw"
         message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
-        errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/item_hidden_icon.xml"
-            line="6"
-            column="5"/>
+        errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;" errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/layout/item_hidden_icon.xml" line="6" column="5" />
     </issue>
 
-    <issue
-        id="Overdraw"
+    <issue id="Overdraw"
         message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
-        errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/item_launcher_label.xml"
-            line="6"
-            column="5"/>
+        errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;" errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/layout/item_launcher_label.xml" line="6" column="5" />
     </issue>
 
-    <issue
-        id="UnusedResources"
-        message="The resource `R.layout.dialog_folder_icons` appears to be unused"
-        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/layout/dialog_folder_icons.xml"
-            line="2"
-            column="1"/>
+    <issue id="UnusedResources" message="The resource `R.layout.dialog_folder_icons` appears to be unused"
+        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;" errorLine2="^">
+        <location file="src/main/res/layout/dialog_folder_icons.xml" line="2" column="1" />
     </issue>
 
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.icon_long_press_anchor_offset_y` appears to be unused"
+    <issue id="UnusedResources" message="The resource `R.dimen.icon_long_press_anchor_offset_y` appears to be unused"
         errorLine1="    &lt;dimen name=&quot;icon_long_press_anchor_offset_y&quot;>150dp&lt;/dimen>"
         errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="3"
-            column="12"/>
+        <location file="src/main/res/values/dimens.xml" line="3" column="12" />
     </issue>
 
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.min_folder_view_height` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;min_folder_view_height&quot;>200dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="12"
-            column="12"/>
+    <issue id="UnusedResources" message="The resource `R.dimen.min_folder_view_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;min_folder_view_height&quot;>200dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/dimens.xml" line="12" column="12" />
     </issue>
 
-    <issue
-        id="UnusedResources"
-        message="The resource `R.dimen.max_folder_view_height` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;max_folder_view_height&quot;>500dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="13"
-            column="12"/>
+    <issue id="UnusedResources" message="The resource `R.dimen.max_folder_view_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;max_folder_view_height&quot;>500dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/dimens.xml" line="13" column="12" />
     </issue>
 
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.hide_icon` appears to be unused"
-        errorLine1="    &lt;string name=&quot;hide_icon&quot;>Hide icon&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="9"
-            column="13"/>
+    <issue id="UnusedResources" message="The resource `R.string.hide_icon` appears to be unused"
+        errorLine1="    &lt;string name=&quot;hide_icon&quot;>Hide icon&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="9" column="13" />
     </issue>
 
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.add_hidden_icons` appears to be unused"
-        errorLine1="    &lt;string name=&quot;add_hidden_icons&quot;>Add hidden icons&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="10"
-            column="13"/>
+    <issue id="UnusedResources" message="The resource `R.string.add_hidden_icons` appears to be unused"
+        errorLine1="    &lt;string name=&quot;add_hidden_icons&quot;>Add hidden icons&lt;/string>" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/strings.xml" line="10" column="13" />
     </issue>
 
-    <issue
-        id="AlwaysShowAction"
-        message="Prefer &quot;`ifRoom`&quot; instead of &quot;`always`&quot;"
-        errorLine1="            app:showAsAction=&quot;always&quot; />"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/menu/menu_app_icon.xml"
-            line="9"
-            column="13"/>
-        <location
-            file="src/main/res/menu/menu_app_icon.xml"
-            line="14"
-            column="13"/>
-        <location
-            file="src/main/res/menu/menu_app_icon.xml"
-            line="19"
-            column="13"/>
-        <location
-            file="src/main/res/menu/menu_app_icon.xml"
-            line="24"
-            column="13"/>
-        <location
-            file="src/main/res/menu/menu_app_icon.xml"
-            line="29"
-            column="13"/>
-        <location
-            file="src/main/res/menu/menu_app_icon.xml"
-            line="34"
-            column="13"/>
+    <issue id="AlwaysShowAction" message="Prefer &quot;`ifRoom`&quot; instead of &quot;`always`&quot;"
+        errorLine1="            app:showAsAction=&quot;always&quot; />" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/menu/menu_app_icon.xml" line="9" column="13" />
+        <location file="src/main/res/menu/menu_app_icon.xml" line="14" column="13" />
+        <location file="src/main/res/menu/menu_app_icon.xml" line="19" column="13" />
+        <location file="src/main/res/menu/menu_app_icon.xml" line="24" column="13" />
+        <location file="src/main/res/menu/menu_app_icon.xml" line="29" column="13" />
+        <location file="src/main/res/menu/menu_app_icon.xml" line="34" column="13" />
     </issue>
 
-    <issue
-        id="AlwaysShowAction"
-        message="Prefer &quot;`ifRoom`&quot; instead of &quot;`always`&quot;"
-        errorLine1="        app:showAsAction=&quot;always&quot; />"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/menu/menu_home_screen.xml"
-            line="7"
-            column="9"/>
-        <location
-            file="src/main/res/menu/menu_home_screen.xml"
-            line="11"
-            column="9"/>
+    <issue id="AlwaysShowAction" message="Prefer &quot;`ifRoom`&quot; instead of &quot;`always`&quot;"
+        errorLine1="        app:showAsAction=&quot;always&quot; />" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/menu/menu_home_screen.xml" line="7" column="9" />
+        <location file="src/main/res/menu/menu_home_screen.xml" line="11" column="9" />
     </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view `MyAppWidgetHostView` overrides `onTouchEvent` but not `performClick`"
-        errorLine1="    override fun onTouchEvent(event: MotionEvent?): Boolean {"
-        errorLine2="                 ~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/views/MyAppWidgetHostView.kt"
-            line="23"
-            column="18"/>
+    <issue id="ClickableViewAccessibility" message="Custom view `MyAppWidgetHostView` overrides `onTouchEvent` but not `performClick`"
+        errorLine1="    override fun onTouchEvent(event: MotionEvent?): Boolean {" errorLine2="                 ~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/views/MyAppWidgetHostView.kt" line="23" column="18" />
     </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view `MyAppWidgetResizeFrame` overrides `onTouchEvent` but not `performClick`"
-        errorLine1="    override fun onTouchEvent(event: MotionEvent?): Boolean {"
-        errorLine2="                 ~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/simplemobiletools/launcher/views/MyAppWidgetResizeFrame.kt"
-            line="105"
-            column="18"/>
+    <issue id="ClickableViewAccessibility" message="Custom view `MyAppWidgetResizeFrame` overrides `onTouchEvent` but not `performClick`"
+        errorLine1="    override fun onTouchEvent(event: MotionEvent?): Boolean {" errorLine2="                 ~~~~~~~~~~~~">
+        <location file="src/main/kotlin/org/fossify/launcher/views/MyAppWidgetResizeFrame.kt" line="105" column="18" />
     </issue>
 
-    <issue
-        id="ContentDescription"
-        message="Missing `contentDescription` attribute on image"
-        errorLine1="    &lt;ImageView"
-        errorLine2="     ~~~~~~~~~">
-        <location
-            file="src/main/res/layout/item_widget_preview.xml"
-            line="9"
-            column="6"/>
+    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image" errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
+        <location file="src/main/res/layout/item_widget_preview.xml" line="9" column="6" />
     </issue>
 
-    <issue
-        id="RtlSymmetry"
-        message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
-        errorLine1="        android:paddingStart=&quot;@dimen/medium_margin&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/item_widget_list_section.xml"
-            line="27"
-            column="9"/>
+    <issue id="RtlSymmetry" message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
+        errorLine1="        android:paddingStart=&quot;@dimen/medium_margin&quot;" errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/layout/item_widget_list_section.xml" line="27" column="9" />
     </issue>
 
 </issues>

@@ -1,6 +1,6 @@
-import java.io.FileInputStream
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android)
@@ -102,7 +102,7 @@ detekt {
 }
 
 dependencies {
-    implementation(libs.simple.tools.commons)
+    implementation(libs.fossify.commons)
 
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)

@@ -1,2 +1,0 @@
-Ajout du support initial pour les raccourcis
-Correction de quelques problèmes de navigation

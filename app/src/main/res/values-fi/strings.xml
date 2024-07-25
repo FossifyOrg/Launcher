@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Yksinkertainen käynnistin</string>
     <string name="app_launcher_name">Käynnistin</string>
     <string name="launcher_settings">Käynnistimen asetukset</string>
     <string name="app_info">Sovelluksen tiedot</string>
@@ -11,4 +10,4 @@
     <string name="manage_hidden_icons">Hallitse piilotettuja kuvakkeita</string>
     <string name="hidden_icons">Piilotetut kuvakkeet</string>
     <string name="hidden_icons_placeholder">Joitakin sovelluksia ei ole järjestelmärajoitusten vuoksi mahdollista poistaa, mutta voit kuitenkin piilottaa niiden kuvakkeet näkyvistä.</string>
-    </resources>
+</resources>

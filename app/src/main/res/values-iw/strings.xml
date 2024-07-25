@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">משגר פשוט</string>
     <string name="app_launcher_name">משגר</string>
     <string name="launcher_settings">הגדרות משגר</string>
     <string name="app_info">מידע על האפליקציה</string>
@@ -11,4 +10,4 @@
     <string name="manage_hidden_icons">ניהול אייקונים נסתרים</string>
     <string name="hidden_icons">אייקונים נסתרים</string>
     <string name="hidden_icons_placeholder">חלק מהאפליקציות לא ניתנות להסרה עקב הגבלות מערכת, לפחות אתה יכול להחביא את האייקונים כדי לא לראותם במסך הבית.</string>
-    </resources>
+</resources>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_margin">
 
-    <com.simplemobiletools.commons.views.MyTextInputLayout
+    <org.fossify.commons.views.MyTextInputLayout
         android:id="@+id/rename_item_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,5 +18,5 @@
             android:inputType="textCapWords"
             android:textSize="@dimen/bigger_text_size" />
 
-    </com.simplemobiletools.commons.views.MyTextInputLayout>
+    </org.fossify.commons.views.MyTextInputLayout>
 </FrameLayout>

@@ -1,254 +1,464 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>ComplexCondition:HomeScreenGrid.kt$AnimatedGridPager$currentPage &lt; getMaxPage() &amp;&amp; diffX &gt; 0f || currentPage &gt; 0 &amp;&amp; diffX &lt; 0f</ID>
-    <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$item.page != 0 &amp;&amp; gridItems.none { it.page == item.page &amp;&amp; it.id != item.id &amp;&amp; it.parentId == null }</ID>
-    <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$newParentId != null &amp;&amp; gridItems.any { it.parentId == newParentId &amp;&amp; it.left == left } &amp;&amp; (newParentId != oldParentId || left != oldLeft)</ID>
-    <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$x &gt;= left &amp;&amp; x &lt;= right &amp;&amp; y &gt;= top &amp;&amp; y &lt;= bottom</ID>
-    <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$x &gt;= rect.left &amp;&amp; x &lt;= rect.right &amp;&amp; y &gt;= rect.top &amp;&amp; y &lt;= rect.bottom</ID>
-    <ID>CyclomaticComplexMethod:Activity.kt$fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridItem, isOnAllAppsFragment: Boolean, listener: ItemMenuListener): PopupMenu</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$fun draggedItemMoved(x: Int, y: Int)</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$fun isClickingGridItem(x: Int, y: Int): HomeScreenGridItem?</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut( draggedHomeGridItem: HomeScreenGridItem?, xIndex: Int, yIndex: Int, newParentId: Long? = null, toFolderEnd: Boolean = true )</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun moveItem()</ID>
-    <ID>CyclomaticComplexMethod:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>CyclomaticComplexMethod:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>EmptyCatchBlock:Context.kt${ }</ID>
-    <ID>EmptyCatchBlock:MainActivity.kt$MainActivity${ }</ID>
-    <ID>EmptyCatchBlock:WidgetsFragment.kt$WidgetsFragment${ }</ID>
-    <ID>EmptyFunctionBlock:FolderIconsAdapter.kt$FolderIconsAdapter${}</ID>
-    <ID>EmptyFunctionBlock:HiddenIconsAdapter.kt$HiddenIconsAdapter${}</ID>
-    <ID>LargeClass:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
-    <ID>LargeClass:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
-    <ID>LongMethod:Activity.kt$fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridItem, isOnAllAppsFragment: Boolean, listener: ItemMenuListener): PopupMenu</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun draggedItemMoved(x: Int, y: Int)</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut( draggedHomeGridItem: HomeScreenGridItem?, xIndex: Int, yIndex: Int, newParentId: Long? = null, toFolderEnd: Boolean = true )</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$private fun getDefaultAppPackages(appLaunchers: ArrayList&lt;AppLauncher&gt;)</ID>
-    <ID>LongMethod:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>LongParameterList:HomeScreenGrid.kt$AnimatedGridPager$( private val getMaxPage: () -&gt; Int, private val redrawGrid: () -&gt; Unit, private val getWidth: () -&gt; Int, private val getHandler: () -&gt; Handler, private val getNextPageBound: () -&gt; Int, private val getPrevPageBound: () -&gt; Int, private val pageChangeStarted: () -&gt; Unit )</ID>
-    <ID>LongParameterList:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$(left: Int, top: Int, right: Int, bottom: Int, page: Int, docked: Boolean, parentId: Long?, id: Long)</ID>
-    <ID>LongParameterList:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$( coords: Rect, cellWidth: Int, cellHeight: Int, sideMargins: Rect, gridItem: HomeScreenGridItem, allGridItems: ArrayList&lt;HomeScreenGridItem&gt; )</ID>
-    <ID>LoopWithTooManyJumpStatements:MainActivity.kt$MainActivity$for</ID>
-    <ID>MagicNumber:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$3</ID>
-    <ID>MagicNumber:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$4</ID>
-    <ID>MagicNumber:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$5</ID>
-    <ID>MagicNumber:Context.kt$30</ID>
-    <ID>MagicNumber:Context.kt$70.0</ID>
-    <ID>MagicNumber:Converters.kt$Converters$100</ID>
-    <ID>MagicNumber:HiddenIconsAdapter.kt$HiddenIconsAdapter$0.1f</ID>
-    <ID>MagicNumber:HiddenIconsAdapter.kt$HiddenIconsAdapter$150</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$AnimatedGridPager$0.5f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$AnimatedGridPager$255</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$AnimatedGridPager$255.0f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$1.2f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$1.5f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$3f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$5</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$0.2f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$3</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$5f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder.&lt;no name provided&gt;$0.2f</ID>
-    <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$100</ID>
-    <ID>MagicNumber:LaunchersAdapter.kt$LaunchersAdapter$0.1f</ID>
-    <ID>MagicNumber:LaunchersAdapter.kt$LaunchersAdapter.ViewHolder$150</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity$0.5</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity$2000</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity$3</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity$4</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity.MyGestureListener$500L</ID>
-    <ID>MagicNumber:MyAppWidgetHostView.kt$MyAppWidgetHostView$4</ID>
-    <ID>MagicNumber:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$3</ID>
-    <ID>MagicNumber:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$4</ID>
-    <ID>MagicNumber:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$5</ID>
-    <ID>MaxLineLength:Activity.kt$LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED</ID>
-    <ID>MaxLineLength:Activity.kt$fun</ID>
-    <ID>MaxLineLength:Activity.kt$launcherApps.getShortcutIconDrawable(it, resources.displayMetrics.densityDpi).toBitmap(width = iconSize, height = iconSize)</ID>
-    <ID>MaxLineLength:Activity.kt$menu.findItem(R.id.rename).isVisible = (gridItem.type == ITEM_TYPE_ICON || gridItem.type == ITEM_TYPE_FOLDER) &amp;&amp; !isOnAllAppsFragment</ID>
-    <ID>MaxLineLength:Activity.kt$menu.findItem(R.id.uninstall).isVisible = gridItem.type == ITEM_TYPE_ICON &amp;&amp; canAppBeUninstalled(gridItem.packageName)</ID>
-    <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change</ID>
-    <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$binding.allAppsGrid.setPadding(0, 0, resources.getDimension(com.simplemobiletools.commons.R.dimen.medium_margin).toInt(), bottomListPadding)</ID>
-    <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$class</ID>
-    <ID>MaxLineLength:AppLauncher.kt$AppLauncher$@ColumnInfo(name = "activity_name") var activityName: String</ID>
-    <ID>MaxLineLength:AppLauncher.kt$AppLauncher$sorting and SORT_BY_TITLE != 0 -&gt; title.normalizeString().lowercase().compareTo(other.title.normalizeString().lowercase())</ID>
-    <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE TABLE IF NOT EXISTS `hidden_icons` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `package_name` TEXT NOT NULL, `activity_name` TEXT NOT NULL, `title` TEXT NOT NULL)")</ID>
-    <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE TABLE `home_screen_grid_items_new` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `left` INTEGER NOT NULL, `top` INTEGER NOT NULL, `right` INTEGER NOT NULL, `bottom` INTEGER NOT NULL, `page` INTEGER NOT NULL, `package_name` TEXT NOT NULL, `activity_name` TEXT NOT NULL, `title` TEXT NOT NULL, `type` INTEGER NOT NULL, `class_name` TEXT NOT NULL, `widget_id` INTEGER NOT NULL, `shortcut_id` TEXT NOT NULL, `icon` BLOB, `docked` INTEGER NOT NULL DEFAULT 0, `parent_id` INTEGER)")</ID>
-    <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE UNIQUE INDEX `index_home_screen_grid_items_id` ON `home_screen_grid_items` (`id`)")</ID>
-    <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("INSERT INTO `home_screen_grid_items_new` (`id`, `left`, `top`, `right`, `bottom`, `page`, `package_name`, `activity_name`, `title`, `type`, `class_name`, `widget_id`, `shortcut_id`, `icon`, `docked`, `parent_id`) SELECT `id`, `left`, `top`, `right`, `bottom`, 0 as `page`, `package_name`, `activity_name`, `title`, `type`, `class_name`, `widget_id`, `shortcut_id`, `icon`, CASE WHEN `type` != 1 AND `top` = 5 THEN 1 ELSE 0 END AS `docked`, NULL AS `parent_id` FROM `home_screen_grid_items` WHERE `intent` IS NULL OR `intent` = ''")</ID>
-    <ID>MaxLineLength:Context.kt$val Context.homeScreenGridItemsDB: HomeScreenGridItemsDao get() = AppsDatabase.getInstance(applicationContext).HomeScreenGridItemsDao()</ID>
-    <ID>MaxLineLength:FolderIconsAdapter.kt$FolderIconsAdapter.&lt;no name provided&gt;$val yOffset = resources.getDimension(R.dimen.long_press_anchor_button_offset_y) * (visibleMenuItems - 1)</ID>
-    <ID>MaxLineLength:HiddenIconsAdapter.kt$HiddenIconsAdapter$private fun getSelectedItems()</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$AnimatedGridPager$((pageChangeSwipedPercentage &gt; 0f &amp;&amp; item.page == currentPage - 1) || (pageChangeSwipedPercentage &lt; 0f &amp;&amp; item.page == currentPage + 1))</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$(context as? MainActivity)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$.</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$Math.abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + Math.abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$abs(it.second - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.third - draggedItemCurrentCoords.second + sideMargins.top)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawCircle(currentIndicatorPosition + pageIndicatorRadius, pageIndicatorY, pageIndicatorRadius, currentPageIndicatorPaint)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawCircle(currentPageIndicatorLeft + pageIndicatorRadius, pageIndicatorY, pageIndicatorRadius, emptyPageIndicatorPaint)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawRoundRect(folderRect, roundedCornerRadius / folder.scale, roundedCornerRadius / folder.scale, folderBackgroundPaint)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawRoundRect(leftSide, topSide, rightSide, bottomSide, roundedCornerRadius, roundedCornerRadius, dragShadowCirclePaint)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(item.left, item.top, item.right, item.bottom, item.page, false, null, item.id!!)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(left, top, right, bottom, page, docked, newId, id!!)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(left, top, right, bottom, page, docked, newParentId, id!!)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(left, top, right, bottom, page, docked, parentId, id!!)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$draggedItem!!.drawable = Bitmap.createBitmap(draggedWidgetView.drawingCache).toDrawable(context.resources)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$gridItems.filter { it.isSingleCellType() &amp;&amp; pager.isItemOnLastPage(it) &amp;&amp; !it.docked &amp;&amp; it.parentId == null }</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$gridItems.filter { it.parentId == item.parentId &amp;&amp; it.left &gt; item.left &amp;&amp; it.id != item.id }</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$gridItems.filter { it.parentId == newParentId &amp;&amp; it.left &gt;= newItem.left &amp;&amp; it.id != newItem.id}</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$if</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private fun HomeScreenGridItem.isSingleCellType()</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private fun HomeScreenGridItem.visibleOnCurrentPage()</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private var labelSideMargin = context.resources.getDimension(com.simplemobiletools.commons.R.dimen.small_margin).toInt()</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private var roundedCornerRadius = context.resources.getDimension(com.simplemobiletools.commons.R.dimen.activity_margin)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$return Rect(clickableLeft, clickableTop, clickableLeft + iconSize + 2 * iconMargin, clickableTop + iconSize + 2 * iconMargin)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val appWidgetProviderInfo = item.providerInfo ?: appWidgetManager!!.installedProviders.firstOrNull { it.provider.className == item.className }</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val coveredFolder = gridItems.firstOrNull { it.type == ITEM_TYPE_FOLDER &amp;&amp; it.left == coveredCell.x &amp;&amp; it.top == coveredCell.y }</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val currentIndicatorPosition = pageIndicatorsStart + pager.getCurrentViewPositionInFullPageSpace() * pageIndicatorStep</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val drawableWidth = draggedItem!!.getWidthInCells() * cellWidth - iconMargin * (draggedItem!!.getWidthInCells() - 1)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val pageIndicatorsRequiredWidth = pageCount * pageIndicatorRadius * 2 + pageCount * (pageIndicatorMargin - 1)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val rect = Rect(left, item.y, left + draggedItem!!.getWidthInCells() - 1, item.y + draggedItem!!.getHeightInCells() - 1)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val widgetView = appWidgetHost.createView((context as MainActivity).baseContext, appWidgetId, appWidgetProviderInfo) as MyAppWidgetHostView</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$}</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$newDrawable?.setBounds(drawableX, drawableY, drawableX + scaledIconSize.toInt(), drawableY + scaledIconSize.toInt())</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$return RectF(folderDialogLeft, folderDialogTop, folderDialogLeft + folderDialogWidth, folderDialogTop + folderDialogHeight)</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$val circlePath = Path().apply { addCircle((iconSize / 2).toFloat(), (iconSize / 2).toFloat(), (iconSize / 2).toFloat(), Path.Direction.CCW) }</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$val folderDialogHeight = rowsCount * cellSize + 3 * folderPadding + folderTitleTextPaint.textSize + rowsCount * yGap</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$val</ID>
-    <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$val item = gridItems.firstOrNull { it.id?.toInt() == virtualViewId } ?: throw IllegalArgumentException("Unknown id")</ID>
-    <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$@ColumnInfo(name = "activity_name") var activityName: String</ID>
-    <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$@ColumnInfo(name = "docked") var docked: Boolean = false</ID>
-    <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$@ColumnInfo(name = "icon") var icon: Bitmap? = null</ID>
-    <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$constructor() : this(null, -1, -1, -1, -1, 0, "", "", "", ITEM_TYPE_ICON, "", -1, "", null, false, null, null, null, null, 1, 1)</ID>
-    <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$@Query("DELETE FROM home_screen_grid_items WHERE parent_id IN (SELECT id FROM home_screen_grid_items WHERE package_name = :packageName)")</ID>
-    <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$@Query("UPDATE home_screen_grid_items SET `left` = :left, `top` = :top, `right` = :right, `bottom` = :bottom, `page` = :page, `docked` = :docked , `parent_id` = :parentId WHERE id = :id")</ID>
-    <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$@Query("UPDATE home_screen_grid_items SET `left` = `left` + :shiftBy WHERE parent_id == :folderId AND `left` &gt; :shiftFrom AND id != :excludingId")</ID>
-    <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$fun</ID>
-    <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter$filteredLaunchers = launchers.filter { filterQuery == null || it.title.contains(filterQuery!!, ignoreCase = true) }</ID>
-    <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter$val filteredPosition = filteredLaunchers.indexOfFirst { it.getLauncherIdentifier() == item.getItemIdentifier() }</ID>
-    <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter.ViewHolder$allAppsListener.onAppLauncherLongPressed((location[0] + width / 2).toFloat(), location[1].toFloat(), launcher)</ID>
-    <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter.ViewHolder$val placeholderDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.placeholder_drawable, launcher.thumbnailColor)</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$((Math.abs(mTouchDownX - event.x) &gt; mMoveGestureThreshold) || (Math.abs(mTouchDownY - event.y) &gt; mMoveGestureThreshold))</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$// delay showing the shortcut both to let the user see adding it in realtime and hackily avoid concurrent modification exception at HomeScreenGrid</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$Class.forName("android.app.StatusBarManager").getMethod("expandNotificationsPanel").invoke(getSystemService("statusbar"))</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$WindowCompat.getInsetsController(window, binding.root).isAppearanceLightStatusBars = backgroundColor.getContrastColor() == DARK_GREY</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$allApps.add(AppLauncher(null, label, packageName, activityName, 0, placeholderColor, drawable.toBitmap().toDrawable(resources)))</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$arrayOf(binding.allAppsFragment.root as MyFragment&lt;*&gt;, binding.widgetsFragment.root as MyFragment&lt;*&gt;)</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$fun</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$if</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$mOpenPopupMenu = handleGridItemPopupMenu(binding.homeScreenPopupMenuAnchor, gridItem, isOnAllAppsFragment, menuListener)</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$return Pair(page, Rect(wantedCell.second, wantedCell.third, wantedCell.second, wantedCell.third))</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$val anchorY = binding.homeScreenGrid.root.sideMargins.top + (clickedGridItem.top * binding.homeScreenGrid.root.cellHeight.toFloat())</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$val defaultDialerPackage = (getSystemService(Context.TELECOM_SERVICE) as TelecomManager).defaultDialerPackage</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$val icon = launcherApps.getShortcutBadgedIconDrawable(item.shortcutInfo!!, resources.displayMetrics.densityDpi)</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$val launcherApps = applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$val launcherSettings = AppLauncher(null, getString(R.string.launcher_settings), packageName, "", 0, placeholderColor, drawable.toBitmap().toDrawable(resources))</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity$val storePackage = potentialStores.firstOrNull { isPackageInstalled(it) &amp;&amp; appLaunchers.map { it.packageName }.contains(it) }</ID>
-    <ID>MaxLineLength:MainActivity.kt$MainActivity.MyGestureListener$private</ID>
-    <ID>MaxLineLength:MyAppWidgetHostView.kt$MyAppWidgetHostView$if</ID>
-    <ID>MaxLineLength:MyAppWidgetHostView.kt$MyAppWidgetHostView$var onIgnoreInterceptedListener: (() -&gt; Unit)? = null // let the home grid react on swallowed clicks, for example by hiding the widget resize frame</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$canvas.drawRect(lineDotRadius, lineDotRadius, width.toFloat() - lineDotRadius, height.toFloat() - lineDotRadius, resizeWidgetLinePaint)</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$class</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$minResizeWidthCells = Math.min(context.config.homeColumnCount, context.getCellCount(providerInfo.minResizeWidth))</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val MAX_TOUCH_LINE_DISTANCE = lineDotRadius * 5 // how close we have to be to the widgets side to drag it</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedBottom = roundToClosestMultiplyOfNumber(frameRect.bottom - sideMargins.top, cellHeight)</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedBottomCellY = roundToClosestMultiplyOfNumber(wantedBottom - sideMargins.top, cellHeight) / cellHeight - 1</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedLeft = roundToClosestMultiplyOfNumber(frameRect.left - sideMargins.left, cellWidth)</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedLeftCellX = roundToClosestMultiplyOfNumber(wantedLeft - sideMargins.left, cellWidth) / cellWidth</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedRight = roundToClosestMultiplyOfNumber(frameRect.right - sideMargins.left, cellWidth)</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedRightCellX = roundToClosestMultiplyOfNumber(wantedRight - sideMargins.left, cellWidth) / cellWidth - 1</ID>
-    <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedTopCellY = roundToClosestMultiplyOfNumber(wantedTop - sideMargins.top, cellHeight) / cellHeight</ID>
-    <ID>MaxLineLength:MyFragment.kt$MyFragment$abstract</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$binding.settingsUseEnglishHolder.beVisibleIf((config.wasUseEnglishToggled || Locale.getDefault().language != "en") &amp;&amp; !isTiramisuPlus())</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$faqItems.add(FAQItem(com.simplemobiletools.commons.R.string.faq_2_title_commons, com.simplemobiletools.commons.R.string.faq_2_text_commons))</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$faqItems.add(FAQItem(com.simplemobiletools.commons.R.string.faq_6_title_commons, com.simplemobiletools.commons.R.string.faq_6_text_commons))</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$findItem(R.id.more_apps_from_us).isVisible = !resources.getBoolean(com.simplemobiletools.commons.R.bool.hide_google_relations)</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$items.add(RadioItem(i, resources.getQuantityString(com.simplemobiletools.commons.R.plurals.column_counts, i, i)))</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$items.add(RadioItem(i, resources.getQuantityString(com.simplemobiletools.commons.R.plurals.row_counts, i, i)))</ID>
-    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$updateMaterialActivityViews(binding.settingsCoordinator, binding.settingsHolder, useTransparentNavigation = true, useTopSearchMenu = false)</ID>
-    <ID>MaxLineLength:WidgetsAdapter.kt$WidgetsAdapter$marginStart = activity.resources.getDimension(com.simplemobiletools.commons.R.dimen.activity_margin).toInt()</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$AppWidget(appPackageName, appTitle, appIcon, widgetTitle, widgetPreviewImage, widthCells, heightCells, false, className, info, null)</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$appWidgets = appWidgets.sortedWith(compareBy({ it.appTitle }, { it.appPackageName }, { it.widgetTitle })).toMutableList() as ArrayList&lt;AppWidget&gt;</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$class</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$if</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$val widget = AppWidget(appPackageName, appTitle, appIcon, widgetTitle, widgetPreviewImage, 0, 0, true, "", null, info.activityInfo)</ID>
-    <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$val widgetPreviewImage = packageManager.getDrawable(componentInfo.packageName, info.iconResource, componentInfo)</ID>
-    <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$@SuppressLint("ClickableViewAccessibility") fun widgetLongPressed(item: HomeScreenGridItem)</ID>
-    <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
-    <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun Canvas.drawItemInCell(item: HomeScreenGridItem, cell: Rect)</ID>
-    <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
-    <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
-    <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun moveItem()</ID>
-    <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?)</ID>
-    <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>NestedBlockDepth:MainActivity.kt$MainActivity$private fun findFirstEmptyCell(): Pair&lt;Int, Rect&gt;</ID>
-    <ID>NestedBlockDepth:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>ReturnCount:AllAppsFragment.kt$AllAppsFragment$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid$fun isClickingGridItem(x: Int, y: Int): HomeScreenGridItem?</ID>
-    <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$fun generateDrawable(): Drawable?</ID>
-    <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$override fun onPerformActionForVirtualView(virtualViewId: Int, action: Int, arguments: Bundle?): Boolean</ID>
-    <ID>ReturnCount:MyAppWidgetHostView.kt$MyAppWidgetHostView$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>ReturnCount:WidgetsFragment.kt$WidgetsFragment$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>SwallowedException:Activity.kt$e: Exception</ID>
-    <ID>SwallowedException:Context.kt$e: Error</ID>
-    <ID>SwallowedException:Context.kt$e: Exception</ID>
-    <ID>SwallowedException:MainActivity.kt$MainActivity$e: ActivityNotFoundException</ID>
-    <ID>SwallowedException:MainActivity.kt$MainActivity$e: Exception</ID>
-    <ID>SwallowedException:WidgetsFragment.kt$WidgetsFragment$error: Error</ID>
-    <ID>TooGenericExceptionCaught:Activity.kt$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:Context.kt$e: Error</ID>
-    <ID>TooGenericExceptionCaught:Context.kt$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:WidgetsFragment.kt$WidgetsFragment$error: Error</ID>
-    <ID>TooManyFunctions:AllAppsFragment.kt$AllAppsFragment : MyFragmentAllAppsListener</ID>
-    <ID>TooManyFunctions:FolderIconsAdapter.kt$FolderIconsAdapter : MyRecyclerViewAdapter</ID>
-    <ID>TooManyFunctions:HiddenIconsAdapter.kt$HiddenIconsAdapter : MyRecyclerViewAdapter</ID>
-    <ID>TooManyFunctions:HomeScreenGrid.kt$AnimatedGridPager</ID>
-    <ID>TooManyFunctions:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
-    <ID>TooManyFunctions:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao</ID>
-    <ID>TooManyFunctions:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
-    <ID>TooManyFunctions:SettingsActivity.kt$SettingsActivity : SimpleActivity</ID>
-    <ID>UnusedParameter:HomeScreenGrid.kt$AnimatedGridPager$y: Int</ID>
-    <ID>UnusedParameter:WidgetsAdapter.kt$WidgetsAdapter.ViewHolder$widgetListItem: WidgetsListItem</ID>
-    <ID>UnusedPrivateMember:MyAppWidgetHostView.kt$MyAppWidgetHostView$private fun hasFingerMoved(x: Float, y: Float)</ID>
-    <ID>VariableNaming:MainActivity.kt$MainActivity$val SMSMessengerIcon = HomeScreenGridItem( null, 1, config.homeRowCount - 1, 1, config.homeRowCount - 1, 0, defaultSMSMessengerPackage, "", title, ITEM_TYPE_ICON, "", -1, "", null, true, null )</ID>
-    <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_BOTTOM = 4</ID>
-    <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_LEFT = 1</ID>
-    <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_NONE = 0</ID>
-    <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_RIGHT = 3</ID>
-    <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_TOP = 2</ID>
-    <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val MAX_TOUCH_LINE_DISTANCE = lineDotRadius * 5 // how close we have to be to the widgets side to drag it</ID>
-    <ID>WildcardImport:AllAppsFragment.kt$import com.simplemobiletools.commons.extensions.*</ID>
-    <ID>WildcardImport:AppLauncher.kt$import androidx.room.*</ID>
-    <ID>WildcardImport:HiddenIcon.kt$import androidx.room.*</ID>
-    <ID>WildcardImport:HiddenIconsDao.kt$import androidx.room.*</ID>
-    <ID>WildcardImport:HomeScreenGrid.kt$import android.graphics.*</ID>
-    <ID>WildcardImport:HomeScreenGrid.kt$import com.simplemobiletools.commons.extensions.*</ID>
-    <ID>WildcardImport:HomeScreenGrid.kt$import com.simplemobiletools.commons.helpers.*</ID>
-    <ID>WildcardImport:HomeScreenGrid.kt$import com.simplemobiletools.launcher.helpers.*</ID>
-    <ID>WildcardImport:HomeScreenGrid.kt$import kotlin.math.*</ID>
-    <ID>WildcardImport:HomeScreenGridItem.kt$import androidx.room.*</ID>
-    <ID>WildcardImport:HomeScreenGridItemsDao.kt$import androidx.room.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import android.view.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import com.simplemobiletools.commons.extensions.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import com.simplemobiletools.commons.helpers.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import com.simplemobiletools.launcher.extensions.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import com.simplemobiletools.launcher.helpers.*</ID>
-    <ID>WildcardImport:MyAppWidgetResizeFrame.kt$import android.graphics.*</ID>
-    <ID>WildcardImport:RenameItemDialog.kt$import com.simplemobiletools.commons.extensions.*</ID>
-    <ID>WildcardImport:SettingsActivity.kt$import com.simplemobiletools.commons.extensions.*</ID>
-    <ID>WildcardImport:WidgetsFragment.kt$import com.simplemobiletools.commons.extensions.*</ID>
-    <ID>WildcardImport:WidgetsFragment.kt$import com.simplemobiletools.launcher.models.*</ID>
-  </CurrentIssues>
+    <ManuallySuppressedIssues></ManuallySuppressedIssues>
+    <CurrentIssues>
+        <ID>ComplexCondition:HomeScreenGrid.kt$AnimatedGridPager$currentPage &lt; getMaxPage() &amp;&amp; diffX &gt; 0f || currentPage &gt; 0 &amp;&amp; diffX
+            &lt; 0f
+        </ID>
+        <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$item.page != 0 &amp;&amp; gridItems.none { it.page == item.page &amp;&amp; it.id != item.id &amp;&amp;
+            it.parentId == null }
+        </ID>
+        <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$newParentId != null &amp;&amp; gridItems.any { it.parentId == newParentId &amp;&amp; it.left ==
+            left } &amp;&amp; (newParentId != oldParentId || left != oldLeft)
+        </ID>
+        <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$x &gt;= left &amp;&amp; x &lt;= right &amp;&amp; y &gt;= top &amp;&amp; y &lt;= bottom</ID>
+        <ID>ComplexCondition:HomeScreenGrid.kt$HomeScreenGrid$x &gt;= rect.left &amp;&amp; x &lt;= rect.right &amp;&amp; y &gt;= rect.top &amp;&amp; y &lt;=
+            rect.bottom
+        </ID>
+        <ID>CyclomaticComplexMethod:Activity.kt$fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridItem, isOnAllAppsFragment:
+            Boolean, listener: ItemMenuListener): PopupMenu
+        </ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$fun draggedItemMoved(x: Int, y: Int)</ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$fun isClickingGridItem(x: Int, y: Int): HomeScreenGridItem?</ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut( draggedHomeGridItem: HomeScreenGridItem?, xIndex: Int,
+            yIndex: Int, newParentId: Long? = null, toFolderEnd: Boolean = true )
+        </ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
+        <ID>CyclomaticComplexMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun moveItem()</ID>
+        <ID>CyclomaticComplexMethod:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>CyclomaticComplexMethod:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>EmptyCatchBlock:Context.kt${ }</ID>
+        <ID>EmptyCatchBlock:MainActivity.kt$MainActivity${ }</ID>
+        <ID>EmptyCatchBlock:WidgetsFragment.kt$WidgetsFragment${ }</ID>
+        <ID>EmptyFunctionBlock:FolderIconsAdapter.kt$FolderIconsAdapter${}</ID>
+        <ID>EmptyFunctionBlock:HiddenIconsAdapter.kt$HiddenIconsAdapter${}</ID>
+        <ID>LargeClass:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
+        <ID>LargeClass:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
+        <ID>LongMethod:Activity.kt$fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridItem, isOnAllAppsFragment: Boolean, listener:
+            ItemMenuListener): PopupMenu
+        </ID>
+        <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun draggedItemMoved(x: Int, y: Int)</ID>
+        <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
+        <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut( draggedHomeGridItem: HomeScreenGridItem?, xIndex: Int, yIndex: Int,
+            newParentId: Long? = null, toFolderEnd: Boolean = true )
+        </ID>
+        <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
+        <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
+        <ID>LongMethod:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>LongMethod:MainActivity.kt$MainActivity$private fun getDefaultAppPackages(appLaunchers: ArrayList&lt;AppLauncher&gt;)</ID>
+        <ID>LongMethod:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>LongParameterList:HomeScreenGrid.kt$AnimatedGridPager$( private val getMaxPage: () -&gt; Int, private val redrawGrid: () -&gt; Unit, private val
+            getWidth: () -&gt; Int, private val getHandler: () -&gt; Handler, private val getNextPageBound: () -&gt; Int, private val getPrevPageBound: () -&gt;
+            Int, private val pageChangeStarted: () -&gt; Unit )
+        </ID>
+        <ID>LongParameterList:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$(left: Int, top: Int, right: Int, bottom: Int, page: Int, docked: Boolean,
+            parentId: Long?, id: Long)
+        </ID>
+        <ID>LongParameterList:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$( coords: Rect, cellWidth: Int, cellHeight: Int, sideMargins: Rect, gridItem:
+            HomeScreenGridItem, allGridItems: ArrayList&lt;HomeScreenGridItem&gt; )
+        </ID>
+        <ID>LoopWithTooManyJumpStatements:MainActivity.kt$MainActivity$for</ID>
+        <ID>MagicNumber:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$3</ID>
+        <ID>MagicNumber:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$4</ID>
+        <ID>MagicNumber:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$5</ID>
+        <ID>MagicNumber:Context.kt$30</ID>
+        <ID>MagicNumber:Context.kt$70.0</ID>
+        <ID>MagicNumber:Converters.kt$Converters$100</ID>
+        <ID>MagicNumber:HiddenIconsAdapter.kt$HiddenIconsAdapter$0.1f</ID>
+        <ID>MagicNumber:HiddenIconsAdapter.kt$HiddenIconsAdapter$150</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$AnimatedGridPager$0.5f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$AnimatedGridPager$255</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$AnimatedGridPager$255.0f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$1.2f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$1.5f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$3f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid$5</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$0.2f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$3</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$5f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder.&lt;no name provided&gt;$0.2f</ID>
+        <ID>MagicNumber:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$100</ID>
+        <ID>MagicNumber:LaunchersAdapter.kt$LaunchersAdapter$0.1f</ID>
+        <ID>MagicNumber:LaunchersAdapter.kt$LaunchersAdapter.ViewHolder$150</ID>
+        <ID>MagicNumber:MainActivity.kt$MainActivity$0.5</ID>
+        <ID>MagicNumber:MainActivity.kt$MainActivity$2000</ID>
+        <ID>MagicNumber:MainActivity.kt$MainActivity$3</ID>
+        <ID>MagicNumber:MainActivity.kt$MainActivity$4</ID>
+        <ID>MagicNumber:MainActivity.kt$MainActivity.MyGestureListener$500L</ID>
+        <ID>MagicNumber:MyAppWidgetHostView.kt$MyAppWidgetHostView$4</ID>
+        <ID>MagicNumber:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$3</ID>
+        <ID>MagicNumber:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$4</ID>
+        <ID>MagicNumber:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$5</ID>
+        <ID>MaxLineLength:Activity.kt$LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or
+            LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED
+        </ID>
+        <ID>MaxLineLength:Activity.kt$fun</ID>
+        <ID>MaxLineLength:Activity.kt$launcherApps.getShortcutIconDrawable(it, resources.displayMetrics.densityDpi).toBitmap(width = iconSize, height =
+            iconSize)
+        </ID>
+        <ID>MaxLineLength:Activity.kt$menu.findItem(R.id.rename).isVisible = (gridItem.type == ITEM_TYPE_ICON || gridItem.type == ITEM_TYPE_FOLDER) &amp;&amp;
+            !isOnAllAppsFragment
+        </ID>
+        <ID>MaxLineLength:Activity.kt$menu.findItem(R.id.uninstall).isVisible = gridItem.type == ITEM_TYPE_ICON &amp;&amp;
+            canAppBeUninstalled(gridItem.packageName)
+        </ID>
+        <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are
+            interested in real moves only, when coords change
+        </ID>
+        <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$binding.allAppsGrid.setPadding(0, 0,
+            resources.getDimension(org.fossify.commons.R.dimen.medium_margin).toInt(), bottomListPadding)
+        </ID>
+        <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$class</ID>
+        <ID>MaxLineLength:AppLauncher.kt$AppLauncher$@ColumnInfo(name = "activity_name") var activityName: String</ID>
+        <ID>MaxLineLength:AppLauncher.kt$AppLauncher$sorting and SORT_BY_TITLE != 0 -&gt;
+            title.normalizeString().lowercase().compareTo(other.title.normalizeString().lowercase())
+        </ID>
+        <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE TABLE IF NOT EXISTS `hidden_icons` (`id`
+            INTEGER PRIMARY KEY AUTOINCREMENT, `package_name` TEXT NOT NULL, `activity_name` TEXT NOT NULL, `title` TEXT NOT NULL)")
+        </ID>
+        <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE TABLE `home_screen_grid_items_new` (`id`
+            INTEGER PRIMARY KEY AUTOINCREMENT, `left` INTEGER NOT NULL, `top` INTEGER NOT NULL, `right` INTEGER NOT NULL, `bottom` INTEGER NOT NULL, `page`
+            INTEGER NOT NULL, `package_name` TEXT NOT NULL, `activity_name` TEXT NOT NULL, `title` TEXT NOT NULL, `type` INTEGER NOT NULL, `class_name` TEXT NOT
+            NULL, `widget_id` INTEGER NOT NULL, `shortcut_id` TEXT NOT NULL, `icon` BLOB, `docked` INTEGER NOT NULL DEFAULT 0, `parent_id` INTEGER)")
+        </ID>
+        <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE UNIQUE INDEX
+            `index_home_screen_grid_items_id` ON `home_screen_grid_items` (`id`)")
+        </ID>
+        <ID>MaxLineLength:AppsDatabase.kt$AppsDatabase.Companion.&lt;no name provided&gt;$database.execSQL("INSERT INTO `home_screen_grid_items_new` (`id`,
+            `left`, `top`, `right`, `bottom`, `page`, `package_name`, `activity_name`, `title`, `type`, `class_name`, `widget_id`, `shortcut_id`, `icon`,
+            `docked`, `parent_id`) SELECT `id`, `left`, `top`, `right`, `bottom`, 0 as `page`, `package_name`, `activity_name`, `title`, `type`, `class_name`,
+            `widget_id`, `shortcut_id`, `icon`, CASE WHEN `type` != 1 AND `top` = 5 THEN 1 ELSE 0 END AS `docked`, NULL AS `parent_id` FROM
+            `home_screen_grid_items` WHERE `intent` IS NULL OR `intent` = ''")
+        </ID>
+        <ID>MaxLineLength:Context.kt$val Context.homeScreenGridItemsDB: HomeScreenGridItemsDao get() =
+            AppsDatabase.getInstance(applicationContext).HomeScreenGridItemsDao()
+        </ID>
+        <ID>MaxLineLength:FolderIconsAdapter.kt$FolderIconsAdapter.&lt;no name provided&gt;$val yOffset =
+            resources.getDimension(R.dimen.long_press_anchor_button_offset_y) * (visibleMenuItems - 1)
+        </ID>
+        <ID>MaxLineLength:HiddenIconsAdapter.kt$HiddenIconsAdapter$private fun getSelectedItems()</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$AnimatedGridPager$((pageChangeSwipedPercentage &gt; 0f &amp;&amp; item.page == currentPage - 1) ||
+            (pageChangeSwipedPercentage &lt; 0f &amp;&amp; item.page == currentPage + 1))
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$(context as? MainActivity)</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$.</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$Math.abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + Math.abs(it.y -
+            draggedItemCurrentCoords.second + sideMargins.top)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$abs(it.second - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.third -
+            draggedItemCurrentCoords.second + sideMargins.top)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.y -
+            draggedItemCurrentCoords.second + sideMargins.top)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawCircle(currentIndicatorPosition + pageIndicatorRadius, pageIndicatorY,
+            pageIndicatorRadius, currentPageIndicatorPaint)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawCircle(currentPageIndicatorLeft + pageIndicatorRadius, pageIndicatorY,
+            pageIndicatorRadius, emptyPageIndicatorPaint)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawRoundRect(folderRect, roundedCornerRadius / folder.scale, roundedCornerRadius /
+            folder.scale, folderBackgroundPaint)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$canvas.drawRoundRect(leftSide, topSide, rightSide, bottomSide, roundedCornerRadius,
+            roundedCornerRadius, dragShadowCirclePaint)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(item.left, item.top, item.right, item.bottom,
+            item.page, false, null, item.id!!)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(left, top, right, bottom, page, docked, newId,
+            id!!)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(left, top, right, bottom, page, docked, newParentId,
+            id!!)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$context.homeScreenGridItemsDB.updateItemPosition(left, top, right, bottom, page, docked, parentId,
+            id!!)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$draggedItem!!.drawable =
+            Bitmap.createBitmap(draggedWidgetView.drawingCache).toDrawable(context.resources)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$gridItems.filter { it.isSingleCellType() &amp;&amp; pager.isItemOnLastPage(it) &amp;&amp; !it.docked
+            &amp;&amp; it.parentId == null }
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$gridItems.filter { it.parentId == item.parentId &amp;&amp; it.left &gt; item.left &amp;&amp; it.id !=
+            item.id }
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$gridItems.filter { it.parentId == newParentId &amp;&amp; it.left &gt;= newItem.left &amp;&amp; it.id
+            != newItem.id}
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$if</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private fun HomeScreenGridItem.isSingleCellType()</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private fun HomeScreenGridItem.visibleOnCurrentPage()</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private var labelSideMargin =
+            context.resources.getDimension(org.fossify.commons.R.dimen.small_margin).toInt()
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$private var roundedCornerRadius =
+            context.resources.getDimension(org.fossify.commons.R.dimen.activity_margin)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$return Rect(clickableLeft, clickableTop, clickableLeft + iconSize + 2 * iconMargin, clickableTop +
+            iconSize + 2 * iconMargin)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val appWidgetProviderInfo = item.providerInfo ?: appWidgetManager!!.installedProviders.firstOrNull {
+            it.provider.className == item.className }
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val coveredFolder = gridItems.firstOrNull { it.type == ITEM_TYPE_FOLDER &amp;&amp; it.left ==
+            coveredCell.x &amp;&amp; it.top == coveredCell.y }
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val currentIndicatorPosition = pageIndicatorsStart + pager.getCurrentViewPositionInFullPageSpace() *
+            pageIndicatorStep
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val drawableWidth = draggedItem!!.getWidthInCells() * cellWidth - iconMargin *
+            (draggedItem!!.getWidthInCells() - 1)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val pageIndicatorsRequiredWidth = pageCount * pageIndicatorRadius * 2 + pageCount *
+            (pageIndicatorMargin - 1)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val rect = Rect(left, item.y, left + draggedItem!!.getWidthInCells() - 1, item.y +
+            draggedItem!!.getHeightInCells() - 1)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$val widgetView = appWidgetHost.createView((context as MainActivity).baseContext, appWidgetId,
+            appWidgetProviderInfo) as MyAppWidgetHostView
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$}</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$newDrawable?.setBounds(drawableX, drawableY, drawableX + scaledIconSize.toInt(),
+            drawableY + scaledIconSize.toInt())
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$return RectF(folderDialogLeft, folderDialogTop, folderDialogLeft +
+            folderDialogWidth, folderDialogTop + folderDialogHeight)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$val circlePath = Path().apply { addCircle((iconSize / 2).toFloat(), (iconSize /
+            2).toFloat(), (iconSize / 2).toFloat(), Path.Direction.CCW) }
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$val folderDialogHeight = rowsCount * cellSize + 3 * folderPadding +
+            folderTitleTextPaint.textSize + rowsCount * yGap
+        </ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$val</ID>
+        <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$val item = gridItems.firstOrNull { it.id?.toInt() == virtualViewId } ?:
+            throw IllegalArgumentException("Unknown id")
+        </ID>
+        <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$@ColumnInfo(name = "activity_name") var activityName: String</ID>
+        <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$@ColumnInfo(name = "docked") var docked: Boolean = false</ID>
+        <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$@ColumnInfo(name = "icon") var icon: Bitmap? = null</ID>
+        <ID>MaxLineLength:HomeScreenGridItem.kt$HomeScreenGridItem$constructor() : this(null, -1, -1, -1, -1, 0, "", "", "", ITEM_TYPE_ICON, "", -1, "", null,
+            false, null, null, null, null, 1, 1)
+        </ID>
+        <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$@Query("DELETE FROM home_screen_grid_items WHERE parent_id IN (SELECT id FROM
+            home_screen_grid_items WHERE package_name = :packageName)")
+        </ID>
+        <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$@Query("UPDATE home_screen_grid_items SET `left` = :left, `top` = :top, `right` =
+            :right, `bottom` = :bottom, `page` = :page, `docked` = :docked , `parent_id` = :parentId WHERE id = :id")
+        </ID>
+        <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$@Query("UPDATE home_screen_grid_items SET `left` = `left` + :shiftBy WHERE parent_id
+            == :folderId AND `left` &gt; :shiftFrom AND id != :excludingId")
+        </ID>
+        <ID>MaxLineLength:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$fun</ID>
+        <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter$filteredLaunchers = launchers.filter { filterQuery == null || it.title.contains(filterQuery!!,
+            ignoreCase = true) }
+        </ID>
+        <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter$val filteredPosition = filteredLaunchers.indexOfFirst { it.getLauncherIdentifier() ==
+            item.getItemIdentifier() }
+        </ID>
+        <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter.ViewHolder$allAppsListener.onAppLauncherLongPressed((location[0] + width / 2).toFloat(),
+            location[1].toFloat(), launcher)
+        </ID>
+        <ID>MaxLineLength:LaunchersAdapter.kt$LaunchersAdapter.ViewHolder$val placeholderDrawable =
+            activity.resources.getColoredDrawableWithColor(R.drawable.placeholder_drawable, launcher.thumbnailColor)
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$((Math.abs(mTouchDownX - event.x) &gt; mMoveGestureThreshold) || (Math.abs(mTouchDownY - event.y) &gt;
+            mMoveGestureThreshold))
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$// delay showing the shortcut both to let the user see adding it in realtime and hackily avoid concurrent
+            modification exception at HomeScreenGrid
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in
+            real moves only, when coords change
+        </ID>
+        <ID>
+            MaxLineLength:MainActivity.kt$MainActivity$Class.forName("android.app.StatusBarManager").getMethod("expandNotificationsPanel").invoke(getSystemService("statusbar"))
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$WindowCompat.getInsetsController(window, binding.root).isAppearanceLightStatusBars =
+            backgroundColor.getContrastColor() == DARK_GREY
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$allApps.add(AppLauncher(null, label, packageName, activityName, 0, placeholderColor,
+            drawable.toBitmap().toDrawable(resources)))
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$arrayOf(binding.allAppsFragment.root as MyFragment&lt;*&gt;, binding.widgetsFragment.root as MyFragment&lt;*&gt;)</ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$fun</ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$if</ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$mOpenPopupMenu = handleGridItemPopupMenu(binding.homeScreenPopupMenuAnchor, gridItem,
+            isOnAllAppsFragment, menuListener)
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$return Pair(page, Rect(wantedCell.second, wantedCell.third, wantedCell.second, wantedCell.third))</ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$val anchorY = binding.homeScreenGrid.root.sideMargins.top + (clickedGridItem.top *
+            binding.homeScreenGrid.root.cellHeight.toFloat())
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$val defaultDialerPackage = (getSystemService(Context.TELECOM_SERVICE) as
+            TelecomManager).defaultDialerPackage
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$val icon = launcherApps.getShortcutBadgedIconDrawable(item.shortcutInfo!!,
+            resources.displayMetrics.densityDpi)
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$val launcherApps = applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$val launcherSettings = AppLauncher(null, getString(R.string.launcher_settings), packageName, "", 0,
+            placeholderColor, drawable.toBitmap().toDrawable(resources))
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity$val storePackage = potentialStores.firstOrNull { isPackageInstalled(it) &amp;&amp; appLaunchers.map {
+            it.packageName }.contains(it) }
+        </ID>
+        <ID>MaxLineLength:MainActivity.kt$MainActivity.MyGestureListener$private</ID>
+        <ID>MaxLineLength:MyAppWidgetHostView.kt$MyAppWidgetHostView$if</ID>
+        <ID>MaxLineLength:MyAppWidgetHostView.kt$MyAppWidgetHostView$var onIgnoreInterceptedListener: (() -&gt; Unit)? = null // let the home grid react on
+            swallowed clicks, for example by hiding the widget resize frame
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$canvas.drawRect(lineDotRadius, lineDotRadius, width.toFloat() - lineDotRadius,
+            height.toFloat() - lineDotRadius, resizeWidgetLinePaint)
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$class</ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$minResizeWidthCells = Math.min(context.config.homeColumnCount,
+            context.getCellCount(providerInfo.minResizeWidth))
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val MAX_TOUCH_LINE_DISTANCE = lineDotRadius * 5 // how close we have to be to
+            the widgets side to drag it
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val</ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedBottom = roundToClosestMultiplyOfNumber(frameRect.bottom - sideMargins.top,
+            cellHeight)
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedBottomCellY = roundToClosestMultiplyOfNumber(wantedBottom -
+            sideMargins.top, cellHeight) / cellHeight - 1
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedLeft = roundToClosestMultiplyOfNumber(frameRect.left - sideMargins.left,
+            cellWidth)
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedLeftCellX = roundToClosestMultiplyOfNumber(wantedLeft - sideMargins.left,
+            cellWidth) / cellWidth
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedRight = roundToClosestMultiplyOfNumber(frameRect.right - sideMargins.left,
+            cellWidth)
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedRightCellX = roundToClosestMultiplyOfNumber(wantedRight - sideMargins.left,
+            cellWidth) / cellWidth - 1
+        </ID>
+        <ID>MaxLineLength:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$val wantedTopCellY = roundToClosestMultiplyOfNumber(wantedTop - sideMargins.top,
+            cellHeight) / cellHeight
+        </ID>
+        <ID>MaxLineLength:MyFragment.kt$MyFragment$abstract</ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$binding.settingsUseEnglishHolder.beVisibleIf((config.wasUseEnglishToggled ||
+            Locale.getDefault().language != "en") &amp;&amp; !isTiramisuPlus())
+        </ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$faqItems.add(FAQItem(org.fossify.commons.R.string.faq_2_title_commons,
+            org.fossify.commons.R.string.faq_2_text_commons))
+        </ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$faqItems.add(FAQItem(org.fossify.commons.R.string.faq_6_title_commons,
+            org.fossify.commons.R.string.faq_6_text_commons))
+        </ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$findItem(R.id.more_apps_from_us).isVisible =
+            !resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)
+        </ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$items.add(RadioItem(i, resources.getQuantityString(org.fossify.commons.R.plurals.column_counts,
+            i, i)))
+        </ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$items.add(RadioItem(i, resources.getQuantityString(org.fossify.commons.R.plurals.row_counts, i,
+            i)))
+        </ID>
+        <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$updateMaterialActivityViews(binding.settingsCoordinator, binding.settingsHolder,
+            useTransparentNavigation = true, useTopSearchMenu = false)
+        </ID>
+        <ID>MaxLineLength:WidgetsAdapter.kt$WidgetsAdapter$marginStart = activity.resources.getDimension(org.fossify.commons.R.dimen.activity_margin).toInt()
+        </ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are
+            interested in real moves only, when coords change
+        </ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$AppWidget(appPackageName, appTitle, appIcon, widgetTitle, widgetPreviewImage, widthCells,
+            heightCells, false, className, info, null)
+        </ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$appWidgets = appWidgets.sortedWith(compareBy({ it.appTitle }, { it.appPackageName }, {
+            it.widgetTitle })).toMutableList() as ArrayList&lt;AppWidget&gt;
+        </ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$class</ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$if</ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$val widget = AppWidget(appPackageName, appTitle, appIcon, widgetTitle, widgetPreviewImage, 0, 0,
+            true, "", null, info.activityInfo)
+        </ID>
+        <ID>MaxLineLength:WidgetsFragment.kt$WidgetsFragment$val widgetPreviewImage = packageManager.getDrawable(componentInfo.packageName, info.iconResource,
+            componentInfo)
+        </ID>
+        <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$@SuppressLint("ClickableViewAccessibility") fun widgetLongPressed(item: HomeScreenGridItem)</ID>
+        <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
+        <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun Canvas.drawItemInCell(item: HomeScreenGridItem, cell: Rect)</ID>
+        <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
+        <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
+        <ID>NestedBlockDepth:HomeScreenGrid.kt$HomeScreenGrid$private fun moveItem()</ID>
+        <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?)</ID>
+        <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>NestedBlockDepth:MainActivity.kt$MainActivity$private fun findFirstEmptyCell(): Pair&lt;Int, Rect&gt;</ID>
+        <ID>NestedBlockDepth:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>ReturnCount:AllAppsFragment.kt$AllAppsFragment$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid$fun isClickingGridItem(x: Int, y: Int): HomeScreenGridItem?</ID>
+        <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$fun generateDrawable(): Drawable?</ID>
+        <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$override fun onPerformActionForVirtualView(virtualViewId: Int, action: Int,
+            arguments: Bundle?): Boolean
+        </ID>
+        <ID>ReturnCount:MyAppWidgetHostView.kt$MyAppWidgetHostView$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>ReturnCount:WidgetsFragment.kt$WidgetsFragment$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
+        <ID>SwallowedException:Activity.kt$e: Exception</ID>
+        <ID>SwallowedException:Context.kt$e: Error</ID>
+        <ID>SwallowedException:Context.kt$e: Exception</ID>
+        <ID>SwallowedException:MainActivity.kt$MainActivity$e: ActivityNotFoundException</ID>
+        <ID>SwallowedException:MainActivity.kt$MainActivity$e: Exception</ID>
+        <ID>SwallowedException:WidgetsFragment.kt$WidgetsFragment$error: Error</ID>
+        <ID>TooGenericExceptionCaught:Activity.kt$e: Exception</ID>
+        <ID>TooGenericExceptionCaught:Context.kt$e: Error</ID>
+        <ID>TooGenericExceptionCaught:Context.kt$e: Exception</ID>
+        <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$e: Exception</ID>
+        <ID>TooGenericExceptionCaught:WidgetsFragment.kt$WidgetsFragment$error: Error</ID>
+        <ID>TooManyFunctions:AllAppsFragment.kt$AllAppsFragment : MyFragmentAllAppsListener</ID>
+        <ID>TooManyFunctions:FolderIconsAdapter.kt$FolderIconsAdapter : MyRecyclerViewAdapter</ID>
+        <ID>TooManyFunctions:HiddenIconsAdapter.kt$HiddenIconsAdapter : MyRecyclerViewAdapter</ID>
+        <ID>TooManyFunctions:HomeScreenGrid.kt$AnimatedGridPager</ID>
+        <ID>TooManyFunctions:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
+        <ID>TooManyFunctions:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao</ID>
+        <ID>TooManyFunctions:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
+        <ID>TooManyFunctions:SettingsActivity.kt$SettingsActivity : SimpleActivity</ID>
+        <ID>UnusedParameter:HomeScreenGrid.kt$AnimatedGridPager$y: Int</ID>
+        <ID>UnusedParameter:WidgetsAdapter.kt$WidgetsAdapter.ViewHolder$widgetListItem: WidgetsListItem</ID>
+        <ID>UnusedPrivateMember:MyAppWidgetHostView.kt$MyAppWidgetHostView$private fun hasFingerMoved(x: Float, y: Float)</ID>
+        <ID>VariableNaming:MainActivity.kt$MainActivity$val SMSMessengerIcon = HomeScreenGridItem( null, 1, config.homeRowCount - 1, 1, config.homeRowCount - 1,
+            0, defaultSMSMessengerPackage, "", title, ITEM_TYPE_ICON, "", -1, "", null, true, null )
+        </ID>
+        <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_BOTTOM = 4</ID>
+        <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_LEFT = 1</ID>
+        <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_NONE = 0</ID>
+        <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_RIGHT = 3</ID>
+        <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val DRAGGING_TOP = 2</ID>
+        <ID>VariableNaming:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$private val MAX_TOUCH_LINE_DISTANCE = lineDotRadius * 5 // how close we have to be
+            to the widgets side to drag it
+        </ID>
+        <ID>WildcardImport:AllAppsFragment.kt$import org.fossify.commons.extensions.*</ID>
+        <ID>WildcardImport:AppLauncher.kt$import androidx.room.*</ID>
+        <ID>WildcardImport:HiddenIcon.kt$import androidx.room.*</ID>
+        <ID>WildcardImport:HiddenIconsDao.kt$import androidx.room.*</ID>
+        <ID>WildcardImport:HomeScreenGrid.kt$import android.graphics.*</ID>
+        <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.commons.extensions.*</ID>
+        <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.commons.helpers.*</ID>
+        <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.launcher.helpers.*</ID>
+        <ID>WildcardImport:HomeScreenGrid.kt$import kotlin.math.*</ID>
+        <ID>WildcardImport:HomeScreenGridItem.kt$import androidx.room.*</ID>
+        <ID>WildcardImport:HomeScreenGridItemsDao.kt$import androidx.room.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import android.view.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import org.fossify.commons.extensions.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import org.fossify.commons.helpers.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import org.fossify.launcher.extensions.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import org.fossify.launcher.helpers.*</ID>
+        <ID>WildcardImport:MyAppWidgetResizeFrame.kt$import android.graphics.*</ID>
+        <ID>WildcardImport:RenameItemDialog.kt$import org.fossify.commons.extensions.*</ID>
+        <ID>WildcardImport:SettingsActivity.kt$import org.fossify.commons.extensions.*</ID>
+        <ID>WildcardImport:WidgetsFragment.kt$import org.fossify.commons.extensions.*</ID>
+        <ID>WildcardImport:WidgetsFragment.kt$import org.fossify.launcher.models.*</ID>
+    </CurrentIssues>
 </SmellBaseline>

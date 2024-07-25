@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">シンプルランチャー</string>
     <string name="app_launcher_name">ランチャー</string>
     <string name="launcher_settings">ランチャー設定</string>
     <string name="app_info">アプリ情報</string>
@@ -11,4 +10,4 @@
     <string name="manage_hidden_icons">非表示アイコンの管理</string>
     <string name="hidden_icons">非表示のアイコン</string>
     <string name="hidden_icons_placeholder">一部のアプリはシステムの制限によりアンインストールできませんが、非表示によって表示されないようにすることはできます。</string>
-    </resources>
+</resources>

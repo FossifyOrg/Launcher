@@ -1,2 +1,0 @@
-* Allow hiding unwanted icons
- * Added some translation and UX improvements

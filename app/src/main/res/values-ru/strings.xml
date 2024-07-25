@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Простой рабочий стол</string>
     <string name="app_launcher_name">Рабочий стол</string>
     <string name="launcher_settings">Настройки</string>
     <string name="app_info">О приложении</string>

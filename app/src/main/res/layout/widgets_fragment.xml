@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simplemobiletools.launcher.fragments.WidgetsFragment xmlns:android="http://schemas.android.com/apk/res/android"
+<org.fossify.launcher.fragments.WidgetsFragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/widgets_holder"
     android:layout_width="match_parent"
@@ -11,12 +11,12 @@
         android:layout_height="wrap_content"
         app:fastScrollEnabled="false">
 
-        <com.simplemobiletools.commons.views.MyRecyclerView
+        <org.fossify.commons.views.MyRecyclerView
             android:id="@+id/widgets_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            app:layoutManager="com.simplemobiletools.commons.views.MyLinearLayoutManager" />
+            app:layoutManager="org.fossify.commons.views.MyLinearLayoutManager" />
 
     </com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller>
-</com.simplemobiletools.launcher.fragments.WidgetsFragment>
+</org.fossify.launcher.fragments.WidgetsFragment>

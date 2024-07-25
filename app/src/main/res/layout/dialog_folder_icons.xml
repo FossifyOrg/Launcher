@@ -15,7 +15,7 @@
         android:minHeight="@dimen/min_folder_view_height"
         app:layout_constraintHeight_max="@dimen/max_folder_view_height">
 
-        <com.simplemobiletools.commons.views.MyRecyclerView
+        <org.fossify.commons.views.MyRecyclerView
             android:id="@+id/dialog_folder_icons_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

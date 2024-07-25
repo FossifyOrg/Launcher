@@ -1,3 +1,0 @@
- * Allow renaming home screen icons
- * Fixed widget sizing
- * Added some UX, translation and stability improvements

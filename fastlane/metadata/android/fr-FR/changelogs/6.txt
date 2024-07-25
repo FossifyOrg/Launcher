@@ -1,3 +1,0 @@
-* Permettre de renommer les icônes de l'écran d'accueil
- * Correction de la taille des widgets
- * Amélioration de l'interface utilisateur, de la traduction et de la stabilité

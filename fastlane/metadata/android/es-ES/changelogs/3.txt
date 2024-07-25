@@ -1,2 +1,0 @@
-Añadido soporte inicial para accesos directos
-Corregidos algunos problemas de navegación

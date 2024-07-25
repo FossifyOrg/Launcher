@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Обикновен Начален Екран</string>
     <string name="app_launcher_name">Начален Екран</string>
     <string name="launcher_settings">Начален Екран Настройки</string>
     <string name="app_info">Информация за приложението</string>
@@ -11,4 +10,4 @@
     <string name="manage_hidden_icons">Управлявай скритите икони</string>
     <string name="hidden_icons">Скрити икони</string>
     <string name="hidden_icons_placeholder">Някои приложения не могат да бъдат деинсталирани поради системни ограничения, но можете поне да скриете иконите им, за да не ги виждате.</string>
-    </resources>
+</resources>

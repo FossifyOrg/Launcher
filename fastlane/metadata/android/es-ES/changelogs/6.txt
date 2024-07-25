@@ -1,3 +1,0 @@
-* Permitir cambiar el nombre de los iconos de la pantalla de inicio
- * Corregido el tamaño de los widgets
- * Se han añadido algunas mejoras de UX, traducción y estabilidad

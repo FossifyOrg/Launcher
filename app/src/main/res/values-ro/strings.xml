@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Lansator de aplicații simplu</string>
     <string name="app_launcher_name">Lansator de aplicații</string>
     <string name="launcher_settings">Setări lansator de aplicații</string>
     <string name="app_info">Informații despre aplicație</string>
@@ -15,4 +14,4 @@
     <string name="close_app_drawer_on_app_open">Închideți sertarul de aplicații la deschiderea unei aplicații</string>
     <string name="home_screen_settings">Ecran principal</string>
     <string name="widget_too_big">Widget-ul este prea mare pentru dimensiunea ecranului principal</string>
-    </resources>
+</resources>

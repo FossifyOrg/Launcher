@@ -13,6 +13,5 @@
     <string name="close_app_drawer_on_app_open">App-Schublade beim Öffnen einer App schließen</string>
     <string name="home_screen_settings">Startbildschirm</string>
     <string name="widget_too_big">Das Widget ist zu groß für den aktuellen Startbildschirm</string>
-    <string name="app_name">Fossify Launcher</string>
     <string name="app_launcher_name">Launcher</string>
 </resources>

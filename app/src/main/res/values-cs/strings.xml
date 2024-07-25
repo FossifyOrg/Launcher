@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Jednoduchý spouštěč</string>
     <string name="app_launcher_name">Spuštěč</string>
     <string name="launcher_settings">Nastavení spouštěče</string>
     <string name="app_info">O aplikaci</string>

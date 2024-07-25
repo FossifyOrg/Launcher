@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Једноставан покретач</string>
     <string name="app_launcher_name">Иницијатор</string>
     <string name="launcher_settings">Подешавања покретача</string>
     <string name="app_info">Информације о апликацији</string>
@@ -11,4 +10,4 @@
     <string name="manage_hidden_icons">Управљајте скривеним иконама</string>
     <string name="hidden_icons">Скривене иконе</string>
     <string name="hidden_icons_placeholder">Неке апликације се не могу деинсталирати због системских ограничења, али можете барем сакрити њихове иконе да их не видите.</string>
-    </resources>
+</resources>

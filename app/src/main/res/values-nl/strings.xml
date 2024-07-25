@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Eenvoudige Launcher</string>
     <string name="launcher_settings">Instellingen Launcher</string>
     <string name="app_info">App-info</string>
     <string name="touch_hold_widget">Druk lang op de widget en sleep hem vervolgens naar het beginscherm</string>

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/medium_margin">
 
-    <com.simplemobiletools.commons.views.MySquareImageView
+    <org.fossify.commons.views.MySquareImageView
         android:id="@+id/widget_app_icon"
         android:layout_width="@dimen/launcher_icon_size"
         android:layout_height="@dimen/launcher_icon_size"

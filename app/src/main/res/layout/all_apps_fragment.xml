@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simplemobiletools.launcher.fragments.AllAppsFragment xmlns:android="http://schemas.android.com/apk/res/android"
+<org.fossify.launcher.fragments.AllAppsFragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/all_apps_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.simplemobiletools.commons.views.MySearchMenu
+    <org.fossify.commons.views.MySearchMenu
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -17,17 +17,17 @@
         android:layout_below="@+id/search_bar"
         app:fastScrollEnabled="false">
 
-        <com.simplemobiletools.commons.views.MyRecyclerView
+        <org.fossify.commons.views.MyRecyclerView
             android:id="@+id/all_apps_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            app:layoutManager="com.simplemobiletools.commons.views.MyGridLayoutManager"
+            app:layoutManager="org.fossify.commons.views.MyGridLayoutManager"
             app:spanCount="@integer/portrait_column_count" />
 
     </com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller>
 
-    <com.simplemobiletools.commons.views.MyTextView
+    <org.fossify.commons.views.MyTextView
         android:id="@+id/no_results_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,4 +43,4 @@
         android:textStyle="italic"
         android:visibility="gone" />
 
-</com.simplemobiletools.launcher.fragments.AllAppsFragment>
+</org.fossify.launcher.fragments.AllAppsFragment>
