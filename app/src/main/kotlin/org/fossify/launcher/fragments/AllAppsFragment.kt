@@ -92,6 +92,7 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
                     val distance = event.y.toInt() - touchDownY
                     shouldIntercept = distance > 0 && binding.allAppsGrid.computeVerticalScrollOffset() == 0
                     if (shouldIntercept) {
+                        activity?.hideKeyboard()
                         activity?.startHandlingTouches(touchDownY)
                         touchDownY = -1
                     }
