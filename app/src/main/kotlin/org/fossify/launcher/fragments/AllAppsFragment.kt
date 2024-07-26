@@ -204,23 +204,23 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
 
     override fun onAppLauncherLongPressed(x: Float, y: Float, appLauncher: AppLauncher) {
         val gridItem = HomeScreenGridItem(
-            null,
-            -1,
-            -1,
-            -1,
-            -1,
-            0,
-            appLauncher.packageName,
-            appLauncher.activityName,
-            appLauncher.title,
-            ITEM_TYPE_ICON,
-            "",
-            -1,
-            "",
-            null,
-            false,
-            null,
-            appLauncher.drawable
+            id = null,
+            left = -1,
+            top = -1,
+            right = -1,
+            bottom = -1,
+            page = 0,
+            packageName = appLauncher.packageName,
+            activityName = appLauncher.activityName,
+            title = appLauncher.title,
+            type = ITEM_TYPE_ICON,
+            className = "",
+            widgetId = -1,
+            shortcutId = "",
+            icon = null,
+            docked = false,
+            parentId = null,
+            drawable = appLauncher.drawable
         )
 
         activity?.showHomeIconMenu(x, y, gridItem, true)
