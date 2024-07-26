@@ -30,12 +30,6 @@ data class AppLauncher(
 
     fun getBubbleText() = title
 
-    fun getHashToCompare() = getStringToCompare().hashCode()
-
-    private fun getStringToCompare(): String {
-        return copy(id = null, drawable = null).toString()
-    }
-
     fun getLauncherIdentifier() = "$packageName/$activityName"
 
     override fun compareTo(other: AppLauncher): Int {
