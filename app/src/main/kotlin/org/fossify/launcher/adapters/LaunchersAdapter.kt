@@ -114,5 +114,11 @@ private class AppLauncherDiffCallback : DiffUtil.ItemCallback<AppLauncher>() {
         return oldItem.getLauncherIdentifier().hashCode().toLong() == newItem.getLauncherIdentifier().hashCode().toLong()
     }
 
-    override fun areContentsTheSame(oldItem: AppLauncher, newItem: AppLauncher) = oldItem == newItem
+    override fun areContentsTheSame(oldItem: AppLauncher, newItem: AppLauncher): Boolean {
+        return oldItem.title == newItem.title &&
+            oldItem.order == newItem.order &&
+            oldItem.thumbnailColor == newItem.thumbnailColor &&
+            oldItem.drawable != null &&
+            newItem.drawable != null
+    }
 }
