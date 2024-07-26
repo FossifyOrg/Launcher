@@ -7,6 +7,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.WindowManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.fossify.commons.extensions.*
 import org.fossify.commons.helpers.isRPlus
 import org.fossify.commons.views.MyGridLayoutManager
@@ -185,6 +187,13 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
 
         binding.allAppsGrid.setPadding(0, 0, resources.getDimension(org.fossify.commons.R.dimen.medium_margin).toInt(), bottomListPadding)
         binding.allAppsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
+        binding.allAppsGrid.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 && binding.allAppsGrid.computeVerticalScrollOffset() > 0) {
+                    activity?.hideKeyboard()
+                }
+            }
+        })
 
         hasTopPadding = addTopPadding
         val topPadding = if (addTopPadding) activity!!.statusBarHeight else 0
