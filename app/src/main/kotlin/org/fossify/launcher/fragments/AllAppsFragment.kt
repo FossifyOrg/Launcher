@@ -71,28 +71,35 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
             return super.onInterceptTouchEvent(event)
         }
 
-        if (ignoreTouches) {
-            // some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change
-            if (lastTouchCoords.first != event.x || lastTouchCoords.second != event.y) {
-                touchDownY = -1
-                return true
+        var shouldIntercept = false
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                touchDownY = event.y.toInt()
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                if (ignoreTouches) {
+                    // some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change
+                    if (lastTouchCoords.first != event.x || lastTouchCoords.second != event.y) {
+                        touchDownY = -1
+                        return true
+                    }
+                }
+
+                // pull the whole fragment down if it is scrolled way to the top and the user pulls it even further
+                if (touchDownY != -1) {
+                    val distance = event.y.toInt() - touchDownY
+                    shouldIntercept = distance > 0 && binding.allAppsGrid.computeVerticalScrollOffset() == 0
+                    if (shouldIntercept) {
+                        activity?.startHandlingTouches(touchDownY)
+                        touchDownY = -1
+                    }
+                }
             }
         }
 
         lastTouchCoords = Pair(event.x, event.y)
-        var shouldIntercept = false
-
-        // pull the whole fragment down if it is scrolled way to the top and the users pulls it even further
-        if (touchDownY != -1) {
-            shouldIntercept = touchDownY - event.y.toInt() < 0 && binding.allAppsGrid.computeVerticalScrollOffset() == 0
-            if (shouldIntercept) {
-                activity?.startHandlingTouches(touchDownY)
-                touchDownY = -1
-            }
-        } else {
-            touchDownY = event.y.toInt()
-        }
-
         return shouldIntercept
     }
 
