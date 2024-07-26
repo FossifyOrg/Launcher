@@ -26,6 +26,8 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
     var ignoreTouches = false
     var hasTopPadding = false
 
+    private var launchers = emptyList<AppLauncher>()
+
     @SuppressLint("ClickableViewAccessibility")
     override fun setupFragment(activity: MainActivity) {
         this.activity = activity
@@ -61,7 +63,6 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
 
         val layoutManager = binding.allAppsGrid.layoutManager as MyGridLayoutManager
         layoutManager.spanCount = context.config.drawerColumnCount
-        val launchers = (binding.allAppsGrid.adapter as LaunchersAdapter).launchers
         setupAdapter(launchers)
     }
 
@@ -95,26 +96,27 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         return shouldIntercept
     }
 
-    fun gotLaunchers(appLaunchers: ArrayList<AppLauncher>) {
-        val sorted = appLaunchers.sortedWith(
-            compareBy({
-                it.title.normalizeString().lowercase()
-            }, {
-                it.packageName
-            })
-        ).toMutableList() as ArrayList<AppLauncher>
+    fun gotLaunchers(appLaunchers: List<AppLauncher>) {
+        launchers = appLaunchers.sortedWith(
+            compareBy(
+                { it.title.normalizeString().lowercase() },
+                { it.packageName }
+            )
+        )
 
-        setupAdapter(sorted)
+        setupAdapter(launchers)
     }
 
-    private fun setupAdapter(launchers: ArrayList<AppLauncher>) {
+    private fun getAdapter() = binding.allAppsGrid.adapter as? LaunchersAdapter
+
+    private fun setupAdapter(launchers: List<AppLauncher>) {
         activity?.runOnUiThread {
             val layoutManager = binding.allAppsGrid.layoutManager as MyGridLayoutManager
             layoutManager.spanCount = context.config.drawerColumnCount
 
-            val currAdapter = binding.allAppsGrid.adapter
-            if (currAdapter == null) {
-                LaunchersAdapter(activity!!, launchers, this) {
+            var adapter = getAdapter()
+            if (adapter == null) {
+                adapter = LaunchersAdapter(activity!!, this) {
                     activity?.launchApp((it as AppLauncher).packageName, it.activityName)
                     if (activity?.config?.closeAppDrawer == true) {
                         activity?.closeAppDrawer(delayed = true)
@@ -124,14 +126,22 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
                 }.apply {
                     binding.allAppsGrid.adapter = this
                 }
-            } else {
-                (currAdapter as LaunchersAdapter).updateItems(launchers)
             }
+
+            adapter.submitList(launchers.toMutableList())
         }
     }
 
     fun hideIcon(item: HomeScreenGridItem) {
-        (binding.allAppsGrid.adapter as? LaunchersAdapter)?.hideIcon(item)
+        val itemToRemove = launchers.firstOrNull { it.getLauncherIdentifier() == item.getItemIdentifier() }
+        if (itemToRemove != null) {
+            val position = launchers.indexOfFirst { it.getLauncherIdentifier() == item.getItemIdentifier() }
+            launchers = launchers.toMutableList().apply {
+                removeAt(position)
+            }
+
+            getAdapter()?.submitList(launchers)
+        }
     }
 
     fun setupViews(addTopPadding: Boolean = hasTopPadding) {
@@ -172,21 +182,23 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         val topPadding = if (addTopPadding) activity!!.statusBarHeight else 0
         setPadding(0, topPadding, 0, 0)
         background = ColorDrawable(context.getProperBackgroundColor())
-        (binding.allAppsGrid.adapter as? LaunchersAdapter)?.updateTextColor(context.getProperTextColor())
+        getAdapter()?.updateTextColor(context.getProperTextColor())
 
         binding.searchBar.beVisibleIf(context.config.showSearchBar)
         binding.searchBar.getToolbar().beGone()
         binding.searchBar.updateColors()
         binding.searchBar.setupMenu()
 
-        binding.searchBar.onSearchTextChangedListener = {
-            (binding.allAppsGrid.adapter as? LaunchersAdapter)?.updateSearchQuery(it)
-            showNoResultsPlaceholderIfNeeded()
+        binding.searchBar.onSearchTextChangedListener = { query ->
+            val filtered = launchers.filter { query.isEmpty() || it.title.contains(query, ignoreCase = true) }
+            getAdapter()?.submitList(filtered) {
+                showNoResultsPlaceholderIfNeeded()
+            }
         }
     }
 
     private fun showNoResultsPlaceholderIfNeeded() {
-        val itemCount = binding.allAppsGrid.adapter?.itemCount
+        val itemCount = getAdapter()?.itemCount
         binding.noResultsPlaceholder.beVisibleIf(itemCount != null && itemCount == 0)
     }
 
