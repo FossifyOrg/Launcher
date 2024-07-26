@@ -741,7 +741,6 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
     }
 
-
     private class MyGestureListener(private val flingListener: FlingListener) : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapUp(event: MotionEvent): Boolean {
             (flingListener as MainActivity).homeScreenClicked(event.x, event.y)
