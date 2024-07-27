@@ -69,7 +69,6 @@ class MainActivity : SimpleActivity(), FlingListener {
     private var mIgnoreYMoveEvents = false
     private var mLongPressedIcon: HomeScreenGridItem? = null
     private var mOpenPopupMenu: PopupMenu? = null
-    private var mCachedLaunchers = ArrayList<AppLauncher>()
     private var mLastTouchCoords = Pair(-1f, -1f)
     private var mActionOnCanBindWidget: ((granted: Boolean) -> Unit)? = null
     private var mActionOnWidgetConfiguredWidget: ((granted: Boolean) -> Unit)? = null
@@ -159,12 +158,12 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         ensureBackgroundThread {
-            if (mCachedLaunchers.isEmpty()) {
+            if (IconCache.cachedLaunchers.isEmpty()) {
                 val hiddenIcons = hiddenIconsDB.getHiddenIcons().map {
                     it.getIconIdentifier()
                 }
 
-                mCachedLaunchers = launchersDB.getAppLaunchers().filter {
+                IconCache.cachedLaunchers = launchersDB.getAppLaunchers().filter {
                     val showIcon = !hiddenIcons.contains(it.getLauncherIdentifier())
                     if (!showIcon) {
                         try {
@@ -174,10 +173,9 @@ class MainActivity : SimpleActivity(), FlingListener {
                     }
                     showIcon
                 }.toMutableList() as ArrayList<AppLauncher>
-
-                binding.allAppsFragment.root.gotLaunchers(mCachedLaunchers)
             }
 
+            binding.allAppsFragment.root.gotLaunchers(IconCache.cachedLaunchers)
             refreshLaunchers()
         }
 
@@ -456,7 +454,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         binding.widgetsFragment.root.getAppWidgets()
 
         var hasDeletedAnything = false
-        mCachedLaunchers.map { it.packageName }.forEach { packageName ->
+        IconCache.cachedLaunchers.map { it.packageName }.forEach { packageName ->
             if (!launchers.map { it.packageName }.contains(packageName)) {
                 hasDeletedAnything = true
                 launchersDB.deleteApp(packageName)
@@ -468,7 +466,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             binding.homeScreenGrid.root.fetchGridItems()
         }
 
-        mCachedLaunchers = launchers
+        IconCache.cachedLaunchers = launchers
 
         if (!config.wasHomeScreenInit) {
             ensureBackgroundThread {
