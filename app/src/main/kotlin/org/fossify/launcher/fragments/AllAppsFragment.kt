@@ -142,7 +142,7 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         }
     }
 
-    fun hideIcon(item: HomeScreenGridItem) {
+    fun onIconHidden(item: HomeScreenGridItem) {
         val itemToRemove = launchers.firstOrNull { it.getLauncherIdentifier() == item.getItemIdentifier() }
         if (itemToRemove != null) {
             val position = launchers.indexOfFirst { it.getLauncherIdentifier() == item.getItemIdentifier() }

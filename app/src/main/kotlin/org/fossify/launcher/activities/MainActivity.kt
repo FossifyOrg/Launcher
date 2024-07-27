@@ -177,7 +177,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 binding.allAppsFragment.root.gotLaunchers(mCachedLaunchers)
             }
 
-            refetchLaunchers()
+            refreshLaunchers()
         }
 
         // avoid showing fully colored navigation bars
@@ -226,7 +226,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         when (requestCode) {
             UNINSTALL_APP_REQUEST_CODE -> {
                 ensureBackgroundThread {
-                    refetchLaunchers()
+                    refreshLaunchers()
                 }
             }
 
@@ -437,7 +437,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     private fun hasFingerMoved(event: MotionEvent) = mTouchDownX != -1 && mTouchDownY != -1 &&
         ((Math.abs(mTouchDownX - event.x) > mMoveGestureThreshold) || (Math.abs(mTouchDownY - event.y) > mMoveGestureThreshold))
 
-    private fun refetchLaunchers() {
+    private fun refreshLaunchers() {
         val launchers = getAllAppLaunchers()
         binding.allAppsFragment.root.gotLaunchers(launchers)
         binding.widgetsFragment.root.getAppWidgets()
@@ -672,7 +672,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             hiddenIconsDB.insert(hiddenIcon)
 
             runOnUiThread {
-                binding.allAppsFragment.root.hideIcon(item)
+                binding.allAppsFragment.root.onIconHidden(item)
             }
         }
     }
