@@ -252,6 +252,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         super.onConfigurationChanged(newConfig)
         binding.allAppsFragment.root.onConfigurationChanged()
         binding.widgetsFragment.root.onConfigurationChanged()
+        updateStatusbarColor(Color.TRANSPARENT)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
