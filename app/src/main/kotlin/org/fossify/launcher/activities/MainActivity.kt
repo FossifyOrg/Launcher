@@ -83,6 +83,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         private var mLastUpEvent = 0L
         private const val ANIMATION_DURATION = 150L
         private const val APP_DRAWER_CLOSE_DELAY = 300L
+        private const val APP_DRAWER_STATE = "app_drawer_state"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -359,6 +360,18 @@ class MainActivity : SimpleActivity(), FlingListener {
         return true
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(APP_DRAWER_STATE, isAllAppsFragmentExpanded())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if (savedInstanceState.getBoolean(APP_DRAWER_STATE)) {
+            showFragment(binding.allAppsFragment, 0L)
+        }
+    }
+
     private fun handleIntentAction(intent: Intent) {
         if (intent.action == LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) {
             val launcherApps = applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
@@ -478,9 +491,9 @@ class MainActivity : SimpleActivity(), FlingListener {
         mIgnoreUpEvent = false
     }
 
-    private fun showFragment(fragment: ViewBinding) {
+    private fun showFragment(fragment: ViewBinding, animationDuration: Long = ANIMATION_DURATION) {
         ObjectAnimator.ofFloat(fragment.root, "y", 0f).apply {
-            duration = ANIMATION_DURATION
+            duration = animationDuration
             interpolator = DecelerateInterpolator()
             start()
         }
@@ -492,12 +505,12 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         Handler(Looper.getMainLooper()).postDelayed({
             updateStatusBarIcons()
-        }, ANIMATION_DURATION)
+        }, animationDuration)
     }
 
-    private fun hideFragment(fragment: ViewBinding) {
+    private fun hideFragment(fragment: ViewBinding, animationDuration: Long = ANIMATION_DURATION) {
         ObjectAnimator.ofFloat(fragment.root, "y", mScreenHeight.toFloat()).apply {
-            duration = ANIMATION_DURATION
+            duration = animationDuration
             interpolator = DecelerateInterpolator()
             start()
         }
@@ -513,7 +526,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 fragment.widgetsList.scrollToPosition(0)
                 fragment.root.touchDownY = -1
             }
-        }, ANIMATION_DURATION)
+        }, animationDuration)
     }
 
     fun homeScreenLongPressed(eventX: Float, eventY: Float) {
