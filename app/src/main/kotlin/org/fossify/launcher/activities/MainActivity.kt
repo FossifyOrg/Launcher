@@ -445,8 +445,10 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     // some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change
-    private fun hasFingerMoved(event: MotionEvent) = mTouchDownX != -1 && mTouchDownY != -1 &&
-        ((Math.abs(mTouchDownX - event.x) > mMoveGestureThreshold) || (Math.abs(mTouchDownY - event.y) > mMoveGestureThreshold))
+    private fun hasFingerMoved(event: MotionEvent): Boolean {
+        return mTouchDownX != -1 && mTouchDownY != -1 &&
+            (abs(mTouchDownX - event.x) > mMoveGestureThreshold || abs(mTouchDownY - event.y) > mMoveGestureThreshold)
+    }
 
     private fun refreshLaunchers() {
         val launchers = getAllAppLaunchers()
