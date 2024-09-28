@@ -23,6 +23,7 @@ import androidx.core.view.forEach
 import com.google.android.material.color.MaterialColors
 import org.fossify.commons.extensions.getPopupMenuTheme
 import org.fossify.commons.extensions.getProperTextColor
+import org.fossify.commons.extensions.isDynamicTheme
 import org.fossify.commons.extensions.showErrorToast
 import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
@@ -92,7 +93,7 @@ fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridI
         inflate(R.menu.menu_app_icon)
         menu.forEach {
             val default = getProperTextColor()
-            val color = if (isSPlus() && config.isUsingSystemTheme) {
+            val color = if (isSPlus() && isDynamicTheme()) {
                 default
             } else {
                 MaterialColors.getColor(contextTheme, android.R.attr.actionMenuTextColor, default)

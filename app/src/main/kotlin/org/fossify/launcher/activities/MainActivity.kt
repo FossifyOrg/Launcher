@@ -118,7 +118,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (wasJustPaused) {
             if (isAllAppsFragmentExpanded()) {
