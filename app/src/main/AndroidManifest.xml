@@ -255,12 +255,12 @@
         <activity-alias
             android:name=".activities.SplashActivity.Green"
             android:clearTaskOnLaunch="true"
-            android:enabled="false"
+            android:enabled="true"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_orange"
+            android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTask"
-            android:roundIcon="@mipmap/ic_launcher_orange"
+            android:roundIcon="@mipmap/ic_launcher"
             android:targetActivity=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -345,12 +345,12 @@
         <activity-alias
             android:name=".activities.SplashActivity.Orange"
             android:clearTaskOnLaunch="true"
-            android:enabled="true"
+            android:enabled="false"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_launcher_orange"
             android:launchMode="singleTask"
-            android:roundIcon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_orange"
             android:targetActivity=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
