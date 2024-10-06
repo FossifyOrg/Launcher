@@ -35,7 +35,7 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         this.activity = activity
         this.binding = AllAppsFragmentBinding.bind(this)
 
-        binding.allAppsGrid.setOnTouchListener { v, event ->
+        binding.allAppsGrid.setOnTouchListener { _, event ->
             if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) {
                 touchDownY = -1
             }
@@ -143,14 +143,20 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
     }
 
     fun onIconHidden(item: HomeScreenGridItem) {
-        val itemToRemove = launchers.firstOrNull { it.getLauncherIdentifier() == item.getItemIdentifier() }
+        val itemToRemove = launchers.firstOrNull {
+            it.getLauncherIdentifier() == item.getItemIdentifier()
+        }
+
         if (itemToRemove != null) {
-            val position = launchers.indexOfFirst { it.getLauncherIdentifier() == item.getItemIdentifier() }
+            val position = launchers.indexOfFirst {
+                it.getLauncherIdentifier() == item.getItemIdentifier()
+            }
+
             launchers = launchers.toMutableList().apply {
                 removeAt(position)
             }
 
-            getAdapter()?.submitList(launchers)
+            getAdapter()?.submitList(launchers.toMutableList())
         }
     }
 

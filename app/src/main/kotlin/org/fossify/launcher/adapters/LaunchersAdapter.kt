@@ -27,7 +27,8 @@ class LaunchersAdapter(
     val activity: SimpleActivity,
     val allAppsListener: AllAppsListener,
     val itemClick: (Any) -> Unit
-) : ListAdapter<AppLauncher, LaunchersAdapter.ViewHolder>(AppLauncherDiffCallback()), RecyclerViewFastScroller.OnPopupTextUpdate {
+) : ListAdapter<AppLauncher, LaunchersAdapter.ViewHolder>(AppLauncherDiffCallback()),
+    RecyclerViewFastScroller.OnPopupTextUpdate {
 
     private var textColor = activity.getProperTextColor()
     private var iconPadding = 0
@@ -42,12 +43,19 @@ class LaunchersAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemLauncherLabelBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemLauncherLabelBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(getItem(position))
+    }
+
+    override fun submitList(list: MutableList<AppLauncher>?) {
+        calculateIconWidth()
+        super.submitList(list)
     }
 
     private fun calculateIconWidth() {
@@ -75,13 +83,19 @@ class LaunchersAdapter(
                 if (launcher.drawable != null && binding.launcherIcon.tag == true) {
                     binding.launcherIcon.setImageDrawable(launcher.drawable)
                 } else {
-                    val placeholderDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.placeholder_drawable, launcher.thumbnailColor)
+                    val placeholderDrawable = activity.resources.getColoredDrawableWithColor(
+                        drawableId = R.drawable.placeholder_drawable,
+                        color = launcher.thumbnailColor
+                    )
                     Glide.with(activity)
                         .load(launcher.drawable)
                         .placeholder(placeholderDrawable)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .into(object : DrawableImageViewTarget(binding.launcherIcon) {
-                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                            override fun onResourceReady(
+                                resource: Drawable,
+                                transition: Transition<in Drawable>?
+                            ) {
                                 super.onResourceReady(resource, transition)
                                 view.tag = true
                             }
@@ -92,7 +106,11 @@ class LaunchersAdapter(
                 setOnLongClickListener {
                     val location = IntArray(2)
                     getLocationOnScreen(location)
-                    allAppsListener.onAppLauncherLongPressed((location[0] + width / 2).toFloat(), location[1].toFloat(), launcher)
+                    allAppsListener.onAppLauncherLongPressed(
+                        x = (location[0] + width / 2).toFloat(),
+                        y = location[1].toFloat(),
+                        appLauncher = launcher
+                    )
                     true
                 }
             }
@@ -106,14 +124,15 @@ class LaunchersAdapter(
 
 private class AppLauncherDiffCallback : DiffUtil.ItemCallback<AppLauncher>() {
     override fun areItemsTheSame(oldItem: AppLauncher, newItem: AppLauncher): Boolean {
-        return oldItem.getLauncherIdentifier().hashCode().toLong() == newItem.getLauncherIdentifier().hashCode().toLong()
+        return oldItem.getLauncherIdentifier().hashCode().toLong() ==
+                newItem.getLauncherIdentifier().hashCode().toLong()
     }
 
     override fun areContentsTheSame(oldItem: AppLauncher, newItem: AppLauncher): Boolean {
         return oldItem.title == newItem.title &&
-            oldItem.order == newItem.order &&
-            oldItem.thumbnailColor == newItem.thumbnailColor &&
-            oldItem.drawable != null &&
-            newItem.drawable != null
+                oldItem.order == newItem.order &&
+                oldItem.thumbnailColor == newItem.thumbnailColor &&
+                oldItem.drawable != null &&
+                newItem.drawable != null
     }
 }
