@@ -199,12 +199,12 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         ensureBackgroundThread {
-            if (IconCache.cachedLaunchers.isEmpty()) {
+            if (IconCache.launchers.isEmpty()) {
                 val hiddenIcons = hiddenIconsDB.getHiddenIcons().map {
                     it.getIconIdentifier()
                 }
 
-                IconCache.cachedLaunchers = launchersDB.getAppLaunchers().filter {
+                IconCache.launchers = launchersDB.getAppLaunchers().filter {
                     val showIcon = !hiddenIcons.contains(it.getLauncherIdentifier())
                     if (!showIcon) {
                         try {
@@ -216,7 +216,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 }.toMutableList() as ArrayList<AppLauncher>
             }
 
-            binding.allAppsFragment.root.gotLaunchers(IconCache.cachedLaunchers)
+            binding.allAppsFragment.root.gotLaunchers(IconCache.launchers)
             refreshLaunchers()
         }
 
@@ -517,20 +517,14 @@ class MainActivity : SimpleActivity(), FlingListener {
         binding.allAppsFragment.root.gotLaunchers(launchers)
         binding.widgetsFragment.root.getAppWidgets()
 
-        var hasDeletedAnything = false
-        IconCache.cachedLaunchers.map { it.packageName }.forEach { packageName ->
+        IconCache.launchers.map { it.packageName }.forEach { packageName ->
             if (!launchers.map { it.packageName }.contains(packageName)) {
-                hasDeletedAnything = true
                 launchersDB.deleteApp(packageName)
                 homeScreenGridItemsDB.deleteByPackageName(packageName)
             }
         }
 
-        if (hasDeletedAnything) {
-            binding.homeScreenGrid.root.fetchGridItems()
-        }
-
-        IconCache.cachedLaunchers = launchers
+        IconCache.launchers = launchers
 
         if (!config.wasHomeScreenInit) {
             ensureBackgroundThread {
@@ -538,6 +532,8 @@ class MainActivity : SimpleActivity(), FlingListener {
                 config.wasHomeScreenInit = true
                 binding.homeScreenGrid.root.fetchGridItems()
             }
+        } else {
+            binding.homeScreenGrid.root.fetchGridItems()
         }
     }
 
@@ -683,7 +679,8 @@ class MainActivity : SimpleActivity(), FlingListener {
             binding.mainHolder.performHapticFeedback()
         }
 
-        val anchorY = binding.homeScreenGrid.root.sideMargins.top + (clickedGridItem.top * binding.homeScreenGrid.root.cellHeight.toFloat())
+        val anchorY = binding.homeScreenGrid.root.sideMargins.top +
+                (clickedGridItem.top * binding.homeScreenGrid.root.cellHeight.toFloat())
         showHomeIconMenu(x, anchorY, clickedGridItem, false)
     }
 
