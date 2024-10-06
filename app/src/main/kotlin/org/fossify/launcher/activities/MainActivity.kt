@@ -657,6 +657,9 @@ class MainActivity : SimpleActivity(), FlingListener {
                 when (item.itemId) {
                     R.id.widgets -> showWidgetsFragment()
                     R.id.wallpapers -> launchWallpapersIntent()
+                    R.id.launcher_settings -> startActivity(
+                        Intent(this@MainActivity, SettingsActivity::class.java)
+                    )
                 }
                 true
             }

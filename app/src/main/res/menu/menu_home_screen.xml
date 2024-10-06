@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/widgets"
-        android:title="@string/widgets"
-        app:showAsAction="always" />
+        android:title="@string/widgets" />
     <item
         android:id="@+id/wallpapers"
-        android:title="@string/wallpapers"
-        app:showAsAction="always" />
+        android:title="@string/wallpapers" />
+    <item
+        android:id="@+id/launcher_settings"
+        android:title="@string/launcher_settings" />
 </menu>
