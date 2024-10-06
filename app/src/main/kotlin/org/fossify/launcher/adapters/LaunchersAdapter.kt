@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.DrawableImageViewTarget
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import org.fossify.commons.extensions.getColoredDrawableWithColor
@@ -77,14 +75,11 @@ class LaunchersAdapter(
                 if (launcher.drawable != null && binding.launcherIcon.tag == true) {
                     binding.launcherIcon.setImageDrawable(launcher.drawable)
                 } else {
-                    val factory = DrawableCrossFadeFactory.Builder(150).setCrossFadeEnabled(true).build()
                     val placeholderDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.placeholder_drawable, launcher.thumbnailColor)
-
                     Glide.with(activity)
                         .load(launcher.drawable)
                         .placeholder(placeholderDrawable)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                        .transition(DrawableTransitionOptions.withCrossFade(factory))
                         .into(object : DrawableImageViewTarget(binding.launcherIcon) {
                             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                                 super.onResourceReady(resource, transition)
