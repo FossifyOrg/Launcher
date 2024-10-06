@@ -21,6 +21,8 @@
             android:id="@+id/all_apps_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/smaller_margin"
+            android:layout_marginEnd="@dimen/smaller_margin"
             android:clipToPadding="false"
             app:layoutManager="org.fossify.commons.views.MyGridLayoutManager"
             app:spanCount="@integer/portrait_column_count" />
