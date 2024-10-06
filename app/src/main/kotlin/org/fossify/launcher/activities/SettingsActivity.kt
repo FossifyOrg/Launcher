@@ -1,9 +1,18 @@
 package org.fossify.launcher.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import org.fossify.commons.dialogs.RadioGroupDialog
-import org.fossify.commons.extensions.*
+import org.fossify.commons.extensions.beGoneIf
+import org.fossify.commons.extensions.beVisibleIf
+import org.fossify.commons.extensions.getCustomizeColorsString
+import org.fossify.commons.extensions.getProperPrimaryColor
+import org.fossify.commons.extensions.isOrWasThankYouInstalled
+import org.fossify.commons.extensions.launchMoreAppsFromUsIntent
+import org.fossify.commons.extensions.launchPurchaseThankYouIntent
+import org.fossify.commons.extensions.updateTextColors
+import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.NavigationIcon
 import org.fossify.commons.helpers.isTiramisuPlus
 import org.fossify.commons.models.FAQItem
@@ -27,7 +36,12 @@ class SettingsActivity : SimpleActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        updateMaterialActivityViews(binding.settingsCoordinator, binding.settingsHolder, useTransparentNavigation = true, useTopSearchMenu = false)
+        updateMaterialActivityViews(
+            mainCoordinatorLayout = binding.settingsCoordinator,
+            nestedView = binding.settingsHolder,
+            useTransparentNavigation = true,
+            useTopSearchMenu = false
+        )
         setupMaterialScrollListener(binding.settingsNestedScrollview, binding.settingsToolbar)
         setupOptionsMenu()
     }
@@ -72,7 +86,8 @@ class SettingsActivity : SimpleActivity() {
 
     private fun refreshMenuItems() {
         binding.settingsToolbar.menu.apply {
-            findItem(R.id.more_apps_from_us).isVisible = !resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)
+            findItem(R.id.more_apps_from_us).isVisible =
+                !resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)
         }
     }
 
@@ -114,7 +129,14 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsDrawerColumnCountHolder.setOnClickListener {
             val items = ArrayList<RadioItem>()
             for (i in 1..MAX_COLUMN_COUNT) {
-                items.add(RadioItem(i, resources.getQuantityString(org.fossify.commons.R.plurals.column_counts, i, i)))
+                items.add(
+                    RadioItem(
+                        id = i,
+                        title = resources.getQuantityString(
+                            org.fossify.commons.R.plurals.column_counts, i, i
+                        )
+                    )
+                )
             }
 
             RadioGroupDialog(this, items, currentColumnCount) {
@@ -142,7 +164,14 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsHomeScreenRowCountHolder.setOnClickListener {
             val items = ArrayList<RadioItem>()
             for (i in MIN_ROW_COUNT..MAX_ROW_COUNT) {
-                items.add(RadioItem(i, resources.getQuantityString(org.fossify.commons.R.plurals.row_counts, i, i)))
+                items.add(
+                    RadioItem(
+                        id = i,
+                        title = resources.getQuantityString(
+                            org.fossify.commons.R.plurals.row_counts, i, i
+                        )
+                    )
+                )
             }
 
             RadioGroupDialog(this, items, currentRowCount) {
@@ -161,7 +190,14 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsHomeScreenColumnCountHolder.setOnClickListener {
             val items = ArrayList<RadioItem>()
             for (i in MIN_COLUMN_COUNT..MAX_COLUMN_COUNT) {
-                items.add(RadioItem(i, resources.getQuantityString(org.fossify.commons.R.plurals.column_counts, i, i)))
+                items.add(
+                    RadioItem(
+                        id = i,
+                        title = resources.getQuantityString(
+                            org.fossify.commons.R.plurals.column_counts, i, i
+                        )
+                    )
+                )
             }
 
             RadioGroupDialog(this, items, currentColumnCount) {
@@ -174,6 +210,7 @@ class SettingsActivity : SimpleActivity() {
         }
     }
 
+    @SuppressLint("NewApi")
     private fun setupLanguage() {
         binding.settingsLanguage.text = Locale.getDefault().displayLanguage
         binding.settingsLanguageHolder.beVisibleIf(isTiramisuPlus())
@@ -193,10 +230,27 @@ class SettingsActivity : SimpleActivity() {
         val faqItems = ArrayList<FAQItem>()
 
         if (!resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)) {
-            faqItems.add(FAQItem(org.fossify.commons.R.string.faq_2_title_commons, org.fossify.commons.R.string.faq_2_text_commons))
-            faqItems.add(FAQItem(org.fossify.commons.R.string.faq_6_title_commons, org.fossify.commons.R.string.faq_6_text_commons))
+            faqItems.add(
+                FAQItem(
+                    title = org.fossify.commons.R.string.faq_2_title_commons,
+                    text = org.fossify.commons.R.string.faq_2_text_commons
+                )
+            )
+            faqItems.add(
+                FAQItem(
+                    title = org.fossify.commons.R.string.faq_6_title_commons,
+                    text = org.fossify.commons.R.string.faq_6_text_commons
+                )
+            )
         }
 
-        startAboutActivity(R.string.app_name, licenses, BuildConfig.VERSION_NAME, faqItems, true)
+        startAboutActivity(
+            appNameId = R.string.app_name,
+            licenseMask = licenses,
+            versionName = BuildConfig.VERSION_NAME,
+            packageName = packageName,
+            faqItems = faqItems,
+            showFAQBeforeMail = true
+        )
     }
 }
