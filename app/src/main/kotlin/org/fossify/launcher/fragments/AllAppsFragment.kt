@@ -3,14 +3,32 @@ package org.fossify.launcher.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.RoundedCorner.POSITION_TOP_LEFT
+import android.view.RoundedCorner.POSITION_TOP_RIGHT
 import android.view.Surface
 import android.view.WindowManager
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import org.fossify.commons.extensions.*
+import org.fossify.commons.R
+import org.fossify.commons.extensions.applyColorFilter
+import org.fossify.commons.extensions.beGone
+import org.fossify.commons.extensions.beVisibleIf
+import org.fossify.commons.extensions.getProperBackgroundColor
+import org.fossify.commons.extensions.getProperPrimaryColor
+import org.fossify.commons.extensions.getProperTextColor
+import org.fossify.commons.extensions.hideKeyboard
+import org.fossify.commons.extensions.navigationBarHeight
+import org.fossify.commons.extensions.navigationBarOnBottom
+import org.fossify.commons.extensions.navigationBarOnSide
+import org.fossify.commons.extensions.navigationBarWidth
+import org.fossify.commons.extensions.normalizeString
+import org.fossify.commons.extensions.statusBarHeight
 import org.fossify.commons.helpers.isRPlus
+import org.fossify.commons.helpers.isSPlus
 import org.fossify.commons.views.MyGridLayoutManager
 import org.fossify.launcher.activities.MainActivity
 import org.fossify.launcher.adapters.LaunchersAdapter
@@ -22,7 +40,11 @@ import org.fossify.launcher.interfaces.AllAppsListener
 import org.fossify.launcher.models.AppLauncher
 import org.fossify.launcher.models.HomeScreenGridItem
 
-class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment<AllAppsFragmentBinding>(context, attributeSet), AllAppsListener {
+class AllAppsFragment(
+    context: Context,
+    attributeSet: AttributeSet
+) : MyFragment<AllAppsFragmentBinding>(context, attributeSet), AllAppsListener {
+
     private var lastTouchCoords = Pair(0f, 0f)
     var touchDownY = -1
     var ignoreTouches = false
@@ -92,7 +114,8 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
                 // pull the whole fragment down if it is scrolled way to the top and the user pulls it even further
                 if (touchDownY != -1) {
                     val distance = event.y.toInt() - touchDownY
-                    shouldIntercept = distance > 0 && binding.allAppsGrid.computeVerticalScrollOffset() == 0
+                    shouldIntercept =
+                        distance > 0 && binding.allAppsGrid.computeVerticalScrollOffset() == 0
                     if (shouldIntercept) {
                         activity?.hideKeyboard()
                         activity?.startHandlingTouches(touchDownY)
@@ -191,7 +214,12 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
             }
         }
 
-        binding.allAppsGrid.setPadding(0, 0, resources.getDimension(org.fossify.commons.R.dimen.medium_margin).toInt(), bottomListPadding)
+        binding.allAppsGrid.setPadding(
+            0,
+            0,
+            resources.getDimension(org.fossify.commons.R.dimen.medium_margin).toInt(),
+            bottomListPadding
+        )
         binding.allAppsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
         binding.allAppsGrid.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -204,7 +232,7 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         hasTopPadding = addTopPadding
         val topPadding = if (addTopPadding) activity!!.statusBarHeight else 0
         setPadding(0, topPadding, 0, 0)
-        background = ColorDrawable(context.getProperBackgroundColor())
+        setupRoundedBackground()
         getAdapter()?.updateTextColor(context.getProperTextColor())
 
         binding.searchBar.beVisibleIf(context.config.showSearchBar)
@@ -213,7 +241,8 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         binding.searchBar.setupMenu()
 
         binding.searchBar.onSearchTextChangedListener = { query ->
-            val filtered = launchers.filter { query.isEmpty() || it.title.contains(query, ignoreCase = true) }
+            val filtered =
+                launchers.filter { query.isEmpty() || it.title.contains(query, ignoreCase = true) }
             getAdapter()?.submitList(filtered) {
                 showNoResultsPlaceholderIfNeeded()
             }
@@ -259,5 +288,26 @@ class AllAppsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         }
 
         return false
+    }
+
+    private fun setupRoundedBackground() {
+        val backgroundColor = context.getProperBackgroundColor()
+        background = if (isSPlus()) {
+            val insets = rootWindowInsets
+            val topRightCorner = insets.getRoundedCorner(POSITION_TOP_RIGHT)?.radius ?: 0
+            val topLeftCorner = insets.getRoundedCorner(POSITION_TOP_LEFT)?.radius ?: 0
+            if (topRightCorner > 0 && topLeftCorner > 0) {
+                ResourcesCompat.getDrawable(
+                    context.resources, R.drawable.bottom_sheet_bg, context.theme
+                ).apply {
+                    (this as LayerDrawable).findDrawableByLayerId(R.id.bottom_sheet_background)
+                        .applyColorFilter(backgroundColor)
+                }
+            } else {
+                ColorDrawable(backgroundColor)
+            }
+        } else {
+            ColorDrawable(backgroundColor)
+        }
     }
 }
