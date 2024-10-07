@@ -70,7 +70,8 @@ fun Activity.launchAppInfo(packageName: String) {
 
 fun Activity.canAppBeUninstalled(packageName: String): Boolean {
     return try {
-        (packageManager.getApplicationInfo(packageName, 0).flags and ApplicationInfo.FLAG_SYSTEM) == 0
+        val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+        (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0
     } catch (ignored: Exception) {
         false
     }
@@ -83,7 +84,12 @@ fun Activity.uninstallApp(packageName: String) {
     }
 }
 
-fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridItem, isOnAllAppsFragment: Boolean, listener: ItemMenuListener): PopupMenu {
+fun Activity.handleGridItemPopupMenu(
+    anchorView: View,
+    gridItem: HomeScreenGridItem,
+    isOnAllAppsFragment: Boolean,
+    listener: ItemMenuListener
+): PopupMenu {
     val contextTheme = ContextThemeWrapper(this, getPopupMenuTheme())
     return PopupMenu(contextTheme, anchorView, Gravity.TOP or Gravity.END).apply {
         if (isQPlus()) {
@@ -100,14 +106,18 @@ fun Activity.handleGridItemPopupMenu(anchorView: View, gridItem: HomeScreenGridI
             }
             it.iconTintList = ColorStateList.valueOf(color)
         }
-        menu.findItem(R.id.rename).isVisible = (gridItem.type == ITEM_TYPE_ICON || gridItem.type == ITEM_TYPE_FOLDER) && !isOnAllAppsFragment
-        menu.findItem(R.id.hide_icon).isVisible = gridItem.type == ITEM_TYPE_ICON && isOnAllAppsFragment
+        menu.findItem(R.id.rename).isVisible =
+            (gridItem.type == ITEM_TYPE_ICON || gridItem.type == ITEM_TYPE_FOLDER) && !isOnAllAppsFragment
+        menu.findItem(R.id.hide_icon).isVisible =
+            gridItem.type == ITEM_TYPE_ICON && isOnAllAppsFragment
         menu.findItem(R.id.resize).isVisible = gridItem.type == ITEM_TYPE_WIDGET
         menu.findItem(R.id.app_info).isVisible = gridItem.type == ITEM_TYPE_ICON
-        menu.findItem(R.id.uninstall).isVisible = gridItem.type == ITEM_TYPE_ICON && canAppBeUninstalled(gridItem.packageName)
+        menu.findItem(R.id.uninstall).isVisible =
+            gridItem.type == ITEM_TYPE_ICON && canAppBeUninstalled(gridItem.packageName)
         menu.findItem(R.id.remove).isVisible = !isOnAllAppsFragment
 
-        val launcherApps = applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+        val launcherApps =
+            applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
         val shortcuts = if (launcherApps.hasShortcutHostPermission()) {
             try {
                 val query = LauncherApps.ShortcutQuery().setQueryFlags(
