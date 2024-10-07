@@ -7,7 +7,9 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Process
 import android.provider.Settings
@@ -136,16 +138,21 @@ fun Activity.handleGridItemPopupMenu(
         menu.setGroupVisible(R.id.group_shortcuts, hasShortcuts)
         if (hasShortcuts) {
             val iconSize = resources.getDimensionPixelSize(R.dimen.menu_icon_size)
-            shortcuts?.forEach {
-                menu.add(R.id.group_shortcuts, Menu.NONE, Menu.NONE, it.getLabel())
+            shortcuts?.forEach { shortcutInfo ->
+                val iconDrawable = launcherApps.getShortcutIconDrawable(
+                    shortcutInfo, resources.displayMetrics.densityDpi
+                )
+
+                menu.add(R.id.group_shortcuts, Menu.NONE, Menu.NONE, shortcutInfo.getLabel())
                     .setIcon(
-                        launcherApps.getShortcutIconDrawable(it, resources.displayMetrics.densityDpi).toBitmap(width = iconSize, height = iconSize)
+                        (iconDrawable ?: ColorDrawable(Color.TRANSPARENT))
+                            .toBitmap(width = iconSize, height = iconSize)
                             .toDrawable(resources)
                     )
                     .setOnMenuItemClickListener { _ ->
                         listener.onAnyClick()
-                        val id = it.id
-                        val packageName = it.`package`
+                        val id = shortcutInfo.id
+                        val packageName = shortcutInfo.`package`
                         val userHandle = Process.myUserHandle()
                         launcherApps.startShortcut(packageName, id, Rect(), null, userHandle)
                         true
