@@ -174,9 +174,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         binding.allAppsFragment.searchBar.closeSearch()
-        if (intent != null) {
-            handleIntentAction(intent)
-        }
+        handleIntentAction(intent)
     }
 
     override fun onStart() {
