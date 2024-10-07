@@ -157,6 +157,7 @@ class AllAppsFragment(
                     ignoreTouches = false
                     touchDownY = -1
                 }.apply {
+                    binding.allAppsGrid.itemAnimator = null
                     binding.allAppsGrid.adapter = this
                 }
             }
