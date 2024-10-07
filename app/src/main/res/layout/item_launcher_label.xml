@@ -3,7 +3,6 @@
     android:id="@+id/launcher_holder"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:paddingStart="@dimen/small_margin"

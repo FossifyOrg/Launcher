@@ -3,6 +3,7 @@ package org.fossify.launcher.adapters
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -19,6 +20,7 @@ import org.fossify.commons.extensions.realScreenSize
 import org.fossify.launcher.R
 import org.fossify.launcher.activities.SimpleActivity
 import org.fossify.launcher.databinding.ItemLauncherLabelBinding
+import org.fossify.launcher.extensions.animateScale
 import org.fossify.launcher.extensions.config
 import org.fossify.launcher.interfaces.AllAppsListener
 import org.fossify.launcher.models.AppLauncher
@@ -73,6 +75,7 @@ class LaunchersAdapter(
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        @SuppressLint("ClickableViewAccessibility")
         fun bindView(launcher: AppLauncher): View {
             val binding = ItemLauncherLabelBinding.bind(itemView)
             itemView.apply {
@@ -113,6 +116,30 @@ class LaunchersAdapter(
                     )
                     true
                 }
+
+                setOnTouchListener { _, event ->
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            binding.launcherIcon.drawable.alpha = LAUNCHER_ALPHA_PRESSED
+                            animateScale(
+                                from = LAUNCHER_SCALE_NORMAL,
+                                to = LAUNCHER_SCALE_PRESSED,
+                                duration = LAUNCHER_SCALE_UP_DURATION
+                            )
+                        }
+
+                        MotionEvent.ACTION_UP,
+                        MotionEvent.ACTION_CANCEL -> {
+                            binding.launcherIcon.drawable.alpha = LAUNCHER_ALPHA_NORMAL
+                            animateScale(
+                                from = LAUNCHER_SCALE_PRESSED,
+                                to = LAUNCHER_SCALE_NORMAL,
+                                duration = LAUNCHER_SCALE_DOWN_DURATION
+                            )
+                        }
+                    }
+                    false
+                }
             }
 
             return itemView
@@ -120,6 +147,15 @@ class LaunchersAdapter(
     }
 
     override fun onChange(position: Int) = currentList.getOrNull(position)?.getBubbleText() ?: ""
+
+    companion object {
+        private const val LAUNCHER_SCALE_NORMAL = 1f
+        private const val LAUNCHER_SCALE_PRESSED = 1.15f
+        private const val LAUNCHER_SCALE_UP_DURATION = 100L
+        private const val LAUNCHER_SCALE_DOWN_DURATION = 50L
+        private const val LAUNCHER_ALPHA_NORMAL = 255
+        private const val LAUNCHER_ALPHA_PRESSED = 200
+    }
 }
 
 private class AppLauncherDiffCallback : DiffUtil.ItemCallback<AppLauncher>() {
