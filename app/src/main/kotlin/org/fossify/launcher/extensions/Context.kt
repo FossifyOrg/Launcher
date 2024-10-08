@@ -15,11 +15,16 @@ import org.fossify.launcher.interfaces.HomeScreenGridItemsDao
 
 val Context.config: Config get() = Config.newInstance(applicationContext)
 
-val Context.launchersDB: AppLaunchersDao get() = AppsDatabase.getInstance(applicationContext).AppLaunchersDao()
+val Context.launchersDB: AppLaunchersDao
+    get() = AppsDatabase.getInstance(applicationContext).AppLaunchersDao()
 
-val Context.homeScreenGridItemsDB: HomeScreenGridItemsDao get() = AppsDatabase.getInstance(applicationContext).HomeScreenGridItemsDao()
+val Context.homeScreenGridItemsDB: HomeScreenGridItemsDao
+    get() = AppsDatabase.getInstance(
+        applicationContext
+    ).HomeScreenGridItemsDao()
 
-val Context.hiddenIconsDB: HiddenIconsDao get() = AppsDatabase.getInstance(applicationContext).HiddenIconsDao()
+val Context.hiddenIconsDB: HiddenIconsDao
+    get() = AppsDatabase.getInstance(applicationContext).HiddenIconsDao()
 
 fun Context.getDrawableForPackageName(packageName: String): Drawable? {
     var drawable: Drawable? = null
@@ -43,7 +48,11 @@ fun Context.getDrawableForPackageName(packageName: String): Drawable? {
     return drawable
 }
 
-fun Context.getInitialCellSize(info: AppWidgetProviderInfo, fallbackWidth: Int, fallbackHeight: Int): Size {
+fun Context.getInitialCellSize(
+    info: AppWidgetProviderInfo,
+    fallbackWidth: Int,
+    fallbackHeight: Int
+): Size {
     return if (isSPlus() && info.targetCellWidth != 0 && info.targetCellHeight != 0) {
         Size(info.targetCellWidth, info.targetCellHeight)
     } else {

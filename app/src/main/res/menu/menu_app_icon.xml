@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/group_main">
         <item
             android:id="@+id/app_info"
             android:icon="@drawable/ic_info_vector"
-            android:title="@string/app_info"
-            app:showAsAction="always" />
+            android:title="@string/app_info" />
         <item
             android:id="@+id/hide_icon"
             android:icon="@drawable/ic_hide_vector"
-            android:title="@string/hide"
-            app:showAsAction="always" />
+            android:title="@string/hide" />
         <item
             android:id="@+id/resize"
             android:icon="@drawable/ic_resize_vector"
-            android:title="@string/resize"
-            app:showAsAction="always" />
+            android:title="@string/resize" />
         <item
             android:id="@+id/rename"
             android:icon="@drawable/ic_rename_vector"
-            android:title="@string/rename"
-            app:showAsAction="always" />
+            android:title="@string/rename" />
         <item
             android:id="@+id/remove"
             android:icon="@drawable/ic_cross_vector"
-            android:title="@string/remove"
-            app:showAsAction="always" />
+            android:title="@string/remove" />
         <item
             android:id="@+id/uninstall"
             android:icon="@drawable/ic_delete_vector"
-            android:title="@string/uninstall"
-            app:showAsAction="always" />
+            android:title="@string/uninstall" />
     </group>
     <group android:id="@+id/group_shortcuts" />
 </menu>
