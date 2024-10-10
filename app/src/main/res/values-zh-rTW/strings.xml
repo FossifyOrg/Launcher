@@ -11,4 +11,7 @@
     <string name="hidden_icons">隱藏圖示</string>
     <string name="hidden_icons_placeholder">由於系統限制，有些應用程式無法被移除，但您至少可以將它們的圖示隱藏起來，避免看到它們。</string>
     <string name="app_drawer_settings">應用程式抽屜</string>
+    <string name="close_app_drawer_on_app_open">開啟應用程式時關閉應用程式抽屜</string>
+    <string name="home_screen_settings">主畫面</string>
+    <string name="widget_too_big">小工具對於目前主畫面大小來說太大</string>
 </resources>
