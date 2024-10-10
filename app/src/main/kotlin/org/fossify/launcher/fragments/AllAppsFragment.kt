@@ -293,22 +293,19 @@ class AllAppsFragment(
 
     private fun setupRoundedBackground() {
         val backgroundColor = context.getProperBackgroundColor()
-        background = if (isSPlus()) {
+        background = ColorDrawable(backgroundColor)
+        if (isSPlus()) {
             val insets = rootWindowInsets
             val topRightCorner = insets.getRoundedCorner(POSITION_TOP_RIGHT)?.radius ?: 0
             val topLeftCorner = insets.getRoundedCorner(POSITION_TOP_LEFT)?.radius ?: 0
             if (topRightCorner > 0 && topLeftCorner > 0) {
-                ResourcesCompat.getDrawable(
+                background = ResourcesCompat.getDrawable(
                     context.resources, R.drawable.bottom_sheet_bg, context.theme
                 ).apply {
                     (this as LayerDrawable).findDrawableByLayerId(R.id.bottom_sheet_background)
                         .applyColorFilter(backgroundColor)
                 }
-            } else {
-                ColorDrawable(backgroundColor)
             }
-        } else {
-            ColorDrawable(backgroundColor)
         }
     }
 }
