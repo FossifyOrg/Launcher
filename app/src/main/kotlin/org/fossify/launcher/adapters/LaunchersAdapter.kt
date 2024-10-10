@@ -154,7 +154,7 @@ class LaunchersAdapter(
         private const val LAUNCHER_SCALE_UP_DURATION = 100L
         private const val LAUNCHER_SCALE_DOWN_DURATION = 50L
         private const val LAUNCHER_ALPHA_NORMAL = 255
-        private const val LAUNCHER_ALPHA_PRESSED = 200
+        private const val LAUNCHER_ALPHA_PRESSED = 220
     }
 }
 
