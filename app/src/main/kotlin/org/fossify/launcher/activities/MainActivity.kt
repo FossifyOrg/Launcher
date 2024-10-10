@@ -734,7 +734,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             Gravity.TOP or Gravity.END
         ).apply {
             inflate(R.menu.menu_home_screen)
-            menu.findItem(R.id.set_as_default).isVisible = !isDefaultLauncher()
+            menu.findItem(R.id.set_as_default).isVisible = isQPlus() && !isDefaultLauncher()
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.widgets -> showWidgetsFragment()

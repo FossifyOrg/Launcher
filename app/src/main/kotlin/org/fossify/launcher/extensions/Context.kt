@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Process
 import android.util.Size
-import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.launcher.databases.AppsDatabase
 import org.fossify.launcher.helpers.Config
@@ -77,8 +76,9 @@ fun Context.getCellCount(size: Int): Int {
     return max(tiles, 1)
 }
 
+@TargetApi(Build.VERSION_CODES.Q)
 fun Context.isDefaultLauncher(): Boolean {
-    return isQPlus() && with(roleManager) {
+    return with(roleManager) {
         isRoleAvailable(RoleManager.ROLE_HOME) && isRoleHeld(RoleManager.ROLE_HOME)
     }
 }
