@@ -1,17 +1,23 @@
 package org.fossify.launcher.extensions
 
+import android.annotation.TargetApi
+import android.app.role.RoleManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Process
 import android.util.Size
+import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.launcher.databases.AppsDatabase
 import org.fossify.launcher.helpers.Config
 import org.fossify.launcher.interfaces.AppLaunchersDao
 import org.fossify.launcher.interfaces.HiddenIconsDao
 import org.fossify.launcher.interfaces.HomeScreenGridItemsDao
+import kotlin.math.ceil
+import kotlin.math.max
 
 val Context.config: Config get() = Config.newInstance(applicationContext)
 
@@ -25,6 +31,10 @@ val Context.homeScreenGridItemsDB: HomeScreenGridItemsDao
 
 val Context.hiddenIconsDB: HiddenIconsDao
     get() = AppsDatabase.getInstance(applicationContext).HiddenIconsDao()
+
+@get:TargetApi(Build.VERSION_CODES.Q)
+val Context.roleManager: RoleManager
+    get() = getSystemService(RoleManager::class.java)
 
 fun Context.getDrawableForPackageName(packageName: String): Drawable? {
     var drawable: Drawable? = null
@@ -63,6 +73,12 @@ fun Context.getInitialCellSize(
 }
 
 fun Context.getCellCount(size: Int): Int {
-    val tiles = Math.ceil(((size / resources.displayMetrics.density) - 30) / 70.0).toInt()
-    return Math.max(tiles, 1)
+    val tiles = ceil(((size / resources.displayMetrics.density) - 30) / 70.0).toInt()
+    return max(tiles, 1)
+}
+
+fun Context.isDefaultLauncher(): Boolean {
+    return isQPlus() && with(roleManager) {
+        isRoleAvailable(RoleManager.ROLE_HOME) && isRoleHeld(RoleManager.ROLE_HOME)
+    }
 }

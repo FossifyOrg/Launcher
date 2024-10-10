@@ -3,6 +3,7 @@ package org.fossify.launcher.activities
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.role.RoleManager
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
@@ -55,6 +56,7 @@ import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.DARK_GREY
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isPiePlus
+import org.fossify.commons.helpers.isQPlus
 import org.fossify.launcher.BuildConfig
 import org.fossify.launcher.R
 import org.fossify.launcher.databinding.ActivityMainBinding
@@ -67,9 +69,11 @@ import org.fossify.launcher.extensions.getLabel
 import org.fossify.launcher.extensions.handleGridItemPopupMenu
 import org.fossify.launcher.extensions.hiddenIconsDB
 import org.fossify.launcher.extensions.homeScreenGridItemsDB
+import org.fossify.launcher.extensions.isDefaultLauncher
 import org.fossify.launcher.extensions.launchApp
 import org.fossify.launcher.extensions.launchAppInfo
 import org.fossify.launcher.extensions.launchersDB
+import org.fossify.launcher.extensions.roleManager
 import org.fossify.launcher.extensions.uninstallApp
 import org.fossify.launcher.fragments.MyFragment
 import org.fossify.launcher.helpers.ITEM_TYPE_FOLDER
@@ -80,6 +84,7 @@ import org.fossify.launcher.helpers.IconCache
 import org.fossify.launcher.helpers.REQUEST_ALLOW_BINDING_WIDGET
 import org.fossify.launcher.helpers.REQUEST_CONFIGURE_WIDGET
 import org.fossify.launcher.helpers.REQUEST_CREATE_SHORTCUT
+import org.fossify.launcher.helpers.REQUEST_SET_DEFAULT
 import org.fossify.launcher.helpers.UNINSTALL_APP_REQUEST_CODE
 import org.fossify.launcher.interfaces.FlingListener
 import org.fossify.launcher.interfaces.ItemMenuListener
@@ -729,13 +734,13 @@ class MainActivity : SimpleActivity(), FlingListener {
             Gravity.TOP or Gravity.END
         ).apply {
             inflate(R.menu.menu_home_screen)
+            menu.findItem(R.id.set_as_default).isVisible = !isDefaultLauncher()
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.widgets -> showWidgetsFragment()
                     R.id.wallpapers -> launchWallpapersIntent()
-                    R.id.launcher_settings -> startActivity(
-                        Intent(this@MainActivity, SettingsActivity::class.java)
-                    )
+                    R.id.launcher_settings -> launchSettings()
+                    R.id.set_as_default -> launchSetAsDefaultIntent()
                 }
                 true
             }
@@ -785,6 +790,21 @@ class MainActivity : SimpleActivity(), FlingListener {
             toast(org.fossify.commons.R.string.no_app_found)
         } catch (e: Exception) {
             showErrorToast(e)
+        }
+    }
+
+    private fun launchSettings() {
+        startActivity(
+            Intent(this@MainActivity, SettingsActivity::class.java)
+        )
+    }
+
+    private fun launchSetAsDefaultIntent() {
+        if (isQPlus()) {
+            startActivityForResult(
+                roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME),
+                REQUEST_SET_DEFAULT
+            )
         }
     }
 

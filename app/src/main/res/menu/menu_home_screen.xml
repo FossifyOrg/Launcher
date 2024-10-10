@@ -9,4 +9,7 @@
     <item
         android:id="@+id/launcher_settings"
         android:title="@string/launcher_settings" />
+    <item
+        android:id="@+id/set_as_default"
+        android:title="@string/set_as_default" />
 </menu>
