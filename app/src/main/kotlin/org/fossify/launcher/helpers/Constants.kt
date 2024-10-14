@@ -3,6 +3,8 @@ package org.fossify.launcher.helpers
 const val WIDGET_LIST_SECTION = 0
 const val WIDGET_LIST_ITEMS_HOLDER = 1
 
+const val REPOSITORY_NAME = "Launcher"
+
 // shared prefs
 const val WAS_HOME_SCREEN_INIT = "was_home_screen_init"
 const val HOME_ROW_COUNT = "home_row_count"

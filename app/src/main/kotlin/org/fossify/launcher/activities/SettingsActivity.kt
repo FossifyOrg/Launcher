@@ -25,6 +25,7 @@ import org.fossify.launcher.helpers.MAX_COLUMN_COUNT
 import org.fossify.launcher.helpers.MAX_ROW_COUNT
 import org.fossify.launcher.helpers.MIN_COLUMN_COUNT
 import org.fossify.launcher.helpers.MIN_ROW_COUNT
+import org.fossify.launcher.helpers.REPOSITORY_NAME
 import java.util.Locale
 import kotlin.system.exitProcess
 
@@ -248,7 +249,7 @@ class SettingsActivity : SimpleActivity() {
             appNameId = R.string.app_name,
             licenseMask = licenses,
             versionName = BuildConfig.VERSION_NAME,
-            packageName = packageName,
+            repositoryName = REPOSITORY_NAME,
             faqItems = faqItems,
             showFAQBeforeMail = true
         )
