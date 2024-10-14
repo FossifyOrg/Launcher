@@ -128,17 +128,17 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
                 val className = info.provider.className
                 val widget =
                     AppWidget(
-                        appPackageName,
-                        appTitle,
-                        appIcon,
-                        widgetTitle,
-                        widgetPreviewImage,
-                        widthCells,
-                        heightCells,
-                        false,
-                        className,
-                        info,
-                        null
+                        appPackageName = appPackageName,
+                        appTitle = appTitle,
+                        appIcon = appIcon,
+                        widgetTitle = widgetTitle,
+                        widgetPreviewImage = widgetPreviewImage,
+                        widthCells = widthCells,
+                        heightCells = heightCells,
+                        isShortcut = false,
+                        className = className,
+                        providerInfo = info,
+                        activityInfo = null
                     )
                 appWidgets.add(widget)
             }
@@ -160,17 +160,17 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
                     componentInfo
                 )
                 val widget = AppWidget(
-                    appPackageName,
-                    appTitle,
-                    appIcon,
-                    widgetTitle,
-                    widgetPreviewImage,
-                    0,
-                    0,
-                    true,
-                    "",
-                    null,
-                    info.activityInfo
+                    appPackageName = appPackageName,
+                    appTitle = appTitle,
+                    appIcon = appIcon,
+                    widgetTitle = widgetTitle,
+                    widgetPreviewImage = widgetPreviewImage,
+                    widthCells = 0,
+                    heightCells = 0,
+                    isShortcut = true,
+                    className = "",
+                    providerInfo = null,
+                    activityInfo = info.activityInfo
                 )
                 appWidgets.add(widget)
             }
@@ -299,27 +299,27 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
         }
 
         val gridItem = HomeScreenGridItem(
-            null,
-            -1,
-            -1,
-            -1,
-            -1,
-            0,
-            appWidget.appPackageName,
-            "",
-            "",
-            type,
-            appWidget.className,
-            -1,
-            "",
-            null,
-            false,
-            null,
-            appWidget.widgetPreviewImage,
-            appWidget.providerInfo,
-            appWidget.activityInfo,
-            appWidget.widthCells,
-            appWidget.heightCells
+            id = null,
+            left = -1,
+            top = -1,
+            right = -1,
+            bottom = -1,
+            page = 0,
+            packageName = appWidget.appPackageName,
+            activityName = "",
+            title = "",
+            type = type,
+            className = appWidget.className,
+            widgetId = -1,
+            shortcutId = "",
+            icon = null,
+            docked = false,
+            parentId = null,
+            drawable = appWidget.widgetPreviewImage,
+            providerInfo = appWidget.providerInfo,
+            activityInfo = appWidget.activityInfo,
+            widthCells = appWidget.widthCells,
+            heightCells = appWidget.heightCells
         )
 
         activity?.widgetLongPressedOnList(gridItem)
