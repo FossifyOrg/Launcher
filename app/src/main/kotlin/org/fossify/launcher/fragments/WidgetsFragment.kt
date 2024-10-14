@@ -6,13 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
-import android.graphics.drawable.ColorDrawable
 import android.os.Process
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.WindowManager
-import org.fossify.commons.extensions.*
+import org.fossify.commons.extensions.getProperPrimaryColor
+import org.fossify.commons.extensions.getProperTextColor
+import org.fossify.commons.extensions.navigationBarHeight
+import org.fossify.commons.extensions.navigationBarOnBottom
+import org.fossify.commons.extensions.navigationBarOnSide
+import org.fossify.commons.extensions.navigationBarWidth
+import org.fossify.commons.extensions.showErrorToast
+import org.fossify.commons.extensions.toast
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isRPlus
 import org.fossify.launcher.R
@@ -21,16 +27,21 @@ import org.fossify.launcher.adapters.WidgetsAdapter
 import org.fossify.launcher.databinding.WidgetsFragmentBinding
 import org.fossify.launcher.extensions.config
 import org.fossify.launcher.extensions.getInitialCellSize
+import org.fossify.launcher.extensions.setupDrawerBackground
 import org.fossify.launcher.helpers.ITEM_TYPE_SHORTCUT
 import org.fossify.launcher.helpers.ITEM_TYPE_WIDGET
 import org.fossify.launcher.interfaces.WidgetsFragmentListener
-import org.fossify.launcher.models.*
+import org.fossify.launcher.models.AppWidget
+import org.fossify.launcher.models.HomeScreenGridItem
+import org.fossify.launcher.models.WidgetsListItem
+import org.fossify.launcher.models.WidgetsListItemsHolder
+import org.fossify.launcher.models.WidgetsListSection
 
-class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment<WidgetsFragmentBinding>(context, attributeSet), WidgetsFragmentListener {
+class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
+    MyFragment<WidgetsFragmentBinding>(context, attributeSet), WidgetsFragmentListener {
     private var lastTouchCoords = Pair(0f, 0f)
     var touchDownY = -1
     var ignoreTouches = false
-    var hasTopPadding = false
 
     @SuppressLint("ClickableViewAccessibility")
     override fun setupFragment(activity: MainActivity) {
@@ -47,11 +58,12 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         }
     }
 
-    fun onConfigurationChanged() {
-        if (binding.widgetsList == null) {
-            return
-        }
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setupDrawerBackground()
+    }
 
+    fun onConfigurationChanged() {
         binding.widgetsList.scrollToPosition(0)
         setupViews()
 
@@ -81,7 +93,8 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
 
         // pull the whole fragment down if it is scrolled way to the top and the users pulls it even further
         if (touchDownY != -1) {
-            shouldIntercept = touchDownY - event.y.toInt() < 0 && binding.widgetsList.computeVerticalScrollOffset() == 0
+            shouldIntercept =
+                touchDownY - event.y.toInt() < 0 && binding.widgetsList.computeVerticalScrollOffset() == 0
             if (shouldIntercept) {
                 activity?.startHandlingTouches(touchDownY)
                 touchDownY = -1
@@ -107,19 +120,33 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
                 val appTitle = appMetadata.appTitle
                 val appIcon = appMetadata.appIcon
                 val widgetTitle = info.loadLabel(packageManager)
-                val widgetPreviewImage = info.loadPreviewImage(context, resources.displayMetrics.densityDpi) ?: appIcon
+                val widgetPreviewImage =
+                    info.loadPreviewImage(context, resources.displayMetrics.densityDpi) ?: appIcon
                 val cellSize = context.getInitialCellSize(info, info.minWidth, info.minHeight)
                 val widthCells = cellSize.width
                 val heightCells = cellSize.height
                 val className = info.provider.className
                 val widget =
-                    AppWidget(appPackageName, appTitle, appIcon, widgetTitle, widgetPreviewImage, widthCells, heightCells, false, className, info, null)
+                    AppWidget(
+                        appPackageName,
+                        appTitle,
+                        appIcon,
+                        widgetTitle,
+                        widgetPreviewImage,
+                        widthCells,
+                        heightCells,
+                        false,
+                        className,
+                        info,
+                        null
+                    )
                 appWidgets.add(widget)
             }
 
             // show also the widgets that are technically shortcuts
             val intent = Intent(Intent.ACTION_CREATE_SHORTCUT, null)
-            val list = packageManager.queryIntentActivities(intent, PackageManager.PERMISSION_GRANTED)
+            val list =
+                packageManager.queryIntentActivities(intent, PackageManager.PERMISSION_GRANTED)
             for (info in list) {
                 val componentInfo = info.activityInfo.applicationInfo
                 val appTitle = componentInfo.loadLabel(packageManager).toString()
@@ -127,12 +154,32 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
                 val appMetadata = getAppMetadataFromPackage(appPackageName) ?: continue
                 val appIcon = appMetadata.appIcon
                 val widgetTitle = info.loadLabel(packageManager).toString()
-                val widgetPreviewImage = packageManager.getDrawable(componentInfo.packageName, info.iconResource, componentInfo)
-                val widget = AppWidget(appPackageName, appTitle, appIcon, widgetTitle, widgetPreviewImage, 0, 0, true, "", null, info.activityInfo)
+                val widgetPreviewImage = packageManager.getDrawable(
+                    componentInfo.packageName,
+                    info.iconResource,
+                    componentInfo
+                )
+                val widget = AppWidget(
+                    appPackageName,
+                    appTitle,
+                    appIcon,
+                    widgetTitle,
+                    widgetPreviewImage,
+                    0,
+                    0,
+                    true,
+                    "",
+                    null,
+                    info.activityInfo
+                )
                 appWidgets.add(widget)
             }
 
-            appWidgets = appWidgets.sortedWith(compareBy({ it.appTitle }, { it.appPackageName }, { it.widgetTitle })).toMutableList() as ArrayList<AppWidget>
+            appWidgets = appWidgets.sortedWith(
+                compareBy({ it.appTitle },
+                    { it.appPackageName },
+                    { it.widgetTitle })
+            ).toMutableList() as ArrayList<AppWidget>
             splitWidgetsByApps(appWidgets)
         }
     }
@@ -179,7 +226,7 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
         }
     }
 
-    fun setupViews(addTopPadding: Boolean = hasTopPadding) {
+    fun setupViews() {
         if (activity == null) {
             return
         }
@@ -212,12 +259,8 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) : MyFragment
 
         binding.widgetsList.setPadding(0, 0, 0, bottomListPadding)
         binding.widgetsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
-
-        hasTopPadding = addTopPadding
-        val topPadding = if (addTopPadding) activity!!.statusBarHeight else 0
-        setPadding(0, topPadding, 0, 0)
-        background = ColorDrawable(context.getProperBackgroundColor())
         (binding.widgetsList.adapter as? WidgetsAdapter)?.updateTextColor(context.getProperTextColor())
+        setupDrawerBackground()
     }
 
     private fun getAppMetadataFromPackage(packageName: String): WidgetsListSection? {

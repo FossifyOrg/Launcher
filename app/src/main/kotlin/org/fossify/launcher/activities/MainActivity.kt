@@ -37,6 +37,8 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type
 import androidx.core.view.isVisible
 import androidx.core.view.iterator
 import androidx.viewbinding.ViewBinding
@@ -55,7 +57,6 @@ import org.fossify.commons.extensions.toast
 import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.DARK_GREY
 import org.fossify.commons.helpers.ensureBackgroundThread
-import org.fossify.commons.helpers.isPiePlus
 import org.fossify.commons.helpers.isQPlus
 import org.fossify.launcher.BuildConfig
 import org.fossify.launcher.R
@@ -192,12 +193,19 @@ class MainActivity : SimpleActivity(), FlingListener {
         wasJustPaused = false
         updateStatusbarColor(Color.TRANSPARENT)
 
-        binding.mainHolder.onGlobalLayout {
-            if (isPiePlus()) {
-                val addTopPadding = binding.mainHolder.rootWindowInsets?.displayCutout != null
-                binding.allAppsFragment.root.setupViews(addTopPadding)
-                binding.widgetsFragment.root.setupViews(addTopPadding)
+        with(binding.mainHolder) {
+            onGlobalLayout {
+                binding.allAppsFragment.root.setupViews()
+                binding.widgetsFragment.root.setupViews()
                 updateStatusbarColor(Color.TRANSPARENT)
+            }
+
+            setOnApplyWindowInsetsListener { _, insets ->
+                val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(insets)
+                val systemBarInsets = windowInsets.getInsets(Type.systemBars() or Type.ime())
+                binding.allAppsFragment.root.setPadding(0, systemBarInsets.top, 0, 0)
+                binding.widgetsFragment.root.setPadding(0, systemBarInsets.top, 0, 0)
+                insets
             }
         }
 

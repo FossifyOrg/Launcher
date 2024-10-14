@@ -2,22 +2,15 @@ package org.fossify.launcher.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.RoundedCorner.POSITION_TOP_LEFT
-import android.view.RoundedCorner.POSITION_TOP_RIGHT
 import android.view.Surface
 import android.view.WindowManager
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.fossify.commons.R
-import org.fossify.commons.extensions.applyColorFilter
 import org.fossify.commons.extensions.beGone
 import org.fossify.commons.extensions.beVisibleIf
-import org.fossify.commons.extensions.getProperBackgroundColor
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.commons.extensions.hideKeyboard
@@ -26,15 +19,14 @@ import org.fossify.commons.extensions.navigationBarOnBottom
 import org.fossify.commons.extensions.navigationBarOnSide
 import org.fossify.commons.extensions.navigationBarWidth
 import org.fossify.commons.extensions.normalizeString
-import org.fossify.commons.extensions.statusBarHeight
 import org.fossify.commons.helpers.isRPlus
-import org.fossify.commons.helpers.isSPlus
 import org.fossify.commons.views.MyGridLayoutManager
 import org.fossify.launcher.activities.MainActivity
 import org.fossify.launcher.adapters.LaunchersAdapter
 import org.fossify.launcher.databinding.AllAppsFragmentBinding
 import org.fossify.launcher.extensions.config
 import org.fossify.launcher.extensions.launchApp
+import org.fossify.launcher.extensions.setupDrawerBackground
 import org.fossify.launcher.helpers.ITEM_TYPE_ICON
 import org.fossify.launcher.interfaces.AllAppsListener
 import org.fossify.launcher.models.AppLauncher
@@ -48,7 +40,6 @@ class AllAppsFragment(
     private var lastTouchCoords = Pair(0f, 0f)
     var touchDownY = -1
     var ignoreTouches = false
-    var hasTopPadding = false
 
     private var launchers = emptyList<AppLauncher>()
 
@@ -64,6 +55,11 @@ class AllAppsFragment(
 
             return@setOnTouchListener false
         }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setupDrawerBackground()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -184,7 +180,7 @@ class AllAppsFragment(
         }
     }
 
-    fun setupViews(addTopPadding: Boolean = hasTopPadding) {
+    fun setupViews() {
         if (activity == null) {
             return
         }
@@ -195,6 +191,7 @@ class AllAppsFragment(
         var leftListPadding = 0
         var rightListPadding = 0
 
+        // TODO: Use WindowInsets API
         if (activity!!.navigationBarOnBottom) {
             bottomListPadding = activity!!.navigationBarHeight
             leftListPadding = 0
@@ -218,7 +215,7 @@ class AllAppsFragment(
         binding.allAppsGrid.setPadding(
             0,
             0,
-            resources.getDimension(org.fossify.commons.R.dimen.medium_margin).toInt(),
+            resources.getDimension(R.dimen.medium_margin).toInt(),
             bottomListPadding
         )
         binding.allAppsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
@@ -230,10 +227,7 @@ class AllAppsFragment(
             }
         })
 
-        hasTopPadding = addTopPadding
-        val topPadding = if (addTopPadding) activity!!.statusBarHeight else 0
-        setPadding(0, topPadding, 0, 0)
-        setupRoundedBackground()
+        setupDrawerBackground()
         getAdapter()?.updateTextColor(context.getProperTextColor())
 
         binding.searchBar.beVisibleIf(context.config.showSearchBar)
@@ -289,23 +283,5 @@ class AllAppsFragment(
         }
 
         return false
-    }
-
-    private fun setupRoundedBackground() {
-        val backgroundColor = context.getProperBackgroundColor()
-        background = ColorDrawable(backgroundColor)
-        if (isSPlus()) {
-            val insets = rootWindowInsets
-            val topRightCorner = insets.getRoundedCorner(POSITION_TOP_RIGHT)?.radius ?: 0
-            val topLeftCorner = insets.getRoundedCorner(POSITION_TOP_LEFT)?.radius ?: 0
-            if (topRightCorner > 0 && topLeftCorner > 0) {
-                background = ResourcesCompat.getDrawable(
-                    context.resources, R.drawable.bottom_sheet_bg, context.theme
-                ).apply {
-                    (this as LayerDrawable).findDrawableByLayerId(R.id.bottom_sheet_background)
-                        .applyColorFilter(backgroundColor)
-                }
-            }
-        }
     }
 }
