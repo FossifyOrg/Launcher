@@ -36,8 +36,6 @@ import androidx.customview.widget.ExploreByTouchHelper
 import com.google.android.material.math.MathUtils
 import kotlinx.collections.immutable.toImmutableList
 import org.fossify.commons.extensions.*
-import org.fossify.commons.helpers.HIGHER_ALPHA
-import org.fossify.commons.helpers.MEDIUM_ALPHA
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.launcher.R
@@ -76,7 +74,6 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
     private var currentPageIndicatorPaint: Paint
     private var folderBackgroundPaint: Paint
     private var folderIconBackgroundPaint: Paint
-    private var folderIconBorderPaint: Paint
     private var draggedItem: HomeScreenGridItem? = null
     private var resizedWidget: HomeScreenGridItem? = null
     private var isFirstDraw = true
@@ -156,14 +153,8 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
         }
 
         folderIconBackgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = context.getProperBackgroundColor().adjustAlpha(MEDIUM_ALPHA)
+            color = context.getProperBackgroundColor().adjustAlpha(0.9f)
             style = Paint.Style.FILL
-        }
-
-        folderIconBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = context.getProperBackgroundColor().adjustAlpha(HIGHER_ALPHA)
-            strokeWidth = context.resources.getDimension(R.dimen.page_indicator_stroke_width) * 5
-            style = Paint.Style.STROKE
         }
 
         val sideMargin = context.resources.getDimension(org.fossify.commons.R.dimen.normal_margin).toInt()
@@ -1643,7 +1634,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             val folderColumnCount = ceil(sqrt(itemsCount.toDouble())).roundToInt()
             val folderRowCount = ceil(itemsCount.toFloat() / folderColumnCount).roundToInt()
             val scaledCellSize = (iconSize.toFloat() / folderColumnCount)
-            val scaledGap = scaledCellSize / 5f
+            val scaledGap = scaledCellSize / 4f
             val scaledIconSize = (iconSize - (folderColumnCount + 1) * scaledGap) / folderColumnCount
             val extraYMargin = if (folderRowCount < folderColumnCount) (scaledIconSize + scaledGap) / 2 else 0f
             items.forEach {
@@ -1654,7 +1645,6 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 newDrawable?.setBounds(drawableX, drawableY, drawableX + scaledIconSize.toInt(), drawableY + scaledIconSize.toInt())
                 newDrawable?.draw(canvas)
             }
-            canvas.drawPath(circlePath, folderIconBorderPaint)
             return BitmapDrawable(resources, bitmap)
         }
 
