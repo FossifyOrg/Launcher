@@ -996,7 +996,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             )
         }
 
-        // add Simple Launchers settings as an app
+        // add Launcher settings as an app
         val drawable = getDrawableForPackageName(packageName)
         val placeholderColor = calculateAverageColor(drawable!!.toBitmap())
         val launcherSettings =
