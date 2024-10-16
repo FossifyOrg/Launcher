@@ -446,19 +446,19 @@
         <ID>WildcardImport:HomeScreenGrid.kt$import android.graphics.*</ID>
         <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.commons.extensions.*</ID>
         <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.commons.helpers.*</ID>
-        <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.launcher.helpers.*</ID>
+        <ID>WildcardImport:HomeScreenGrid.kt$import org.fossify.home.helpers.*</ID>
         <ID>WildcardImport:HomeScreenGrid.kt$import kotlin.math.*</ID>
         <ID>WildcardImport:HomeScreenGridItem.kt$import androidx.room.*</ID>
         <ID>WildcardImport:HomeScreenGridItemsDao.kt$import androidx.room.*</ID>
         <ID>WildcardImport:MainActivity.kt$import android.view.*</ID>
         <ID>WildcardImport:MainActivity.kt$import org.fossify.commons.extensions.*</ID>
         <ID>WildcardImport:MainActivity.kt$import org.fossify.commons.helpers.*</ID>
-        <ID>WildcardImport:MainActivity.kt$import org.fossify.launcher.extensions.*</ID>
-        <ID>WildcardImport:MainActivity.kt$import org.fossify.launcher.helpers.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import org.fossify.home.extensions.*</ID>
+        <ID>WildcardImport:MainActivity.kt$import org.fossify.home.helpers.*</ID>
         <ID>WildcardImport:MyAppWidgetResizeFrame.kt$import android.graphics.*</ID>
         <ID>WildcardImport:RenameItemDialog.kt$import org.fossify.commons.extensions.*</ID>
         <ID>WildcardImport:SettingsActivity.kt$import org.fossify.commons.extensions.*</ID>
         <ID>WildcardImport:WidgetsFragment.kt$import org.fossify.commons.extensions.*</ID>
-        <ID>WildcardImport:WidgetsFragment.kt$import org.fossify.launcher.models.*</ID>
+        <ID>WildcardImport:WidgetsFragment.kt$import org.fossify.home.models.*</ID>
     </CurrentIssues>
 </SmellBaseline>

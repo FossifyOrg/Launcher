@@ -31,7 +31,7 @@
 
     <issue id="CustomSplashScreen" message="The application should not provide its own launch screen" errorLine1="class SplashActivity : BaseSplashActivity() {"
         errorLine2="      ~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/activities/SplashActivity.kt" line="6" column="7" />
+        <location file="src/main/kotlin/org.fossify.home/activities/SplashActivity.kt" line="6" column="7" />
     </issue>
 
     <issue id="LockedOrientationActivity"
@@ -143,37 +143,37 @@
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="        notifyDataSetChanged()" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/adapters/FolderIconsAdapter.kt" line="107" column="9" />
+        <location file="src/main/kotlin/org.fossify.home/adapters/FolderIconsAdapter.kt" line="107" column="9" />
     </issue>
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/adapters/LaunchersAdapter.kt" line="83" column="13" />
+        <location file="src/main/kotlin/org.fossify.home/adapters/LaunchersAdapter.kt" line="83" column="13" />
     </issue>
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/adapters/LaunchersAdapter.kt" line="92" column="13" />
+        <location file="src/main/kotlin/org.fossify.home/adapters/LaunchersAdapter.kt" line="92" column="13" />
     </issue>
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/adapters/LaunchersAdapter.kt" line="99" column="13" />
+        <location file="src/main/kotlin/org.fossify.home/adapters/LaunchersAdapter.kt" line="99" column="13" />
     </issue>
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/adapters/WidgetsAdapter.kt" line="120" column="13" />
+        <location file="src/main/kotlin/org.fossify.home/adapters/WidgetsAdapter.kt" line="120" column="13" />
     </issue>
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="            notifyDataSetChanged()" errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/adapters/WidgetsAdapter.kt" line="127" column="13" />
+        <location file="src/main/kotlin/org.fossify.home/adapters/WidgetsAdapter.kt" line="127" column="13" />
     </issue>
 
     <issue id="ObsoleteSdkInt"
@@ -249,12 +249,12 @@
 
     <issue id="ClickableViewAccessibility" message="Custom view `MyAppWidgetHostView` overrides `onTouchEvent` but not `performClick`"
         errorLine1="    override fun onTouchEvent(event: MotionEvent?): Boolean {" errorLine2="                 ~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/views/MyAppWidgetHostView.kt" line="23" column="18" />
+        <location file="src/main/kotlin/org.fossify.home/views/MyAppWidgetHostView.kt" line="23" column="18" />
     </issue>
 
     <issue id="ClickableViewAccessibility" message="Custom view `MyAppWidgetResizeFrame` overrides `onTouchEvent` but not `performClick`"
         errorLine1="    override fun onTouchEvent(event: MotionEvent?): Boolean {" errorLine2="                 ~~~~~~~~~~~~">
-        <location file="src/main/kotlin/org/fossify/launcher/views/MyAppWidgetResizeFrame.kt" line="105" column="18" />
+        <location file="src/main/kotlin/org.fossify.home/views/MyAppWidgetResizeFrame.kt" line="105" column="18" />
     </issue>
 
     <issue id="ContentDescription" message="Missing `contentDescription` attribute on image" errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">

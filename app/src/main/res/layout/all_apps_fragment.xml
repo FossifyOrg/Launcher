@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.fossify.launcher.fragments.AllAppsFragment xmlns:android="http://schemas.android.com/apk/res/android"
+<org.fossify.home.fragments.AllAppsFragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/all_apps_holder"
     android:layout_width="match_parent"
@@ -45,4 +45,4 @@
         android:textStyle="italic"
         android:visibility="gone" />
 
-</org.fossify.launcher.fragments.AllAppsFragment>
+</org.fossify.home.fragments.AllAppsFragment>
