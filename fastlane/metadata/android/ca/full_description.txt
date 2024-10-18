@@ -1,0 +1,18 @@
+El Fossify Launcher és la porta d'entrada a una experiència de pantalla d'inici ràpida, personalitzada i amb prioritat de la privadesa. Sense anuncis, sense programari inflat: només un llançador suau i eficient dissenyat per adaptar-se al vostre estil i preferències úniques.<br><br>
+<b>🚀 NAVEGACIÓ RÀPIDA:</b><br>
+Navegueu pel dispositiu amb rapidesa i precisió. El Fossify Launcher està optimitzat per ser responsiu i fluid, donant-vos accés instantani a les aplicacions preferides sense retard.<br><br>
+<b>🎨 PERSONALITZACIÓ COMPLETA:</b><br>
+Adapteu la pantalla d'inici amb temes dinàmics, colors personalitzats i disposicions. Personalitzeu el llançador perquè coincideixi amb el vostre estil amb eines fàcils d'utilitzar que us permeten crear una configuració única.<br><br>
+<b>🖼️ SUPORT COMPLET DE GINYS:</b><br>
+Integreu ginys totalment redimensionables amb facilitat. Tant si necessiteu rellotges, calendaris o altres eines útils, el Fossify Launcher garanteix que es fusionen perfectament amb el disseny de la pantalla d'inici.<br><br>
+<b>📱 SENSE DESORDRE NO DESITJAT-:</b><br>
+Gestioneu les aplicacions amagant-les o desinstal·lant-les amb pocs tocs, mantenint la pantalla d'inici organitzada i lliure de desordre.<br><br>
+<b>🔒 PRIVADESA I SEGURETAT:</b><br>
+La teva privacitat és al cor del Fossify Launcher. Sense accés a Internet i sense permisos intrusius, les vostres dades es queden amb vós. Sense seguiment, sense anuncis: només un llançador construït per a respectar la vostra privadesa.<br><br>
+<b>🌐 GARANTIA DEL CODI OBERT:</b><br>
+El Fossify Launcher està construït sobre una base de codi obert, que us permet revisar el nostre codi a GitHub, fomentant la confiança i una comunitat compromesa amb la privadesa.<br><br>
+Trobeu l'equilibri de velocitat, personalització i privacitat amb el Fossify Launcher.<br><br>
+Exploreu més aplicacions de Fossify: https://www.fossify.org<br>
+Codi obert: https://www.github.com/FossifyOrg<br>
+Uniu-vos a la comunitat a Reddit: https://www.reddit.com/r/Fossify<br>
+Connecteu a Telegram: https://t.me/Fossify<br>
