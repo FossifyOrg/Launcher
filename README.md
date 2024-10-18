@@ -2,6 +2,8 @@
 
 <img alt="Logo" src="graphics/icon.webp" width="120" />
 
+<a href="https://apt.izzysoft.de/fdroid/index/apk/org.fossify.home"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height=80/></a>
+
 Fossify Launcher is your gateway to a fast, personalized, and privacy-first home screen experience.
 No ads, no bloat – just a smooth, efficient launcher designed to fit your unique style and
 preferences.
