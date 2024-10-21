@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_launcher_name">Lanzador</string>
-    <string name="launcher_settings">Configuración do lanzador</string>
+    <string name="launcher_settings">Axustes do lanzador</string>
     <string name="app_info">Información da aplicación</string>
     <string name="touch_hold_widget">Manteña premido o widget e arrástrao a túa pantalla de inicio</string>
     <string name="uninstall">Desinstalar</string>
@@ -10,4 +10,8 @@
     <string name="manage_hidden_icons">Xestionar iconas ocultas</string>
     <string name="hidden_icons">Iconas ocultas</string>
     <string name="hidden_icons_placeholder">Algunhas aplicacións non se poden desinstalar debido ás restricións do sistema, pero polo menos podes ocultar as súas iconas para evitar velas.</string>
+    <string name="app_drawer_settings">Panel de apps</string>
+    <string name="close_app_drawer_on_app_open">Pechar o panel ao abrir unha app</string>
+    <string name="widget_too_big">O widget é demasiado grande para o tamaño da pantalla de inicio</string>
+    <string name="home_screen_settings">Pantalla de inicio</string>
 </resources>

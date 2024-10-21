@@ -3,7 +3,7 @@
     <string name="app_launcher_name">启动器</string>
     <string name="launcher_settings">启动器设置</string>
     <string name="app_info">应用信息</string>
-    <string name="touch_hold_widget">长按小部件并将其拖动到主屏幕</string>
+    <string name="touch_hold_widget">长按微件并将其拖动到主屏幕</string>
     <string name="uninstall">卸载</string>
     <string name="hide_icon">隐藏图标</string>
     <string name="add_hidden_icons">添加隐藏的图标</string>
@@ -13,5 +13,5 @@
     <string name="app_drawer_settings">应用抽屉</string>
     <string name="close_app_drawer_on_app_open">打开抽屉内应用时关闭抽屉</string>
     <string name="home_screen_settings">主屏幕</string>
-    <string name="widget_too_big">小部件对当前屏幕尺寸而言太大了</string>
+    <string name="widget_too_big">微件对当前屏幕尺寸而言太大了</string>
 </resources>
