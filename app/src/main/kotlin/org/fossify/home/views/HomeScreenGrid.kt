@@ -153,7 +153,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
         }
 
         folderIconBackgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = context.getProperBackgroundColor().adjustAlpha(0.9f)
+            color = context.getProperBackgroundColor().adjustAlpha(1f - context.config.folderTransparency.toFloat() / 100f)
             style = Paint.Style.FILL
         }
 
@@ -220,7 +220,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
         folderTitleTextPaint.color = context.getProperTextColor()
         contrastTextPaint.color = context.getProperTextColor()
         contrastTextPaint.setShadowLayer(2f, 0f, 0f, context.getProperTextColor().getContrastColor())
-        folderBackgroundPaint.color = context.getProperBackgroundColor()
+        folderBackgroundPaint.color = context.getProperBackgroundColor().adjustAlpha(1f - context.config.folderTransparency.toFloat() / 100f)
     }
 
     fun removeAppIcon(item: HomeScreenGridItem) {
@@ -1093,7 +1093,11 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             folderRect.offset(rectOffset, 0f)
 
             canvas.withScale(folder.scale, folder.scale, folderRect.centerX(), folderRect.centerY()) {
+                val oldAlpha = folderBackgroundPaint.alpha
+                // restore semi-opaque background to better discern icons in the open folder
+                folderBackgroundPaint.alpha = 230
                 canvas.drawRoundRect(folderRect, roundedCornerRadius / folder.scale, roundedCornerRadius / folder.scale, folderBackgroundPaint)
+                folderBackgroundPaint.alpha = oldAlpha
                 val textX = folderRect.left + folderPadding
                 val textY = folderRect.top + folderPadding
                 val staticLayout = StaticLayout.Builder
