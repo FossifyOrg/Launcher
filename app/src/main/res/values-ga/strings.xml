@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">Lainseálaí</string>
+    <string name="launcher_settings">Socruithe Lainseálaí</string>
+    <string name="app_info">Eolas aip</string>
+    <string name="touch_hold_widget">Brúigh fada an ghiuirléid agus tarraing ar do scáileán baile é</string>
+    <string name="uninstall">Díshuiteáil</string>
+    <string name="hidden_icons">Deilbhíní i bhfolach</string>
+    <string name="manage_hidden_icons">Bainistigh deilbhíní i bhfolach</string>
+    <string name="add_hidden_icons">Cuir deilbhíní i bhfolach</string>
+    <string name="hidden_icons_placeholder">Ní féidir roinnt aipeanna a dhíshuiteáil mar gheall ar shrianta córais, ach is féidir leat a gcuid deilbhíní a cheilt ar a laghad ionas nach bhfeicfidh tú iad.</string>
+    <string name="app_drawer_settings">Tarraiceán aip</string>
+    <string name="close_app_drawer_on_app_open">Dún tarraiceán aip nuair a osclaítear aip</string>
+    <string name="home_screen_settings">Scáileán baile</string>
+    <string name="widget_too_big">Tá an ghiuirléid ró-mhór do mhéid an scáileáin baile reatha</string>
+    <string name="hide_icon">Folaigh deilbhín</string>
+</resources>
