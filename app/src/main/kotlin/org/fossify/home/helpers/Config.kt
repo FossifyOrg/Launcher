@@ -32,4 +32,8 @@ class Config(context: Context) : BaseConfig(context) {
     var closeAppDrawer: Boolean
         get() = prefs.getBoolean(CLOSE_APP_DRAWER, false)
         set(closeAppDrawer) = prefs.edit().putBoolean(CLOSE_APP_DRAWER, closeAppDrawer).apply()
+
+    var folderTransparency: Int
+        get() = prefs.getInt(FOLDER_TRANSPARENCY, 10)
+        set(transparency) = prefs.edit().putInt(FOLDER_TRANSPARENCY, transparency).apply()
 }

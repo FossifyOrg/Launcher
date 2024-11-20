@@ -62,6 +62,7 @@ class SettingsActivity : SimpleActivity() {
         setupHomeColumnCount()
         setupLanguage()
         setupManageHiddenIcons()
+        setupManageFolderTransparency()
         updateTextColors(binding.settingsHolder)
 
         arrayOf(
@@ -223,6 +224,30 @@ class SettingsActivity : SimpleActivity() {
     private fun setupManageHiddenIcons() {
         binding.settingsManageHiddenIconsHolder.setOnClickListener {
             startActivity(Intent(this, HiddenIconsActivity::class.java))
+        }
+    }
+
+    private fun setupManageFolderTransparency() {
+        binding.settingsManageFolderTransparencyValue.text = config.folderTransparency.toString() + "%"
+        val currentSelection = config.folderTransparency / 10
+        binding.settingsManageFolderTransparency.setOnClickListener {
+            val items = ArrayList<RadioItem>()
+            for (i in 0 .. 10) {
+                items.add(
+                    RadioItem(
+                        id = i,
+                        title = (i * 10).toString() + "%"
+                    )
+                )
+            }
+
+            RadioGroupDialog(this, items, currentSelection) {
+                val newSelection = it as Int
+                if (currentSelection != newSelection) {
+                    config.folderTransparency = newSelection * 10
+                    setupManageFolderTransparency()
+                }
+            }
         }
     }
 
