@@ -1,6 +1,9 @@
 package org.fossify.home.activities
 
 import android.annotation.SuppressLint
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import org.fossify.commons.dialogs.RadioGroupDialog
@@ -26,6 +29,7 @@ import org.fossify.home.helpers.MAX_ROW_COUNT
 import org.fossify.home.helpers.MIN_COLUMN_COUNT
 import org.fossify.home.helpers.MIN_ROW_COUNT
 import org.fossify.home.helpers.REPOSITORY_NAME
+import org.fossify.home.receivers.LockDeviceAdminReceiver
 import java.util.Locale
 import kotlin.system.exitProcess
 
@@ -55,6 +59,7 @@ class SettingsActivity : SimpleActivity() {
         setupPurchaseThankYou()
         setupCustomizeColors()
         setupUseEnglish()
+        setupDoubleTapToLock()
         setupCloseAppDrawerOnOtherAppOpen()
         setupDrawerColumnCount()
         setupDrawerSearchBar()
@@ -113,6 +118,33 @@ class SettingsActivity : SimpleActivity() {
             binding.settingsUseEnglish.toggle()
             config.useEnglish = binding.settingsUseEnglish.isChecked
             exitProcess(0)
+        }
+    }
+
+    private fun setupDoubleTapToLock() {
+        val devicePolicyManager =
+            getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val isLockDeviceAdminActive = devicePolicyManager.isAdminActive(
+            ComponentName(this, LockDeviceAdminReceiver::class.java)
+        )
+        binding.settingsDoubleTapToLock.isChecked = isLockDeviceAdminActive
+        binding.settingsDoubleTapToLock.setOnClickListener {
+            if (isLockDeviceAdminActive) {
+                devicePolicyManager.removeActiveAdmin(
+                    ComponentName(this, LockDeviceAdminReceiver::class.java)
+                )
+            } else {
+                val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                intent.putExtra(
+                    DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+                    ComponentName(this, LockDeviceAdminReceiver::class.java)
+                )
+                intent.putExtra(
+                    DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                    getString(R.string.lock_device_admin_hint)
+                )
+                startActivity(intent)
+            }
         }
     }
 
