@@ -3,6 +3,7 @@ package org.fossify.home.activities
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.admin.DevicePolicyManager
 import android.app.role.RoleManager
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
@@ -92,6 +93,7 @@ import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HiddenIcon
 import org.fossify.home.models.HomeScreenGridItem
+import org.fossify.home.receivers.LockDeviceAdminReceiver
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -631,6 +633,23 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
     }
 
+    fun homeScreenDoubleTapped(eventX: Float, eventY: Float) {
+        val (x, y) = binding.homeScreenGrid.root.intoViewSpaceCoords(eventX, eventY)
+        val clickedGridItem = binding.homeScreenGrid.root.isClickingGridItem(x.toInt(), y.toInt())
+        if (clickedGridItem != null) {
+            return
+        }
+
+        val devicePolicyManager =
+            getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val isLockDeviceAdminActive = devicePolicyManager.isAdminActive(
+            ComponentName(this, LockDeviceAdminReceiver::class.java)
+        )
+        if (isLockDeviceAdminActive) {
+            devicePolicyManager.lockNow()
+        }
+    }
+
     fun closeAppDrawer(delayed: Boolean = false) {
         if (isAllAppsFragmentExpanded()) {
             val close = {
@@ -869,6 +888,11 @@ class MainActivity : SimpleActivity(), FlingListener {
         override fun onSingleTapUp(event: MotionEvent): Boolean {
             (flingListener as MainActivity).homeScreenClicked(event.x, event.y)
             return super.onSingleTapUp(event)
+        }
+
+        override fun onDoubleTap(event: MotionEvent): Boolean {
+            (flingListener as MainActivity).homeScreenDoubleTapped(event.x, event.y)
+            return super.onDoubleTap(event)
         }
 
         override fun onFling(
