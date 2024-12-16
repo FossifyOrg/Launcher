@@ -12,4 +12,6 @@
     <string name="hidden_icons_placeholder">Beberapa aplikasi tidak dapat di-uninstal karena keterbatasan sistem, tetapi Anda masih dapat menyembunyikan ikon mereka untuk menyembunyikannya.</string>
     <string name="close_app_drawer_on_app_open">Tutup laci aplikasi saat membuka aplikasi</string>
     <string name="app_drawer_settings">Laci aplikasi</string>
+    <string name="widget_too_big">Widget terlalu besar untuk ukuran layar beranda saat ini</string>
+    <string name="home_screen_settings">Layar beranda</string>
 </resources>
