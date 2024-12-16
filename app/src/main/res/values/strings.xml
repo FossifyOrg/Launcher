@@ -14,9 +14,9 @@
     <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
     <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">Widget is too big for current home screen size</string>
-    <string name="double_tap_to_lock">Double tap to lock</string>
-    <string name="lock_device_admin_hint">To use double tap to lock you need to grant admin permission.</string>
-    <string name="lock_device_admin_warning">Double tap to lock will be turned off.</string>
+    <string name="double_tap_to_lock">Double tap to lock the screen</string>
+    <string name="lock_device_admin_hint">To use double tap to lock the screen, you need to grant the admin permission.</string>
+    <string name="lock_device_admin_warning">Double tap to lock the screen will be turned off.</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res
