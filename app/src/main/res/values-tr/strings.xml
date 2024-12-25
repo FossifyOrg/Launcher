@@ -9,7 +9,7 @@
     <string name="add_hidden_icons">Gizli simgeler ekle</string>
     <string name="manage_hidden_icons">Gizli simgeleri yönet</string>
     <string name="hidden_icons">Gizli simgeler</string>
-    <string name="hidden_icons_placeholder">Bazı uygulamalar sistem kısıtlamaları nedeniyle kaldırılamaz, ancak en azından onları görmemek için simgelerini gizleyebilirsiniz.</string>
+    <string name="hidden_icons_placeholder">Bazı uygulamalar sistem kısıtlamaları nedeniyle kaldırılamaz, ancak bu uygulamaları görmemek için simgelerini gizleyebilirsiniz.</string>
     <string name="app_drawer_settings">Uygulama çekmecesi</string>
     <string name="close_app_drawer_on_app_open">Bir uygulama açıldığında uygulama çekmecesini kapat</string>
     <string name="home_screen_settings">Ana ekran</string>

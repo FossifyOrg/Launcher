@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Начален Екран</string>
+    <string name="app_launcher_name">Начален екран</string>
     <string name="launcher_settings">Начален Екран Настройки</string>
     <string name="app_info">Информация за приложението</string>
     <string name="touch_hold_widget">Натиснете дълго приспособлението и го плъзнете на началния екран</string>
