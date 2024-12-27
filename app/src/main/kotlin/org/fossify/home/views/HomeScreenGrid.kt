@@ -826,7 +826,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                         val itemId = context.homeScreenGridItemsDB.insert(widgetItem)
                         widgetItem.id = itemId
                         post {
-                            bindWidget(widgetItem, false)
+                            bindWidget(widgetItem)
                         }
                     } else {
                         context.homeScreenGridItemsDB.updateItemPosition(
@@ -880,7 +880,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
         redrawGrid()
     }
 
-    private fun bindWidget(item: HomeScreenGridItem, isInitialDrawAfterLaunch: Boolean) {
+    private fun bindWidget(item: HomeScreenGridItem) {
         if (item.outOfBounds()) {
             return
         }
@@ -888,19 +888,23 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
         val activity = context as MainActivity
         val appWidgetProviderInfo = item.providerInfo ?: appWidgetManager!!.installedProviders.firstOrNull { it.provider.className == item.className }
         if (appWidgetProviderInfo != null) {
-            val appWidgetId = appWidgetHost.allocateAppWidgetId()
-            activity.handleWidgetBinding(appWidgetManager, appWidgetId, appWidgetProviderInfo) { canBind ->
+            item.widgetId = appWidgetHost.allocateAppWidgetId()
+            ensureBackgroundThread {
+                context.homeScreenGridItemsDB.updateWidgetId(item.widgetId, item.id!!)
+            }
+
+            activity.handleWidgetBinding(appWidgetManager, item.widgetId, appWidgetProviderInfo) { canBind ->
                 if (canBind) {
-                    if (appWidgetProviderInfo.configure != null && !isInitialDrawAfterLaunch) {
-                        activity.handleWidgetConfigureScreen(appWidgetHost, appWidgetId) { success ->
+                    if (appWidgetProviderInfo.configure != null) {
+                        activity.handleWidgetConfigureScreen(appWidgetHost, item.widgetId) { success ->
                             if (success) {
-                                placeAppWidget(appWidgetId, appWidgetProviderInfo, item)
+                                placeAppWidget(appWidgetProviderInfo, item)
                             } else {
                                 removeItemFromHomeScreen(item)
                             }
                         }
                     } else {
-                        placeAppWidget(appWidgetId, appWidgetProviderInfo, item)
+                        placeAppWidget(appWidgetProviderInfo, item)
                     }
                 } else {
                     removeItemFromHomeScreen(item)
@@ -913,12 +917,11 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
         }
     }
 
-    private fun placeAppWidget(appWidgetId: Int, appWidgetProviderInfo: AppWidgetProviderInfo, item: HomeScreenGridItem) {
-        item.widgetId = appWidgetId
+    private fun placeAppWidget(appWidgetProviderInfo: AppWidgetProviderInfo, item: HomeScreenGridItem) {
         // we have to pass the base context here, else there will be errors with the themes
-        val widgetView = appWidgetHost.createView((context as MainActivity).baseContext, appWidgetId, appWidgetProviderInfo) as MyAppWidgetHostView
-        widgetView.tag = appWidgetId
-        widgetView.setAppWidget(appWidgetId, appWidgetProviderInfo)
+        val widgetView = appWidgetHost.createView((context as MainActivity).baseContext, item.widgetId, appWidgetProviderInfo) as MyAppWidgetHostView
+        widgetView.tag = item.widgetId
+        widgetView.setAppWidget(item.widgetId, appWidgetProviderInfo)
         widgetView.longPressListener = { x, y ->
             val activity = context as? MainActivity
             if (activity?.isAllAppsFragmentExpanded() == false) {
@@ -937,7 +940,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
 
         // remove the drawable so that it gets refreshed on long press
         item.drawable = null
-        // Delete existing windget if it has already been loaded to the list
+        // Delete existing widget if it has already been loaded to the list
         gridItems.removeIf { it.id == item.id }
         gridItems.add(item)
     }
@@ -1051,7 +1054,8 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
 
         if (isFirstDraw) {
             gridItems.filter { it.type == ITEM_TYPE_WIDGET && !it.outOfBounds() }.forEach { item ->
-                bindWidget(item, true)
+                val appWidgetProviderInfo = item.providerInfo ?: appWidgetManager!!.installedProviders.firstOrNull { it.provider.className == item.className }
+                placeAppWidget(appWidgetProviderInfo!!, item)
             }
         } else {
             gridItems.filter { it.type == ITEM_TYPE_WIDGET && !it.outOfBounds() }.forEach { item ->
