@@ -113,7 +113,10 @@ class AllAppsFragment(
                     shouldIntercept =
                         distance > 0 && binding.allAppsGrid.computeVerticalScrollOffset() == 0
                     if (shouldIntercept) {
-                        activity?.hideKeyboard()
+                        // Hiding is expensive, only do it if focused
+                        if (binding.searchBar.hasFocus()) {
+                            activity?.hideKeyboard()
+                        }
                         activity?.startHandlingTouches(touchDownY)
                         touchDownY = -1
                     }
@@ -221,7 +224,8 @@ class AllAppsFragment(
         binding.allAppsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
         binding.allAppsGrid.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0 && binding.allAppsGrid.computeVerticalScrollOffset() > 0) {
+                // Hiding is expensive, only do it if focused
+                if (binding.searchBar.hasFocus() && dy > 0 && binding.allAppsGrid.computeVerticalScrollOffset() > 0) {
                     activity?.hideKeyboard()
                 }
             }
