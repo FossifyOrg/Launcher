@@ -1321,6 +1321,11 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             }
         }
 
+        // if a folder is open, we only want to allow clicks on items in the folder
+        if (currentlyOpenFolder != null) {
+            return null
+        }
+
         for (gridItem in gridItems.filterVisibleOnCurrentPageOnly()) {
             if (gridItem.outOfBounds()) {
                 continue
