@@ -1,0 +1,4 @@
+* Fixed scrolling performance issues
+* Fixed various issues related to widgets
+* Other minor bug fixes and improvements
+* Added more translations
