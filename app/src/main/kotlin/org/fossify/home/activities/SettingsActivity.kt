@@ -124,11 +124,13 @@ class SettingsActivity : SimpleActivity() {
     private fun setupDoubleTapToLock() {
         val devicePolicyManager =
             getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        val isLockDeviceAdminActive = devicePolicyManager.isAdminActive(
+        binding.settingsDoubleTapToLock.isChecked = devicePolicyManager.isAdminActive(
             ComponentName(this, LockDeviceAdminReceiver::class.java)
         )
-        binding.settingsDoubleTapToLock.isChecked = isLockDeviceAdminActive
         binding.settingsDoubleTapToLock.setOnClickListener {
+            val isLockDeviceAdminActive = devicePolicyManager.isAdminActive(
+                ComponentName(this, LockDeviceAdminReceiver::class.java)
+            )
             if (isLockDeviceAdminActive) {
                 devicePolicyManager.removeActiveAdmin(
                     ComponentName(this, LockDeviceAdminReceiver::class.java)
