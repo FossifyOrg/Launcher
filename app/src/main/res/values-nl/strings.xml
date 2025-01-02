@@ -14,4 +14,7 @@
     <string name="home_screen_settings">Beginscherm</string>
     <string name="widget_too_big">Widget is te groot voor de huidige afmetingen van het beginscherm</string>
     <string name="app_launcher_name">Launcher</string>
+    <string name="lock_device_admin_warning">Als je het recht voor apparaatbeheer niet toekent, wordt de functie \'dubbeltikken om het scherm te vergrendelen\' uitgeschakeld.</string>
+    <string name="lock_device_admin_hint">Om de functie \'Dubbeltikken om het scherm te vergrendelen\' in te schakelen, moet je het recht voor apparaatbeheer toekennen. De app kan dan niet worden verwijderd totdat deze toestemming is verwijderd.</string>
+    <string name="double_tap_to_lock">Dubbeltikken om het scherm te vergrendelen</string>
 </resources>
