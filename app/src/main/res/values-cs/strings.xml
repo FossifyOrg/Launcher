@@ -14,4 +14,7 @@
     <string name="widget_too_big">Widget je příliš velký na aktuální velikost domovské obrazovky</string>
     <string name="app_drawer_settings">Nabídka aplikací</string>
     <string name="close_app_drawer_on_app_open">Zavřít nabídku aplikací po otevření aplikace</string>
+    <string name="lock_device_admin_hint">Chcete-li povolit funkci zamykání obrazovky dvojitým klepnutím, musíte udělit oprávnění správce. Upozornění: aplikaci nelze odinstalovat, dokud toto oprávnění neodeberete.</string>
+    <string name="lock_device_admin_warning">Deaktivací oprávnění správce zakážete funkci zamykání obrazovky dvojitým klepnutím.</string>
+    <string name="double_tap_to_lock">Klepněte dvakrát pro zamknutí obrazovky</string>
 </resources>
