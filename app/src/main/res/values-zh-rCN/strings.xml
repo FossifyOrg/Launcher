@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">打开抽屉内应用时关闭抽屉</string>
     <string name="home_screen_settings">主屏幕</string>
     <string name="widget_too_big">微件对当前屏幕尺寸而言太大了</string>
+    <string name="double_tap_to_lock">双击锁屏</string>
+    <string name="lock_device_admin_warning">停用管理员权限将禁用双击锁屏功能。</string>
+    <string name="lock_device_admin_hint">要启用双击锁屏功能，您需要授予管理员权限。请注意，在移除此权限之前无法卸载该应用。</string>
 </resources>
