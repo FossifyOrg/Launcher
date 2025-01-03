@@ -7,7 +7,7 @@ Passe deinen Startbildschirm mit dynamischen Farbschemas, eigenen Farben und Lay
 Integriere ganz einfach Widgets mit vollständig veränderbarer Größe. Egal, ob du Uhren, Kalender oder andere praktische Tools brauchst, Fossify Launcher sorgt dafür, dass sie sich nahtlos in dein Startbildschirm-Design einfügen.<br><br>
 <b>📱 KEIN UNERWÜNSCHTES DURCHEINANDER:</b><br>
 Verwalte deine Apps mühelos, indem du sie mit nur wenigen Fingertipps ausblendest oder deinstallierst, damit dein Startbildschirm übersichtlich bleibt.<br><br>
-<b>🔒 PRIVATSPHÄRE UND SICHERHEIT:</b><br>
+<b>🔒 DATENSCHUTZ UND SICHERHEIT:</b><br>
 Deine Privatsphäre steht im Mittelpunkt von Fossify Launcher. Ohne Internetzugang und ohne aufdringliche Berechtigungen bleiben deine Daten bei dir. Kein Tracking, keine Werbung – nur ein Launcher, der deine Privatsphäre respektiert.<br><br>
 <b>🌐 OPEN-SOURCE-GARANTIE:</b><br>
 Fossify Launcher wurde auf einer Open-Source-Basis entwickelt, die es dir ermöglicht, unseren Code auf GitHub zu überprüfen, was das Vertrauen und eine Gemeinschaft fördert, die sich für den Datenschutz einsetzt.<br><br>
