@@ -1,0 +1,4 @@
+* S'han corregit problemes de rendiment de desplaçament
+* S'han corregit diversos problemes relacionats amb els ginys
+* Altres correccions d'errors i millores menors
+* S'han afegit més traduccions
