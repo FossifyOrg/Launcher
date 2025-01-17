@@ -3,11 +3,12 @@
     <string name="app_launcher_name">Käynnistin</string>
     <string name="launcher_settings">Käynnistimen asetukset</string>
     <string name="app_info">Sovelluksen tiedot</string>
-    <string name="touch_hold_widget">Paina widgettiä pitkään ja vedä se aloitusnäytöllesi</string>
+    <string name="touch_hold_widget">Paina vimpainta pitkään ja vedä se aloitusnäytöllesi</string>
     <string name="uninstall">Poista asennus</string>
     <string name="hide_icon">Piilota kuvake</string>
     <string name="add_hidden_icons">Lisää piilotettuja kuvakkeita</string>
     <string name="manage_hidden_icons">Hallitse piilotettuja kuvakkeita</string>
     <string name="hidden_icons">Piilotetut kuvakkeet</string>
     <string name="hidden_icons_placeholder">Joitakin sovelluksia ei ole järjestelmärajoitusten vuoksi mahdollista poistaa, mutta voit kuitenkin piilottaa niiden kuvakkeet näkyvistä.</string>
+    <string name="widget_too_big">Vimpain on liian suuri nykyiseen aloitusnäytön kokoon</string>
 </resources>
