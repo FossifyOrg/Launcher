@@ -1,0 +1,4 @@
+* Opraveny problémy s výkonem při posunu
+* Opraveny různé problémy týkající se widgetů
+* Další menší opravy chyb a vylepšení
+* Přidány další překlady

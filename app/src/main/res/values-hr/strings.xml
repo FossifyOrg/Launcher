@@ -14,4 +14,7 @@
     <string name="app_drawer_settings">Ladica aplikacije</string>
     <string name="close_app_drawer_on_app_open">Zatvori ladicu aplikacija pri otvaranju aplikacije</string>
     <string name="widget_too_big">Widget je prevelik za trenutnu veličinu početnog ekrana</string>
+    <string name="double_tap_to_lock">Dodirni dvaput za zaključavanje ekrana</string>
+    <string name="lock_device_admin_hint">Za aktiviranje funkcije dvostrukog dodira za zaključavanje ekrana moraš odobriti administratorsku dozvolu. Imaj na umu da se aplikacija ne može deinstalirati sve dok se ova dozvola ne ukloni.</string>
+    <string name="lock_device_admin_warning">Uklanjanje administratorske dozvole će deaktivirati funkciju dvostrukog dodira za zaključavanje ekrana.</string>
 </resources>
