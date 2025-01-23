@@ -14,4 +14,7 @@
     <string name="home_screen_settings">Ekran główny</string>
     <string name="widget_too_big">Widżet jest za duży dla aktualnego rozmiaru ekranu głównego</string>
     <string name="app_launcher_name">Launcher</string>
+    <string name="double_tap_to_lock">Naciśnij dwukrotnie, aby zablokować ekran</string>
+    <string name="lock_device_admin_hint">Aby włączyć funkcję dwukrotnego naciśnięcia w celu zablokowania ekranu, musisz udzielić uprawnienia administratora. Uwaga: aplikacja nie może zostać odinstalowana, dopóki to uprawnienie nie zostanie usunięte.</string>
+    <string name="lock_device_admin_warning">Dezaktywacja uprawnienia administratora spowoduje wyłączenie funkcji dwukrotnego naciśnięcia w celu zablokowania ekranu.</string>
 </resources>

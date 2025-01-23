@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Fermer le tiroir de l\'appli à l\'ouverture d\'une application</string>
     <string name="widget_too_big">Le widget est trop grand pour la taille actuelle de l\'écran</string>
     <string name="home_screen_settings">Écran d\'accueil</string>
+    <string name="lock_device_admin_hint">Pour activer la fonction de double appui pour verrouiller l\'écran, vous devez accorder l\'autorisation d\'administrateur. Notez que l\'application ne peut pas être désinstallée tant que cette autorisation n\'est pas supprimée.</string>
+    <string name="lock_device_admin_warning">La désactivation de l\'autorisation d\'administrateur désactivera la fonction de double appui pour verrouiller l\'écran.</string>
+    <string name="double_tap_to_lock">Appuyez deux fois pour verrouiller l\'écran</string>
 </resources>

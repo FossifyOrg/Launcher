@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Закрывать боковую панель при открытии приложения</string>
     <string name="home_screen_settings">Домашний экран</string>
     <string name="widget_too_big">Виджет слишком велик для текущего размера домашнего экрана</string>
+    <string name="double_tap_to_lock">Двойное нажатие блокирует экран</string>
+    <string name="lock_device_admin_hint">Для включения функции блокировки экрана двойным нажатием необходимы права администратора. Учтите, что приложение нельзя будет удалить, пока данное разрешение не будет отключено.</string>
+    <string name="lock_device_admin_warning">Удаление прав администратора приведёт к отключению функции блокировки экрана двойным нажатием.</string>
 </resources>

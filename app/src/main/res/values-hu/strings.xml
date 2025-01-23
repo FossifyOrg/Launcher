@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Alkalmazásfiók bezárása egy alkalmazás megnyitásakor</string>
     <string name="widget_too_big">A modul túl nagy az aktuális kezdőképernyő méretéhez</string>
     <string name="home_screen_settings">Kezdőképernyő</string>
+    <string name="lock_device_admin_warning">Az rendszergazdai engedély kikapcsolása letiltja a képernyő lezárásához szükséges dupla koppintás funkciót.</string>
+    <string name="double_tap_to_lock">Dupla koppintás a képernyő zárolásához</string>
+    <string name="lock_device_admin_hint">A képernyőzárolás dupla koppintás funkciójának engedélyezéséhez rendszergazdai hozzáférést kell adnia. Vegye figyelembe, hogy az alkalmazás nem távolítható el, amíg ez az engedély nem kerül eltávolításra.</string>
 </resources>

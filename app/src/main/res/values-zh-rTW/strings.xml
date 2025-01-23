@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">開啟應用程式時關閉應用程式抽屜</string>
     <string name="home_screen_settings">主畫面</string>
     <string name="widget_too_big">小工具對於目前主畫面大小來說太大</string>
+    <string name="double_tap_to_lock">輕觸兩下以鎖定螢幕</string>
+    <string name="lock_device_admin_warning">停用管理權限將會停用輕觸兩下以鎖定螢幕的功能。</string>
+    <string name="lock_device_admin_hint">要啟用輕觸兩下以鎖定螢幕的功能，您必須授予管理權限。請注意，在移除此權限前，無法解除安裝應用程式。</string>
 </resources>

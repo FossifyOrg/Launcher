@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Закривати панель застосунок при відкриті застосунку</string>
     <string name="home_screen_settings">Домашній екран</string>
     <string name="widget_too_big">Віджет надто великий для поточного розміру домашнього екрану</string>
+    <string name="lock_device_admin_warning">Скасування прав адміністратора вимкне функцію подвійного дотику для блокування екрана.</string>
+    <string name="double_tap_to_lock">Двічі торкніться, щоб заблокувати екран</string>
+    <string name="lock_device_admin_hint">Щоб увімкнути функцію блокування екрана подвійним дотиком, вам потрібно надати права адміністратора. Зверніть увагу, що застосунок не можна буде видалити, поки цей дозвіл не буде скасовано.</string>
 </resources>

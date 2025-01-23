@@ -1,0 +1,4 @@
+* Probleme mit der Scroll-Performance behoben
+* Verschiedene Probleme im Zusammenhang mit Widgets behoben
+* Weitere kleinere Fehlerbehebungen und Verbesserungen
+* Weitere Übersetzungen hinzugefügt

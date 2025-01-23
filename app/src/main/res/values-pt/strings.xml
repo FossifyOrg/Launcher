@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Fechar menu de aplicações ao abrir uma aplicação</string>
     <string name="widget_too_big">O widget é muito grande para o ecrã disponível</string>
     <string name="home_screen_settings">Ecrã inicial</string>
+    <string name="double_tap_to_lock">Dois toques para bloquear o ecrã</string>
+    <string name="lock_device_admin_hint">Para ativar esta funcionalidade, tem que permitir o acesso de administração. Tenha em atenção se que não conseguirá desinstalar a aplicação sem antes revogar esta permissão.</string>
+    <string name="lock_device_admin_warning">Ao desativar a permissão, também desativa a possibilidade de bloquear o ecrã com dois toques.</string>
 </resources>

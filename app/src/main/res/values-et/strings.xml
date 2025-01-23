@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Rakenduse avamisel sulge rakenduste kausta vaade</string>
     <string name="home_screen_settings">Avaleht</string>
     <string name="widget_too_big">Vidin on liiga suur praeguse ekraanimõõdu jaoks</string>
+    <string name="double_tap_to_lock">Topeltpuudutus lukustusvaates</string>
+    <string name="lock_device_admin_warning">Peakasutaja õiguste eemaldamine lülitab välja võimaluse kasutada lukustusvaates topeltpuudutust.</string>
+    <string name="lock_device_admin_hint">Kui soovid lukustusvaates kasutada topeltpuudutust, siis vajab rakendus peakasutaja õigusi. Palun arvesta, et rakenduse eemaldamiseks pead esmalt eemaldama need õigused.</string>
 </resources>

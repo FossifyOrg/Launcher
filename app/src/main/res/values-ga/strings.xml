@@ -14,4 +14,7 @@
     <string name="home_screen_settings">Scáileán baile</string>
     <string name="widget_too_big">Tá an ghiuirléid ró-mhór do mhéid an scáileáin baile reatha</string>
     <string name="hide_icon">Folaigh deilbhín</string>
+    <string name="double_tap_to_lock">Tapáil faoi dhó chun an scáileán a ghlasáil</string>
+    <string name="lock_device_admin_warning">Má dhéantar cead riaracháin a dhíghníomhachtú, díchumasófar an sconna dúbailte chun an ghné scáileáin a ghlasáil.</string>
+    <string name="lock_device_admin_hint">Chun an sconna dúbailte a chumasú chun gné an scáileáin a ghlasáil, ní mór duit cead riaracháin a dheonú. Tabhair faoi deara nach féidir an aip a dhíshuiteáil go dtí go mbaintear an cead seo.</string>
 </resources>
