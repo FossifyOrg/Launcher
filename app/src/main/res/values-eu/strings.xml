@@ -14,4 +14,7 @@
     <string name="add_hidden_icons">Gehitu ezkutuko ikonoak</string>
     <string name="manage_hidden_icons">Kudeatu ezkutuko ikonoak</string>
     <string name="hidden_icons_placeholder">Aplikazio batzuk ezin dira desinstalatu sistemaren murrizketak direla eta, baina gutxienez haien ikonoak ezkutatu ditzakezu ez ikusteko.</string>
+    <string name="double_tap_to_lock">Sakatu bi aldiz pantaila blokeatzeko</string>
+    <string name="lock_device_admin_hint">Bi aldiz sakatuta pantaila blokeatzeko, kudeatzaile baimena eman behar duzu. Kontuan izan baimen hau kendu arte ezingo duzula aplikazioa telefonotik kendu.</string>
+    <string name="lock_device_admin_warning">Kudeatzaile baimena desaktibatzean, pantaila blokeatzeko bi aldiz ikutzea desaktibatu egingo da.</string>
 </resources>
