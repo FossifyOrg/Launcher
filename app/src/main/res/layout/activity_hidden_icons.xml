@@ -35,6 +35,7 @@
             android:paddingLeft="@dimen/big_margin"
             android:paddingTop="@dimen/activity_margin"
             android:paddingRight="@dimen/big_margin"
+            android:textColor="#666466"
             android:text="@string/hidden_icons_placeholder"
             android:visibility="gone" />
 
