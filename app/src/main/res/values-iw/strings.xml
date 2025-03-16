@@ -16,4 +16,5 @@
     <string name="lock_device_admin_hint">כדי להפעיל הקשה כפולה לנעילת מסך, עליך להעניק הרשאת מנהל. שימו לב שלא ניתן להסיר את האפליקציה עד להסרת ההרשאה הזו.</string>
     <string name="lock_device_admin_warning">ביטול הרשאת מנהל ישבית את אפשרות ההקשה הכפולה לנעילת מסך.</string>
     <string name="app_drawer_settings">מגירת אפליקציות</string>
+    <string name="widget_too_big">הווידג\'ט גדול מדי לגודל מסך הבית הנוכחי</string>
 </resources>
