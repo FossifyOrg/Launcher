@@ -3,7 +3,6 @@ package org.fossify.home.activities
 import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import org.fossify.commons.dialogs.RadioGroupDialog
@@ -28,7 +27,6 @@ import org.fossify.home.helpers.MAX_COLUMN_COUNT
 import org.fossify.home.helpers.MAX_ROW_COUNT
 import org.fossify.home.helpers.MIN_COLUMN_COUNT
 import org.fossify.home.helpers.MIN_ROW_COUNT
-import org.fossify.home.helpers.REPOSITORY_NAME
 import org.fossify.home.receivers.LockDeviceAdminReceiver
 import java.util.Locale
 import kotlin.system.exitProcess
@@ -112,7 +110,11 @@ class SettingsActivity : SimpleActivity() {
     }
 
     private fun setupUseEnglish() {
-        binding.settingsUseEnglishHolder.beVisibleIf((config.wasUseEnglishToggled || Locale.getDefault().language != "en") && !isTiramisuPlus())
+        binding.settingsUseEnglishHolder.beVisibleIf(
+            beVisible = (config.wasUseEnglishToggled || Locale.getDefault().language != "en")
+                    && !isTiramisuPlus()
+        )
+
         binding.settingsUseEnglish.isChecked = config.useEnglish
         binding.settingsUseEnglishHolder.setOnClickListener {
             binding.settingsUseEnglish.toggle()
@@ -122,12 +124,12 @@ class SettingsActivity : SimpleActivity() {
     }
 
     private fun setupDoubleTapToLock() {
-        val devicePolicyManager =
-            getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
         binding.settingsDoubleTapToLock.isChecked = devicePolicyManager.isAdminActive(
             ComponentName(this, LockDeviceAdminReceiver::class.java)
         )
-        binding.settingsDoubleTapToLock.setOnClickListener {
+
+        binding.settingsDoubleTapToLockHolder.setOnClickListener {
             val isLockDeviceAdminActive = devicePolicyManager.isAdminActive(
                 ComponentName(this, LockDeviceAdminReceiver::class.java)
             )
