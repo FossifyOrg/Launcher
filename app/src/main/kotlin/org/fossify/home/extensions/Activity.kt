@@ -9,7 +9,6 @@ import android.content.pm.LauncherApps
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Process
 import android.provider.Settings
@@ -90,7 +89,7 @@ fun Activity.handleGridItemPopupMenu(
     anchorView: View,
     gridItem: HomeScreenGridItem,
     isOnAllAppsFragment: Boolean,
-    listener: ItemMenuListener
+    listener: ItemMenuListener,
 ): PopupMenu {
     val contextTheme = ContextThemeWrapper(this, getPopupMenuTheme())
     return PopupMenu(contextTheme, anchorView, Gravity.TOP or Gravity.END).apply {
@@ -114,8 +113,9 @@ fun Activity.handleGridItemPopupMenu(
             gridItem.type == ITEM_TYPE_ICON && isOnAllAppsFragment
         menu.findItem(R.id.resize).isVisible = gridItem.type == ITEM_TYPE_WIDGET
         menu.findItem(R.id.app_info).isVisible = gridItem.type == ITEM_TYPE_ICON
-        menu.findItem(R.id.uninstall).isVisible =
-            gridItem.type == ITEM_TYPE_ICON && canAppBeUninstalled(gridItem.packageName)
+        menu.findItem(R.id.uninstall).isVisible = gridItem.type == ITEM_TYPE_ICON
+                && canAppBeUninstalled(gridItem.packageName)
+                && gridItem.packageName != packageName
         menu.findItem(R.id.remove).isVisible = !isOnAllAppsFragment
 
         val launcherApps =
@@ -145,7 +145,7 @@ fun Activity.handleGridItemPopupMenu(
 
                 menu.add(R.id.group_shortcuts, Menu.NONE, Menu.NONE, shortcutInfo.getLabel())
                     .setIcon(
-                        (iconDrawable ?: ColorDrawable(Color.TRANSPARENT))
+                        (iconDrawable ?: Color.TRANSPARENT.toDrawable())
                             .toBitmap(width = iconSize, height = iconSize)
                             .toDrawable(resources)
                     )

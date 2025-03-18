@@ -19,8 +19,8 @@ app-build-javaVersion = "VERSION_17"
 app-build-kotlinJVMTarget = "17"
 #versioning
 app-version-appId = "org.fossify.home"
-app-version-versionCode = "2"
-app-version-versionName = "1.0.1"
+app-version-versionCode = "3"
+app-version-versionName = "1.1.0"
 [libraries]
 #Room
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
