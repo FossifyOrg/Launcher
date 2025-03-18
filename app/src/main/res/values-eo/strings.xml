@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">Lanĉilo</string>
+    <string name="launcher_settings">Lanĉilaj agordoj</string>
+    <string name="touch_hold_widget">Longe premu la fenestraĵon kaj treni ĝin sur vian hejmekranon</string>
+    <string name="uninstall">Malinstali</string>
+    <string name="hide_icon">Kaŝi bildeton</string>
+    <string name="hidden_icons">Kaŝitaj bildetoj</string>
+    <string name="app_drawer_settings">Aplikaĵa tirkesto</string>
+    <string name="close_app_drawer_on_app_open">Fermi aplikaĵan tirkeston kiam aplikaĵo estas malfermita</string>
+    <string name="home_screen_settings">Hejmekrano</string>
+    <string name="widget_too_big">La fenestraĵo tro grandas por la aktuala grandeco de la hejmekrano</string>
+    <string name="add_hidden_icons">Aldoni kaŝitajn bildetojn</string>
+    <string name="manage_hidden_icons">Administri kaŝitajn bildetojn</string>
+    <string name="hidden_icons_placeholder">Ne eblas malinstali kelkajn aplikaĵojn pro sistemaj limigoj, sed almenaŭ eblas kaŝi iliajn bildetojn por eviti vidi ilin.</string>
+    <string name="double_tap_to_lock">Duoble frapetu por ŝlosi la ekranon</string>
+    <string name="lock_device_admin_hint">Por aktivigi la funkcion de ŝlosado de ekrano per duobla frapeto, endas koncedi administrajn permesojn. Notu, ke ne eblas malinstali la aplikaĵon antaŭ senvalidigi tiujn permesojn.</string>
+    <string name="lock_device_admin_warning">Malŝalto de administraj permesoj malŝaltos la funkcion de ŝlosado de ekrano per duobla frapeto.</string>
+    <string name="app_info">Aplikaĵaj informoj</string>
+</resources>

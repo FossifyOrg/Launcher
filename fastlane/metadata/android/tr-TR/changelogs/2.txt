@@ -1,0 +1,4 @@
+* Kaydırma performansı hataları düzeltildi
+* Widget'larla ilgili çeşitli sorunları düzeltti
+* Diğer küçük hata düzeltmeleri ve iyileştirmeleri
+* Daha fazla çeviri eklendi
