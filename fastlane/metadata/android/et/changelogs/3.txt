@@ -1,0 +1,2 @@
+* Topeltpuudutusega saab nüüd ekraani lukustada
+* Täiendavad tõlked

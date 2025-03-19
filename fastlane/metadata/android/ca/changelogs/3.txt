@@ -1,0 +1,2 @@
+* S'ha afegit un toc doble per a la característica de bloqueig de pantalla
+* S'han afegit més traduccions
