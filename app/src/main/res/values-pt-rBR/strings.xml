@@ -14,4 +14,7 @@
     <string name="home_screen_settings">Tela inicial</string>
     <string name="widget_too_big">O widget é muito grande para o tamanho atual da tela inicial</string>
     <string name="app_launcher_name">Launcher</string>
+    <string name="double_tap_to_lock">Toque duas vezes para bloquear a tela</string>
+    <string name="lock_device_admin_hint">Para habilitar o recurso de toque duplo para bloquear a tela, você precisa conceder permissão de administrador. Observe que o aplicativo não pode ser desinstalado até que essa permissão seja removida.</string>
+    <string name="lock_device_admin_warning">Desativar a permissão de administrador desabilitará o recurso de toque duplo para bloquear a tela.</string>
 </resources>
