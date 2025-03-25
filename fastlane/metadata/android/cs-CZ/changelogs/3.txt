@@ -1,2 +1,0 @@
-* Přidána funkce zamknutí obrazovky dvojitým klepnutím
-* Přidáno více překladů

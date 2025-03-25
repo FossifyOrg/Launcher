@@ -1,4 +1,0 @@
-* Parandasime jõudlusvead kerimisel
-* Parandasime erinevad vidinate vead
-* Muud väiksemad veaparandused ja täiendused
-* Lisasime veel tõlkeid

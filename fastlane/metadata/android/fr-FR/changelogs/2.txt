@@ -1,4 +1,0 @@
-* Correction des problèmes de performances de défilement
-* Correction de divers problèmes liés aux widgets
-* Autres corrections de bugs et améliorations mineures
-* Ajout de traductions supplémentaires
