@@ -11,4 +11,5 @@
     <string name="hidden_icons">Piilotetut kuvakkeet</string>
     <string name="hidden_icons_placeholder">Joitakin sovelluksia ei ole järjestelmärajoitusten vuoksi mahdollista poistaa, mutta voit kuitenkin piilottaa niiden kuvakkeet näkyvistä.</string>
     <string name="widget_too_big">Vimpain on liian suuri nykyiseen aloitusnäytön kokoon</string>
+    <string name="home_screen_settings">Kotinäyttö</string>
 </resources>
