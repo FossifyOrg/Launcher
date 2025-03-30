@@ -12,4 +12,9 @@
     <string name="hidden_icons_placeholder">Joitakin sovelluksia ei ole järjestelmärajoitusten vuoksi mahdollista poistaa, mutta voit kuitenkin piilottaa niiden kuvakkeet näkyvistä.</string>
     <string name="widget_too_big">Vimpain on liian suuri nykyiseen aloitusnäytön kokoon</string>
     <string name="home_screen_settings">Kotinäyttö</string>
+    <string name="close_app_drawer_on_app_open">Sulje sovellusvedin, kun uusi sovellus avataan</string>
+    <string name="app_drawer_settings">Sovellusvedin</string>
+    <string name="lock_device_admin_hint">Näytön kaksoisnapautuslukitus vaatii pääkäyttäjäoikeuksia. Huomio, että sovellusta ei voida poistaa, ennen kuin tämä oikeus on poistettu.</string>
+    <string name="double_tap_to_lock">Kaksoisnapauta lukitaksesi näytön</string>
+    <string name="lock_device_admin_warning">Pääkäyttäjäoikeuden poiskytkentä, estää kaksoisnapautuslukituksen toiminnan.</string>
 </resources>
