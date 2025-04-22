@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">ऐप खोलने पर ऐप ड्रॉअर बंद कर दें</string>
     <string name="home_screen_settings">होम स्क्रीन</string>
     <string name="widget_too_big">वर्तमान होम स्क्रीन आकार के लिए विजेट बहुत बड़ा है</string>
+    <string name="lock_device_admin_hint">स्क्रीन लॉक करने के लिए डबल-टैप करने वाले फीचर को सक्षम करने के लिए प्रशासनिक अनुमति आवश्यक है। ध्यान रखें कि ये ऐप अनइंस्टॉल नहीं हो पाएगा जब तक ये अनुमति रहेगी।</string>
+    <string name="double_tap_to_lock">स्क्रीन लॉक करने के लिए डबल टैप करें</string>
+    <string name="lock_device_admin_warning">प्रशासनिक अनुमतियाँ हटाये जाने पर डबल-टैप स्क्रीन लॉक सुविधा अक्षम हो जायेगी।</string>
 </resources>
