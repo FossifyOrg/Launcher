@@ -3,7 +3,7 @@
     <string name="app_launcher_name">Εκκινητής</string>
     <string name="launcher_settings">Ρυθμίσεις Εκκινητή</string>
     <string name="app_info">Πληροφορίες εφαρμογής</string>
-    <string name="touch_hold_widget">Παρατεταμένο άγγιγμα στο Γραφικό και σύρετέ το στην αρχική σας οθόνη.</string>
+    <string name="touch_hold_widget">Πατήστε παρατεταμένα το γραφικό στοιχείο και σύρετέ το στην αρχική οθόνη</string>
     <string name="uninstall">Απεγκατάσταση</string>
     <string name="hide_icon">Απόκρυψη εικονιδίου</string>
     <string name="add_hidden_icons">Προσθήκη κρυφών εικονιδίων</string>
@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Κλείστε το συρτάρι εφαρμογών κατά το άνοιγμα μιας εφαρμογής</string>
     <string name="home_screen_settings">Αρχική οθόνη</string>
     <string name="widget_too_big">Το γραφικό είναι πολύ μεγάλο για το τρέχον μέγεθος της αρχικής οθόνης</string>
+    <string name="lock_device_admin_hint">Για να ενεργοποιήσετε τη λειτουργία διπλής βρύσης για κλείδωμα οθόνης, πρέπει να παραχωρήσετε άδεια διαχειριστή. Λάβετε υπόψη ότι δεν είναι δυνατή η κατάργηση εγκατάστασης της εφαρμογής μέχρι να καταργηθεί αυτή η άδεια.</string>
+    <string name="double_tap_to_lock">Διπλό πάτημα για κλείδωμα οθόνης</string>
+    <string name="lock_device_admin_warning">Η απενεργοποίηση της άδειας διαχειριστή θα απενεργοποιήσει τη λειτουργία διπλής βρύσης για κλείδωμα οθόνης.</string>
 </resources>
