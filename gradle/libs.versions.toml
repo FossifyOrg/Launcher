@@ -6,7 +6,7 @@ ksp = "1.9.25-1.0.20"
 #Detekt
 detekt = "1.23.3"
 #Room
-room = "2.6.1"
+room = "2.7.1"
 #Fossify
 commons = "8038e3277e"
 #Gradle
