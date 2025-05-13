@@ -184,7 +184,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                     item.drawable = item.toFolder().generateDrawable()
                 } else if (item.type == ITEM_TYPE_SHORTCUT) {
                     if (item.icon != null) {
-                        item.drawable = BitmapDrawable(item.icon)
+                        item.drawable = item.icon?.toDrawable(context.resources)
                     } else {
                         ensureBackgroundThread {
                             context.homeScreenGridItemsDB.deleteById(item.id!!)
@@ -1278,8 +1278,9 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 cell.top - iconMargin
             } + sideMargins.top
         }
-
-        return Rect(clickableLeft, clickableTop, clickableLeft + iconSize + 2 * iconMargin, clickableTop + iconSize + 2 * iconMargin)
+        val cellWidth = getFakeWidth() / rowCount;
+        val cellHeight = getFakeHeight() / columnCount;
+        return Rect(clickableLeft, clickableTop, clickableLeft + cellWidth, clickableTop + cellHeight)
     }
 
     // drag the center of the widget, not the top left corner
