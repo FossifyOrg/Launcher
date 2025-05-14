@@ -10,6 +10,6 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/more_apps_from_us"
-        android:title="@string/more_apps_from_us"
+        android:title="@string/more_fossify_apps"
         app:showAsAction="never" />
 </menu>
