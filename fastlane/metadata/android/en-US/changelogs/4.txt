@@ -1,0 +1,7 @@
+Changed:
+
+• Updated translations
+
+Removed:
+
+• Removed redundant launcher settings icon from the app drawer
