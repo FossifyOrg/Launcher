@@ -38,12 +38,6 @@ import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.HomeScreenGridItem
 
 fun Activity.launchApp(packageName: String, activityName: String) {
-    // if this is true, launch the app settings
-    if (packageName == this.packageName) {
-        startActivity(Intent(applicationContext, SettingsActivity::class.java))
-        return
-    }
-
     try {
         Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)

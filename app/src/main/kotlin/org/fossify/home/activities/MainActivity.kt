@@ -1020,20 +1020,6 @@ class MainActivity : SimpleActivity(), FlingListener {
             )
         }
 
-        // add Launcher settings as an app
-        val drawable = getDrawableForPackageName(packageName)
-        val placeholderColor = calculateAverageColor(drawable!!.toBitmap())
-        val launcherSettings =
-            AppLauncher(
-                id = null,
-                title = getString(R.string.launcher_settings),
-                packageName = packageName,
-                activityName = "",
-                order = 0,
-                thumbnailColor = placeholderColor,
-                drawable = drawable.toBitmap().toDrawable(resources)
-            )
-        allApps.add(launcherSettings)
         launchersDB.insertAll(allApps)
         return allApps
     }
