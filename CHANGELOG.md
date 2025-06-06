@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated translations
+
+### Fixed
+
+- Clicking home screen app labels now works as expected ([#115]) 
+
 ## [1.1.1] - 2025-05-14
 
 ### Changed
@@ -57,3 +65,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#63]: https://github.com/FossifyOrg/Launcher/issues/63
 [#65]: https://github.com/FossifyOrg/Launcher/issues/65
 [#74]: https://github.com/FossifyOrg/Launcher/issues/74
+[#115]: https://github.com/FossifyOrg/Launcher/issues/115
