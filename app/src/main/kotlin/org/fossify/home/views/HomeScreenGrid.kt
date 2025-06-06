@@ -9,7 +9,6 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +24,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.RelativeLayout
+import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toRect
@@ -184,7 +184,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                     item.drawable = item.toFolder().generateDrawable()
                 } else if (item.type == ITEM_TYPE_SHORTCUT) {
                     if (item.icon != null) {
-                        item.drawable = BitmapDrawable(item.icon)
+                        item.drawable = item.icon?.toDrawable(context.resources)
                     } else {
                         ensureBackgroundThread {
                             context.homeScreenGridItemsDB.deleteById(item.id!!)
@@ -546,7 +546,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             redrawIcons = true
         } else {
             val center = gridCenters.minBy {
-                Math.abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + Math.abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)
+                abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)
             }
 
             val gridCells = getClosestGridCells(center)
@@ -778,7 +778,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
 
     private fun addWidget() {
         val center = gridCenters.minBy {
-            Math.abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + Math.abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)
+            abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)
         }
 
         val gridCells = getClosestGridCells(center)
@@ -1175,7 +1175,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 // at first draw we are loading the widget from the database at some exact spot, not dragging it
                 if (!isFirstDraw) {
                     val center = gridCenters.minBy {
-                        Math.abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + Math.abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)
+                        abs(it.x - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.y - draggedItemCurrentCoords.second + sideMargins.top)
                     }
 
                     val gridCells = getClosestGridCells(center)
@@ -1278,8 +1278,12 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 cell.top - iconMargin
             } + sideMargins.top
         }
-
-        return Rect(clickableLeft, clickableTop, clickableLeft + iconSize + 2 * iconMargin, clickableTop + iconSize + 2 * iconMargin)
+        val additionalHeight = if (!item.docked) {
+            // multiply line count by line height to get label height
+            // we multiply all line heights by 2 so all widgets get the same clickable area and 2 is the max line count
+            (2 * (textPaint.fontMetrics.bottom - textPaint.fontMetrics.top)).toInt()
+        } else 0
+        return Rect(clickableLeft, clickableTop, clickableLeft + iconSize + 2 * iconMargin, clickableTop + iconSize + 2 * iconMargin + additionalHeight)
     }
 
     // drag the center of the widget, not the top left corner
@@ -1635,7 +1639,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 return null
             }
 
-            val bitmap = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
+            val bitmap = createBitmap(iconSize, iconSize)
             val canvas = Canvas(bitmap)
             val circlePath = Path().apply { addCircle((iconSize / 2).toFloat(), (iconSize / 2).toFloat(), (iconSize / 2).toFloat(), Path.Direction.CCW) }
             canvas.clipPath(circlePath)
@@ -1654,7 +1658,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 newDrawable?.setBounds(drawableX, drawableY, drawableX + scaledIconSize.toInt(), drawableY + scaledIconSize.toInt())
                 newDrawable?.draw(canvas)
             }
-            return BitmapDrawable(resources, bitmap)
+            return bitmap.toDrawable(resources)
         }
 
         fun getDrawingRect(): RectF {
