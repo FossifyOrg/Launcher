@@ -536,12 +536,19 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
                 (draggedItemCurrentCoords.second).toFloat()
             )
         ) {
-            val center = folder.getItemsGridCenters().minBy {
-                abs(it.second - draggedItemCurrentCoords.first + sideMargins.left) + abs(it.third - draggedItemCurrentCoords.second + sideMargins.top)
+            val centers = folder.getItemsGridCenters()
+            if (centers.isNotEmpty()) {
+                val center = centers.minByOrNull {
+                    abs(it.second - draggedItemCurrentCoords.first + sideMargins.left)
+                    + abs(it.third - draggedItemCurrentCoords.second + sideMargins.top)
+                }
+                xIndex = center?.first ?: 0
+            } else {
+                xIndex = 0
             }
+
             isDroppingPositionValid = true
             potentialParent = folder.item
-            xIndex = center.first
             yIndex = 0
             redrawIcons = true
         } else {
@@ -650,15 +657,25 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
 
         val finalXIndex = if (newParentId != null) {
             if (toFolderEnd) {
-                gridItems.firstOrNull { it.id == newParentId }?.toFolder()?.getItems()?.maxOf { it.left + 1 } ?: 0
+                gridItems
+                    .firstOrNull { it.id == newParentId }
+                    ?.toFolder()
+                    ?.getItems()
+                    ?.maxOfOrNull { it.left + 1 } ?: 0
             } else {
-                min(xIndex, gridItems.firstOrNull { it.id == newParentId }?.toFolder()?.getItems()?.maxOf {
-                    if (draggedHomeGridItem?.parentId == newParentId) {
-                        it.left
-                    } else {
-                        it.left + 1
-                    }
-                } ?: 0)
+                min(
+                    a = xIndex,
+                    b = gridItems
+                        .firstOrNull { it.id == newParentId }
+                        ?.toFolder()
+                        ?.getItems()
+                        ?.maxOfOrNull {
+                            if (draggedHomeGridItem?.parentId == newParentId) {
+                                it.left
+                            } else {
+                                it.left + 1
+                            }
+                        } ?: 0)
             }
         } else {
             xIndex
@@ -1149,15 +1166,18 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
 
                     val gridCells = getClosestGridCells(center)
                     if (gridCells != null) {
-                        val cell = cells[gridCells]!!
-                        val shadowX = cell.left + iconMargin + iconSize / 2f + sideMargins.left
-                        val shadowY = if (gridCells.y == rowCount - 1) {
-                            cellHeight - iconMargin - iconSize / 2f
-                        } else {
-                            iconMargin + iconSize / 2f
-                        } + sideMargins.top + cell.top
+                        cells[gridCells]?.let { cell ->
+                            val shadowX = cell.left + iconMargin + iconSize / 2f + sideMargins.left
+                            val shadowY = if (gridCells.y == rowCount - 1) {
+                                cellHeight - iconMargin - iconSize / 2f
+                            } else {
+                                iconMargin + iconSize / 2f
+                            } + sideMargins.top + cell.top
 
-                        canvas.drawCircle(shadowX, shadowY, iconSize / 2f, dragShadowCirclePaint)
+                            canvas.drawCircle(
+                                shadowX, shadowY, iconSize / 2f, dragShadowCirclePaint
+                            )
+                        }
                     }
                 }
 
@@ -1270,7 +1290,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             clickableLeft = itemRect.left
             clickableTop = itemRect.top - iconMargin
         } else {
-            val cell = cells[item.getTopLeft(rowCount)]!!
+            val cell = cells[item.getTopLeft(rowCount)] ?: return Rect(0, 0, 0, 0)
             clickableLeft = cell.left + sideMargins.left
             clickableTop = if (item.docked) {
                 dockCellY + cellHeight - iconSize - iconMargin
@@ -1674,7 +1694,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             val cellSize = getCellSize()
             val gap = getGapSize()
             val yGap = gap + textPaint.textSize + 2 * labelSideMargin
-            val cell = cells[item.getTopLeft(rowCount)]!!
+            val cell = cells[item.getTopLeft(rowCount)] ?: return RectF(0f, 0f, 0f, 0f)
             val centerX = sideMargins.left + cell.centerX()
             val centerY = sideMargins.top + cell.centerY()
             val folderDialogWidth = columnsCount * cellSize + 2 * folderPadding + (columnsCount - 1) * gap
