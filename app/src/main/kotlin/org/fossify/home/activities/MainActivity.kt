@@ -291,11 +291,12 @@ class MainActivity : SimpleActivity(), FlingListener {
                         applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
                     if (launcherApps.hasShortcutHostPermission()) {
                         val item = launcherApps.getPinItemRequest(resultData)
+                        val shortcutInfo = item?.shortcutInfo ?: return
                         if (item.accept()) {
-                            val shortcutId = item.shortcutInfo?.id!!
-                            val label = item.shortcutInfo.getLabel()
+                            val shortcutId = shortcutInfo.id
+                            val label = shortcutInfo.getLabel()
                             val icon = launcherApps.getShortcutBadgedIconDrawable(
-                                item.shortcutInfo!!,
+                                shortcutInfo,
                                 resources.displayMetrics.densityDpi
                             )
                             mActionOnAddShortcut?.invoke(shortcutId, label, icon)
@@ -438,15 +439,13 @@ class MainActivity : SimpleActivity(), FlingListener {
             val launcherApps =
                 applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
             val item = launcherApps.getPinItemRequest(intent)
-            if (item.shortcutInfo == null) {
-                return
-            }
+            val shortcutInfo = item?.shortcutInfo ?: return
 
             ensureBackgroundThread {
-                val shortcutId = item.shortcutInfo?.id!!
-                val label = item.shortcutInfo.getLabel()
+                val shortcutId = shortcutInfo.id
+                val label = shortcutInfo.getLabel()
                 val icon = launcherApps.getShortcutBadgedIconDrawable(
-                    item.shortcutInfo!!,
+                    shortcutInfo,
                     resources.displayMetrics.densityDpi
                 )
                 val (page, rect) = findFirstEmptyCell()
@@ -457,7 +456,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     right = rect.right,
                     bottom = rect.bottom,
                     page = page,
-                    packageName = item.shortcutInfo!!.`package`,
+                    packageName = shortcutInfo.`package`,
                     activityName = "",
                     title = label,
                     type = ITEM_TYPE_SHORTCUT,
