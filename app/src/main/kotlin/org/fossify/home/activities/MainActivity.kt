@@ -572,6 +572,8 @@ class MainActivity : SimpleActivity(), FlingListener {
         window.navigationBarColor = resources.getColor(R.color.semitransparent_navigation)
         binding.homeScreenGrid.root.fragmentExpanded()
         binding.homeScreenGrid.root.hideResizeLines()
+
+        @SuppressLint("AccessibilityFocus")
         fragment.root.performAccessibilityAction(
             AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
             null
@@ -717,7 +719,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         x: Float,
         y: Float,
         gridItem: HomeScreenGridItem,
-        isOnAllAppsFragment: Boolean
+        isOnAllAppsFragment: Boolean,
     ) {
         binding.homeScreenGrid.root.hideResizeLines()
         mLongPressedIcon = gridItem
@@ -882,7 +884,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     private class MyGestureListener(
-        private val flingListener: FlingListener
+        private val flingListener: FlingListener,
     ) : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapUp(event: MotionEvent): Boolean {
             (flingListener as MainActivity).homeScreenClicked(event.x, event.y)
@@ -898,7 +900,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             event1: MotionEvent?,
             event2: MotionEvent,
             velocityX: Float,
-            velocityY: Float
+            velocityY: Float,
         ): Boolean {
             // ignore fling events just after releasing an icon from dragging
             if (System.currentTimeMillis() - mLastUpEvent < 500L) {
@@ -1187,7 +1189,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int,
         appWidgetInfo: AppWidgetProviderInfo,
-        callback: (canBind: Boolean) -> Unit
+        callback: (canBind: Boolean) -> Unit,
     ) {
         mActionOnCanBindWidget = null
         val canCreateWidget =
@@ -1207,7 +1209,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     fun handleWidgetConfigureScreen(
         appWidgetHost: AppWidgetHost,
         appWidgetId: Int,
-        callback: (canBind: Boolean) -> Unit
+        callback: (canBind: Boolean) -> Unit,
     ) {
         mActionOnWidgetConfiguredWidget = callback
         appWidgetHost.startAppWidgetConfigureActivityForResult(
@@ -1221,7 +1223,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
     fun handleShorcutCreation(
         activityInfo: ActivityInfo,
-        callback: (shortcutId: String, label: String, icon: Drawable) -> Unit
+        callback: (shortcutId: String, label: String, icon: Drawable) -> Unit,
     ) {
         mActionOnAddShortcut = callback
         val componentName = ComponentName(activityInfo.packageName, activityInfo.name)
