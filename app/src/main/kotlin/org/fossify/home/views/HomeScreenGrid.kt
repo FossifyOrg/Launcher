@@ -1624,8 +1624,11 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) : Rel
             }
         }
 
-        fun getItems() =
-            gridItems.filter { it.isSingleCellType() && it.parentId == item.id }
+        fun getItems(): List<HomeScreenGridItem> {
+            return gridItems
+                .toList()
+                .filter { it.isSingleCellType() && it.parentId == item.id }
+        }
 
         fun generateDrawable(): Drawable? {
             if (iconSize == 0) {
