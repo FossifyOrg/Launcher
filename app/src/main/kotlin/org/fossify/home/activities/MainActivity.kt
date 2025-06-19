@@ -1004,9 +1004,16 @@ class MainActivity : SimpleActivity(), FlingListener {
             }
 
             val label = info.loadLabel(packageManager).toString()
-            val drawable =
-                info.loadIcon(packageManager) ?: getDrawableForPackageName(packageName) ?: continue
-            val placeholderColor = calculateAverageColor(drawable.toBitmap())
+            val drawable = info.loadIcon(packageManager)
+                ?: getDrawableForPackageName(packageName)
+                ?: continue
+
+            val bitmap = drawable.toBitmap(
+                width = max(drawable.intrinsicWidth, 1),
+                height = max(drawable.intrinsicHeight, 1),
+                config = Bitmap.Config.ARGB_8888
+            )
+            val placeholderColor = calculateAverageColor(bitmap)
             allApps.add(
                 AppLauncher(
                     id = null,
@@ -1015,7 +1022,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     activityName = activityName,
                     order = 0,
                     thumbnailColor = placeholderColor,
-                    drawable = drawable.toBitmap().toDrawable(resources)
+                    drawable = bitmap.toDrawable(resources)
                 )
             )
         }
