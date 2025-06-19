@@ -246,7 +246,11 @@ class MainActivity : SimpleActivity(), FlingListener {
 
     override fun onStop() {
         super.onStop()
-        binding.homeScreenGrid.root.appWidgetHost.stopListening()
+        try {
+            binding.homeScreenGrid.root.appWidgetHost.stopListening()
+        } catch (_: Exception) {
+        }
+
         wasJustPaused = false
     }
 
