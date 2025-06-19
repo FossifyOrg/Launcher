@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated translations
+
+### Fixed
+
+- Addressed frequently occurring crashes ([#6])
+
 ## [1.1.2] - 2025-06-06
 
 ### Changed
@@ -63,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.0]: https://github.com/FossifyOrg/Launcher/releases/tag/1.0.0
 
 [#5]: https://github.com/FossifyOrg/Launcher/issues/5
+[#6]: https://github.com/FossifyOrg/Launcher/issues/6
 [#44]: https://github.com/FossifyOrg/Launcher/issues/44
 [#51]: https://github.com/FossifyOrg/Launcher/issues/51
 [#63]: https://github.com/FossifyOrg/Launcher/issues/63
