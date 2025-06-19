@@ -2,7 +2,6 @@ package org.fossify.home.activities
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.app.role.RoleManager
 import android.appwidget.AppWidgetHost
@@ -10,7 +9,6 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.LauncherApps
@@ -20,7 +18,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -97,6 +94,7 @@ import org.fossify.home.receivers.LockDeviceAdminReceiver
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import androidx.core.net.toUri
 
 class MainActivity : SimpleActivity(), FlingListener {
     private var mTouchDownX = -1
@@ -222,7 +220,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     if (!showIcon) {
                         try {
                             launchersDB.deleteById(it.id!!)
-                        } catch (ignored: Exception) {
+                        } catch (_: Exception) {
                         }
                     }
                     showIcon
@@ -283,12 +281,12 @@ class MainActivity : SimpleActivity(), FlingListener {
                 }
             }
 
-            REQUEST_ALLOW_BINDING_WIDGET -> mActionOnCanBindWidget?.invoke(resultCode == Activity.RESULT_OK)
-            REQUEST_CONFIGURE_WIDGET -> mActionOnWidgetConfiguredWidget?.invoke(resultCode == Activity.RESULT_OK)
+            REQUEST_ALLOW_BINDING_WIDGET -> mActionOnCanBindWidget?.invoke(resultCode == RESULT_OK)
+            REQUEST_CONFIGURE_WIDGET -> mActionOnWidgetConfiguredWidget?.invoke(resultCode == RESULT_OK)
             REQUEST_CREATE_SHORTCUT -> {
-                if (resultCode == Activity.RESULT_OK && resultData != null) {
+                if (resultCode == RESULT_OK && resultData != null) {
                     val launcherApps =
-                        applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+                        applicationContext.getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps
                     if (launcherApps.hasShortcutHostPermission()) {
                         val item = launcherApps.getPinItemRequest(resultData)
                         val shortcutInfo = item?.shortcutInfo ?: return
@@ -325,7 +323,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         try {
             mDetector.onTouchEvent(event)
-        } catch (ignored: Exception) {
+        } catch (_: Exception) {
         }
 
         when (event.actionMasked) {
@@ -437,7 +435,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     private fun handleIntentAction(intent: Intent) {
         if (intent.action == LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) {
             val launcherApps =
-                applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+                applicationContext.getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps
             val item = launcherApps.getPinItemRequest(intent)
             val shortcutInfo = item?.shortcutInfo ?: return
 
@@ -478,7 +476,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 try {
                     item.accept()
                     binding.homeScreenGrid.root.storeAndShowGridItem(gridItem)
-                } catch (ignored: IllegalStateException) {
+                } catch (_: IllegalStateException) {
                 }
             }
         }
@@ -642,7 +640,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         val devicePolicyManager =
-            getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val isLockDeviceAdminActive = devicePolicyManager.isAdminActive(
             ComponentName(this, LockDeviceAdminReceiver::class.java)
         )
@@ -695,7 +693,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 val userHandle = android.os.Process.myUserHandle()
                 val shortcutBounds = binding.homeScreenGrid.root.getClickableRect(clickedGridItem)
                 val launcherApps =
-                    applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+                    applicationContext.getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps
                 launcherApps.startShortcut(packageName, id, shortcutBounds, null, userHandle)
             }
         }
@@ -814,7 +812,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             Intent(Intent.ACTION_SET_WALLPAPER).apply {
                 startActivity(this)
             }
-        } catch (e: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
             toast(org.fossify.commons.R.string.no_app_found)
         } catch (e: Exception) {
             showErrorToast(e)
@@ -956,7 +954,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 Class.forName("android.app.StatusBarManager")
                     .getMethod("expandNotificationsPanel")
                     .invoke(getSystemService("statusbar"))
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
     }
@@ -1036,7 +1034,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         val homeScreenGridItems = ArrayList<HomeScreenGridItem>()
         try {
             val defaultDialerPackage =
-                (getSystemService(Context.TELECOM_SERVICE) as TelecomManager).defaultDialerPackage
+                (getSystemService(TELECOM_SERVICE) as TelecomManager).defaultDialerPackage
             appLaunchers.firstOrNull { it.packageName == defaultDialerPackage }?.apply {
                 val dialerIcon =
                     HomeScreenGridItem(
@@ -1059,7 +1057,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     )
                 homeScreenGridItems.add(dialerIcon)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
         try {
@@ -1086,11 +1084,11 @@ class MainActivity : SimpleActivity(), FlingListener {
                     )
                 homeScreenGridItems.add(messengerIcon)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
         try {
-            val browserIntent = Intent("android.intent.action.VIEW", Uri.parse("http://"))
+            val browserIntent = Intent(Intent.ACTION_VIEW, "http://".toUri())
             val resolveInfo =
                 packageManager.resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY)
             val defaultBrowserPackage = resolveInfo!!.activityInfo.packageName
@@ -1116,7 +1114,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     )
                 homeScreenGridItems.add(browserIcon)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
         try {
@@ -1149,7 +1147,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     homeScreenGridItems.add(storeIcon)
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
         try {
@@ -1179,7 +1177,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                     )
                 homeScreenGridItems.add(cameraIcon)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
         homeScreenGridItemsDB.insertAll(homeScreenGridItems)
