@@ -1,0 +1,4 @@
+Fixed:
+
+• Addressed crash on startup due to widgets 
+
