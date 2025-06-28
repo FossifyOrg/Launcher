@@ -1266,10 +1266,15 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             gridItems
                 .filter { it.type == ITEM_TYPE_WIDGET && !it.outOfBounds() }
                 .forEach { item ->
-                    val appWidgetProviderInfo = item.providerInfo
+                    val providerInfo = item.providerInfo
                         ?: appWidgetManager!!.installedProviders
                             .firstOrNull { it.provider.className == item.className }
-                    placeAppWidget(appWidgetProviderInfo!!, item)
+
+                    if (providerInfo != null) {
+                        placeAppWidget(providerInfo, item)
+                    } else {
+                        removeWidget(item)
+                    }
                 }
         } else {
             gridItems
