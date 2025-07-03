@@ -24,21 +24,10 @@
     <ID>ForbiddenComment:AllAppsFragment.kt$AllAppsFragment$// TODO: Use WindowInsets API</ID>
     <ID>LargeClass:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
     <ID>LargeClass:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
-    <ID>LongMethod:Activity.kt$fun Activity.handleGridItemPopupMenu( anchorView: View, gridItem: HomeScreenGridItem, isOnAllAppsFragment: Boolean, listener: ItemMenuListener, ): PopupMenu</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$@SuppressLint("ClickableViewAccessibility") fun widgetLongPressed(item: HomeScreenGridItem)</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun draggedItemMoved(x: Int, y: Int)</ID>
     <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
     <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut( draggedHomeGridItem: HomeScreenGridItem?, xIndex: Int, yIndex: Int, newParentId: Long? = null, toFolderEnd: Boolean = true, )</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addAppIconOrShortcut()</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun addWidget()</ID>
-    <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$private fun moveItem()</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
     <ID>LongMethod:MainActivity.kt$MainActivity$private fun getDefaultAppPackages(appLaunchers: ArrayList&lt;AppLauncher&gt;)</ID>
     <ID>LongMethod:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>LongMethod:WidgetsFragment.kt$WidgetsFragment$@SuppressLint("WrongConstant") fun getAppWidgets()</ID>
-    <ID>LongParameterList:HomeScreenGrid.kt$AnimatedGridPager$( private val getMaxPage: () -&gt; Int, private val redrawGrid: () -&gt; Unit, private val getWidth: () -&gt; Int, private val getHandler: () -&gt; Handler, private val getNextPageBound: () -&gt; Int, private val getPrevPageBound: () -&gt; Int, private val pageChangeStarted: () -&gt; Unit, )</ID>
-    <ID>LongParameterList:HomeScreenGridItemsDao.kt$HomeScreenGridItemsDao$(left: Int, top: Int, right: Int, bottom: Int, page: Int, docked: Boolean, parentId: Long?, id: Long)</ID>
-    <ID>LongParameterList:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$( coords: Rect, cellWidth: Int, cellHeight: Int, sideMargins: Rect, gridItem: HomeScreenGridItem, allGridItems: ArrayList&lt;HomeScreenGridItem&gt; )</ID>
     <ID>LoopWithTooManyJumpStatements:MainActivity.kt$MainActivity$for</ID>
     <ID>MagicNumber:Context.kt$30</ID>
     <ID>MagicNumber:Context.kt$70.0</ID>
