@@ -1,5 +1,4 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
@@ -7,82 +6,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-07-15
 ### Added
-
 - Option to show keyboard automatically in app drawer ([#106])
 
+### Changed
+- Updated translations
+
 ## [1.1.4] - 2025-06-28
-
 ### Fixed
-
 - Addressed crash on startup due to widgets ([#182])
 
 ## [1.1.3] - 2025-06-19
-
 ### Changed
-
 - Updated translations
 
 ### Fixed
-
 - Addressed frequently occurring crashes ([#6])
 
 ## [1.1.2] - 2025-06-06
-
 ### Changed
-
 - Updated translations
 
 ### Fixed
-
-- Clicking home screen app labels now works as expected ([#115]) 
+- Clicking home screen app labels now works as expected ([#115])
 
 ## [1.1.1] - 2025-05-14
-
 ### Changed
-
 - Updated translations
 
 ### Removed
-
 - Removed redundant launcher settings icon from the app drawer ([#51])
 
 ## [1.1.0] - 2025-03-19
-
 ### Added
-
 - Added double tap to lock screen feature ([#63])
 
 ### Changed
-
 - Added more translations
 
 ## [1.0.1] - 2025-01-01
-
 ### Changed
-
 - Other minor bug fixes and improvements
 - Added more translations
 
 ### Fixed
-
 - Fixed scrolling performance issues ([#65])
 - Fixed various issues related to widgets ([#5], [#44], [#74])
 
 ## [1.0.0] - 2024-10-16
-
 ### Added
-
 - Initial release
-
-[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.1.4...HEAD
-[1.1.4]: https://github.com/FossifyOrg/Launcher/compare/1.1.3...1.1.4
-[1.1.3]: https://github.com/FossifyOrg/Launcher/compare/1.1.2...1.1.3
-[1.1.2]: https://github.com/FossifyOrg/Launcher/compare/1.1.1...1.1.2
-[1.1.1]: https://github.com/FossifyOrg/Launcher/compare/1.1.0...1.1.1
-[1.1.0]: https://github.com/FossifyOrg/Launcher/compare/1.0.1...1.1.0
-[1.0.1]: https://github.com/FossifyOrg/Launcher/compare/1.0.0...1.0.1
-[1.0.0]: https://github.com/FossifyOrg/Launcher/releases/tag/1.0.0
 
 [#5]: https://github.com/FossifyOrg/Launcher/issues/5
 [#6]: https://github.com/FossifyOrg/Launcher/issues/6
@@ -94,3 +68,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#106]: https://github.com/FossifyOrg/Launcher/issues/106
 [#115]: https://github.com/FossifyOrg/Launcher/issues/115
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
+
+[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/FossifyOrg/Launcher/compare/1.1.4...1.2.0
+[1.1.4]: https://github.com/FossifyOrg/Launcher/compare/1.1.3...1.1.4
+[1.1.3]: https://github.com/FossifyOrg/Launcher/compare/1.1.2...1.1.3
+[1.1.2]: https://github.com/FossifyOrg/Launcher/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/FossifyOrg/Launcher/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/FossifyOrg/Launcher/compare/1.0.1...1.1.0
+[1.0.1]: https://github.com/FossifyOrg/Launcher/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/FossifyOrg/Launcher/releases/tag/1.0.0
