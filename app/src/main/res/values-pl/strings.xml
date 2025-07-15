@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">Naciśnij dwukrotnie, aby zablokować ekran</string>
     <string name="lock_device_admin_hint">Aby włączyć funkcję dwukrotnego naciśnięcia w celu zablokowania ekranu, musisz udzielić uprawnienia administratora. Uwaga: aplikacja nie może zostać odinstalowana, dopóki to uprawnienie nie zostanie usunięte.</string>
     <string name="lock_device_admin_warning">Dezaktywacja uprawnienia administratora spowoduje wyłączenie funkcji dwukrotnego naciśnięcia w celu zablokowania ekranu.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Automatycznie pokazuj klawiaturę w szufladzie</string>
 </resources>
