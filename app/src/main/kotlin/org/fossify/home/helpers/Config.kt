@@ -32,4 +32,9 @@ class Config(context: Context) : BaseConfig(context) {
     var closeAppDrawer: Boolean
         get() = prefs.getBoolean(CLOSE_APP_DRAWER, false)
         set(closeAppDrawer) = prefs.edit().putBoolean(CLOSE_APP_DRAWER, closeAppDrawer).apply()
+
+    var autoShowKeyboardInAppDrawer: Boolean
+        get() = prefs.getBoolean(AUTO_SHOW_KEYBOARD_IN_APP_DRAWER, false)
+        set(autoShowKeyboardInAppDrawer) = prefs.edit()
+            .putBoolean(AUTO_SHOW_KEYBOARD_IN_APP_DRAWER, autoShowKeyboardInAppDrawer).apply()
 }

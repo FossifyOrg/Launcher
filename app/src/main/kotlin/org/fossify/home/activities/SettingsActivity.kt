@@ -59,6 +59,7 @@ class SettingsActivity : SimpleActivity() {
         setupUseEnglish()
         setupDoubleTapToLock()
         setupCloseAppDrawerOnOtherAppOpen()
+        setupOpenKeyboardOnAppDrawer()
         setupDrawerColumnCount()
         setupDrawerSearchBar()
         setupHomeRowCount()
@@ -152,6 +153,15 @@ class SettingsActivity : SimpleActivity() {
         }
     }
 
+    private fun setupOpenKeyboardOnAppDrawer() {
+        binding.settingsOpenKeyboardOnAppDrawerHolder.beVisibleIf(config.showSearchBar)
+        binding.settingsOpenKeyboardOnAppDrawer.isChecked = config.autoShowKeyboardInAppDrawer
+        binding.settingsOpenKeyboardOnAppDrawerHolder.setOnClickListener {
+            binding.settingsOpenKeyboardOnAppDrawer.toggle()
+            config.autoShowKeyboardInAppDrawer = binding.settingsOpenKeyboardOnAppDrawer.isChecked
+        }
+    }
+
     private fun setupCloseAppDrawerOnOtherAppOpen() {
         binding.settingsCloseAppDrawerOnOtherApp.isChecked = config.closeAppDrawer
         binding.settingsCloseAppDrawerOnOtherAppHolder.setOnClickListener {
@@ -192,6 +202,7 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsDrawerSearchHolder.setOnClickListener {
             binding.settingsShowSearchBar.toggle()
             config.showSearchBar = binding.settingsShowSearchBar.isChecked
+            binding.settingsOpenKeyboardOnAppDrawerHolder.beVisibleIf(config.showSearchBar)
         }
     }
 
