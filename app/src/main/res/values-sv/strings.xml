@@ -17,4 +17,5 @@
     <string name="lock_device_admin_hint">Om du vill aktivera funktionen dubbeltryck för att låsa skärmen måste du bevilja administratörsbehörighet. Observera att appen inte kan avinstalleras förrän behörigheten har tagits bort.</string>
     <string name="double_tap_to_lock">Dubbeltryck för att låsa skärmen</string>
     <string name="lock_device_admin_warning">Om du inaktiverar administratörsbehörigheten inaktiveras funktionen dubbeltryck för att låsa skärmen.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Visa tangentbordet automatiskt i lådan</string>
 </resources>
