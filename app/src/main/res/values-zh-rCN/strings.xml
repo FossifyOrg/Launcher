@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">双击锁屏</string>
     <string name="lock_device_admin_warning">停用管理员权限将禁用双击锁屏功能。</string>
     <string name="lock_device_admin_hint">要启用双击锁屏功能，您需要授予管理员权限。请注意，在移除此权限之前无法卸载该应用。</string>
+    <string name="auto_show_keyboard_in_app_drawer">在抽屉中自动显示键盘</string>
 </resources>
