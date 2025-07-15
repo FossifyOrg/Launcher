@@ -1,0 +1,8 @@
+Added:
+
+• Option to show keyboard automatically in app drawer 
+
+Changed:
+
+• Updated translations
+
