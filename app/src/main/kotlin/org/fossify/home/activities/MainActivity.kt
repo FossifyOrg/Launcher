@@ -33,6 +33,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.PopupMenu
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -51,6 +52,7 @@ import org.fossify.commons.extensions.onGlobalLayout
 import org.fossify.commons.extensions.performHapticFeedback
 import org.fossify.commons.extensions.realScreenSize
 import org.fossify.commons.extensions.showErrorToast
+import org.fossify.commons.extensions.showKeyboard
 import org.fossify.commons.extensions.toast
 import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.DARK_GREY
@@ -94,7 +96,6 @@ import org.fossify.home.receivers.LockDeviceAdminReceiver
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
-import androidx.core.net.toUri
 
 class MainActivity : SimpleActivity(), FlingListener {
     private var mTouchDownX = -1
@@ -580,6 +581,16 @@ class MainActivity : SimpleActivity(), FlingListener {
             AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
             null
         )
+
+        if (
+            fragment is AllAppsFragmentBinding
+            && config.showSearchBar
+            && config.autoShowKeyboardInAppDrawer
+        ) {
+            fragment.root.postDelayed({
+                showKeyboard(fragment.searchBar.binding.topToolbarSearch)
+            }, animationDuration)
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             updateStatusBarIcons()
