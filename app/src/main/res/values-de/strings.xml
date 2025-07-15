@@ -17,4 +17,5 @@
     <string name="lock_device_admin_hint">Um die Funktion „Doppeltes Antippen zum Sperren des Bildschirms“ zu aktivieren, musst du die Administratorberechtigung erteilen. Beachte, dass die App nicht deinstalliert werden kann, bis diese Berechtigung entfernt wird.</string>
     <string name="double_tap_to_lock">Doppeltes Antippen zum Sperren des Bildschirms</string>
     <string name="lock_device_admin_warning">Durch Entfernen der Administratorberechtigung wird die Funktion „Doppeltes Antippen zum Sperren des Bildschirms“ deaktiviert.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Keyboard automatisch im Drawer anzeigen</string>
 </resources>
