@@ -17,4 +17,5 @@
     <string name="lock_device_admin_hint">Chcete-li povolit funkci zamykání obrazovky dvojitým klepnutím, musíte udělit oprávnění správce. Upozornění: aplikaci nelze odinstalovat, dokud toto oprávnění neodeberete.</string>
     <string name="lock_device_admin_warning">Deaktivací oprávnění správce zakážete funkci zamykání obrazovky dvojitým klepnutím.</string>
     <string name="double_tap_to_lock">Klepněte dvakrát pro zamknutí obrazovky</string>
+    <string name="auto_show_keyboard_in_app_drawer">Automaticky zobrazit klávesnici v seznamu aplikací</string>
 </resources>
