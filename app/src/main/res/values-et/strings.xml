@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">Topeltpuudutus lukustusvaates</string>
     <string name="lock_device_admin_warning">Peakasutaja õiguste eemaldamine lülitab välja võimaluse kasutada lukustusvaates topeltpuudutust.</string>
     <string name="lock_device_admin_hint">Kui soovid lukustusvaates kasutada topeltpuudutust, siis vajab rakendus peakasutaja õigusi. Palun arvesta, et rakenduse eemaldamiseks pead esmalt eemaldama need õigused.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Näita menüüs klahvistikku automaatselt</string>
 </resources>
