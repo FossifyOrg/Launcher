@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">Toque duas vezes para bloquear a tela</string>
     <string name="lock_device_admin_hint">Para habilitar o recurso de toque duplo para bloquear a tela, você precisa conceder permissão de administrador. Observe que o aplicativo não pode ser desinstalado até que essa permissão seja removida.</string>
     <string name="lock_device_admin_warning">Desativar a permissão de administrador desabilitará o recurso de toque duplo para bloquear a tela.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Mostrar teclado ao abrir Gaveta</string>
 </resources>
