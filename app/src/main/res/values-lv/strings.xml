@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">Palaidējs</string>
+    <string name="launcher_settings">Palaidēja iestatījumi</string>
+    <string name="app_info">Informācija par lietotni</string>
+    <string name="touch_hold_widget">Ilgi jāpiespiež uz logrīka un jāievelk tas sākuma ekrānā</string>
+    <string name="uninstall">Noņemt</string>
+    <string name="hide_icon">Paslēpt ikonu</string>
+    <string name="add_hidden_icons">Pievienot paslēptās ikonas</string>
+    <string name="manage_hidden_icons">Pārvaldīt paslēptās ikonas</string>
+    <string name="hidden_icons">Paslēptās ikonas</string>
+    <string name="hidden_icons_placeholder">Dažas lietotnes nevar noņemt sistēmas ierobežojumu dēļ, bet ir iespējams paslēpt to ikonas, lai neredzētu tās.</string>
+    <string name="app_drawer_settings">Lietotņu atvilktne</string>
+    <string name="close_app_drawer_on_app_open">Aizvērt lietotņu atvilktni pēc lietotnes atvēršanas</string>
+    <string name="auto_show_keyboard_in_app_drawer">Atvilktnē automātiski parādīt tastatūru</string>
+    <string name="home_screen_settings">Sākuma ekrāns</string>
+    <string name="widget_too_big">Logrīks ir par lielu pašreizējam sākuma ekrāna izmēram</string>
+    <string name="double_tap_to_lock">Aizslēgt ekrānu ar divkāršu piesitienu</string>
+    <string name="lock_device_admin_hint">Lai iespējotu ekrāna aizslēgšanu ar divkāršu piesitienu, ir nepieciešams piešķirt pārvaldītāja atļauju. Jāņem vērā, ka lietotni nevar noņemt, kamēr šī atļauja nav noņemta.</string>
+    <string name="lock_device_admin_warning">Pārvaldītāja atļaujas deaktivēšana atspējos ekrāna aizslēgšanu ar divkāršu piesitienu.</string>
+</resources>
