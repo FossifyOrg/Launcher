@@ -17,4 +17,5 @@
     <string name="lock_device_admin_warning">ביטול הרשאת מנהל ישבית את אפשרות ההקשה הכפולה לנעילת מסך.</string>
     <string name="app_drawer_settings">מגירת אפליקציות</string>
     <string name="widget_too_big">הווידג\'ט גדול מדי לגודל מסך הבית הנוכחי</string>
+    <string name="auto_show_keyboard_in_app_drawer">הצגת מקלדת אוטומטית במגירה</string>
 </resources>
