@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_launcher_name">משגר</string>
-    <string name="launcher_settings">הגדרות משגר</string>
+    <string name="launcher_settings">הגדרות המשגר</string>
     <string name="app_info">פרטי אפליקציה</string>
     <string name="touch_hold_widget">לחיצה ארוכה על הווידג\'ט וגרירה שלו במסך הראשי</string>
     <string name="uninstall">הסרה</string>
@@ -17,4 +17,5 @@
     <string name="lock_device_admin_warning">ביטול הרשאת מנהל ישבית את אפשרות ההקשה הכפולה לנעילת מסך.</string>
     <string name="app_drawer_settings">מגירת אפליקציות</string>
     <string name="widget_too_big">הווידג\'ט גדול מדי לגודל מסך הבית הנוכחי</string>
+    <string name="auto_show_keyboard_in_app_drawer">הצגת מקלדת אוטומטית במגירה</string>
 </resources>
