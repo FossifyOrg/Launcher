@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_launcher_name">משגר</string>
-    <string name="launcher_settings">הגדרות משגר</string>
+    <string name="launcher_settings">הגדרות המשגר</string>
     <string name="app_info">פרטי אפליקציה</string>
     <string name="touch_hold_widget">לחיצה ארוכה על הווידג\'ט וגרירה שלו במסך הראשי</string>
     <string name="uninstall">הסרה</string>
