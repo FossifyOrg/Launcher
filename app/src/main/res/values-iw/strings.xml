@@ -2,7 +2,7 @@
 <resources>
     <string name="app_launcher_name">משגר</string>
     <string name="launcher_settings">הגדרות המשגר</string>
-    <string name="app_info">פרטי אפליקציה</string>
+    <string name="app_info">פרטי היישומון</string>
     <string name="touch_hold_widget">לחיצה ארוכה על הווידג\'ט וגרירה שלו במסך הראשי</string>
     <string name="uninstall">הסרה</string>
     <string name="hide_icon">הסתר אייקון</string>
