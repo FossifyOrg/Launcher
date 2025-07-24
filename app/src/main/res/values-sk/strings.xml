@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_launcher_name">Spúšťač</string>
-    <string name="launcher_settings">Nastavenia Spúšťača</string>
-    <string name="app_info">Informácie o apke</string>
+    <string name="launcher_settings">Nastavenia spúšťača</string>
+    <string name="app_info">Informácie o aplikácii</string>
     <string name="touch_hold_widget">Umiestnite widget na domovskú obrazovku dlhým podržaním a potiahnutím</string>
     <string name="uninstall">Odinštalovať</string>
-    <string name="hide_icon">Skryť ikonku</string>
-    <string name="add_hidden_icons">Pridať skryté ikonky</string>
-    <string name="manage_hidden_icons">Spravovať skryté ikonky</string>
-    <string name="hidden_icons">Skryté ikonky</string>
-    <string name="hidden_icons_placeholder">Niektoré apky nemôžu byť odinštalované kvôli systémovým obmedzeniam, viete ich ale aspoň skryť, aby ste ich nevideli.</string>
-    <string name="app_drawer_settings">Zoznam apiek</string>
-    <string name="close_app_drawer_on_app_open">Zavrieť zoznam apiek po spustení apky</string>
-    <string name="home_screen_settings">Domáca obrazovka</string>
+    <string name="hide_icon">Skryť aplikáciu</string>
+    <string name="add_hidden_icons">Pridať skryté aplikácie</string>
+    <string name="manage_hidden_icons">Spravovať skryté aplikácie</string>
+    <string name="hidden_icons">Skryté aplikácie</string>
+    <string name="hidden_icons_placeholder">Niektoré aplikácie nemôžu byť odinštalované pre systémové obmedzenia, ale je možné ich skryť, aby ste ich nevideli.</string>
+    <string name="app_drawer_settings">Ponuka aplikácií</string>
+    <string name="close_app_drawer_on_app_open">Zavrieť ponuku aplikácií po spustení aplikácie</string>
+    <string name="home_screen_settings">Domovská obrazovka</string>
     <string name="widget_too_big">Widget je príliš veľký pre súčasnú domácu obrazovku</string>
+    <string name="auto_show_keyboard_in_app_drawer">Automaticky zobraziť klávesnicu v ponuke aplikácií</string>
+    <string name="double_tap_to_lock">Dvojitým ťuknutím uzamknúť obrazovku</string>
+    <string name="lock_device_admin_hint">Pre umoženie zámku obrazovky dvojitým ťuknutím je nutné aktivovať povolenie pre aplikáciu na správu zariadenia. Pre odinštalovanie aplikácie musí byť toto povolenie zrušené.</string>
+    <string name="lock_device_admin_warning">Deaktiváciou povolenia aplikácie na správu zariadenia sa funkcia dvojitého ťuknutia na uzamknutie obrazovky vypne.</string>
 </resources>
