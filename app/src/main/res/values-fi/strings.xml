@@ -17,4 +17,5 @@
     <string name="lock_device_admin_hint">Näytön kaksoisnapautuslukitus vaatii pääkäyttäjäoikeuksia. Huomio, että sovellusta ei voida poistaa, ennen kuin tämä oikeus on poistettu.</string>
     <string name="double_tap_to_lock">Kaksoisnapauta lukitaksesi näytön</string>
     <string name="lock_device_admin_warning">Pääkäyttäjäoikeuden poiskytkentä, estää kaksoisnapautuslukituksen toiminnan.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Näytä näppäimistö automaattisesti katsottaessa kaikkia sovelluksia</string>
 </resources>
