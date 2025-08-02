@@ -17,4 +17,5 @@
     <string name="lock_device_admin_hint">Per abilitare la funzione di doppio tocco per bloccare lo schermo è necessario garantire i permessi di amministratore. L\'app non può essere disinstallata finché non vengono rimossi i permessi.</string>
     <string name="double_tap_to_lock">Doppio tocco per bloccare lo schermo</string>
     <string name="lock_device_admin_warning">Disattivando i permessi di amministratore disabiliterai la funzionalità di doppio tocco per bloccare lo schermo.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Mostra automaticamente la tastiera nel cassetto</string>
 </resources>
