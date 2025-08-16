@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">輕觸兩下以鎖定螢幕</string>
     <string name="lock_device_admin_warning">停用管理權限將會停用輕觸兩下以鎖定螢幕的功能。</string>
     <string name="lock_device_admin_hint">要啟用輕觸兩下以鎖定螢幕的功能，您必須授予管理權限。請注意，在移除此權限前，無法解除安裝應用程式。</string>
+    <string name="auto_show_keyboard_in_app_drawer">自動在抽屜中顯示鍵盤</string>
 </resources>
