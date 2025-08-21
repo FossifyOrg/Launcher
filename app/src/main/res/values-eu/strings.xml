@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">Sakatu bi aldiz pantaila blokeatzeko</string>
     <string name="lock_device_admin_hint">Bi aldiz sakatuta pantaila blokeatzeko, kudeatzaile baimena eman behar duzu. Kontuan izan baimen hau kendu arte ezingo duzula aplikazioa telefonotik kendu.</string>
     <string name="lock_device_admin_warning">Kudeatzaile baimena desaktibatzean, pantaila blokeatzeko bi aldiz ikutzea desaktibatu egingo da.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Erakutsi teklatua automatikoki tiraderan</string>
 </resources>
