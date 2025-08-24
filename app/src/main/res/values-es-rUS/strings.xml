@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">Lanzador</string>
+    <string name="launcher_settings">Configuración del Lanzador</string>
+    <string name="app_info">Información de la aplicación</string>
+</resources>
