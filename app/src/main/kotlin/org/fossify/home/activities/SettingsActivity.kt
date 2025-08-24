@@ -6,13 +6,9 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import org.fossify.commons.dialogs.RadioGroupDialog
-import org.fossify.commons.extensions.beGoneIf
 import org.fossify.commons.extensions.beVisibleIf
-import org.fossify.commons.extensions.getCustomizeColorsString
 import org.fossify.commons.extensions.getProperPrimaryColor
-import org.fossify.commons.extensions.isOrWasThankYouInstalled
 import org.fossify.commons.extensions.launchMoreAppsFromUsIntent
-import org.fossify.commons.extensions.launchPurchaseThankYouIntent
 import org.fossify.commons.extensions.updateTextColors
 import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.NavigationIcon
@@ -54,7 +50,6 @@ class SettingsActivity : SimpleActivity() {
         setupToolbar(binding.settingsToolbar, NavigationIcon.Arrow)
         refreshMenuItems()
 
-        setupPurchaseThankYou()
         setupCustomizeColors()
         setupUseEnglish()
         setupDoubleTapToLock()
@@ -96,15 +91,7 @@ class SettingsActivity : SimpleActivity() {
         }
     }
 
-    private fun setupPurchaseThankYou() {
-        binding.settingsPurchaseThankYouHolder.beGoneIf(isOrWasThankYouInstalled())
-        binding.settingsPurchaseThankYouHolder.setOnClickListener {
-            launchPurchaseThankYouIntent()
-        }
-    }
-
     private fun setupCustomizeColors() {
-        binding.settingsColorCustomizationLabel.text = getCustomizeColorsString()
         binding.settingsColorCustomizationHolder.setOnClickListener {
             startCustomizationActivity()
         }
