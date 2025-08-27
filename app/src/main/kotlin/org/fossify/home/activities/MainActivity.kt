@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.provider.Telephony
 import android.telecom.TelecomManager
 import android.view.ContextThemeWrapper
@@ -163,6 +164,10 @@ class MainActivity : SimpleActivity(), FlingListener {
                 x = binding.homeScreenGrid.root.getClickableRect(it).left.toFloat(),
                 clickedGridItem = it
             )
+        }
+
+        if (!isDefaultLauncher()) {
+            requestHomeRole()
         }
     }
 
@@ -775,7 +780,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             Gravity.TOP or Gravity.END
         ).apply {
             inflate(R.menu.menu_home_screen)
-            menu.findItem(R.id.set_as_default).isVisible = isQPlus() && !isDefaultLauncher()
+            menu.findItem(R.id.set_as_default).isVisible = !isDefaultLauncher()
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.widgets -> showWidgetsFragment()
@@ -841,6 +846,18 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     private fun launchSetAsDefaultIntent() {
+        val intents = listOf(
+            Intent(Settings.ACTION_HOME_SETTINGS),
+            Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
+            Intent(Settings.ACTION_SETTINGS)
+        )
+        val intent = intents.firstOrNull { it.resolveActivity(packageManager) != null }
+        if (intent != null) {
+            startActivity(intent)
+        }
+    }
+
+    private fun requestHomeRole() {
         if (isQPlus()) {
             startActivityForResult(
                 roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME),

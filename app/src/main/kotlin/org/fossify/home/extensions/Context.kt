@@ -1,14 +1,18 @@
 package org.fossify.home.extensions
 
-import android.annotation.TargetApi
 import android.app.role.RoleManager
 import android.appwidget.AppWidgetProviderInfo
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Process
 import android.util.Size
+import androidx.annotation.RequiresApi
+import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.Config
@@ -31,7 +35,7 @@ val Context.homeScreenGridItemsDB: HomeScreenGridItemsDao
 val Context.hiddenIconsDB: HiddenIconsDao
     get() = AppsDatabase.getInstance(applicationContext).HiddenIconsDao()
 
-@get:TargetApi(Build.VERSION_CODES.Q)
+@get:RequiresApi(Build.VERSION_CODES.Q)
 val Context.roleManager: RoleManager
     get() = getSystemService(RoleManager::class.java)
 
@@ -76,9 +80,20 @@ fun Context.getCellCount(size: Int): Int {
     return max(tiles, 1)
 }
 
-@TargetApi(Build.VERSION_CODES.Q)
 fun Context.isDefaultLauncher(): Boolean {
-    return with(roleManager) {
-        isRoleAvailable(RoleManager.ROLE_HOME) && isRoleHeld(RoleManager.ROLE_HOME)
+    return if (isQPlus()) {
+        with(roleManager) {
+            isRoleAvailable(RoleManager.ROLE_HOME) && isRoleHeld(RoleManager.ROLE_HOME)
+        }
+    } else {
+        val filters = ArrayList<IntentFilter>()
+        val activities = ArrayList<ComponentName>()
+        @Suppress("DEPRECATION")
+        packageManager.getPreferredActivities(filters, activities, null)
+        return activities.indices.any { i ->
+            activities[i].packageName == packageName &&
+                    filters[i].hasAction(Intent.ACTION_MAIN) &&
+                    filters[i].hasCategory(Intent.CATEGORY_HOME)
+        }
     }
 }
