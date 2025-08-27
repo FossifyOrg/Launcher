@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- The app will now prompt to set as default launcher on startup ([#230])
 
 ## [1.2.0] - 2025-07-15
 ### Added
@@ -68,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#106]: https://github.com/FossifyOrg/Launcher/issues/106
 [#115]: https://github.com/FossifyOrg/Launcher/issues/115
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
+[#230]: https://github.com/FossifyOrg/Launcher/issues/230
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.2.0...HEAD
 [1.2.0]: https://github.com/FossifyOrg/Launcher/compare/1.1.4...1.2.0
