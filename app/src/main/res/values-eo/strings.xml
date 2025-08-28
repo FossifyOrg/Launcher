@@ -17,4 +17,5 @@
     <string name="lock_device_admin_hint">Por aktivigi la funkcion de ŝlosado de ekrano per duobla frapeto, endas koncedi administrajn permesojn. Notu, ke ne eblas malinstali la aplikaĵon antaŭ senvalidigi tiujn permesojn.</string>
     <string name="lock_device_admin_warning">Malŝalto de administraj permesoj malŝaltos la funkcion de ŝlosado de ekrano per duobla frapeto.</string>
     <string name="app_info">Aplikaĵaj informoj</string>
+    <string name="auto_show_keyboard_in_app_drawer">Aŭtomate montri klavaron en la aplikaĵa tirkesto</string>
 </resources>
