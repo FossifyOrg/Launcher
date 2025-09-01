@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The app will now prompt to set as default launcher on startup ([#230])
 
+### Fixed
+- Fix home screen hover events not working with TalkBack ([#234])
+
 ## [1.2.0] - 2025-07-15
 ### Added
 - Option to show keyboard automatically in app drawer ([#106])
@@ -71,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#115]: https://github.com/FossifyOrg/Launcher/issues/115
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
+[#234]: https://github.com/FossifyOrg/Launcher/issues/234
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.2.0...HEAD
 [1.2.0]: https://github.com/FossifyOrg/Launcher/compare/1.1.4...1.2.0
