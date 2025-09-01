@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The app will now prompt to set as default launcher on startup ([#230])
 
 ### Fixed
-- Fix home screen hover events not working with TalkBack ([#234])
+- Fixed home screen hover events not working with TalkBack ([#234])
 
 ## [1.2.0] - 2025-07-15
 ### Added
