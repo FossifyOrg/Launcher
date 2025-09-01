@@ -1,0 +1,9 @@
+Changed:
+
+• The app will now prompt to set as default launcher on startup 
+• Updated translations
+
+Fixed:
+
+• Fixed home screen hover events not working with TalkBack 
+
