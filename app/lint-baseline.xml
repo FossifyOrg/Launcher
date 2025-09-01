@@ -76,7 +76,7 @@
 
     <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 8.11.1 is available: 8.12.0"
+        message="A newer version of com.android.application than 8.11.1 is available: 8.12.2"
         errorLine1="gradlePlugins-agp = &quot;8.11.1&quot;"
         errorLine2="                    ~~~~~~~~">
         <location
@@ -116,28 +116,6 @@
             file="src/main/AndroidManifest.xml"
             line="47"
             column="13"/>
-    </issue>
-
-    <issue
-        id="UseRequiresApi"
-        message="Use `@RequiresApi(Build.VERSION_CODES.Q) instead of `@TargetApi` to propagate the requirement to callers of `getRoleManager`"
-        errorLine1="@get:TargetApi(Build.VERSION_CODES.Q)"
-        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/org/fossify/home/extensions/Context.kt"
-            line="34"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UseRequiresApi"
-        message="Use `@RequiresApi(Build.VERSION_CODES.Q) instead of `@TargetApi` to propagate the requirement to callers of `isDefaultLauncher`"
-        errorLine1="@TargetApi(Build.VERSION_CODES.Q)"
-        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/org/fossify/home/extensions/Context.kt"
-            line="79"
-            column="1"/>
     </issue>
 
     <issue
@@ -649,7 +627,7 @@
         errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/org/fossify/home/activities/SettingsActivity.kt"
-            line="175"
+            line="162"
             column="50"/>
     </issue>
 
@@ -660,7 +638,7 @@
         errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/org/fossify/home/activities/SettingsActivity.kt"
-            line="211"
+            line="198"
             column="51"/>
     </issue>
 
@@ -671,7 +649,7 @@
         errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/org/fossify/home/activities/SettingsActivity.kt"
-            line="237"
+            line="224"
             column="54"/>
     </issue>
 
