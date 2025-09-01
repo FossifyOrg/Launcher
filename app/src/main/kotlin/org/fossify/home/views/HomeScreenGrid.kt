@@ -201,6 +201,11 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
         fetchGridItems()
     }
 
+    override fun dispatchHoverEvent(event: MotionEvent): Boolean {
+        if (accessibilityHelper.dispatchHoverEvent(event)) return true
+        return super.dispatchHoverEvent(event)
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         binding = HomeScreenGridBinding.bind(this)
