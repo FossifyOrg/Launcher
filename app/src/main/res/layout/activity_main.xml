@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_holder"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/home_screen_grid"
-        layout="@layout/home_screen_grid" />
+    <RelativeLayout
+        android:id="@+id/main_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/all_apps_fragment"
-        layout="@layout/all_apps_fragment"
-        android:visibility="gone" />
+        <FrameLayout
+            android:id="@+id/minus_one_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:visibility="gone" />
 
-    <include
-        android:id="@+id/widgets_fragment"
-        layout="@layout/widgets_fragment"
-        android:visibility="gone" />
+        <include
+            android:id="@+id/home_screen_grid"
+            layout="@layout/home_screen_grid"
+            android:layout_toEndOf="@id/minus_one_container" />
 
-    <View
-        android:id="@+id/home_screen_popup_menu_anchor"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:visibility="gone" />
+        <include
+            android:id="@+id/all_apps_fragment"
+            layout="@layout/all_apps_fragment"
+            android:visibility="gone" />
 
-</RelativeLayout>
+        <include
+            android:id="@+id/widgets_fragment"
+            layout="@layout/widgets_fragment"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/home_screen_popup_menu_anchor"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</FrameLayout>
