@@ -14,7 +14,8 @@
     <string name="close_app_drawer_on_app_open">Bir uygulama açıldığında uygulama çekmecesini kapat</string>
     <string name="home_screen_settings">Ana ekran</string>
     <string name="widget_too_big">Widget, şu anki ana ekran boyutu için çok büyük</string>
-    <string name="double_tap_to_lock">Kilit ekranına çift dokun</string>
-    <string name="lock_device_admin_warning">Yönetici iznini devre dışı bırakmak, kilit ekranı özelliğini devre dışı bırakır.</string>
-    <string name="lock_device_admin_hint">Kilit ekranı çift dokun özelliğini etkinleştirmek için yönetici izni vermeniz gerekir. Bu izin uygulama kaldırılana kadar kaldırılmayacağını unutmayın.</string>
+    <string name="double_tap_to_lock">Ekranı kilitlemek için çift dokunun</string>
+    <string name="lock_device_admin_warning">Yönetici iznini devre dışı bırakmak, ekranı kilitlemek için çift dokunma özelliğini devre dışı bırakır.</string>
+    <string name="lock_device_admin_hint">Ekranı kilitlemek için çift dokunma özelliğini etkinleştirmek için yönetici izni vermeniz gerekir. Bu izin kaldırılmadığı sürece uygulamanın kaldırılamayacağını unutmayın.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Uygulama çekmecesinde otomatik olarak klavyeyi göster</string>
 </resources>
