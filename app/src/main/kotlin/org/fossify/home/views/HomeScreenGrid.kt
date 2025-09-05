@@ -214,7 +214,9 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
     fun fetchGridItems() {
         ensureBackgroundThread {
             val providers = appWidgetManager.installedProviders
-            gridItems = context.homeScreenGridItemsDB.getAllItems() as ArrayList<HomeScreenGridItem>
+            gridItems = ArrayList(
+                context.homeScreenGridItemsDB.getAllItems().filter { it.page >= 0 }
+            )
             gridItems.toImmutableList().forEach { item ->
                 if (item.type == ITEM_TYPE_ICON) {
                     item.drawable = context.getDrawableForPackageName(item.packageName)
@@ -594,7 +596,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                     top = yIndex
                     right = xIndex
                     bottom = yIndex
-                    page = pager.getCurrentPage()
+                    page = pager.getCurrentPage().coerceAtLeast(0)
                     docked = yIndex == rowCount - 1
 
                     ensureBackgroundThread {
@@ -732,7 +734,9 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                             )
                         }
                         (context as? MainActivity)?.runOnUiThread {
-                            gridItems.add(parentItem)
+                            if (parentItem.page >= 0) {
+                                gridItems.add(parentItem)
+                            }
                             addAppIconOrShortcut(draggedHomeGridItem, xIndex!!, yIndex!!, newId)
                         }
                     }
@@ -808,7 +812,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                 top = yIndex
                 right = finalXIndex
                 bottom = yIndex
-                page = pager.getCurrentPage()
+                page = pager.getCurrentPage().coerceAtLeast(0)
                 docked = yIndex == rowCount - 1
                 parentId = newParentId
 
@@ -881,7 +885,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                 top = yIndex,
                 right = finalXIndex,
                 bottom = yIndex,
-                page = pager.getCurrentPage(),
+                page = pager.getCurrentPage().coerceAtLeast(0),
                 packageName = draggedItem!!.packageName,
                 activityName = draggedItem!!.activityName,
                 title = draggedItem!!.title,
@@ -945,10 +949,12 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
     }
 
     fun storeAndShowGridItem(item: HomeScreenGridItem) {
-        val newId = context.homeScreenGridItemsDB.insert(item)
-        item.id = newId
-        gridItems.add(item)
-        redrawGrid()
+        if (item.page >= 0) {
+            val newId = context.homeScreenGridItemsDB.insert(item)
+            item.id = newId
+            gridItems.add(item)
+            redrawGrid()
+        }
     }
 
     private fun addWidget() {
@@ -995,7 +1001,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                     top = widgetRect.top
                     right = widgetRect.right
                     bottom = widgetRect.bottom
-                    page = pager.getCurrentPage()
+                    page = pager.getCurrentPage().coerceAtLeast(0)
                 }
 
                 ensureBackgroundThread {
@@ -1012,7 +1018,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                             widgetItem.top,
                             widgetItem.right,
                             widgetItem.bottom,
-                            pager.getCurrentPage(),
+                            pager.getCurrentPage().coerceAtLeast(0),
                             false,
                             null,
                             widgetItem.id!!
@@ -1032,7 +1038,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                             right = widgetItem.right
                             top = widgetItem.top
                             bottom = widgetItem.bottom
-                            page = pager.getCurrentPage()
+                            page = pager.getCurrentPage().coerceAtLeast(0)
                         }
 
 
@@ -1136,14 +1142,17 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
         item.drawable = null
         // Delete existing widget if it has already been loaded to the list
         gridItems.removeIf { it.id == item.id }
-        gridItems.add(item)
+        if (item.page >= 0) {
+            gridItems.add(item)
+        }
     }
 
     private fun updateWidgetPositionAndSize(
         widgetView: AppWidgetHostView,
         item: HomeScreenGridItem,
     ): Size {
-        val currentViewPosition = pager.getCurrentViewPositionInFullPageSpace() * width.toFloat()
+        val currentViewPosition =
+            (pager.getCurrentViewPositionInFullPageSpace() + pager.getMinPage().toFloat()) * width.toFloat()
         val widgetPos = calculateWidgetPos(item.getTopLeft(rowCount))
         widgetView.x = widgetPos.x + width * item.page - currentViewPosition
         widgetView.y = widgetPos.y.toFloat()
@@ -1332,7 +1341,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             val folderRect = folder.getDrawingRect()
 
             val currentViewPosition =
-                pager.getCurrentViewPositionInFullPageSpace() * width.toFloat()
+                (pager.getCurrentViewPositionInFullPageSpace() + pager.getMinPage().toFloat()) * width.toFloat()
             val rectOffset = width * folder.item.page - currentViewPosition
             folderRect.offset(rectOffset, 0f)
 
@@ -2174,6 +2183,7 @@ private class AnimatedGridPager(
         }
     }
 
+    private val minPage = -1
     private var lastPage = 0
     private var currentPage = 0
     private var pageChangeLastArea = PageChangeArea.MIDDLE
@@ -2189,10 +2199,12 @@ private class AnimatedGridPager(
 
     fun isItemOnLastPage(item: HomeScreenGridItem) = item.page == lastPage
 
-    fun getPageCount() = max(getMaxPage(), currentPage) + 1
+    fun getPageCount() = max(getMaxPage(), currentPage) - minPage + 1
 
 
-    fun isOutsideOfPageRange() = currentPage > getMaxPage()
+    fun isOutsideOfPageRange() = currentPage > getMaxPage() || currentPage < minPage
+
+    fun getMinPage() = minPage
 
     fun isItemInSwipeRange(item: HomeScreenGridItem) =
         ((pageChangeSwipedPercentage > 0f && item.page == currentPage - 1) || (pageChangeSwipedPercentage < 0f && item.page == currentPage + 1))
@@ -2251,7 +2263,8 @@ private class AnimatedGridPager(
         } else {
             abs(pageChangeSwipedPercentage)
         }
-        return MathUtils.lerp(rangeStart, rangeEnd, lerpAmount)
+        val rawPosition = MathUtils.lerp(rangeStart, rangeEnd, lerpAmount)
+        return rawPosition - minPage
     }
 
     fun setSwipeMovement(diffX: Float) {
@@ -2259,7 +2272,7 @@ private class AnimatedGridPager(
             return
         }
 
-        if (currentPage < getMaxPage() && diffX > 0f || currentPage > 0 && diffX < 0f) {
+        if (currentPage < getMaxPage() && diffX > 0f || currentPage > minPage && diffX < 0f) {
             pageChangeSwipedPercentage = (-diffX / getWidth().toFloat()).coerceIn(-1f, 1f)
             pageChangeStarted()
             redrawGrid()
@@ -2274,14 +2287,14 @@ private class AnimatedGridPager(
         if (abs(pageChangeSwipedPercentage) > 0.5f) {
             lastPage = currentPage
             currentPage = if (pageChangeSwipedPercentage > 0f) {
-                currentPage - 1
+                (currentPage - 1).coerceAtLeast(minPage)
             } else {
                 currentPage + 1
             }
             handlePageChange(true)
         } else {
             lastPage = if (pageChangeSwipedPercentage > 0f) {
-                currentPage - 1
+                (currentPage - 1).coerceAtLeast(minPage)
             } else {
                 currentPage + 1
             }
@@ -2322,7 +2335,7 @@ private class AnimatedGridPager(
     }
 
     fun prevPage(redraw: Boolean = false): Boolean {
-        if (currentPage > 0 && pageChangeEnabled) {
+        if (currentPage > minPage && pageChangeEnabled) {
             lastPage = currentPage
             currentPage--
             handlePageChange(redraw)
@@ -2333,7 +2346,7 @@ private class AnimatedGridPager(
     }
 
     fun skipToPage(targetPage: Int): Boolean {
-        if (currentPage != targetPage && targetPage < getMaxPage() + 1) {
+        if (currentPage != targetPage && targetPage < getMaxPage() + 1 && targetPage >= minPage) {
             lastPage = currentPage
             currentPage = targetPage
             handlePageChange()
