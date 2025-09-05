@@ -78,6 +78,7 @@ import org.fossify.home.extensions.launchersDB
 import org.fossify.home.extensions.roleManager
 import org.fossify.home.extensions.uninstallApp
 import org.fossify.home.fragments.MyFragment
+import org.fossify.home.fragments.MinusOneFragment
 import org.fossify.home.helpers.ITEM_TYPE_FOLDER
 import org.fossify.home.helpers.ITEM_TYPE_ICON
 import org.fossify.home.helpers.ITEM_TYPE_SHORTCUT
@@ -90,6 +91,7 @@ import org.fossify.home.helpers.REQUEST_SET_DEFAULT
 import org.fossify.home.helpers.UNINSTALL_APP_REQUEST_CODE
 import org.fossify.home.interfaces.FlingListener
 import org.fossify.home.interfaces.ItemMenuListener
+import org.fossify.home.interfaces.MinusOneFragmentListener
 import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HiddenIcon
 import org.fossify.home.models.HomeScreenGridItem
@@ -98,7 +100,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class MainActivity : SimpleActivity(), FlingListener {
+class MainActivity : SimpleActivity(), FlingListener, MinusOneFragmentListener {
     private var mTouchDownX = -1
     private var mTouchDownY = -1
     private var mAllAppsFragmentY = 0
@@ -117,6 +119,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     private var mActionOnAddShortcut:
             ((shortcutId: String, label: String, icon: Drawable) -> Unit)? = null
     private var wasJustPaused: Boolean = false
+    private var minusOneFragment: MinusOneFragment? = null
 
     private lateinit var mDetector: GestureDetectorCompat
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -152,6 +155,16 @@ class MainActivity : SimpleActivity(), FlingListener {
             fragment.y = mScreenHeight.toFloat()
             fragment.beVisible()
         }
+
+        minusOneFragment = layoutInflater.inflate(
+            R.layout.minus_one_screen,
+            binding.minusOneContainer,
+            false
+        ) as MinusOneFragment
+        minusOneFragment!!.setupFragment(this)
+        minusOneFragment!!.listener = this
+        binding.minusOneContainer.addView(minusOneFragment)
+        updateMinusOneVisibility()
 
         handleIntentAction(intent)
 
@@ -275,6 +288,9 @@ class MainActivity : SimpleActivity(), FlingListener {
             hideFragment(binding.widgetsFragment)
         } else if (binding.homeScreenGrid.resizeFrame.isVisible) {
             binding.homeScreenGrid.root.hideResizeLines()
+        } else if (binding.homeScreenGrid.root.getCurrentPage() == binding.homeScreenGrid.root.getMinPage()) {
+            binding.homeScreenGrid.root.skipToPage(0)
+            updateMinusOneVisibility()
         } else {
             // this is a home launcher app, avoid glitching by pressing Back
             //super.onBackPressed()
@@ -419,6 +435,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
                     if (!mIgnoreXMoveEvents) {
                         binding.homeScreenGrid.root.finalizeSwipe()
+                        updateMinusOneVisibility()
                     }
                 }
 
@@ -440,6 +457,12 @@ class MainActivity : SimpleActivity(), FlingListener {
         if (savedInstanceState.getBoolean(APP_DRAWER_STATE)) {
             showFragment(binding.allAppsFragment, 0L)
         }
+    }
+
+    private fun updateMinusOneVisibility() {
+        val showMinusOne =
+            binding.homeScreenGrid.root.getCurrentPage() == binding.homeScreenGrid.root.getMinPage()
+        binding.minusOneContainer.isVisible = showMinusOne
     }
 
     private fun handleIntentAction(intent: Intent) {
@@ -479,6 +502,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
                 runOnUiThread {
                     binding.homeScreenGrid.root.skipToPage(page)
+                    updateMinusOneVisibility()
                 }
                 // delay showing the shortcut both to let the user see adding it in realtime and hackily avoid concurrent modification exception at HomeScreenGrid
                 Thread.sleep(2000)
@@ -998,6 +1022,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         mIgnoreUpEvent = true
         binding.homeScreenGrid.root.prevPage(redraw = true)
+        updateMinusOneVisibility()
     }
 
     override fun onFlingLeft() {
@@ -1007,6 +1032,16 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         mIgnoreUpEvent = true
         binding.homeScreenGrid.root.nextPage(redraw = true)
+        updateMinusOneVisibility()
+    }
+
+    override fun onRefreshRequested() {
+        // Implement refresh logic for the minus one screen if needed
+    }
+
+    override fun onHideRequested() {
+        binding.homeScreenGrid.root.skipToPage(0)
+        updateMinusOneVisibility()
     }
 
     @SuppressLint("WrongConstant")
