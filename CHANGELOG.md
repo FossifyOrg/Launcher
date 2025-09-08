@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Pressing home button on home screen now returns to the first page ([#170])
 
 ## [1.3.0] - 2025-09-01
 ### Changed
@@ -75,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#74]: https://github.com/FossifyOrg/Launcher/issues/74
 [#106]: https://github.com/FossifyOrg/Launcher/issues/106
 [#115]: https://github.com/FossifyOrg/Launcher/issues/115
+[#170]: https://github.com/FossifyOrg/Launcher/issues/170
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
 [#234]: https://github.com/FossifyOrg/Launcher/issues/234
