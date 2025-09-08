@@ -10,6 +10,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
 import android.content.pm.ActivityInfo
 import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
@@ -173,6 +174,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        val wasAnyFragmentOpen = isAllAppsFragmentExpanded() || isWidgetsFragmentExpanded()
         if (wasJustPaused) {
             if (isAllAppsFragmentExpanded()) {
                 hideFragment(binding.allAppsFragment)
@@ -186,6 +188,13 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         binding.allAppsFragment.searchBar.closeSearch()
+
+        // scroll to first page when home button is pressed
+        val alreadyOnHome = intent.flags and FLAG_ACTIVITY_BROUGHT_TO_FRONT == 0
+        if (alreadyOnHome && !wasAnyFragmentOpen) {
+            binding.homeScreenGrid.root.skipToPage(0)
+        }
+
         handleIntentAction(intent)
     }
 
