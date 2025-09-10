@@ -14,4 +14,7 @@
     <string name="close_app_drawer_on_app_open">Pechar o panel ao abrir unha app</string>
     <string name="widget_too_big">O widget é demasiado grande para o tamaño da pantalla de inicio</string>
     <string name="home_screen_settings">Pantalla de inicio</string>
+    <string name="double_tap_to_lock">Toble toque para bloquear pantalla</string>
+    <string name="lock_device_admin_hint">Para activar a función de bloqueo por doble toque, tes que conceder permiso de administración. Ten en conta que a app non se pode desinstalar ate que retires este permiso.</string>
+    <string name="lock_device_admin_warning">Ao desactivar o permiso de admin desactivarás o doble toque para bloquear a pantalla.</string>
 </resources>
