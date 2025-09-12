@@ -1,0 +1,5 @@
+Changed:
+
+• Pressing home button on home screen now returns to the first page 
+• Updated translations
+
