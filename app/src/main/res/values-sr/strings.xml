@@ -10,4 +10,12 @@
     <string name="manage_hidden_icons">Управљајте скривеним иконама</string>
     <string name="hidden_icons">Скривене иконе</string>
     <string name="hidden_icons_placeholder">Неке апликације се не могу деинсталирати због системских ограничења, али можете барем сакрити њихове иконе да их не видите.</string>
+    <string name="close_app_drawer_on_app_open">Затвори фиоку апликација по отварању апликација</string>
+    <string name="auto_show_keyboard_in_app_drawer">Аутоматски показуј тастатуру у фиоци</string>
+    <string name="home_screen_settings">Почетни екран</string>
+    <string name="widget_too_big">Виџет не може стати на почетни екран</string>
+    <string name="app_drawer_settings">Фиока апликација</string>
+    <string name="double_tap_to_lock">Двапут додирните за закључавање екрана</string>
+    <string name="lock_device_admin_hint">Да бисте омогућили функцију \"двапут додирните за закључавање екрана\", морате дати администраторску дозволу. Апликацију није могуће обрисати док се дозвола не уклони.</string>
+    <string name="lock_device_admin_warning">Уклањање администраторске дозволе онемогућиће функцију двоструког додира за закључавање екрана.</string>
 </resources>
