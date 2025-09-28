@@ -1,0 +1,18 @@
+Fossify Launcher 是你通往快速、個人化及私隱至上的主畫面體驗的門戶。無廣告，無臃腫 – 只是一個流暢、高效的啟動器，專為滿足你獨特的風格和偏好而設計。<br><br>
+<b>🚀 閃電般的快速導航：</b><br>
+快速、精確地導航你的裝置。 Fossify Launcher 經過優化，反應靈敏且流暢，讓你可即時存取你喜愛的應用程式，無任何延遲。<br><br>
+<b>🎨 完全自訂：</b><br>
+使用動態主題、自訂顏色和佈局自訂你的主畫面。使用易於使用的工具個人化你的啟動器，以配合你的風格，打造真正獨特的設定。<br><br>
+<b>🖼️ 完整的小工具支援：</b><br>
+輕鬆整合完全可調整大小的小工具。無論你需要時鐘、日曆或其他便捷工具，Fossify Launcher 都能確保它們無縫融入你的主畫面設計。<br><br>
+<b>📱 無不必要的混亂：</b><br>
+只需輕按幾下即可隱藏或解除安裝應用程式，輕鬆管理你的應用程式，使你的主畫面保持井然有序且整潔。<br><br>
+<b>🔒 私隱與安全：</b><br>
+你的私隱是 Fossify Launcher 的核心。無需網絡存取，亦無侵入性權限，你的資料將留在你身邊。無追蹤，無廣告 – 只是一個尊重你私隱的啟動器。<br><br>
+<b>🌐 開源保證：</b><br>
+Fossify Launcher 基於開源平台構建，你可在 GitHub 上查看我們的程式碼，從而促進信任及致力於私隱的社群。<br><br>
+使用 Fossify Launcher 找到速度、自訂和私隱之間的平衡。<br><br>
+探索更多 Fossify 應用程式：https://www.fossify.org<br>
+開源程式碼：https://www.github.com/FossifyOrg<br>
+加入 Reddit 社群：https://www.reddit.com/r/Fossify<br>
+透過 Telegram 連接：https://t.me/Fossify<br>
