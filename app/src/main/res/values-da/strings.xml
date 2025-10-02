@@ -16,6 +16,6 @@
     <string name="home_screen_settings">Startskærm</string>
     <string name="widget_too_big">Widgetten er for stor til den nuværende størrelse på startskærmen</string>
     <string name="double_tap_to_lock">Dobbelttryk for at låse skærmen</string>
-    <string name="lock_device_admin_hint">For at aktivere funktionen dobbelttryk for at låse skærmen, skal du give administratortilladelse. Bemærk, at appen ikke kan afinstalleres, før denne tilladelse er fjernet.</string>
+    <string name="lock_device_admin_hint">Du skal give administrator-tilladelse for at bruge dobbelttryk for at låse skærmen. Bemærk, at appen kan først afinstalleres, når tilladelsen er fjernet.</string>
     <string name="lock_device_admin_warning">Deaktivering af administratortilladelser vil deaktivere funktionen dobbelttryk for at låse skærmen.</string>
 </resources>
