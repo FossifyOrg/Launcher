@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">啟動器</string>
+    <string name="launcher_settings">啟動器設定</string>
+    <string name="app_info">應用程式資訊</string>
+    <string name="touch_hold_widget">長按小工具並將其拖曳至你的主畫面</string>
+    <string name="uninstall">解除安裝</string>
+    <string name="hide_icon">隱藏圖示</string>
+    <string name="add_hidden_icons">新增隱藏圖示</string>
+    <string name="manage_hidden_icons">管理隱藏圖示</string>
+    <string name="hidden_icons">隱藏圖示</string>
+    <string name="hidden_icons_placeholder">由於系統限制，部分應用程式無法被移除，但您至少可以隱藏其圖示，避免看到它們。</string>
+    <string name="app_drawer_settings">應用程式抽屜</string>
+    <string name="close_app_drawer_on_app_open">開啟應用程式時關閉應用程式抽屜</string>
+    <string name="auto_show_keyboard_in_app_drawer">自動在抽屜中顯示鍵盤</string>
+    <string name="home_screen_settings">主畫面</string>
+    <string name="widget_too_big">小工具對於目前主畫面大小來說太大</string>
+    <string name="double_tap_to_lock">輕觸兩下以鎖定螢幕</string>
+    <string name="lock_device_admin_hint">要啟用輕觸兩下以鎖定螢幕的功能，您必須授予管理權限。請注意，在移除此權限前，無法解除安裝應用程式。</string>
+    <string name="lock_device_admin_warning">停用管理權限將會停用輕觸兩下以鎖定螢幕的功能。</string>
+</resources>

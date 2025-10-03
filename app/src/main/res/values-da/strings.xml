@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_launcher_name">Launcher</string>
-    <string name="launcher_settings">Launcher Indstillinger</string>
-    <string name="app_info">App info</string>
+    <string name="launcher_settings">Launcher-indstillinger</string>
+    <string name="app_info">Appinfo</string>
     <string name="touch_hold_widget">Tryk længe på widgetten, og træk den hen over din startskærm</string>
     <string name="uninstall">Afinstaller</string>
     <string name="hide_icon">Skjul ikon</string>
     <string name="add_hidden_icons">Tilføj skjulte ikoner</string>
     <string name="manage_hidden_icons">Administrer skjulte ikoner</string>
     <string name="hidden_icons">Skjulte ikoner</string>
-    <string name="hidden_icons_placeholder">Nogle apps kan ikke afinstalleres på grund af systembegrænsninger, men du kan i det mindste skjule deres ikoner for at undgå at se dem.</string>
+    <string name="hidden_icons_placeholder">Nogle apps kan ikke afinstalleres grundet systembegrænsninger, men du kan i det mindste skjule deres ikoner.</string>
     <string name="app_drawer_settings">App-skuffe</string>
-    <string name="close_app_drawer_on_app_open">Luk app-skuffen, når du åbner en app</string>
+    <string name="close_app_drawer_on_app_open">Luk app-skuffen, når en app åbnes</string>
     <string name="auto_show_keyboard_in_app_drawer">Vis automatisk tastatur i skuffen</string>
     <string name="home_screen_settings">Startskærm</string>
-    <string name="widget_too_big">Widgeten er for stor til den nuværende størrelse på startskærmen</string>
+    <string name="widget_too_big">Widgetten er for stor til den nuværende størrelse på startskærmen</string>
     <string name="double_tap_to_lock">Dobbelttryk for at låse skærmen</string>
-    <string name="lock_device_admin_hint">For at aktivere funktionen dobbelttryk for at låse skærmen, skal du give administratortilladelse. Bemærk, at appen ikke kan afinstalleres, før denne tilladelse er fjernet.</string>
+    <string name="lock_device_admin_hint">Du skal give administrator-tilladelse for at bruge dobbelttryk for at låse skærmen. Bemærk, at appen kan først afinstalleres, når tilladelsen er fjernet.</string>
     <string name="lock_device_admin_warning">Deaktivering af administratortilladelser vil deaktivere funktionen dobbelttryk for at låse skærmen.</string>
 </resources>
