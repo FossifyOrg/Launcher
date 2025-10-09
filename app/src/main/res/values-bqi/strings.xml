@@ -2,4 +2,5 @@
 <resources>
     <string name="app_info">دووسمندیا برنومه</string>
     <string name="uninstall">پاک کردن پۊرنیڌن</string>
+    <string name="app_launcher_name">لانچر</string>
 </resources>
