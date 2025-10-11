@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Spuštěč</string>
+    <string name="app_launcher_name">Spouštěč</string>
     <string name="launcher_settings">Nastavení spouštěče</string>
     <string name="app_info">O aplikaci</string>
     <string name="touch_hold_widget">Widget dlouze stiskněte a přetáhněte jej na domovskou obrazovku</string>
