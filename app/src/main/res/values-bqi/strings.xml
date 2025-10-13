@@ -7,4 +7,9 @@
     <string name="manage_hidden_icons">دؽوۉداری آیکونا بؽڌاری</string>
     <string name="hidden_icons">آیکونا بؽڌاری</string>
     <string name="hide_icon">بؽڌار کردن آیکون</string>
+    <string name="app_drawer_settings">کشار برنومه</string>
+    <string name="close_app_drawer_on_app_open">بستن کشار برنومه یل مجال گۊشیڌن ی برنومه</string>
+    <string name="home_screen_settings">بلگه ٱسلی</string>
+    <string name="widget_too_big">ویجت سی هندا بلگه هیم سکویی قلوه گپ هڌ</string>
+    <string name="double_tap_to_lock">سی چفت کردن بلگه دو کرت بزݩ ریس</string>
 </resources>
