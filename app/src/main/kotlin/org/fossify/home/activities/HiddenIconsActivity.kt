@@ -21,16 +21,13 @@ class HiddenIconsActivity : SimpleActivity(), RefreshRecyclerViewListener {
     private val binding by viewBinding(ActivityHiddenIconsBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         updateIcons()
 
-        updateMaterialActivityViews(
-            binding.manageHiddenIconsCoordinator,
-            binding.manageHiddenIconsList,
-            useTransparentNavigation = true,
-            useTopSearchMenu = false
+        updateEdgeToEdge(
+            topAppBar = binding.manageHiddenIconsToolbar,
+            scrollingView = binding.manageHiddenIconsList,
         )
         setupMaterialScrollListener(binding.manageHiddenIconsList, binding.manageHiddenIconsToolbar)
 
