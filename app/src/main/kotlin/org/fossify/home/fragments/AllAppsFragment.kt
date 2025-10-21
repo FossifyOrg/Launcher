@@ -4,22 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.Surface
-import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import org.fossify.commons.R
 import org.fossify.commons.extensions.beGone
 import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.commons.extensions.hideKeyboard
-import org.fossify.commons.extensions.navigationBarHeight
-import org.fossify.commons.extensions.navigationBarOnBottom
-import org.fossify.commons.extensions.navigationBarOnSide
-import org.fossify.commons.extensions.navigationBarWidth
 import org.fossify.commons.extensions.normalizeString
-import org.fossify.commons.helpers.isRPlus
 import org.fossify.commons.views.MyGridLayoutManager
 import org.fossify.home.activities.MainActivity
 import org.fossify.home.adapters.LaunchersAdapter
@@ -189,39 +181,6 @@ class AllAppsFragment(
         }
 
         binding.allAppsFastscroller.updateColors(context.getProperPrimaryColor())
-
-        var bottomListPadding = 0
-        var leftListPadding = 0
-        var rightListPadding = 0
-
-        // TODO: Use WindowInsets API
-        if (activity!!.navigationBarOnBottom) {
-            bottomListPadding = activity!!.navigationBarHeight
-            leftListPadding = 0
-            rightListPadding = 0
-        } else if (activity!!.navigationBarOnSide) {
-            bottomListPadding = 0
-
-            val display = if (isRPlus()) {
-                display!!
-            } else {
-                (activity!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-            }
-
-            if (display.rotation == Surface.ROTATION_90) {
-                rightListPadding = activity!!.navigationBarWidth
-            } else if (display.rotation == Surface.ROTATION_270) {
-                leftListPadding = activity!!.navigationBarWidth
-            }
-        }
-
-        binding.allAppsGrid.setPadding(
-            0,
-            0,
-            resources.getDimension(R.dimen.medium_margin).toInt(),
-            bottomListPadding
-        )
-        binding.allAppsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
         binding.allAppsGrid.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 // Hiding is expensive, only do it if focused
@@ -235,7 +194,7 @@ class AllAppsFragment(
         getAdapter()?.updateTextColor(context.getProperTextColor())
 
         binding.searchBar.beVisibleIf(context.config.showSearchBar)
-        binding.searchBar.getToolbar().beGone()
+        binding.searchBar.requireToolbar().beGone()
         binding.searchBar.updateColors()
         binding.searchBar.setupMenu()
 

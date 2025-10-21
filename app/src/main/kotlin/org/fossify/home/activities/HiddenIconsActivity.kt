@@ -25,11 +25,8 @@ class HiddenIconsActivity : SimpleActivity(), RefreshRecyclerViewListener {
         setContentView(binding.root)
         updateIcons()
 
-        updateEdgeToEdge(
-            topAppBar = binding.manageHiddenIconsToolbar,
-            scrollingView = binding.manageHiddenIconsList,
-        )
-        setupMaterialScrollListener(binding.manageHiddenIconsList, binding.manageHiddenIconsToolbar)
+        setupEdgeToEdge(padBottomSystem = listOf(binding.manageHiddenIconsList))
+        setupMaterialScrollListener(binding.manageHiddenIconsList, binding.manageHiddenIconsAppbar)
 
         val layoutManager = binding.manageHiddenIconsList.layoutManager as MyGridLayoutManager
         layoutManager.spanCount = config.drawerColumnCount
@@ -37,7 +34,7 @@ class HiddenIconsActivity : SimpleActivity(), RefreshRecyclerViewListener {
 
     override fun onResume() {
         super.onResume()
-        setupTopAppBar(binding.manageHiddenIconsToolbar, NavigationIcon.Arrow)
+        setupTopAppBar(binding.manageHiddenIconsAppbar, NavigationIcon.Arrow)
     }
 
     private fun updateIcons() {

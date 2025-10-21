@@ -38,8 +38,6 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsCompat.Type
 import androidx.core.view.isVisible
 import androidx.core.view.iterator
 import androidx.viewbinding.ViewBinding
@@ -135,10 +133,15 @@ class MainActivity : SimpleActivity(), FlingListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         appLaunched(BuildConfig.APPLICATION_ID)
+        setupEdgeToEdge(
+            padTopSystem = listOf(binding.widgetsFragment.root),
+            padBottomImeAndSystem = listOf(
+                binding.allAppsFragment.root, binding.widgetsFragment.root
+            ),
+            padBottomSystem = listOf(binding.homeScreenGrid.root)
+        )
 
         mDetector = GestureDetectorCompat(this, MyGestureListener(this))
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         mScreenHeight = realScreenSize.y
         mAllAppsFragmentY = mScreenHeight
@@ -206,21 +209,11 @@ class MainActivity : SimpleActivity(), FlingListener {
     override fun onResume() {
         super.onResume()
         wasJustPaused = false
-        updateStatusbarColor(Color.TRANSPARENT)
 
         with(binding.mainHolder) {
             onGlobalLayout {
                 binding.allAppsFragment.root.setupViews()
                 binding.widgetsFragment.root.setupViews()
-                updateStatusbarColor(Color.TRANSPARENT)
-            }
-
-            setOnApplyWindowInsetsListener { _, insets ->
-                val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(insets)
-                val systemBarInsets = windowInsets.getInsets(Type.systemBars() or Type.ime())
-                binding.allAppsFragment.root.setPadding(0, systemBarInsets.top, 0, 0)
-                binding.widgetsFragment.root.setPadding(0, systemBarInsets.top, 0, 0)
-                insets
             }
         }
 
@@ -244,11 +237,6 @@ class MainActivity : SimpleActivity(), FlingListener {
 
             binding.allAppsFragment.root.gotLaunchers(IconCache.launchers)
             refreshLaunchers()
-        }
-
-        // avoid showing fully colored navigation bars
-        if (window.navigationBarColor != resources.getColor(R.color.semitransparent_navigation)) {
-            window.navigationBarColor = Color.TRANSPARENT
         }
 
         binding.homeScreenGrid.root.resizeGrid(
@@ -328,7 +316,6 @@ class MainActivity : SimpleActivity(), FlingListener {
         super.onConfigurationChanged(newConfig)
         binding.allAppsFragment.root.onConfigurationChanged()
         binding.widgetsFragment.root.onConfigurationChanged()
-        updateStatusbarColor(Color.TRANSPARENT)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

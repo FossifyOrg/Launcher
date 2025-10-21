@@ -38,6 +38,7 @@ import androidx.core.graphics.toRect
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
 import com.google.android.material.math.MathUtils
@@ -48,9 +49,7 @@ import org.fossify.commons.extensions.beVisible
 import org.fossify.commons.extensions.getContrastColor
 import org.fossify.commons.extensions.getProperBackgroundColor
 import org.fossify.commons.extensions.getProperTextColor
-import org.fossify.commons.extensions.navigationBarHeight
 import org.fossify.commons.extensions.performHapticFeedback
-import org.fossify.commons.extensions.statusBarHeight
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.home.R
@@ -189,13 +188,31 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             style = Paint.Style.FILL
         }
 
-        val sideMargin =
-            context.resources.getDimension(org.fossify.commons.R.dimen.normal_margin).toInt()
-        sideMargins.apply {
-            top = context.statusBarHeight
-            bottom = context.navigationBarHeight
-            left = sideMargin
-            right = sideMargin
+        ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+            val bars = insets.getInsets(Type.systemBars() or Type.displayCutout())
+            val gestures = insets.getInsets(Type.systemGestures())
+            val navIgnoring = insets.getInsetsIgnoringVisibility(Type.navigationBars())
+
+            val sideMargin = context.resources
+                .getDimension(org.fossify.commons.R.dimen.normal_margin).toInt()
+
+            val newLeft   = sideMargin + bars.left
+            val newRight  = sideMargin + bars.right
+            val newTop    = bars.top
+            val newBottom = max(bars.bottom, max(gestures.bottom, navIgnoring.bottom))
+            val marginsChanged = sideMargins.left != newLeft
+                    || sideMargins.top != newTop
+                    || sideMargins.right != newRight
+                    || sideMargins.bottom != newBottom
+            if (marginsChanged) {
+                sideMargins.set(newLeft, newTop, newRight, newBottom)
+                cells.clear()
+                gridCenters.clear()
+                isFirstDraw = true
+                redrawGrid()
+            }
+
+            insets
         }
 
         fetchGridItems()

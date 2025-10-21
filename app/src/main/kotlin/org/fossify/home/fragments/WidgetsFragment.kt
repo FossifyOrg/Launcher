@@ -9,18 +9,11 @@ import android.content.pm.PackageManager
 import android.os.Process
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.Surface
-import android.view.WindowManager
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.getProperTextColor
-import org.fossify.commons.extensions.navigationBarHeight
-import org.fossify.commons.extensions.navigationBarOnBottom
-import org.fossify.commons.extensions.navigationBarOnSide
-import org.fossify.commons.extensions.navigationBarWidth
 import org.fossify.commons.extensions.showErrorToast
 import org.fossify.commons.extensions.toast
 import org.fossify.commons.helpers.ensureBackgroundThread
-import org.fossify.commons.helpers.isRPlus
 import org.fossify.home.R
 import org.fossify.home.activities.MainActivity
 import org.fossify.home.adapters.WidgetsAdapter
@@ -232,33 +225,6 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
         }
 
         binding.widgetsFastscroller.updateColors(context.getProperPrimaryColor())
-
-        var bottomListPadding = 0
-        var leftListPadding = 0
-        var rightListPadding = 0
-
-        if (activity!!.navigationBarOnBottom) {
-            bottomListPadding = activity!!.navigationBarHeight
-            leftListPadding = 0
-            rightListPadding = 0
-        } else if (activity!!.navigationBarOnSide) {
-            bottomListPadding = 0
-
-            val display = if (isRPlus()) {
-                display!!
-            } else {
-                (activity!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-            }
-
-            if (display.rotation == Surface.ROTATION_90) {
-                rightListPadding = activity!!.navigationBarWidth
-            } else if (display.rotation == Surface.ROTATION_270) {
-                leftListPadding = activity!!.navigationBarWidth
-            }
-        }
-
-        binding.widgetsList.setPadding(0, 0, 0, bottomListPadding)
-        binding.widgetsFastscroller.setPadding(leftListPadding, 0, rightListPadding, 0)
         (binding.widgetsList.adapter as? WidgetsAdapter)?.updateTextColor(context.getProperTextColor())
         setupDrawerBackground()
     }
