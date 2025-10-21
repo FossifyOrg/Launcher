@@ -37,7 +37,7 @@ class HiddenIconsActivity : SimpleActivity(), RefreshRecyclerViewListener {
 
     override fun onResume() {
         super.onResume()
-        setupToolbar(binding.manageHiddenIconsToolbar, NavigationIcon.Arrow)
+        setupTopAppBar(binding.manageHiddenIconsToolbar, NavigationIcon.Arrow)
     }
 
     private fun updateIcons() {
