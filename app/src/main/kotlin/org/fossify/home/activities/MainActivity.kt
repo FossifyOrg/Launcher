@@ -262,19 +262,23 @@ class MainActivity : SimpleActivity(), FlingListener {
         wasJustPaused = true
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        if (isAllAppsFragmentExpanded()) {
+    override fun onBackPressedCompat(): Boolean {
+        return if (isAllAppsFragmentExpanded()) {
             if (!binding.allAppsFragment.root.onBackPressed()) {
                 hideFragment(binding.allAppsFragment)
+                true
+            } else {
+                true
             }
         } else if (isWidgetsFragmentExpanded()) {
             hideFragment(binding.widgetsFragment)
+            true
         } else if (binding.homeScreenGrid.resizeFrame.isVisible) {
             binding.homeScreenGrid.root.hideResizeLines()
+            true
         } else {
-            // this is a home launcher app, avoid glitching by pressing Back
-            //super.onBackPressed()
+            // this is a home launcher app, prevent back press from doing anything
+            true
         }
     }
 
