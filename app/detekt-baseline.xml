@@ -21,7 +21,6 @@
     <ID>EmptyCatchBlock:WidgetsFragment.kt$WidgetsFragment${ }</ID>
     <ID>EmptyFunctionBlock:FolderIconsAdapter.kt$FolderIconsAdapter${}</ID>
     <ID>EmptyFunctionBlock:HiddenIconsAdapter.kt$HiddenIconsAdapter${}</ID>
-    <ID>ForbiddenComment:AllAppsFragment.kt$AllAppsFragment$// TODO: Use WindowInsets API</ID>
     <ID>LargeClass:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
     <ID>LargeClass:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
     <ID>LongMethod:HomeScreenGrid.kt$HomeScreenGrid$fun drawInto(canvas: Canvas)</ID>
@@ -108,13 +107,7 @@
     <ID>NestedBlockDepth:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
     <ID>NewLineAtEndOfFile:IconCache.kt$org.fossify.home.helpers.IconCache.kt</ID>
     <ID>NewLineAtEndOfFile:View.kt$org.fossify.home.extensions.View.kt</ID>
-    <ID>ReturnCount:AllAppsFragment.kt$AllAppsFragment$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
     <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid$fun isClickingGridItem(x: Int, y: Int): HomeScreenGridItem?</ID>
-    <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$fun generateDrawable(): Drawable?</ID>
-    <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenFolder$fun getDrawingRect(): RectF</ID>
-    <ID>ReturnCount:HomeScreenGrid.kt$HomeScreenGrid.HomeScreenGridTouchHelper$override fun onPerformActionForVirtualView( virtualViewId: Int, action: Int, arguments: Bundle?, ): Boolean</ID>
-    <ID>ReturnCount:MyAppWidgetHostView.kt$MyAppWidgetHostView$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
-    <ID>ReturnCount:WidgetsFragment.kt$WidgetsFragment$override fun onInterceptTouchEvent(event: MotionEvent?): Boolean</ID>
     <ID>SwallowedException:Activity.kt$e: Exception</ID>
     <ID>SwallowedException:Context.kt$e: Error</ID>
     <ID>SwallowedException:Context.kt$e: Exception</ID>
