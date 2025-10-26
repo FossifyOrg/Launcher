@@ -1,12 +1,12 @@
 package org.fossify.home.extensions
 
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.view.RoundedCorner.POSITION_TOP_LEFT
 import android.view.RoundedCorner.POSITION_TOP_RIGHT
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toDrawable
 import org.fossify.commons.R
 import org.fossify.commons.extensions.applyColorFilter
 import org.fossify.commons.extensions.getProperBackgroundColor
@@ -28,7 +28,7 @@ fun View.animateScale(
 
 fun View.setupDrawerBackground() {
     val backgroundColor = context.getProperBackgroundColor()
-    background = ColorDrawable(backgroundColor)
+    background = backgroundColor.toDrawable()
 
     val insets = rootWindowInsets
     if (isSPlus() && insets != null) {
