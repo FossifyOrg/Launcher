@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2025-10-29
 ### Changed
-
 - Compatibility updates for Android 15 & 16
+- Updated translations
 
 ## [1.4.0] - 2025-09-12
 ### Changed
@@ -89,7 +90,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
 [#234]: https://github.com/FossifyOrg/Launcher/issues/234
 
-[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.4.0...HEAD
+[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/FossifyOrg/Launcher/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/FossifyOrg/Launcher/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/FossifyOrg/Launcher/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/FossifyOrg/Launcher/compare/1.1.4...1.2.0
