@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="app_launcher_name">Paleidyklė</string>
+    <string name="launcher_settings">Paleidyklės nustatymai</string>
+    <string name="app_info">Programos informacija</string>
+    <string name="touch_hold_widget">Ilgai paspauskite valdiklį ir nutempkite jį į pradžios ekraną.</string>
+    <string name="uninstall">Išdiegti</string>
+    <string name="hide_icon">Slėpti piktogramą</string>
+    <string name="add_hidden_icons">Įtraukti paslėptas piktogramas</string>
+    <string name="manage_hidden_icons">Tvarkyti paslėptas piktogramas</string>
+    <string name="hidden_icons">Paslėptos piktogramos</string>
+    <string name="hidden_icons_placeholder">Kai kurios programos negali būti išdiegtos dėl sistemos apribojimų, bet galite bent jau paslėpti piktogramas, kad jų nematytumėte.</string>
+    <string name="app_drawer_settings">Programų sąrašas</string>
+    <string name="close_app_drawer_on_app_open">Užverti programų sąrašą atvėrus programą</string>
+    <string name="auto_show_keyboard_in_app_drawer">Automatiškai rodyti klaviatūrą sąraše</string>
+    <string name="home_screen_settings">Pradžios ekranas</string>
+    <string name="widget_too_big">Valdiklis per didelis dabartiniam pradžios ekrano dydžiui.</string>
+    <string name="double_tap_to_lock">Dukart paliesti norint užrakinti ekraną</string>
+    <string name="lock_device_admin_hint">Kad įjungtumėte dvigubo palietimo ekrano užrakinimo funkciją, turite suteikti administratoriaus leidimą. Atkreipkite dėmesį, kad programos negalima išdiegtas, kol šis leidimas bus pašalintas.</string>
+    <string name="lock_device_admin_warning">Išjungus administratoriaus leidimą, bus išjungta dvigubo palietimo ekrano užrakinimo funkcija.</string>
+</resources>
