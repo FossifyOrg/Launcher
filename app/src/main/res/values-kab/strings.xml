@@ -2,4 +2,11 @@
 <resources>
     <string name="hide_icon">Ffer tignit</string>
     <string name="uninstall">Kkes asbeddi</string>
+    <string name="hidden_icons">Tignitin yeffren</string>
+    <string name="hidden_icons_placeholder">Kra n yisnasen ur zmiren ara ad ttwakksen ɣef sebba n tlisa n unagraw, acukan tzemreḍ ad teffreḍ tignitin-nsen akken ur tent-twaliḍ ara.</string>
+    <string name="app_drawer_settings">Leqjeṛ n usnas</string>
+    <string name="close_app_drawer_on_app_open">Mdel leqjer n usnas deg ulday n usnas</string>
+    <string name="home_screen_settings">Agdil agejdan</string>
+    <string name="widget_too_big">Awiǧit meqqer aṭas i teɣzi n ugdil agejdan amiran</string>
+    <string name="lock_device_admin_warning">Asexsi n usireg anedbal ad yekkes asiti-nni s snat n tikkal akken ad yeskweṛ tmahilt n ugdil.</string>
 </resources>
