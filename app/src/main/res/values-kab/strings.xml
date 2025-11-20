@@ -9,4 +9,13 @@
     <string name="home_screen_settings">Agdil agejdan</string>
     <string name="widget_too_big">Awiǧit meqqer aṭas i teɣzi n ugdil agejdan amiran</string>
     <string name="lock_device_admin_warning">Asexsi n usireg anedbal ad yekkes asiti-nni s snat n tikkal akken ad yeskweṛ tmahilt n ugdil.</string>
+    <string name="app_launcher_name">Amsekkar</string>
+    <string name="launcher_settings">Iɣewwaṛen n umsekkar</string>
+    <string name="app_info">Talɣut n usnas</string>
+    <string name="touch_hold_widget">Sit aɣezfan ɣef uwiǧit, syin zuɣer-it deg ugdil-ik-im agejdan</string>
+    <string name="add_hidden_icons">Rnu tignitin yeffren</string>
+    <string name="manage_hidden_icons">Sefrek tignitin yeffren</string>
+    <string name="auto_show_keyboard_in_app_drawer">Sken s wudem awurman anasiw deg leqjer</string>
+    <string name="double_tap_to_lock">Sit snat n tikkal akken ad tsekkṛeḍ agdil</string>
+    <string name="lock_device_admin_hint">Akken ad tremdeḍ asiti n snat tikal i tmahilt n usekkeṛ n ugdil, yessefk ad tged assireg n unebdal. Ger tamawt dakken asnas-nni ur yezmir ara ad yettwakkes arma yettwakkes ussireg-a.</string>
 </resources>
