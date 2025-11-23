@@ -200,7 +200,9 @@ class AllAppsFragment(
 
         binding.searchBar.onSearchTextChangedListener = { query ->
             val filtered =
-                launchers.filter { query.isEmpty() || it.title.contains(query, ignoreCase = true) }
+                launchers.filter {
+                    query.isEmpty() || it.title.normalizeString().contains(query.normalizeString(), ignoreCase = true)
+                }
             getAdapter()?.submitList(filtered) {
                 showNoResultsPlaceholderIfNeeded()
             }
