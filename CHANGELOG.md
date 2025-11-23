@@ -5,8 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Added
-- Ignore diacritics/accents on characters when searching Apps (#282)
+### Changed
+- Search now ignores accents and diacritics ([#282])
 
 ## [1.5.0] - 2025-10-29
 ### Changed
@@ -91,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
 [#234]: https://github.com/FossifyOrg/Launcher/issues/234
+[#282]: https://github.com/FossifyOrg/Launcher/issues/282
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.5.0...HEAD
 [1.5.0]: https://github.com/FossifyOrg/Launcher/compare/1.4.0...1.5.0
