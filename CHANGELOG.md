@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Search now ignores accents and diacritics ([#282])
 
+### Fixed
+- Fixed overlap between app drawer and status bar ([#277])
+
 ## [1.5.0] - 2025-10-29
 ### Changed
 - Compatibility updates for Android 15 & 16
@@ -91,6 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
 [#234]: https://github.com/FossifyOrg/Launcher/issues/234
+[#277]: https://github.com/FossifyOrg/Launcher/issues/277
 [#282]: https://github.com/FossifyOrg/Launcher/issues/282
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.5.0...HEAD
