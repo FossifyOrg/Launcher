@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Search now ignores accents and diacritics ([#282])
 
 ### Fixed
-- Fixed overlap between app drawer and status bar ([#277])
+- Fixed overlap between app drawer and status bar ([#277]) 
 
 ## [1.5.0] - 2025-10-29
 ### Changed

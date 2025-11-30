@@ -136,7 +136,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         setupEdgeToEdge(
             padTopSystem = listOf(binding.allAppsFragment.root, binding.widgetsFragment.root),
             padBottomImeAndSystem = listOf(
-                binding.allAppsFragment.root, binding.widgetsFragment.root
+                binding.allAppsFragment.allAppsGrid, binding.widgetsFragment.widgetsList
             ),
             padBottomSystem = listOf(binding.homeScreenGrid.root)
         )
