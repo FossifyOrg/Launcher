@@ -1,0 +1,5 @@
+Changed:
+
+• Search now ignores accents and diacritics 
+• Updated translations
+
