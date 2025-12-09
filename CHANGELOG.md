@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
-- Fixed invalid search results after opening/closing apps ([#100])
+- Fixed invalid search results after opening and closing apps ([#100])
 
 ## [1.6.0] - 2025-11-30
 ### Changed
