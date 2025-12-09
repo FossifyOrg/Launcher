@@ -138,9 +138,8 @@ class AllAppsFragment(
             val layoutManager = binding.allAppsGrid.layoutManager as MyGridLayoutManager
             layoutManager.spanCount = context.config.drawerColumnCount
 
-            var adapter = getAdapter()
-            if (adapter == null) {
-                adapter = LaunchersAdapter(activity!!, this) {
+            if (getAdapter() == null) {
+                LaunchersAdapter(activity!!, this) {
                     activity?.launchApp((it as AppLauncher).packageName, it.activityName)
                     if (activity?.config?.closeAppDrawer == true) {
                         activity?.closeAppDrawer(delayed = true)
@@ -153,7 +152,7 @@ class AllAppsFragment(
                 }
             }
 
-            adapter.submitList(launchers.toMutableList())
+            submitList(launchers.toMutableList())
         }
     }
 
@@ -171,7 +170,7 @@ class AllAppsFragment(
                 removeAt(position)
             }
 
-            getAdapter()?.submitList(launchers.toMutableList())
+            submitList(launchers.toMutableList())
         }
     }
 
@@ -198,14 +197,8 @@ class AllAppsFragment(
         binding.searchBar.updateColors()
         binding.searchBar.setupMenu()
 
-        binding.searchBar.onSearchTextChangedListener = { query ->
-            val filtered =
-                launchers.filter {
-                    query.isEmpty() || it.title.normalizeString().contains(query.normalizeString(), ignoreCase = true)
-                }
-            getAdapter()?.submitList(filtered) {
-                showNoResultsPlaceholderIfNeeded()
-            }
+        binding.searchBar.onSearchTextChangedListener = {
+            submitList(launchers)
         }
     }
 
@@ -248,5 +241,21 @@ class AllAppsFragment(
         }
 
         return false
+    }
+
+    private fun submitList(items: List<AppLauncher>) {
+        val searchQuery = binding.searchBar.getCurrentQuery()
+        val filtered = if (searchQuery.isNotEmpty()) {
+            items.filter {
+                it.title.normalizeString()
+                    .contains(searchQuery.normalizeString(), ignoreCase = true)
+            }
+        } else {
+            items
+        }
+
+        getAdapter()?.submitList(filtered) {
+            showNoResultsPlaceholderIfNeeded()
+        }
     }
 }
