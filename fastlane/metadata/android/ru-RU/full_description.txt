@@ -1,19 +1,18 @@
-Лаунчер Fossify — это ваш способ быстрого, персонализированного и приватному домашнему экрану. Без рекламы, никаких излишеств — просто плавный, эффективный лаунчер, разработанный с учётом вашего уникального стиля и предпочтений.<br><br>
-
-<b>🚀 LIGHTNING-FAST NAVIGATION:</b><br>
-Navigate your device with speed and precision. Fossify Launcher is optimized to be responsive and fluid, giving you instant access to your favorite apps without lag.<br><br>
-<b>🎨 FULL CUSTOMIZATION:</b><br>
-Tailor your home screen with dynamic themes, custom colors, and layouts. Personalize your launcher to match your style with easy-to-use tools that let you create a truly unique setup.<br><br>
-<b>🖼️ COMPLETE WIDGET SUPPORT:</b><br>
-Integrate fully resizable widgets with ease. Whether you need clocks, calendars, or other handy tools, Fossify Launcher ensures they blend seamlessly into your home screen design.<br><br>
-<b>📱 NO UNWANTED CLUTTER:</b><br>
-Effortlessly manage your apps by hiding or uninstalling them in just a few taps, keeping your home screen organized and clutter-free.<br><br>
-<b>🔒 PRIVACY AND SECURITY:</b><br>
-Your privacy is at the heart of Fossify Launcher. With no internet access and no intrusive permissions, your data stays with you. No tracking, no ads – just a launcher built to respect your privacy.<br><br>
-<b>🌐 OPEN-SOURCE ASSURANCE:</b><br>
-Fossify Launcher is built on an open-source foundation, allowing you to review our code on GitHub, fostering trust and a community committed to privacy.<br><br>
-Find your balance of speed, customization, and privacy with Fossify Launcher.<br><br>
-Ознакомьтесь с другими приложениями от Fossify: https://www.fossify.org
-Исходный код: https://www.github.com/FossifyOrg
-Присоединяйтесь к сообществу на Reddit: https://www.reddit.com/r/Fossify
-Подключайтесь в Telegram: https://t.me/Fossify
+Лаунчер Fossify – это ваш быстрый, персонализируемый и приватный домашний экран. Никакой рекламы, никаких излишеств – только плавный и быстрый лаунчер, разработанный специально для вас.<br><br>
+<b>🚀 БЫСТРАЯ НАВИГАЦИЯ:</b><br>
+Точно и быстро ориентируйтесь по экрану. Лаунчер оптимизирован быть отзывчивым и плавным, предоставляя быстрый доступ к приложениям.<br><br>
+<b>🎨 ПОЛНАЯ КАСТОМИЗАЦИЯ:</b><br>
+Украсьте свой экран динамическими темами, цветами и раскладками. Вы можете настроить лаунчер с помощью простых инструментов, создав свой уникальный дизайн.<br><br>
+<b>🖼️ ПОЛНАЯ ПОДДЕРЖКА ВИДЖЕТОВ:</b><br>
+Легко вставляйте настраиваемые виджеты – часы, календарь или другие инструменты. Лаунчер красиво впишет их в ваш дизайн.<br><br>
+<b>📱 ЧИСТОТА И ОРГАНИЗАЦИЯ:</b><br>
+Легко управляйте приложениями, скрывая или удаляя их в пару нажатий. Экран остаётся в чистоте и порядке.<br><br>
+<b>🔒 ПРИВАТНОСТЬ И БЕЗОПАСНОСТЬ:</b><br>
+Ваша приватность – это сердце лаунчера. В нем нет навязчивых разрешений или нужды в интернете, ваши данные остаются при вас. Ни трекеров, ни рекламы, только ваш приватный лаунчер.<br><br>
+<b>🌐 ОТКРЫТЫЙ ИСХОДНЫЙ КОД:</b><br>
+Лаунчер Fossify свободный, что позволяет вам изучить его исходный код на GitHub, чтобы удостовериться в его безопасности.<br><br>
+Найдите свой баланс скорости, красочности и приватности с лаунчером Fossify.<br><br>
+Ознакомьтесь с другими приложениями от Fossify: https://www.fossify.org<br>
+Исходный код: https://www.github.com/FossifyOrg<br>
+Присоединяйтесь к сообществу на Reddit: https://www.reddit.com/r/Fossify<br>
+Подключайтесь в Telegram: https://t.me/Fossify<br>
