@@ -14,4 +14,6 @@
     <string name="close_app_drawer_on_app_open">アプリを開く際にドローワーを閉じる</string>
     <string name="home_screen_settings">ホーム画面</string>
     <string name="widget_too_big">ウィジェットが現在のホーム画面のサイズよりも大きいです</string>
+    <string name="auto_show_keyboard_in_app_drawer">ドロワーを開いた際に自動的にキーボードを表示する</string>
+    <string name="double_tap_to_lock">ダブルタップしてロック画面を表示する</string>
 </resources>
