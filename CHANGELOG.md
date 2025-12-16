@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.7.0] - 2025-12-16
+### Changed
+- Updated translations
+
 ### Fixed
 - Fixed invalid search results after opening and closing apps ([#100])
 
@@ -103,7 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#277]: https://github.com/FossifyOrg/Launcher/issues/277
 [#282]: https://github.com/FossifyOrg/Launcher/issues/282
 
-[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.7.0...HEAD
+[1.7.0]: https://github.com/FossifyOrg/Launcher/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/FossifyOrg/Launcher/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/FossifyOrg/Launcher/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/FossifyOrg/Launcher/compare/1.3.0...1.4.0
