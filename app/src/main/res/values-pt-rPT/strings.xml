@@ -14,4 +14,8 @@
     <string name="app_info">Info da aplicação</string>
     <string name="touch_hold_widget">Toque longo no widget e arraste-o para o ecrã</string>
     <string name="uninstall">Desinstalar</string>
+    <string name="auto_show_keyboard_in_app_drawer">Mostrar automaticamente o teclado no menu de aplicações</string>
+    <string name="double_tap_to_lock">Toque duas vezes para bloquear o ecrã</string>
+    <string name="lock_device_admin_hint">Para ativar a funcionalidade de toque duplo para bloquear o ecrã, precisa de conceder permissão de administrador. Note que a aplicação não poderá ser desinstalada até que esta permissão seja removida.</string>
+    <string name="lock_device_admin_warning">Desativar a permissão de administrador desativará a funcionalidade de toque duplo para bloquear o ecrã.</string>
 </resources>
