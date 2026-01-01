@@ -17,4 +17,5 @@
     <string name="double_tap_to_lock">Toble toque para bloquear pantalla</string>
     <string name="lock_device_admin_hint">Para activar a función de bloqueo por doble toque, tes que conceder permiso de administración. Ten en conta que a app non se pode desinstalar ate que retires este permiso.</string>
     <string name="lock_device_admin_warning">Ao desactivar o permiso de admin desactivarás o doble toque para bloquear a pantalla.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Amosar automáticamente o teclado no caixón de aplicacións</string>
 </resources>
