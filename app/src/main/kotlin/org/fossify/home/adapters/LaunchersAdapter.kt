@@ -44,6 +44,10 @@ class LaunchersAdapter(
         return getItem(position).getLauncherIdentifier().hashCode().toLong()
     }
 
+    fun getLauncherId(position: Int): String {
+        return getItem(position).getLauncherIdentifier()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemLauncherLabelBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
