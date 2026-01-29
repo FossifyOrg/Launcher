@@ -3,7 +3,11 @@ package org.fossify.home.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.fossify.commons.extensions.beGone
@@ -23,6 +27,7 @@ import org.fossify.home.helpers.ITEM_TYPE_ICON
 import org.fossify.home.interfaces.AllAppsListener
 import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HomeScreenGridItem
+
 
 class AllAppsFragment(
     context: Context,
@@ -200,6 +205,21 @@ class AllAppsFragment(
         binding.searchBar.onSearchTextChangedListener = {
             submitList(launchers)
         }
+
+        binding.searchBar.binding.topToolbarSearch.setOnEditorActionListener(object : OnEditorActionListener {
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    val itemCount = getAdapter()?.itemCount
+                    if (itemCount != null && itemCount > 0) {
+                        val launcherId = getAdapter()?.getLauncherId(0)
+                        val (packageName, activityName) = launcherId!!.split('/', ignoreCase = true, limit = 2)
+                        activity?.launchApp(packageName, activityName)
+                        return false
+                    }
+                }
+                return true
+            }
+        })
     }
 
     private fun showNoResultsPlaceholderIfNeeded() {
