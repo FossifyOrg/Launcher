@@ -2,6 +2,8 @@ package org.fossify.home.activities
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.WallpaperManager
+import android.app.WallpaperManager.OnColorsChangedListener
 import android.app.admin.DevicePolicyManager
 import android.app.role.RoleManager
 import android.appwidget.AppWidgetHost
@@ -37,7 +39,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.GestureDetectorCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.core.view.iterator
 import androidx.viewbinding.ViewBinding
@@ -47,6 +48,7 @@ import org.fossify.commons.extensions.beVisible
 import org.fossify.commons.extensions.getContrastColor
 import org.fossify.commons.extensions.getPopupMenuTheme
 import org.fossify.commons.extensions.getProperBackgroundColor
+import org.fossify.commons.extensions.insetsController
 import org.fossify.commons.extensions.isPackageInstalled
 import org.fossify.commons.extensions.onGlobalLayout
 import org.fossify.commons.extensions.performHapticFeedback
@@ -57,6 +59,7 @@ import org.fossify.commons.extensions.toast
 import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.DARK_GREY
 import org.fossify.commons.helpers.ensureBackgroundThread
+import org.fossify.commons.helpers.isOreoMr1Plus
 import org.fossify.commons.helpers.isQPlus
 import org.fossify.home.BuildConfig
 import org.fossify.home.R
@@ -75,6 +78,7 @@ import org.fossify.home.extensions.launchApp
 import org.fossify.home.extensions.launchAppInfo
 import org.fossify.home.extensions.launchersDB
 import org.fossify.home.extensions.roleManager
+import org.fossify.home.extensions.supportsDarkText
 import org.fossify.home.extensions.uninstallApp
 import org.fossify.home.fragments.MyFragment
 import org.fossify.home.helpers.ITEM_TYPE_FOLDER
@@ -116,6 +120,9 @@ class MainActivity : SimpleActivity(), FlingListener {
     private var mActionOnAddShortcut:
             ((shortcutId: String, label: String, icon: Drawable) -> Unit)? = null
     private var wasJustPaused: Boolean = false
+
+    private var wallpaperColorChangeListener: OnColorsChangedListener? = null
+    private var wallpaperSupportsDarkText: Boolean? = null
 
     private lateinit var mDetector: GestureDetectorCompat
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -173,6 +180,32 @@ class MainActivity : SimpleActivity(), FlingListener {
         if (!isDefaultLauncher()) {
             requestHomeRole()
         }
+
+        setupWallpaperColorListener()
+    }
+
+    private fun setupWallpaperColorListener() {
+        if (isOreoMr1Plus()) {
+            val wallpaperManager = WallpaperManager.getInstance(this)
+            wallpaperColorChangeListener = OnColorsChangedListener { colors, which ->
+                if (which == WallpaperManager.FLAG_SYSTEM) {
+                    wallpaperSupportsDarkText = colors?.supportsDarkText()
+                    if (!isAllAppsFragmentExpanded() && !isWidgetsFragmentExpanded()) {
+                        runOnUiThread {
+                            updateStatusBarIcons()
+                        }
+                    }
+                }
+            }
+            wallpaperManager.addOnColorsChangedListener(
+                wallpaperColorChangeListener!!,
+                Handler(Looper.getMainLooper())
+            )
+
+            wallpaperSupportsDarkText = wallpaperManager
+                .getWallpaperColors(WallpaperManager.FLAG_SYSTEM)
+                ?.supportsDarkText()
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -209,6 +242,13 @@ class MainActivity : SimpleActivity(), FlingListener {
     override fun onResume() {
         super.onResume()
         wasJustPaused = false
+        Handler(Looper.getMainLooper()).post {
+            if (isAllAppsFragmentExpanded() || isWidgetsFragmentExpanded()) {
+                updateStatusBarIcons(getProperBackgroundColor())
+            } else {
+                updateStatusBarIcons()
+            }
+        }
 
         with(binding.mainHolder) {
             onGlobalLayout {
@@ -255,6 +295,14 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         wasJustPaused = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isOreoMr1Plus() && wallpaperColorChangeListener != null) {
+            WallpaperManager.getInstance(this)
+                .removeOnColorsChangedListener(wallpaperColorChangeListener!!)
+        }
     }
 
     override fun onPause() {
@@ -598,7 +646,7 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            updateStatusBarIcons()
+            updateStatusBarIcons(getProperBackgroundColor())
         }, animationDuration)
     }
 
@@ -611,7 +659,7 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         window.navigationBarColor = Color.TRANSPARENT
         binding.homeScreenGrid.root.fragmentCollapsed()
-        updateStatusBarIcons(Color.TRANSPARENT)
+        updateStatusBarIcons()
         Handler(Looper.getMainLooper()).postDelayed({
             if (fragment is AllAppsFragmentBinding) {
                 fragment.allAppsGrid.scrollToPosition(0)
@@ -676,7 +724,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 binding.allAppsFragment.allAppsGrid.scrollToPosition(0)
                 binding.allAppsFragment.root.touchDownY = -1
                 binding.homeScreenGrid.root.fragmentCollapsed()
-                updateStatusBarIcons(Color.TRANSPARENT)
+                updateStatusBarIcons()
             }
             if (delayed) {
                 Handler(Looper.getMainLooper()).postDelayed(close, APP_DRAWER_CLOSE_DELAY)
@@ -693,7 +741,7 @@ class MainActivity : SimpleActivity(), FlingListener {
                 binding.widgetsFragment.widgetsList.scrollToPosition(0)
                 binding.widgetsFragment.root.touchDownY = -1
                 binding.homeScreenGrid.root.fragmentCollapsed()
-                updateStatusBarIcons(Color.TRANSPARENT)
+                updateStatusBarIcons()
             }
             if (delayed) {
                 Handler(Looper.getMainLooper()).postDelayed(close, APP_DRAWER_CLOSE_DELAY)
@@ -1263,9 +1311,16 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
     }
 
-    private fun updateStatusBarIcons(backgroundColor: Int = getProperBackgroundColor()) {
-        WindowCompat.getInsetsController(window, binding.root).isAppearanceLightStatusBars =
-            backgroundColor.getContrastColor() == DARK_GREY
+    private fun updateStatusBarIcons(backgroundColor: Int? = null) {
+        val isLightBackground = when {
+            backgroundColor != null -> backgroundColor.getContrastColor() == DARK_GREY
+            wallpaperSupportsDarkText != null -> wallpaperSupportsDarkText!!
+            else -> false
+        }
+        window.insetsController().apply {
+            isAppearanceLightStatusBars = isLightBackground
+            isAppearanceLightNavigationBars = isLightBackground
+        }
     }
 
     // taken from https://gist.github.com/maxjvh/a6ab15cbba9c82a5065d
