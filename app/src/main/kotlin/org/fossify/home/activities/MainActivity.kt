@@ -242,13 +242,13 @@ class MainActivity : SimpleActivity(), FlingListener {
     override fun onResume() {
         super.onResume()
         wasJustPaused = false
-        Handler(Looper.getMainLooper()).post {
+        Handler(Looper.getMainLooper()).postDelayed({
             if (isAllAppsFragmentExpanded() || isWidgetsFragmentExpanded()) {
                 updateStatusBarIcons(getProperBackgroundColor())
             } else {
                 updateStatusBarIcons()
             }
-        }
+        }, ANIMATION_DURATION)
 
         with(binding.mainHolder) {
             onGlobalLayout {
