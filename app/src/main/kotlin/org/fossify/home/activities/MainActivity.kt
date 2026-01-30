@@ -188,8 +188,11 @@ class MainActivity : SimpleActivity(), FlingListener {
         if (isOreoMr1Plus()) {
             val wallpaperManager = WallpaperManager.getInstance(this)
             wallpaperColorChangeListener = OnColorsChangedListener { colors, which ->
-                if (which == WallpaperManager.FLAG_SYSTEM) {
-                    wallpaperSupportsDarkText = colors?.supportsDarkText()
+                if (which and WallpaperManager.FLAG_SYSTEM != 0) {
+                    wallpaperSupportsDarkText = colors?.supportsDarkText() ?: run {
+                        refreshWallpaperSupportsDarkText()
+                        wallpaperSupportsDarkText
+                    }
                     if (!isAllAppsFragmentExpanded() && !isWidgetsFragmentExpanded()) {
                         runOnUiThread {
                             updateStatusBarIcons()
@@ -202,10 +205,15 @@ class MainActivity : SimpleActivity(), FlingListener {
                 Handler(Looper.getMainLooper())
             )
 
-            wallpaperSupportsDarkText = wallpaperManager
-                .getWallpaperColors(WallpaperManager.FLAG_SYSTEM)
-                ?.supportsDarkText()
+            refreshWallpaperSupportsDarkText()
         }
+    }
+
+    private fun refreshWallpaperSupportsDarkText() {
+        if (!isOreoMr1Plus()) return
+        wallpaperSupportsDarkText = WallpaperManager.getInstance(this)
+            .getWallpaperColors(WallpaperManager.FLAG_SYSTEM)
+            ?.supportsDarkText()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -242,6 +250,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     override fun onResume() {
         super.onResume()
         wasJustPaused = false
+        refreshWallpaperSupportsDarkText()
         Handler(Looper.getMainLooper()).postDelayed({
             if (isAllAppsFragmentExpanded() || isWidgetsFragmentExpanded()) {
                 updateStatusBarIcons(getProperBackgroundColor())
@@ -1315,7 +1324,10 @@ class MainActivity : SimpleActivity(), FlingListener {
         val isLightBackground = when {
             backgroundColor != null -> backgroundColor.getContrastColor() == DARK_GREY
             wallpaperSupportsDarkText != null -> wallpaperSupportsDarkText!!
-            else -> false
+            else -> {
+                refreshWallpaperSupportsDarkText()
+                wallpaperSupportsDarkText ?: false
+            }
         }
         window.insetsController().apply {
             isAppearanceLightStatusBars = isLightBackground
