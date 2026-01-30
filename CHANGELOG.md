@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added support for custom fonts
 
+### Fixed
+- Fixed invisible status bar icons on home screen ([#278])
+
 ## [1.7.0] - 2025-12-16
 ### Changed
 - Updated translations
@@ -108,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
 [#234]: https://github.com/FossifyOrg/Launcher/issues/234
 [#277]: https://github.com/FossifyOrg/Launcher/issues/277
+[#278]: https://github.com/FossifyOrg/Launcher/issues/278
 [#282]: https://github.com/FossifyOrg/Launcher/issues/282
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.7.0...HEAD
