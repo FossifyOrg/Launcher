@@ -50,6 +50,7 @@ import org.fossify.commons.extensions.getContrastColor
 import org.fossify.commons.extensions.getProperBackgroundColor
 import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.commons.extensions.performHapticFeedback
+import org.fossify.commons.helpers.FontHelper
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.home.R
@@ -147,21 +148,25 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
     init {
         ViewCompat.setAccessibilityDelegate(this, accessibilityHelper)
 
+        val customTypeface = FontHelper.getTypeface(context)
         textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.WHITE
             textSize = context.resources.getDimension(org.fossify.commons.R.dimen.smaller_text_size)
             setShadowLayer(2f, 0f, 0f, Color.BLACK)
+            typeface = customTypeface
         }
 
         contrastTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = context.getProperTextColor()
             textSize = context.resources.getDimension(org.fossify.commons.R.dimen.smaller_text_size)
             setShadowLayer(2f, 0f, 0f, context.getProperTextColor().getContrastColor())
+            typeface = customTypeface
         }
 
         folderTitleTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = context.getProperTextColor()
             textSize = context.resources.getDimension(org.fossify.commons.R.dimen.medium_text_size)
+            typeface = customTypeface
         }
 
         dragShadowCirclePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
