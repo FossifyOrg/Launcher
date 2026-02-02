@@ -13,6 +13,7 @@
     <string name="app_drawer_settings">App drawer</string>
     <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
     <string name="auto_show_keyboard_in_app_drawer">Automatically show keyboard in drawer</string>
+    <string name="show_app_labels">Show app labels</string>
     <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">Widget is too big for current home screen size</string>
     <string name="double_tap_to_lock">Double tap to lock screen</string>

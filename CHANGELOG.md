@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Option to hide app labels ([#55])
 
 ## [1.8.0] - 2026-01-30
 ### Added
@@ -105,6 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#6]: https://github.com/FossifyOrg/Launcher/issues/6
 [#44]: https://github.com/FossifyOrg/Launcher/issues/44
 [#51]: https://github.com/FossifyOrg/Launcher/issues/51
+[#55]: https://github.com/FossifyOrg/Launcher/issues/55
 [#63]: https://github.com/FossifyOrg/Launcher/issues/63
 [#65]: https://github.com/FossifyOrg/Launcher/issues/65
 [#74]: https://github.com/FossifyOrg/Launcher/issues/74
