@@ -28,7 +28,6 @@ import org.fossify.home.interfaces.AllAppsListener
 import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HomeScreenGridItem
 
-
 class AllAppsFragment(
     context: Context,
     attributeSet: AttributeSet
@@ -206,20 +205,15 @@ class AllAppsFragment(
             submitList(launchers)
         }
 
-        binding.searchBar.binding.topToolbarSearch.setOnEditorActionListener(object : OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    val itemCount = getAdapter()?.itemCount
-                    if (itemCount != null && itemCount > 0) {
-                        val launcherId = getAdapter()?.getLauncherId(0)
-                        val (packageName, activityName) = launcherId!!.split('/', ignoreCase = true, limit = 2)
-                        activity?.launchApp(packageName, activityName)
-                        return false
-                    }
-                }
-                return true
+        binding.searchBar.binding.topToolbarSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (binding.searchBar.getCurrentQuery().isEmpty()) return@setOnEditorActionListener false
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE,
+                EditorInfo.IME_ACTION_SEARCH,
+                EditorInfo.IME_ACTION_GO -> getAdapter()?.launchFirstApp() == true
+                else -> false
             }
-        })
+        }
     }
 
     private fun showNoResultsPlaceholderIfNeeded() {

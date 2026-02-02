@@ -44,8 +44,10 @@ class LaunchersAdapter(
         return getItem(position).getLauncherIdentifier().hashCode().toLong()
     }
 
-    fun getLauncherId(position: Int): String {
-        return getItem(position).getLauncherIdentifier()
+    fun launchFirstApp(): Boolean {
+        val launcher = currentList.firstOrNull() ?: return false
+        itemClick(launcher)
+        return true
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
