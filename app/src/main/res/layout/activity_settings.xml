@@ -161,7 +161,7 @@
 
             <RelativeLayout
                 android:id="@+id/settings_drawer_column_count_holder"
-                style="@style/SettingsHolderTextViewOneLinerStyle"
+                style="@style/SettingsHolderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ripple_background">
@@ -260,7 +260,7 @@
 
             <RelativeLayout
                 android:id="@+id/settings_home_screen_row_count_holder"
-                style="@style/SettingsHolderTextViewOneLinerStyle"
+                style="@style/SettingsHolderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ripple_background">
@@ -284,7 +284,7 @@
 
             <RelativeLayout
                 android:id="@+id/settings_home_screen_column_count_holder"
-                style="@style/SettingsHolderTextViewOneLinerStyle"
+                style="@style/SettingsHolderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ripple_background">
