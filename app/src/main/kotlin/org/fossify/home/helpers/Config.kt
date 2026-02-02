@@ -37,4 +37,12 @@ class Config(context: Context) : BaseConfig(context) {
         get() = prefs.getBoolean(AUTO_SHOW_KEYBOARD_IN_APP_DRAWER, false)
         set(autoShowKeyboardInAppDrawer) = prefs.edit()
             .putBoolean(AUTO_SHOW_KEYBOARD_IN_APP_DRAWER, autoShowKeyboardInAppDrawer).apply()
+
+    var showDrawerAppLabels: Boolean
+        get() = prefs.getBoolean(SHOW_DRAWER_APP_LABELS, true)
+        set(showDrawerAppLabels) = prefs.edit().putBoolean(SHOW_DRAWER_APP_LABELS, showDrawerAppLabels).apply()
+
+    var showHomeAppLabels: Boolean
+        get() = prefs.getBoolean(SHOW_HOME_APP_LABELS, true)
+        set(showHomeAppLabels) = prefs.edit().putBoolean(SHOW_HOME_APP_LABELS, showHomeAppLabels).apply()
 }

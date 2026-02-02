@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
+import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.getColoredDrawableWithColor
 import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.commons.extensions.realScreenSize
@@ -81,6 +82,7 @@ class LaunchersAdapter(
             itemView.apply {
                 binding.launcherLabel.text = launcher.title
                 binding.launcherLabel.setTextColor(textColor)
+                binding.launcherLabel.beVisibleIf(activity.config.showDrawerAppLabels)
                 binding.launcherIcon.setPadding(iconPadding, iconPadding, iconPadding, 0)
 
                 if (launcher.drawable != null && binding.launcherIcon.tag == true) {

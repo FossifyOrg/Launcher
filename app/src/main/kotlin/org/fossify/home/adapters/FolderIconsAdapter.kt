@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import androidx.core.view.iterator
 import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.adapters.MyRecyclerViewAdapter
+import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.views.MyRecyclerView
 import org.fossify.home.R
 import org.fossify.home.activities.MainActivity
 import org.fossify.home.databinding.ItemLauncherLabelBinding
+import org.fossify.home.extensions.config
 import org.fossify.home.extensions.handleGridItemPopupMenu
 import org.fossify.home.interfaces.ItemMenuListenerAdapter
 import org.fossify.home.models.HomeScreenGridItem
@@ -58,6 +60,7 @@ class FolderIconsAdapter(
     private fun setupView(view: View, item: HomeScreenGridItem) {
         ItemLauncherLabelBinding.bind(view).apply {
             launcherLabel.text = item.title
+            launcherLabel.beVisibleIf(activity.config.showHomeAppLabels)
             launcherLabel.setTextColor(textColor)
             launcherIcon.setPadding(iconPadding, iconPadding, iconPadding, 0)
             launcherIcon.setImageDrawable(item.drawable)

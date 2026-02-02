@@ -1888,7 +1888,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                     drawableY + iconSize
                 )
 
-                if (item.id != draggedItem?.id && item.title.isNotEmpty()) {
+                if (item.id != draggedItem?.id && item.title.isNotEmpty() && context.config.showHomeAppLabels) {
                     val textX = cell.left.toFloat() + labelSideMargin
                     val textY = cell.top.toFloat() + iconSize + iconMargin + labelSideMargin
                     val textPaintToUse = if (item.parentId == null) {
