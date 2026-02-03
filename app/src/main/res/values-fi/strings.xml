@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Kaksoisnapauta lukitaksesi näytön</string>
     <string name="lock_device_admin_warning">Pääkäyttäjäoikeuden poiskytkentä, estää kaksoisnapautuslukituksen toiminnan.</string>
     <string name="auto_show_keyboard_in_app_drawer">Näytä näppäimistö automaattisesti katsottaessa kaikkia sovelluksia</string>
+    <string name="show_app_labels">Näytä sovellusten luokat</string>
 </resources>
