@@ -3,11 +3,8 @@ package org.fossify.home.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.fossify.commons.extensions.beGone
