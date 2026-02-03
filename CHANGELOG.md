@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Pressing enter in app drawer launches the first app in search results ([#331])
 
 ## [1.9.0] - 2026-02-02
 ### Added
@@ -126,6 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#277]: https://github.com/FossifyOrg/Launcher/issues/277
 [#278]: https://github.com/FossifyOrg/Launcher/issues/278
 [#282]: https://github.com/FossifyOrg/Launcher/issues/282
+[#331]: https://github.com/FossifyOrg/Launcher/issues/331
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.9.0...HEAD
 [1.9.0]: https://github.com/FossifyOrg/Launcher/compare/1.8.0...1.9.0
