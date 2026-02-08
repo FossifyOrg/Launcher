@@ -239,7 +239,10 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             gridItems = context.homeScreenGridItemsDB.getAllItems() as ArrayList<HomeScreenGridItem>
             gridItems.toImmutableList().forEach { item ->
                 if (item.type == ITEM_TYPE_ICON) {
-                    item.drawable = context.getDrawableForPackageName(item.packageName)
+                    item.drawable = context.getDrawableForPackageName(
+                        item.packageName,
+                        item.userSerial
+                    )
                 } else if (item.type == ITEM_TYPE_FOLDER) {
                     item.drawable = item.toFolder().generateDrawable()
                 } else if (item.type == ITEM_TYPE_SHORTCUT) {
@@ -362,7 +365,10 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                 draggedItem!!.drawable = draggedGridItem.toFolder().generateDrawable()
             } else {
                 draggedItem!!.drawable =
-                    context.getDrawableForPackageName(draggedGridItem.packageName)
+                    context.getDrawableForPackageName(
+                        draggedGridItem.packageName,
+                        draggedGridItem.userSerial
+                    )
             }
         }
 
@@ -906,6 +912,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                 page = pager.getCurrentPage(),
                 packageName = draggedItem!!.packageName,
                 activityName = draggedItem!!.activityName,
+                userSerial = draggedItem!!.userSerial,
                 title = draggedItem!!.title,
                 type = draggedItem!!.type,
                 className = "",
@@ -2470,4 +2477,3 @@ private class AnimatedGridPager(
             }
     }
 }
-

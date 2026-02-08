@@ -10,12 +10,15 @@ import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Process
+import android.os.UserHandle
+import android.os.UserManager
 import android.util.Size
 import androidx.annotation.RequiresApi
 import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.Config
+import org.fossify.home.helpers.UNKNOWN_USER_SERIAL
 import org.fossify.home.interfaces.AppLaunchersDao
 import org.fossify.home.interfaces.HiddenIconsDao
 import org.fossify.home.interfaces.HomeScreenGridItemsDao
@@ -40,14 +43,21 @@ val Context.roleManager: RoleManager
     get() = getSystemService(RoleManager::class.java)
 
 fun Context.getDrawableForPackageName(packageName: String): Drawable? {
+    return getDrawableForPackageName(packageName, getMyUserSerial())
+}
+
+fun Context.getDrawableForPackageName(packageName: String, userSerial: Long): Drawable? {
     var drawable: Drawable? = null
-    try {
-        // try getting the properly colored launcher icons
-        val launcher = getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
-        val activityList = launcher.getActivityList(packageName, Process.myUserHandle())[0]
-        drawable = activityList.getBadgedIcon(0)
-    } catch (e: Exception) {
-    } catch (e: Error) {
+    val launcher = getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+    val userHandle = getUserHandleBySerial(userSerial)
+    if (userHandle != null) {
+        try {
+            // try getting the properly colored and badged launcher icons
+            val activityList = launcher.getActivityList(packageName, userHandle)[0]
+            drawable = activityList.getBadgedIcon(resources.displayMetrics.densityDpi)
+        } catch (e: Exception) {
+        } catch (e: Error) {
+        }
     }
 
     if (drawable == null) {
@@ -59,6 +69,19 @@ fun Context.getDrawableForPackageName(packageName: String): Drawable? {
     }
 
     return drawable
+}
+
+fun Context.getMyUserSerial(): Long {
+    val userManager = getSystemService(Context.USER_SERVICE) as UserManager
+    return userManager.getSerialNumberForUser(Process.myUserHandle())
+}
+
+fun Context.getUserHandleBySerial(userSerial: Long): UserHandle? {
+    val userManager = getSystemService(Context.USER_SERVICE) as UserManager
+    if (userSerial == UNKNOWN_USER_SERIAL) {
+        return null
+    }
+    return userManager.getUserForSerialNumber(userSerial)
 }
 
 fun Context.getInitialCellSize(

@@ -19,6 +19,7 @@ data class HomeScreenGridItem(
     @ColumnInfo(name = "page") var page: Int,
     @ColumnInfo(name = "package_name") var packageName: String,
     @ColumnInfo(name = "activity_name") var activityName: String,   // needed at apps that create multiple icons at install, not just the launcher
+    @ColumnInfo(name = "user_serial") var userSerial: Long,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "type") var type: Int,
     @ColumnInfo(name = "class_name") var className: String,
@@ -38,7 +39,30 @@ data class HomeScreenGridItem(
         const val FOLDER_MAX_CAPACITY = 16
     }
 
-    constructor() : this(null, -1, -1, -1, -1, 0, "", "", "", ITEM_TYPE_ICON, "", -1, "", null, false, null, null, null, null, 1, 1)
+    constructor() : this(
+        null,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        "",
+        "",
+        0L,
+        "",
+        ITEM_TYPE_ICON,
+        "",
+        -1,
+        "",
+        null,
+        false,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1
+    )
 
     fun getWidthInCells() = if (right == -1 || left == -1) {
         widthCells
@@ -68,7 +92,7 @@ data class HomeScreenGridItem(
         }
     }
 
-    fun getItemIdentifier() = "$packageName/$activityName"
+    fun getItemIdentifier() = "$packageName/$activityName/$userSerial"
 
     fun getTopLeft(rowCount: Int) = Point(left, getDockAdjustedTop(rowCount))
 }

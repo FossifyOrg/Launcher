@@ -1,8 +1,8 @@
 package org.fossify.home.activities
 
-import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.pm.LauncherApps
 import android.os.Bundle
+import android.os.UserManager
 import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.normalizeString
 import org.fossify.commons.extensions.viewBinding
@@ -15,6 +15,7 @@ import org.fossify.home.databinding.ActivityHiddenIconsBinding
 import org.fossify.home.extensions.config
 import org.fossify.home.extensions.getDrawableForPackageName
 import org.fossify.home.extensions.hiddenIconsDB
+import org.fossify.home.helpers.UNKNOWN_USER_SERIAL
 import org.fossify.home.models.HiddenIcon
 
 class HiddenIconsActivity : SimpleActivity(), RefreshRecyclerViewListener {
@@ -53,16 +54,26 @@ class HiddenIconsActivity : SimpleActivity(), RefreshRecyclerViewListener {
             }
 
             if (hiddenIcons.isNotEmpty()) {
-                val intent = Intent(Intent.ACTION_MAIN, null)
-                intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                val launcherApps =
+                    applicationContext.getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps
+                val userManager = applicationContext.getSystemService(USER_SERVICE) as UserManager
+                val userHandles = userManager.userProfiles
+                for (userHandle in userHandles) {
+                    val userSerial = userManager.getSerialNumberForUser(userHandle)
+                    if (userSerial == UNKNOWN_USER_SERIAL) {
+                        continue
+                    }
 
-                val list = packageManager.queryIntentActivities(intent, PackageManager.PERMISSION_GRANTED)
-                for (info in list) {
-                    val componentInfo = info.activityInfo.applicationInfo
-                    val packageName = componentInfo.packageName
-                    val activityName = info.activityInfo.name
-                    hiddenIcons.firstOrNull { it.getIconIdentifier() == "$packageName/$activityName" }?.apply {
-                        drawable = info.loadIcon(packageManager) ?: getDrawableForPackageName(packageName)
+                    val activityList = launcherApps.getActivityList(null, userHandle)
+                    for (info in activityList) {
+                        val packageName = info.applicationInfo.packageName
+                        val activityName = info.name
+                        hiddenIcons.firstOrNull {
+                            it.getIconIdentifier() == "$packageName/$activityName/$userSerial"
+                        }?.apply {
+                            drawable = info.getBadgedIcon(resources.displayMetrics.densityDpi)
+                                ?: getDrawableForPackageName(packageName, userSerial)
+                        }
                     }
                 }
 

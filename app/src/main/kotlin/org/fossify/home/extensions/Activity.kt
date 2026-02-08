@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Process
+import android.os.UserManager
 import android.provider.Settings
 import android.view.ContextThemeWrapper
 import android.view.Gravity
@@ -37,34 +38,65 @@ import org.fossify.home.helpers.UNINSTALL_APP_REQUEST_CODE
 import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.HomeScreenGridItem
 
-fun Activity.launchApp(packageName: String, activityName: String) {
+fun Activity.launchApp(packageName: String, activityName: String, userSerial: Long) {
     try {
-        Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_LAUNCHER)
-            `package` = packageName
-            component = ComponentName.unflattenFromString("$packageName/$activityName")
-            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
-            startActivity(this)
-        }
+        val launcherApps =
+            applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+        val userManager = applicationContext.getSystemService(Context.USER_SERVICE) as UserManager
+        val userHandle = userManager.getUserForSerialNumber(userSerial) ?: Process.myUserHandle()
+        launcherApps.startMainActivity(
+            ComponentName(packageName, activityName),
+            userHandle,
+            Rect(),
+            null
+        )
     } catch (e: Exception) {
         try {
-            val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
-            startActivity(launchIntent)
+            Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                `package` = packageName
+                component = ComponentName.unflattenFromString("$packageName/$activityName")
+                addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
+                startActivity(this)
+            }
         } catch (e: Exception) {
-            showErrorToast(e)
+            try {
+                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+                startActivity(launchIntent)
+            } catch (e: Exception) {
+                showErrorToast(e)
+            }
         }
     }
 }
 
-fun Activity.launchAppInfo(packageName: String) {
-    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-        data = Uri.fromParts("package", packageName, null)
-        startActivity(this)
+fun Activity.launchAppInfo(packageName: String, activityName: String, userSerial: Long) {
+    try {
+        val launcherApps =
+            applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+        val userManager = applicationContext.getSystemService(Context.USER_SERVICE) as UserManager
+        val userHandle = userManager.getUserForSerialNumber(userSerial) ?: Process.myUserHandle()
+        launcherApps.startAppDetailsActivity(
+            ComponentName(packageName, activityName),
+            userHandle,
+            null,
+            null
+        )
+    } catch (_: Exception) {
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", packageName, null)
+            startActivity(this)
+        }
     }
 }
 
-fun Activity.canAppBeUninstalled(packageName: String): Boolean {
+fun Activity.canAppBeUninstalled(packageName: String, userSerial: Long): Boolean {
     return try {
+        val userManager = applicationContext.getSystemService(Context.USER_SERVICE) as UserManager
+        val myUserSerial = userManager.getSerialNumberForUser(Process.myUserHandle())
+        if (myUserSerial != userSerial) {
+            return false
+        }
         val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
         (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0
     } catch (ignored: Exception) {
@@ -108,18 +140,20 @@ fun Activity.handleGridItemPopupMenu(
         menu.findItem(R.id.resize).isVisible = gridItem.type == ITEM_TYPE_WIDGET
         menu.findItem(R.id.app_info).isVisible = gridItem.type == ITEM_TYPE_ICON
         menu.findItem(R.id.uninstall).isVisible = gridItem.type == ITEM_TYPE_ICON
-                && canAppBeUninstalled(gridItem.packageName)
+                && canAppBeUninstalled(gridItem.packageName, gridItem.userSerial)
                 && gridItem.packageName != packageName
         menu.findItem(R.id.remove).isVisible = !isOnAllAppsFragment
 
         val launcherApps =
             applicationContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+        val userManager = applicationContext.getSystemService(Context.USER_SERVICE) as UserManager
+        val userHandle = userManager.getUserForSerialNumber(gridItem.userSerial) ?: Process.myUserHandle()
         val shortcuts = if (launcherApps.hasShortcutHostPermission()) {
             try {
                 val query = LauncherApps.ShortcutQuery().setQueryFlags(
                     LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED
                 ).setPackage(gridItem.packageName)
-                launcherApps.getShortcuts(query, Process.myUserHandle())
+                launcherApps.getShortcuts(query, userHandle)
             } catch (e: Exception) {
                 null
             }
@@ -147,7 +181,6 @@ fun Activity.handleGridItemPopupMenu(
                         listener.onAnyClick()
                         val id = shortcutInfo.id
                         val packageName = shortcutInfo.`package`
-                        val userHandle = Process.myUserHandle()
                         launcherApps.startShortcut(packageName, id, Rect(), null, userHandle)
                         true
                     }

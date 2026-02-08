@@ -125,7 +125,8 @@ class AllAppsFragment(
         launchers = appLaunchers.sortedWith(
             compareBy(
                 { it.title.normalizeString().lowercase() },
-                { it.packageName }
+                { it.packageName },
+                { it.userSerial }
             )
         )
 
@@ -141,7 +142,11 @@ class AllAppsFragment(
 
             if (getAdapter() == null) {
                 LaunchersAdapter(activity!!, this) {
-                    activity?.launchApp((it as AppLauncher).packageName, it.activityName)
+                    activity?.launchApp(
+                        (it as AppLauncher).packageName,
+                        it.activityName,
+                        it.userSerial
+                    )
                     if (activity?.config?.closeAppDrawer == true) {
                         activity?.closeAppDrawer(delayed = true)
                     }
@@ -228,6 +233,7 @@ class AllAppsFragment(
             page = 0,
             packageName = appLauncher.packageName,
             activityName = appLauncher.activityName,
+            userSerial = appLauncher.userSerial,
             title = appLauncher.title,
             type = ITEM_TYPE_ICON,
             className = "",

@@ -37,3 +37,4 @@ const val ITEM_TYPE_FOLDER = 3
 
 const val WIDGET_HOST_ID = 12345
 const val MAX_CLICK_DURATION = 150
+const val UNKNOWN_USER_SERIAL = -1L

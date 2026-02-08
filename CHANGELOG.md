@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Pressing enter in app drawer launches the first app in search results ([#331])
+- Support for Dual Apps with Android profiles ([#294])
 
 ## [1.9.0] - 2026-02-02
 ### Added

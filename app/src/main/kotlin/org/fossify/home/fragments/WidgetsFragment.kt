@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
 import android.os.Process
+import android.os.UserManager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import org.fossify.commons.extensions.getProperPrimaryColor
@@ -273,6 +274,8 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
             page = 0,
             packageName = appWidget.appPackageName,
             activityName = "",
+            userSerial = (context.getSystemService(Context.USER_SERVICE) as UserManager)
+                .getSerialNumberForUser(Process.myUserHandle()),
             title = "",
             type = type,
             className = appWidget.className,
