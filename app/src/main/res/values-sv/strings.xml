@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Dubbeltryck för att låsa skärmen</string>
     <string name="lock_device_admin_warning">Om du inaktiverar administratörsbehörigheten inaktiveras funktionen dubbeltryck för att låsa skärmen.</string>
     <string name="auto_show_keyboard_in_app_drawer">Visa tangentbordet automatiskt i lådan</string>
+    <string name="show_app_labels">Visa appnamn</string>
 </resources>
