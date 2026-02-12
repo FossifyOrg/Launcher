@@ -9,8 +9,11 @@ import android.content.pm.PackageManager
 import android.os.Process
 import android.util.AttributeSet
 import android.view.MotionEvent
+import org.fossify.commons.extensions.beGone
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.getProperTextColor
+import org.fossify.commons.extensions.hideKeyboard
+import org.fossify.commons.extensions.normalizeString
 import org.fossify.commons.extensions.showErrorToast
 import org.fossify.commons.extensions.toast
 import org.fossify.commons.helpers.ensureBackgroundThread
@@ -35,6 +38,7 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
     private var lastTouchCoords = Pair(0f, 0f)
     var touchDownY = -1
     var ignoreTouches = false
+    private var widgets = emptyList<AppWidget>()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun setupFragment(activity: MainActivity) {
@@ -43,8 +47,9 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
         getAppWidgets()
 
         binding.widgetsList.setOnTouchListener { v, event ->
-            if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) {
-                touchDownY = -1
+            if (event.actionMasked == MotionEvent.ACTION_DOWN && binding.searchBar.hasFocus()) {
+                binding.searchBar.binding.topToolbarSearch.clearFocus()
+                activity?.hideKeyboard()
             }
 
             return@setOnTouchListener false
@@ -60,9 +65,8 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
         binding.widgetsList.scrollToPosition(0)
         setupViews()
 
-        val appWidgets = (binding.widgetsList.adapter as? WidgetsAdapter)?.widgetListItems
-        if (appWidgets != null) {
-            setupAdapter(appWidgets)
+        if (widgets.isNotEmpty()) {
+            splitWidgetsByApps()
         } else {
             getAppWidgets()
         }
@@ -71,6 +75,17 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
     override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) {
             return super.onInterceptTouchEvent(event)
+        }
+
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+            touchDownY = event.y.toInt()
+            lastTouchCoords = Pair(event.x, event.y)
+            return false
+        }
+
+        if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) {
+            touchDownY = -1
+            return false
         }
 
         if (ignoreTouches) {
@@ -89,11 +104,12 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
             shouldIntercept =
                 touchDownY - event.y.toInt() < 0 && binding.widgetsList.computeVerticalScrollOffset() == 0
             if (shouldIntercept) {
+                if (binding.searchBar.hasFocus()) {
+                    activity?.hideKeyboard()
+                }
                 activity?.startHandlingTouches(touchDownY)
                 touchDownY = -1
             }
-        } else {
-            touchDownY = event.y.toInt()
         }
 
         return shouldIntercept
@@ -173,15 +189,29 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
                     { it.appPackageName },
                     { it.widgetTitle })
             ).toMutableList() as ArrayList<AppWidget>
-            splitWidgetsByApps(appWidgets)
+            widgets = appWidgets
+            activity?.runOnUiThread {
+                splitWidgetsByApps()
+            }
         }
     }
 
-    private fun splitWidgetsByApps(appWidgets: ArrayList<AppWidget>) {
+    private fun splitWidgetsByApps() {
+        val searchQuery = binding.searchBar.getCurrentQuery()
+        val filteredWidgets = if (searchQuery.isNotEmpty()) {
+            widgets.filter { widget ->
+                widget.appTitle.normalizeString().contains(searchQuery.normalizeString(), ignoreCase = true) ||
+                        widget.widgetTitle.toString().normalizeString()
+                            .contains(searchQuery.normalizeString(), ignoreCase = true)
+            }
+        } else {
+            widgets
+        }
+
         var currentAppPackageName = ""
         val widgetListItems = ArrayList<WidgetsListItem>()
         var currentAppWidgets = ArrayList<AppWidget>()
-        appWidgets.forEach { appWidget ->
+        filteredWidgets.forEach { appWidget ->
             if (appWidget.appPackageName != currentAppPackageName) {
                 if (widgetListItems.isNotEmpty()) {
                     widgetListItems.add(WidgetsListItemsHolder(currentAppWidgets))
@@ -227,6 +257,13 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
         binding.widgetsFastscroller.updateColors(context.getProperPrimaryColor())
         (binding.widgetsList.adapter as? WidgetsAdapter)?.updateTextColor(context.getProperTextColor())
         setupDrawerBackground()
+
+        binding.searchBar.requireToolbar().beGone()
+        binding.searchBar.updateColors()
+        binding.searchBar.setupMenu()
+        binding.searchBar.onSearchTextChangedListener = {
+            splitWidgetsByApps()
+        }
     }
 
     private fun getAppMetadataFromPackage(packageName: String): WidgetsListSection? {

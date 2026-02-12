@@ -1159,6 +1159,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
         // Delete existing widget if it has already been loaded to the list
         gridItems.removeIf { it.id == item.id }
         gridItems.add(item)
+        (context as MainActivity).clearWidgetsSearch()
     }
 
     private fun updateWidgetPositionAndSize(
@@ -2470,4 +2471,3 @@ private class AnimatedGridPager(
             }
     }
 }
-

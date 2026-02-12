@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Pressing enter in app drawer launches the first app in search results ([#331])
+- Ability to search on the widgets screen ([#56])
 
 ## [1.9.0] - 2026-02-02
 ### Added
@@ -115,6 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#44]: https://github.com/FossifyOrg/Launcher/issues/44
 [#51]: https://github.com/FossifyOrg/Launcher/issues/51
 [#55]: https://github.com/FossifyOrg/Launcher/issues/55
+[#56]: https://github.com/FossifyOrg/Launcher/issues/56
 [#63]: https://github.com/FossifyOrg/Launcher/issues/63
 [#65]: https://github.com/FossifyOrg/Launcher/issues/65
 [#74]: https://github.com/FossifyOrg/Launcher/issues/74

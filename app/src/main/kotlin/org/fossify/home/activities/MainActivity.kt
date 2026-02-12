@@ -328,7 +328,11 @@ class MainActivity : SimpleActivity(), FlingListener {
                 true
             }
         } else if (isWidgetsFragmentExpanded()) {
-            hideFragment(binding.widgetsFragment)
+            if (binding.widgetsFragment.searchBar.isSearchOpen) {
+                clearWidgetsSearch()
+            } else {
+                hideFragment(binding.widgetsFragment)
+            }
             true
         } else if (binding.homeScreenGrid.resizeFrame.isVisible) {
             binding.homeScreenGrid.root.hideResizeLines()
@@ -669,6 +673,9 @@ class MainActivity : SimpleActivity(), FlingListener {
         window.navigationBarColor = Color.TRANSPARENT
         binding.homeScreenGrid.root.fragmentCollapsed()
         updateStatusBarIcons()
+        if (fragment is WidgetsFragmentBinding) {
+            clearWidgetsSearch()
+        }
         Handler(Looper.getMainLooper()).postDelayed({
             if (fragment is AllAppsFragmentBinding) {
                 fragment.allAppsGrid.scrollToPosition(0)
@@ -681,7 +688,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     fun homeScreenLongPressed(eventX: Float, eventY: Float) {
-        if (isAllAppsFragmentExpanded()) {
+        if (isAllAppsFragmentExpanded() || isWidgetsFragmentExpanded()) {
             return
         }
 
@@ -748,6 +755,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             val close = {
                 binding.widgetsFragment.root.y = mScreenHeight.toFloat()
                 binding.widgetsFragment.widgetsList.scrollToPosition(0)
+                clearWidgetsSearch()
                 binding.widgetsFragment.root.touchDownY = -1
                 binding.homeScreenGrid.root.fragmentCollapsed()
                 updateStatusBarIcons()
@@ -758,6 +766,10 @@ class MainActivity : SimpleActivity(), FlingListener {
                 close()
             }
         }
+    }
+
+    fun clearWidgetsSearch() {
+        binding.widgetsFragment.searchBar.closeSearch()
     }
 
     private fun performItemClick(clickedGridItem: HomeScreenGridItem) {

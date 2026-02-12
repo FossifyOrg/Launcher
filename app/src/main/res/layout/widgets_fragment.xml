@@ -5,10 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <org.fossify.commons.views.MySearchMenu
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:applyWindowInsets="false" />
+
     <com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
         android:id="@+id/widgets_fastscroller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/search_bar"
         app:fastScrollEnabled="false">
 
         <org.fossify.commons.views.MyRecyclerView
