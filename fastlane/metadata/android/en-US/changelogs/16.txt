@@ -1,0 +1,9 @@
+Added:
+
+• Pressing enter in app drawer launches the first app in search results 
+• Ability to search on the widgets screen 
+
+Changed:
+
+• Updated translations
+
