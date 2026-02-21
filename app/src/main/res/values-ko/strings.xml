@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">런처</string>
+    <string name="launcher_settings">런처 설정</string>
+    <string name="app_info">앱 정보</string>
+    <string name="touch_hold_widget">위젯을 길게 누르고 홈 화면에 드래그하세요</string>
+    <string name="uninstall">제거</string>
+    <string name="hide_icon">아이콘 숨기기</string>
+    <string name="add_hidden_icons">숨겨진 아이콘 추가</string>
+    <string name="manage_hidden_icons">숨겨진 아이콘 관리</string>
+    <string name="hidden_icons">숨겨진 아이콘</string>
+    <string name="hidden_icons_placeholder">시스템 제한으로 인해 일부 앱들은 삭제할 수 없지만, 보이지 않게 숨길 수는 있습니다.</string>
+    <string name="app_drawer_settings">앱 서랍</string>
+    <string name="close_app_drawer_on_app_open">앱을 열 때 앱 서랍 닫기</string>
+    <string name="auto_show_keyboard_in_app_drawer">서랍에서 키보드 자동으로 보이기</string>
+    <string name="show_app_labels">앱 라벨 보이기</string>
+    <string name="home_screen_settings">홈 화면</string>
+    <string name="widget_too_big">위젯이 현재 홈 화면의 크기에 비해 너무 큽니다</string>
+    <string name="double_tap_to_lock">더블 탭해서 화면 잠금</string>
+    <string name="lock_device_admin_hint">화면 잠금 기능을 사용하려면 관리자 권한을 부여해야 합니다. 이 권한을 제거하기 전까지는 앱을 삭제할 수 없습니다.</string>
+    <string name="lock_device_admin_warning">관리자 권한을 비활성화하면 더블 탭해서 화면 잠금 기능이 비활성화됩니다.</string>
+</resources>
