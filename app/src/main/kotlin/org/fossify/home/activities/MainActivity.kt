@@ -653,9 +653,9 @@ class MainActivity : SimpleActivity(), FlingListener {
             && config.showSearchBar
             && config.autoShowKeyboardInAppDrawer
         ) {
-            fragment.root.postDelayed({
+            fragment.root.post {
                 showKeyboard(fragment.searchBar.binding.topToolbarSearch)
-            }, animationDuration)
+            }
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
