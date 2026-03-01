@@ -19,7 +19,6 @@
     <ID>CyclomaticComplexMethod:MyAppWidgetResizeFrame.kt$MyAppWidgetResizeFrame$override fun onTouchEvent(event: MotionEvent?): Boolean</ID>
     <ID>EmptyCatchBlock:Context.kt${ }</ID>
     <ID>EmptyCatchBlock:WidgetsFragment.kt$WidgetsFragment${ }</ID>
-    <ID>EmptyFunctionBlock:FolderIconsAdapter.kt$FolderIconsAdapter${}</ID>
     <ID>EmptyFunctionBlock:HiddenIconsAdapter.kt$HiddenIconsAdapter${}</ID>
     <ID>LargeClass:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
     <ID>LargeClass:MainActivity.kt$MainActivity : SimpleActivityFlingListener</ID>
@@ -59,7 +58,6 @@
     <ID>MaxLineLength:AllAppsFragment.kt$AllAppsFragment$// some devices ACTION_MOVE keeps triggering for the whole long press duration, but we are interested in real moves only, when coords change</ID>
     <ID>MaxLineLength:AppLauncher.kt$AppLauncher$@ColumnInfo(name = "activity_name") var activityName: String</ID>
     <ID>MaxLineLength:AppLauncher.kt$AppLauncher$sorting and SORT_BY_TITLE != 0 -&gt; title.normalizeString().lowercase().compareTo(other.title.normalizeString().lowercase())</ID>
-    <ID>MaxLineLength:FolderIconsAdapter.kt$FolderIconsAdapter.&lt;no name provided&gt;$val yOffset = resources.getDimension(R.dimen.long_press_anchor_button_offset_y) * (visibleMenuItems - 1)</ID>
     <ID>MaxLineLength:HiddenIconsAdapter.kt$HiddenIconsAdapter$private fun getSelectedItems()</ID>
     <ID>MaxLineLength:HomeScreenGrid.kt$AnimatedGridPager$((pageChangeSwipedPercentage &gt; 0f &amp;&amp; item.page == currentPage - 1) || (pageChangeSwipedPercentage &lt; 0f &amp;&amp; item.page == currentPage + 1))</ID>
     <ID>MaxLineLength:HomeScreenGrid.kt$HomeScreenGrid$(context as? MainActivity)</ID>
@@ -118,7 +116,6 @@
     <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WidgetsFragment.kt$WidgetsFragment$error: Error</ID>
     <ID>TooManyFunctions:AllAppsFragment.kt$AllAppsFragment : MyFragmentAllAppsListener</ID>
-    <ID>TooManyFunctions:FolderIconsAdapter.kt$FolderIconsAdapter : MyRecyclerViewAdapter</ID>
     <ID>TooManyFunctions:HiddenIconsAdapter.kt$HiddenIconsAdapter : MyRecyclerViewAdapter</ID>
     <ID>TooManyFunctions:HomeScreenGrid.kt$AnimatedGridPager</ID>
     <ID>TooManyFunctions:HomeScreenGrid.kt$HomeScreenGrid : RelativeLayout</ID>
