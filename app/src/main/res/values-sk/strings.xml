@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Dvojitým ťuknutím uzamknúť obrazovku</string>
     <string name="lock_device_admin_hint">Pre umoženie zámku obrazovky dvojitým ťuknutím je nutné aktivovať povolenie pre aplikáciu na správu zariadenia. Pre odinštalovanie aplikácie musí byť toto povolenie zrušené.</string>
     <string name="lock_device_admin_warning">Deaktiváciou povolenia aplikácie na správu zariadenia sa funkcia dvojitého ťuknutia na uzamknutie obrazovky vypne.</string>
+    <string name="show_app_labels">aplikačné</string>
 </resources>
