@@ -18,4 +18,5 @@
     <string name="app_drawer_settings">מגירת אפליקציות</string>
     <string name="widget_too_big">הווידג\'ט גדול מדי לגודל מסך הבית הנוכחי</string>
     <string name="auto_show_keyboard_in_app_drawer">הצגת מקלדת אוטומטית במגירה</string>
+    <string name="show_app_labels">הצג תוויות יישומון</string>
 </resources>
