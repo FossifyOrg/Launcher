@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.11.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.11.1)" variant="all" version="8.11.1">
+<issues format="6" by="lint 9.0.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.0.1)" variant="all" version="9.0.1">
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/search_bar, defined or included multiple times in layout/activity_main.xml: [layout/activity_main.xml => layout/widgets_fragment.xml defines @+id/search_bar, layout/activity_main.xml => layout/all_apps_fragment.xml defines @+id/search_bar]"
+        errorLine1="    &lt;include"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="16"
+            column="5"
+            message="Duplicate id @+id/search_bar, defined or included multiple times in layout/activity_main.xml: [layout/activity_main.xml => layout/widgets_fragment.xml defines @+id/search_bar, layout/activity_main.xml => layout/all_apps_fragment.xml defines @+id/search_bar]"/>
+        <location
+            file="src/main/res/layout/widgets_fragment.xml"
+            line="9"
+            column="9"
+            message="Defined here, included via layout/activity_main.xml => layout/widgets_fragment.xml defines @+id/search_bar"/>
+        <location
+            file="src/main/res/layout/all_apps_fragment.xml"
+            line="9"
+            column="9"
+            message="Defined here, included via layout/activity_main.xml => layout/all_apps_fragment.xml defines @+id/search_bar"/>
+    </issue>
 
     <issue
         id="NewApi"
@@ -53,25 +75,630 @@
     </issue>
 
     <issue
-        id="AndroidGradlePluginVersion"
-        message="A newer version of Gradle than 8.13 is available: 8.14.4"
-        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip"
-        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Red` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/work/Launcher/Launcher/gradle/wrapper/gradle-wrapper.properties"
-            line="3"
-            column="17"/>
+            file="src/main/AndroidManifest.xml"
+            line="94"
+            column="13"/>
     </issue>
 
     <issue
-        id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 8.11.1 is available: 9.0.0. (There is also a newer version of 8.11.𝑥 available, if upgrading to 9.0.0 is difficult: 8.11.2)"
-        errorLine1="gradlePlugins-agp = &quot;8.11.1&quot;"
-        errorLine2="                    ~~~~~~~~">
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Red` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/work/Launcher/Launcher/gradle/libs.versions.toml"
-            line="14"
-            column="21"/>
+            file="src/main/AndroidManifest.xml"
+            line="96"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Red` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="99"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Pink` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="112"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Pink` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="114"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Pink` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="117"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Purple` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="130"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Purple` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="132"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Purple` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="135"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Deep_purple` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="148"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Deep_purple` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="150"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Deep_purple` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="153"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Indigo` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="166"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Indigo` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="168"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Indigo` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="171"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Blue` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="184"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Blue` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="186"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Blue` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="189"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Light_blue` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="202"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Light_blue` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="204"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Light_blue` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="207"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Cyan` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="220"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Cyan` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="222"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Cyan` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="225"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Teal` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="238"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Teal` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="240"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Teal` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="243"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Green` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="256"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Green` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="258"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Green` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="261"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Light_green` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="274"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Light_green` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="276"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Light_green` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="279"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Lime` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="292"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Lime` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="294"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Lime` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="297"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Yellow` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="310"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Yellow` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="312"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Yellow` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="315"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Amber` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="328"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Amber` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="330"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Amber` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="333"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Orange` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="346"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Orange` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="348"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Orange` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="351"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Deep_orange` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="364"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Deep_orange` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="366"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Deep_orange` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="369"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Brown` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="382"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Brown` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="384"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Brown` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="387"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Blue_grey` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="400"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Blue_grey` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="402"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Blue_grey` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="405"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `clearTaskOnLaunch` on `&lt;activity-alias>` `.activities.SplashActivity.Grey_black` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:clearTaskOnLaunch=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="418"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `excludeFromRecents` on `&lt;activity-alias>` `.activities.SplashActivity.Grey_black` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:excludeFromRecents=&quot;true&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="420"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InvalidManifestAttribute"
+        message="Attribute `launchMode` on `&lt;activity-alias>` `.activities.SplashActivity.Grey_black` is invalid, and will be silently ignored. This attribute is always ignored on `&lt;activity-alias>`."
+        errorLine1="            android:launchMode=&quot;singleTask&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="423"
+            column="13"/>
     </issue>
 
     <issue
@@ -263,12 +890,23 @@
 
     <issue
         id="MissingTranslation"
+        message="&quot;show_app_labels&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;pt&quot; (Portuguese), &quot;fil&quot; (Filipino; Pilipino), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;uk&quot; (Ukrainian), &quot;ia&quot; (Interlingua), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;in&quot; (Indonesian), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;eo&quot; (Esperanto), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;kab&quot; (Kabyle), &quot;br&quot; (Breton), &quot;bs&quot; (Bosnian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ca&quot; (Catalan), &quot;ltg&quot;, &quot;sr&quot; (Serbian), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;gl&quot; (Galician), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh), &quot;bqi&quot;, &quot;ckb&quot;, &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;show_app_labels&quot;>Show app labels&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
         message="&quot;home_screen_settings&quot; is not translated in &quot;fil&quot; (Filipino; Pilipino), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;ms&quot; (Malay), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;my&quot; (Burmese), &quot;nb&quot; (Norwegian Bokmål), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;nn&quot; (Norwegian Nynorsk), &quot;be&quot; (Belarusian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;br&quot; (Breton), &quot;bs&quot; (Bosnian), &quot;si&quot; (Sinhala), &quot;sl&quot; (Slovenian), &quot;zgh&quot; (Standard Moroccan Tamazight), &quot;ltg&quot;, &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;ko&quot; (Korean), &quot;kr&quot; (Kanuri), &quot;sat&quot; (Santali), &quot;ta&quot; (Tamil), &quot;cr&quot; (Cree), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;th&quot; (Thai), &quot;cy&quot; (Welsh)"
         errorLine1="    &lt;string name=&quot;home_screen_settings&quot;>Home screen&lt;/string>"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="16"
+            line="17"
             column="13"/>
     </issue>
 
@@ -279,7 +917,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="17"
+            line="18"
             column="13"/>
     </issue>
 
@@ -290,7 +928,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="18"
+            line="19"
             column="13"/>
     </issue>
 
@@ -301,7 +939,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="19"
+            line="20"
             column="13"/>
     </issue>
 
@@ -312,19 +950,8 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="20"
+            line="21"
             column="13"/>
-    </issue>
-
-    <issue
-        id="NotifyDataSetChanged"
-        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="        notifyDataSetChanged()"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/org/fossify/home/adapters/FolderIconsAdapter.kt"
-            line="107"
-            column="9"/>
     </issue>
 
     <issue
@@ -365,17 +992,6 @@
             file="src/main/res/layout/item_hidden_icon.xml"
             line="6"
             column="5"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.layout.dialog_folder_icons` appears to be unused"
-        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="src/main/res/layout/dialog_folder_icons.xml"
-            line="2"
-            column="1"/>
     </issue>
 
     <issue
@@ -534,6 +1150,28 @@
 
     <issue
         id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(showDrawerAppLabels) = prefs.edit().putBoolean(SHOW_DRAWER_APP_LABELS, showDrawerAppLabels).apply()"
+        errorLine2="                                   ~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/org/fossify/home/helpers/Config.kt"
+            line="43"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(showHomeAppLabels) = prefs.edit().putBoolean(SHOW_HOME_APP_LABELS, showHomeAppLabels).apply()"
+        errorLine2="                                 ~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/org/fossify/home/helpers/Config.kt"
+            line="47"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
         message="Use the KTX extension function `Int.toDrawable` instead?"
         errorLine1="        background = ColorDrawable(Color.TRANSPARENT)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
@@ -594,7 +1232,7 @@
         errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/org/fossify/home/activities/SettingsActivity.kt"
-            line="156"
+            line="158"
             column="50"/>
     </issue>
 
@@ -605,7 +1243,7 @@
         errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/org/fossify/home/activities/SettingsActivity.kt"
-            line="192"
+            line="202"
             column="51"/>
     </issue>
 
@@ -616,7 +1254,7 @@
         errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/org/fossify/home/activities/SettingsActivity.kt"
-            line="218"
+            line="228"
             column="54"/>
     </issue>
 
