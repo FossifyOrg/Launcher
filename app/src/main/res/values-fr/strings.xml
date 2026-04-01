@@ -18,4 +18,5 @@
     <string name="lock_device_admin_warning">La désactivation de l\'autorisation d\'administrateur désactivera la fonction de double appui pour verrouiller l\'écran.</string>
     <string name="double_tap_to_lock">Appuyer deux fois pour verrouiller l\'écran</string>
     <string name="auto_show_keyboard_in_app_drawer">Afficher automatiquement le clavier dans le tiroir</string>
+    <string name="show_app_labels">Afficher le nom des applications</string>
 </resources>
