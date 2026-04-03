@@ -9,14 +9,14 @@
     <string name="manage_hidden_icons">Ausgeblendete Symbole verwalten</string>
     <string name="hidden_icons">Ausgeblendete Symbole</string>
     <string name="hidden_icons_placeholder">Einige Apps können aufgrund von Systemeinschränkungen nicht deinstalliert werden, aber du kannst zumindest ihre Symbole ausblenden, um sie nicht zu sehen.</string>
-    <string name="app_drawer_settings">App-Schublade</string>
-    <string name="close_app_drawer_on_app_open">App-Schublade beim Öffnen einer App schließen</string>
+    <string name="app_drawer_settings">App-Liste</string>
+    <string name="close_app_drawer_on_app_open">App-Liste beim Öffnen einer App schließen</string>
     <string name="home_screen_settings">Startbildschirm</string>
     <string name="widget_too_big">Das Widget ist zu groß für den aktuellen Startbildschirm</string>
     <string name="app_launcher_name">Launcher</string>
     <string name="lock_device_admin_hint">Um die Funktion „Doppeltes Antippen zum Sperren des Bildschirms“ zu aktivieren, musst du die Administratorberechtigung erteilen. Beachte, dass die App nicht deinstalliert werden kann, bis diese Berechtigung entfernt wird.</string>
     <string name="double_tap_to_lock">Doppeltes Antippen zum Sperren des Bildschirms</string>
     <string name="lock_device_admin_warning">Durch Entfernen der Administratorberechtigung wird die Funktion „Doppeltes Antippen zum Sperren des Bildschirms“ deaktiviert.</string>
-    <string name="auto_show_keyboard_in_app_drawer">Keyboard automatisch in App-Schublade anzeigen</string>
+    <string name="auto_show_keyboard_in_app_drawer">Keyboard automatisch in App-Liste anzeigen</string>
     <string name="show_app_labels">App-Bezeichnung anzeigen</string>
 </resources>
