@@ -18,4 +18,5 @@
     <string name="lock_device_admin_warning">Yönetici iznini devre dışı bırakmak, ekranı kilitlemek için çift dokunma özelliğini devre dışı bırakır.</string>
     <string name="lock_device_admin_hint">Ekranı kilitlemek için çift dokunma özelliğini etkinleştirmek için yönetici izni vermeniz gerekir. Bu izin kaldırılmadığı sürece uygulamanın kaldırılamayacağını unutmayın.</string>
     <string name="auto_show_keyboard_in_app_drawer">Uygulama çekmecesinde otomatik olarak klavyeyi göster</string>
+    <string name="show_app_labels">Uygulama isimlerini göster</string>
 </resources>
