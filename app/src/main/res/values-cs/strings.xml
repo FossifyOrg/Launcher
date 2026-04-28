@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Spouštěč</string>
+    <string name="app_launcher_name">Spoušteč</string>
     <string name="launcher_settings">Nastavení spouštěče</string>
     <string name="app_info">O aplikaci</string>
     <string name="touch_hold_widget">Widget dlouze stiskněte a přetáhněte jej na domovskou obrazovku</string>
@@ -18,4 +18,5 @@
     <string name="lock_device_admin_warning">Deaktivací oprávnění správce zakážete funkci zamykání obrazovky dvojitým klepnutím.</string>
     <string name="double_tap_to_lock">Klepněte dvakrát pro zamknutí obrazovky</string>
     <string name="auto_show_keyboard_in_app_drawer">Automaticky zobrazit klávesnici v seznamu aplikací</string>
+    <string name="show_app_labels">Zobrazit štítky aplikací</string>
 </resources>

@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">انقر نقراً مزدوجاً لقفل الشاشة</string>
     <string name="lock_device_admin_hint">لتفعيل ميزة النقر المزدوج لقفل الشاشة، عليك منح التطبيق إذن المسؤول. ملاحظة: لا يمكن إلغاء تثبيت التطبيق إلا بعد إزالة هذا الإذن.</string>
     <string name="lock_device_admin_warning">سيؤدي تعطيل إذن المسؤول إلى تعطيل ميزة النقر المزدوج لقفل الشاشة.</string>
+    <string name="show_app_labels">أظهر تسميات التطبيق</string>
 </resources>
