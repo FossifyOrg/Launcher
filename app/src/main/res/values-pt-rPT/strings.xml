@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Toque duas vezes para bloquear o ecrã</string>
     <string name="lock_device_admin_hint">Para ativar a funcionalidade de toque duplo para bloquear o ecrã, precisa de conceder permissão de administrador. Note que a aplicação não poderá ser desinstalada até que esta permissão seja removida.</string>
     <string name="lock_device_admin_warning">Desativar a permissão de administrador desativará a funcionalidade de toque duplo para bloquear o ecrã.</string>
+    <string name="show_app_labels">Mostrar rótulos de aaplicações</string>
 </resources>
