@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="uninstall">حذف کردن</string>
+    <string name="hide_icon">آیکون را مخفی کن</string>
+    <string name="add_hidden_icons">آیکون مخفی شده را اضافه کن</string>
+    <string name="manage_hidden_icons">مدیریت آیکون های مخفی</string>
+    <string name="hidden_icons">آیکون های مخفی</string>
+    <string name="hidden_icons_placeholder">برخی برنامه ها را بخاطر محدودیت های سیستم نمیتوان پاک کرد، اما میتوانید آیکون آنها را مخفی کنید تا آنها را نبینید.</string>
+</resources>
