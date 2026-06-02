@@ -152,7 +152,7 @@ object LaunchpadServer {
         }.toString()
     }
 
-    private fun getLocalIp(): String = getLocalIp(null)
+    private fun getLocalIp(): String = getLocalIp(null) ?: "unknown"
 
     fun getLocalIp(context: android.content.Context?): String? {
         return try {

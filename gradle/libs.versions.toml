@@ -18,6 +18,7 @@ work = "2.9.1"
 junit = "4.13.2"
 orgJson = "20240303"
 zxing = "3.5.3"
+lottie = "6.4.0"
 #build
 app-build-compileSDKVersion = "36"
 app-build-targetSDK = "36"
@@ -39,6 +40,7 @@ androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version
 junit = { module = "junit:junit", version.ref = "junit" }
 org-json = { module = "org.json:json", version.ref = "orgJson" }
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 [bundles]
 room = [
     "androidx-room-ktx",

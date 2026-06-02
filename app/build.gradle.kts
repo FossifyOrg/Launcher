@@ -153,6 +153,9 @@ dependencies {
     // LAUNCHPAD M4: QR code rendering for parent pairing
     implementation(libs.zxing.core)
 
+    // LAUNCHPAD: Lottie animations (rocket splash)
+    implementation(libs.lottie)
+
     // LAUNCHPAD: unit tests for domain logic
     testImplementation(libs.junit)
     testImplementation(libs.org.json)
