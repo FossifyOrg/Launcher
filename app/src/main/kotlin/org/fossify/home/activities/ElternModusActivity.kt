@@ -122,7 +122,11 @@ class ElternModusActivity : AppCompatActivity() {
         kindermodusSwitch = findViewById(R.id.em_kindermodus_switch)
         kioskSwitch = findViewById(R.id.em_kiosk_switch)
 
-        // Wire rows
+        // Wire rows. NOTE: fossify-commons' SettingsSwitchStyle sets the MyMaterialSwitch to
+        // android:clickable="false" — the switch never reacts to taps itself. The surrounding
+        // holder row must catch the tap and call switch.toggle(). That's why the two switch
+        // rows below toggle their switch instead of being left unwired (the missing
+        // em_row_kindermodus handler is what stopped Kindermodus from turning on).
         listOf<Pair<Int, () -> Unit>>(
             R.id.em_row_add_time to { showAddTimeDialog() },
             R.id.em_row_transactions to { showTransactions() },
@@ -131,7 +135,8 @@ class ElternModusActivity : AppCompatActivity() {
             R.id.em_row_doge to { startActivity(Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true)) },
             R.id.em_row_cooldown_rules to { showCooldownEditor() },
             R.id.em_row_usage to { openUsageSettings() },
-            R.id.em_row_kiosk to { toggleKiosk() },
+            R.id.em_row_kindermodus to { kindermodusSwitch.toggle() },
+            R.id.em_row_kiosk to { kioskSwitch.toggle() },
             R.id.em_row_qr to { startActivity(Intent(this, PairingActivity::class.java)) },
         ).forEach { (id, action) -> findViewById<android.view.View>(id).setOnClickListener { action() } }
 
@@ -143,8 +148,13 @@ class ElternModusActivity : AppCompatActivity() {
         kioskSwitch.isChecked = KioskManager.isKioskEnabled(this)
         kioskSwitch.setOnCheckedChangeListener { _, checked ->
             if (!KioskManager.isDeviceOwner(this)) {
-                kioskSwitch.isChecked = false
-                showKioskSetupDialog()
+                // Can't enable kiosk without device owner. Revert quietly and explain. The
+                // `if (checked)` guard stops the revert below from re-triggering this dialog
+                // (setting isChecked = false fires this listener again with checked = false).
+                if (checked) {
+                    kioskSwitch.isChecked = false
+                    showKioskSetupDialog()
+                }
             } else {
                 KioskManager.setKioskEnabled(this, checked)
                 if (checked) KioskManager.applyRestrictions(this) else KioskManager.stopKiosk(this)
@@ -296,8 +306,6 @@ class ElternModusActivity : AppCompatActivity() {
             scope.launch { refresh() }
         }
     }
-
-    private fun toggleKiosk() { /* handled by switch listener */ }
 
     private fun showKioskSetupDialog() {
         AlertDialog.Builder(this)
