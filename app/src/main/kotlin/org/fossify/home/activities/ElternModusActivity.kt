@@ -274,31 +274,26 @@ class ElternModusActivity : AppCompatActivity() {
     }
 
     private fun toggleKindermodus(enable: Boolean) {
-        scope.launch {
-            if (enable) {
-                val count = withContext(Dispatchers.IO) { db.allowedAppDao().getAllEnabledApps().size }
-                if (count == 0) {
-                    AlertDialog.Builder(this@ElternModusActivity)
-                        .setTitle("Kindermodus aktivieren?")
-                        .setMessage("Es sind noch keine Apps freigegeben. Jake sieht dann keine Apps.\n\nTrotzdem aktivieren?")
-                        .setPositiveButton("Aktivieren") { _, _ ->
-                            setPref(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true)
-                            toast("Kindermodus AN")
-                            refresh()
-                        }
-                        .setNegativeButton("Abbrechen") { _, _ ->
-                            kindermodusSwitch.isChecked = false
-                        }.show()
-                } else {
-                    setPref(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true)
-                    toast("Kindermodus AN ($count Apps freigegeben)")
-                    refresh()
+        // Write to applicationContext prefs to match the same context MainActivity uses.
+        applicationContext.getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+            .edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, enable).apply()
+
+        if (enable) {
+            scope.launch {
+                val count = withContext(Dispatchers.IO) {
+                    db.allowedAppDao().getAllEnabledApps().size
                 }
-            } else {
-                setPref(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
-                toast("Kindermodus AUS — alle Apps sichtbar")
+                if (count == 0) {
+                    // Don't block activation — just warn. Parent can add apps next.
+                    toast("Kindermodus AN ⚠️ Noch keine Apps freigegeben — unter 'Apps verwalten' Apps hinzufügen")
+                } else {
+                    toast("Kindermodus AN — $count Apps freigegeben")
+                }
                 refresh()
             }
+        } else {
+            toast("Kindermodus AUS — alle Apps sichtbar")
+            scope.launch { refresh() }
         }
     }
 
@@ -312,7 +307,8 @@ class ElternModusActivity : AppCompatActivity() {
     }
 
     private fun setPref(key: String, value: Boolean) {
-        getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+        // Use applicationContext to match MainActivity's shared prefs access.
+        applicationContext.getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
             .edit().putBoolean(key, value).apply()
     }
 
