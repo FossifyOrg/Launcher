@@ -223,6 +223,8 @@ class CompanionActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT).show()
             delay(500)
             loadData()
+            // Update widget so count refreshes immediately
+            CompanionWidgetProvider.requestUpdate(this@CompanionActivity)
         }
     }
 
