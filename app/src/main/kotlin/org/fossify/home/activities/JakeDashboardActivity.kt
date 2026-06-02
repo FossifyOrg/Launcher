@@ -40,7 +40,6 @@ class JakeDashboardActivity : AppCompatActivity() {
         // Big time display
         val timeView = TextView(this).apply {
             textSize = 72f
-            android.text.style.TextAppearanceSpan
             setTypeface(null, android.graphics.Typeface.BOLD)
             setTextColor(Color.WHITE)
             gravity = android.view.Gravity.CENTER

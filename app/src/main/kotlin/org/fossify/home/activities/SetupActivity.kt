@@ -145,10 +145,11 @@ class SetupActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { setMargins(0, 8, 0, 8) }
                 setOnClickListener {
-                    chosenBalance = minutes
+                    this@SetupActivity.chosenBalance = minutes
                     balanceBtns.forEach { (m, b) ->
-                        b.setBackgroundColor(if (m == chosenBalance) Color.parseColor("#FF6B35") else Color.argb(50, 255, 255, 255))
-                        b.setTextColor(if (m == chosenBalance) Color.WHITE else Color.argb(200, 255, 255, 255))
+                        val sel = this@SetupActivity.chosenBalance
+                        b.setBackgroundColor(if (m == sel) Color.parseColor("#FF6B35") else Color.argb(50, 255, 255, 255))
+                        b.setTextColor(if (m == sel) Color.WHITE else Color.argb(200, 255, 255, 255))
                     }
                 }
             }

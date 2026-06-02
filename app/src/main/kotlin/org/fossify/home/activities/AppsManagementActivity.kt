@@ -37,7 +37,7 @@ class AppsManagementActivity : AppCompatActivity() {
         }
 
         val toolbar = androidx.appcompat.widget.Toolbar(this).apply {
-            setBackgroundColor(currentTheme?.let { obtainStyledAttributes(it, intArrayOf(android.R.attr.colorPrimary)).also { it.recycle() }; 0 } ?: 0)
+            setBackgroundColor(android.graphics.Color.parseColor("#1A1A2E"))
             title = "Apps verwalten"
             setTitleTextColor(android.graphics.Color.WHITE)
             setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)

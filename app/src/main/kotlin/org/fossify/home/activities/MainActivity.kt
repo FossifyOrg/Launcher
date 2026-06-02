@@ -907,7 +907,7 @@ class MainActivity : SimpleActivity(), FlingListener {
             startActivity(Intent(this, JakeDashboardActivity::class.java))
         }
 
-        kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.Main) {
+        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
             val budget = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
                 org.fossify.home.helpers.TimeBudgetManager(this@MainActivity, AppsDatabase.getInstance(this@MainActivity)).getCurrentBudget()
             }
