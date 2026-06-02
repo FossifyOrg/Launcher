@@ -1,6 +1,7 @@
 package org.fossify.home.extensions
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -22,6 +23,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.MenuCompat
 import androidx.core.view.forEach
 import com.google.android.material.color.MaterialColors
+import kotlinx.coroutines.runBlocking
 import org.fossify.commons.extensions.getPopupMenuTheme
 import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.commons.extensions.isDynamicTheme
@@ -30,14 +32,31 @@ import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
 import org.fossify.home.R
 import org.fossify.home.activities.SettingsActivity
+import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.ITEM_TYPE_FOLDER
 import org.fossify.home.helpers.ITEM_TYPE_ICON
 import org.fossify.home.helpers.ITEM_TYPE_WIDGET
+import org.fossify.home.helpers.LaunchGate
+import org.fossify.home.helpers.TimeBudgetManager
 import org.fossify.home.helpers.UNINSTALL_APP_REQUEST_CODE
 import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.HomeScreenGridItem
 
 fun Activity.launchApp(packageName: String, activityName: String) {
+    // LAUNCHPAD M1: Launch gate check (whitelist + time budget + cool-down)
+    val db = AppsDatabase.getInstance(applicationContext)
+    val budget = runBlocking { TimeBudgetManager(this@launchApp, db).getCurrentBudget() }
+    val gate = LaunchGate(this, db)
+    val decision = runBlocking { gate.canLaunch(packageName, budget) }
+    if (!decision.allowed) {
+        AlertDialog.Builder(this)
+            .setTitle("Nicht verfügbar")
+            .setMessage(decision.childVisibleMessage ?: "Diese App ist gerade nicht verfügbar.")
+            .setPositiveButton("OK", null)
+            .show()
+        return
+    }
+
     try {
         Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)

@@ -76,6 +76,14 @@ import org.fossify.home.extensions.homeScreenGridItemsDB
 import org.fossify.home.extensions.isDefaultLauncher
 import org.fossify.home.extensions.launchApp
 import org.fossify.home.extensions.launchAppInfo
+import android.app.AlertDialog
+import android.text.InputType
+import android.widget.EditText
+import android.widget.Toast
+import kotlinx.coroutines.runBlocking
+import org.fossify.home.databases.AppsDatabase
+import org.fossify.home.helpers.PinGateHelper
+import org.fossify.home.helpers.TimeBudgetManager
 import org.fossify.home.extensions.launchersDB
 import org.fossify.home.extensions.roleManager
 import org.fossify.home.extensions.supportsDarkText
@@ -838,6 +846,29 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     private fun showMainLongPressMenu(x: Float, y: Float) {
+        // LAUNCHPAD M1: PIN gate - parent must verify to access settings menu
+        val pinGate = PinGateHelper(this)
+        if (!pinGate.checkMenuAction(R.id.launcher_settings)) {
+            val pinInput = EditText(this).apply {
+                inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                hint = "Eltern-PIN"
+            }
+            AlertDialog.Builder(this)
+                .setTitle("Eltern-Modus")
+                .setMessage("PIN eingeben um fortzufahren:")
+                .setView(pinInput)
+                .setPositiveButton("OK") { _, _ ->
+                    if (pinGate.verifyPin(pinInput.text.toString())) {
+                        pinGate.activateParentMode()
+                        showMainLongPressMenu(x, y)
+                    } else {
+                        Toast.makeText(this, "Falscher PIN", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Abbrechen", null)
+                .show()
+            return
+        }
         binding.homeScreenGrid.root.hideResizeLines()
         binding.homeScreenPopupMenuAnchor.x = x
         binding.homeScreenPopupMenuAnchor.y =
@@ -1050,14 +1081,8 @@ class MainActivity : SimpleActivity(), FlingListener {
             hideFragment(binding.allAppsFragment)
         } else if (isWidgetsFragmentExpanded()) {
             hideFragment(binding.widgetsFragment)
-        } else {
-            try {
-                Class.forName("android.app.StatusBarManager")
-                    .getMethod("expandNotificationsPanel")
-                    .invoke(getSystemService("statusbar"))
-            } catch (_: Exception) {
-            }
         }
+        // LAUNCHPAD M1: Notification shade expansion blocked (escape route prevention)
     }
 
     override fun onFlingRight() {
@@ -1128,7 +1153,18 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         launchersDB.insertAll(allApps)
-        return allApps
+
+        // LAUNCHPAD M1: Filter to whitelist (DEFAULT-DENY)
+        val launchpadDb = AppsDatabase.getInstance(applicationContext)
+        val allowedPackages = runBlocking {
+            launchpadDb.allowedAppDao().getAllEnabledApps().map { it.packageName }.toSet()
+        }
+        // If no whitelist configured yet (first run), show all apps
+        return if (allowedPackages.isEmpty()) {
+            allApps
+        } else {
+            ArrayList(allApps.filter { it.packageName in allowedPackages })
+        }
     }
 
     private fun getDefaultAppPackages(appLaunchers: ArrayList<AppLauncher>) {
