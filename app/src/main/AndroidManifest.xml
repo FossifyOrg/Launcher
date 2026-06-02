@@ -18,6 +18,13 @@
         android:name="android.permission.USE_FINGERPRINT"
         tools:node="remove" />
 
+    <!-- LAUNCHPAD M1: Safe web browsing -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- LAUNCHPAD M2: Time tracking (user must grant manually) -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -88,6 +95,34 @@
             android:exported="false"
             android:label="@string/hidden_icons"
             android:parentActivityName=".activities.SettingsActivity" />
+
+        <!-- LAUNCHPAD M1: Parent control interface -->
+        <activity
+            android:name=".activities.ElternModusActivity"
+            android:exported="false"
+            android:label="Eltern-Modus"
+            android:parentActivityName=".activities.MainActivity" />
+
+        <!-- LAUNCHPAD M1: Cool-down restorative phase -->
+        <activity
+            android:name=".activities.CooldownActivity"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:label="Pause"
+            android:theme="@style/AppTheme" />
+
+        <!-- LAUNCHPAD M2: Zusagen (family promises) -->
+        <activity
+            android:name=".activities.ZusagenActivity"
+            android:exported="false"
+            android:label="Versprechen"
+            android:parentActivityName=".activities.ElternModusActivity" />
+
+        <!-- LAUNCHPAD M2: Time tracking background service -->
+        <service
+            android:name=".services.TimeTrackingService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
         <activity-alias
             android:name=".activities.SplashActivity.Red"
