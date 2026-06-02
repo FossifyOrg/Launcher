@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1A1A2E">
+
+    <!-- Step indicator -->
+    <LinearLayout
+        android:id="@+id/setup_step_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="40dp"
+        android:paddingBottom="24dp">
+        <View android:id="@+id/step_dot_1"
+            android:layout_width="10dp" android:layout_height="10dp"
+            android:background="#FFFFFF" android:layout_margin="4dp" />
+        <View android:id="@+id/step_dot_2"
+            android:layout_width="10dp" android:layout_height="10dp"
+            android:background="#55FFFFFF" android:layout_margin="4dp" />
+        <View android:id="@+id/step_dot_3"
+            android:layout_width="10dp" android:layout_height="10dp"
+            android:background="#55FFFFFF" android:layout_margin="4dp" />
+    </LinearLayout>
+
+    <!-- Content area (steps swap in/out programmatically) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:id="@+id/setup_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp" />
+    </ScrollView>
+
+    <!-- Bottom button -->
+    <Button
+        android:id="@+id/setup_next_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="24dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="#FF6B35"
+        android:text="Weiter →" />
+
+</LinearLayout>

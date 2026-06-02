@@ -102,6 +102,7 @@ object LaunchpadPrefs {
     // setup (all apps visible, no launch gate, no time metering). The parent turns it ON in
     // Eltern-Modus after configuring the whitelist + PIN + time budget.
     const val PREF_ENFORCEMENT_ENABLED = "enforcement_enabled"
+    const val PREF_SETUP_DONE = "setup_done"
 
     // M4: QR pairing — launcher keypair (Base64), AES session key, paired parent identity
     const val PREF_PAIR_PRIVATE_KEY = "pair_private_key" // PKCS8 Base64

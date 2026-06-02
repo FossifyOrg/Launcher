@@ -101,6 +101,13 @@
             android:label="@string/hidden_icons"
             android:parentActivityName=".activities.SettingsActivity" />
 
+        <!-- LAUNCHPAD Setup wizard (first run) -->
+        <activity
+            android:name=".activities.SetupActivity"
+            android:exported="false"
+            android:label="Einrichten"
+            android:theme="@style/AppTheme" />
+
         <!-- LAUNCHPAD M1: Parent control interface -->
         <activity
             android:name=".activities.ElternModusActivity"
