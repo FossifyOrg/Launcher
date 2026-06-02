@@ -169,6 +169,11 @@ class ElternModusActivity : AppCompatActivity() {
                 Intent(this, ZusagenActivity::class.java).putExtra("isParentMode", true)
             )
         })
+        c.addView(fullWidthButton("Medien-Anfragen (Doge-Coins)") {
+            startActivity(
+                Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true)
+            )
+        })
         c.addView(fullWidthButton("Ruhezeiten konfigurieren") { showCooldownConfig() })
         c.addView(fullWidthButton("Eltern-Modus beenden") {
             pinGate.deactivateParentMode()

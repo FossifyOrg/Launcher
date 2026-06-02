@@ -118,6 +118,13 @@
             android:label="Versprechen"
             android:parentActivityName=".activities.ElternModusActivity" />
 
+        <!-- LAUNCHPAD M2: Doge-Coins (media approvals) -->
+        <activity
+            android:name=".activities.DogeRequestsActivity"
+            android:exported="false"
+            android:label="Medien-Anfragen"
+            android:parentActivityName=".activities.ElternModusActivity" />
+
         <!-- LAUNCHPAD M2: Time tracking background service -->
         <service
             android:name=".services.TimeTrackingService"
