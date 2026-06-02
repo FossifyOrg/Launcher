@@ -101,6 +101,13 @@
             android:label="@string/hidden_icons"
             android:parentActivityName=".activities.SettingsActivity" />
 
+        <!-- LAUNCHPAD: Jake's dashboard -->
+        <activity
+            android:name=".activities.JakeDashboardActivity"
+            android:exported="false"
+            android:label="Mein Status"
+            android:theme="@style/AppTheme" />
+
         <!-- LAUNCHPAD: App whitelist management -->
         <activity
             android:name=".activities.AppsManagementActivity"
