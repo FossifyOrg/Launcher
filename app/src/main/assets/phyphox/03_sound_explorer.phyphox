@@ -1,1 +1,123 @@
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLQogICAgSkFLRS1TUEFDRTogU2NoYWxsLUVudGRlY2tlcgogICAgWmVpZ3QgTGF1dHN0w6Rya2UgaW4gRGV6aWJlbCAoZEIpIMO8YmVyIGRhcyBNaWtyb2Zvbi4KICAgIEdsw6R0dHVuZyDDvGJlciAxMC1TYW1wbGUtRmVuc3RlciBmw7xyIHJ1aGlnZSBBbnplaWdlLgoKICAgIEV4cGVyaW1lbnQ6IFdpZSBsYXV0IGlzdC4uLgogICAgLSBGbMO8c3Rlcm4/ICAgICAgfjMwIGRCCiAgICAtIE5vcm1hbGUgU3RpbW1lPyB+NjAgZEIKICAgIC0gTEVHTy1UZWNobmlrLU1vdG9yPyA/CiAgICAtIFN0YXIgV2FycyBNdXNpayBhdWYgdm9sbGVyIExhdXRzdMOkcmtlPyA/CiAgICAtIFN0aWxsZSBpbSBaaW1tZXI/IH4yNSBkQgoKICAgIFBoeXBob3ggdjEuNysgIHwgIFNlbnNvcjogTWlrcm9mb24gKEFtcGxpdHVkZW4tQW5hbHlzZSkKLS0+CjxwaHlwaG94IHZlcnNpb249IjEuNyIgbG9jYWxlPSJkZSI+CiAgICA8dGl0bGU+U2NoYWxsLUVudGRlY2tlcjwvdGl0bGU+CiAgICA8Y2F0ZWdvcnk+SkFLRS1TUEFDRSBFeHBlcmltZW50ZTwvY2F0ZWdvcnk+CiAgICA8aWNvbiBmb3JtYXQ9InN0cmluZyI+ZEI8L2ljb24+CiAgICA8ZGVzY3JpcHRpb24+V2llIGxhdXQgaXN0IGRlaW5lIFdlbHQ/IE1pc3MgYWxsZXMgdm9uIEZsw7xzdGVybiBiaXMgTEVHTy1Nb3Rvci4gU3ByaWNoLCBrbGF0c2NoIG9kZXIgcGZlaWYgaW5zIE1pa3JvZm9uITwvZGVzY3JpcHRpb24+CgogICAgPCEtLSDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZAKICAgICAgICAgU0VOU09SLUlOUFVUCiAgICAgICAgIE1pa3JvZm9uIGdpYnQgbm9ybWFsaXNpZXJ0ZSBBbXBsaXR1ZGUgWy0xLCArMV0KICAgIOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkCAtLT4KICAgIDxpbnB1dD4KICAgICAgICA8YXVkaW8gcmF0ZT0iNDgwMDAiIHRyaW09IjAiPgogICAgICAgICAgICA8b3V0cHV0PnJhd19hdWRpbzwvb3V0cHV0PgogICAgICAgIDwvYXVkaW8+CiAgICA8L2lucHV0PgoKICAgIDwhLS0g4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQCiAgICAgICAgIERBVEVOUFVGRkVSCiAgICDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZAgLS0+CiAgICA8ZGF0YS1jb250YWluZXJzPgogICAgICAgIDxjb250YWluZXIgc2l6ZT0iNDgwMCIgc3RhdGljPSJmYWxzZSI+cmF3X2F1ZGlvPC9jb250YWluZXI+ICA8IS0tIDAuMXMgQCA0OGtIeiAtLT4KICAgICAgICA8Y29udGFpbmVyIHNpemU9IjEiIHN0YXRpYz0iZmFsc2UiPnJtc19yYXc8L2NvbnRhaW5lcj4KICAgICAgICA8Y29udGFpbmVyIHNpemU9IjEiIHN0YXRpYz0iZmFsc2UiPmRiX3JhdzwvY29udGFpbmVyPgogICAgICAgIDxjb250YWluZXIgc2l6ZT0iMSIgc3RhdGljPSJmYWxzZSI+ZGJfc21vb3RoPC9jb250YWluZXI+CiAgICAgICAgPGNvbnRhaW5lciBzaXplPSIwIiBzdGF0aWM9ImZhbHNlIj5kYl9oaXN0b3J5PC9jb250YWluZXI+CiAgICAgICAgPGNvbnRhaW5lciBzaXplPSIwIiBzdGF0aWM9ImZhbHNlIj50X2hpc3Rvcnk8L2NvbnRhaW5lcj4KICAgICAgICA8IS0tIFNtb290aGluZy1QdWZmZXI6IDEwIFdlcnRlIGdsZWl0ZW5kZXIgRHVyY2hzY2huaXR0IC0tPgogICAgICAgIDxjb250YWluZXIgc2l6ZT0iMTAiIHN0YXRpYz0iZmFsc2UiPmRiX3Ntb290aF9idWY8L2NvbnRhaW5lcj4KICAgICAgICA8IS0tIFplaXQtQ291bnRlciAtLT4KICAgICAgICA8Y29udGFpbmVyIHNpemU9IjEiIHN0YXRpYz0iZmFsc2UiPnRfY291bnRlcjwvY29udGFpbmVyPgogICAgPC9kYXRhLWNvbnRhaW5lcnM+CgogICAgPCEtLSDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZAKICAgICAgICAgQU5BTFlTRQogICAgICAgICBSTVMgPSBzcXJ0KER1cmNoc2Nobml0dChBbXBsaXR1ZGVuwrIpKQogICAgICAgICBkQiAgPSAyMCDDlyBsb2cxMChSTVMgLyAwLjAwMDAyKSAgIChSZWZlcmVuejogSMO2cnNjaHdlbGxlKQogICAgICAgICBTY2hyaXR0IDE6IFF1YWRyaWVyZW4KICAgICAgICAgU2Nocml0dCAyOiBEdXJjaHNjaG5pdHQKICAgICAgICAgU2Nocml0dCAzOiBXdXJ6ZWwg4oaSIFJNUwogICAgICAgICBTY2hyaXR0IDQ6IExvZ2FyaXRobXVzIOKGkiBkQgogICAg4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQIC0tPgogICAgPGFuYWx5c2lzIGR5bmFtaWM9InRydWUiIG9uVXNlcklucHV0PSJmYWxzZSI+CiAgICAgICAgPCEtLSBSTVMgZGVzIEF1ZGlvLUJsb2NrcyAtLT4KICAgICAgICA8cm1zPgogICAgICAgICAgICA8aW5wdXQ+cmF3X2F1ZGlvPC9pbnB1dD4KICAgICAgICAgICAgPG91dHB1dCB0eXBlPSJ2YWx1ZSI+cm1zX3Jhdzwvb3V0cHV0PgogICAgICAgIDwvcm1zPgogICAgICAgIDwhLS0gZEIgPSAyMCDDlyBsb2cxMChybXMgLyAwLjAwMDAyKQogICAgICAgICAgICAgbG9nMTAgZ2lidCByZWxhdGl2ZW4gV2VydCwgMC4wMDAwMiA9IEjDtnJzY2h3ZWxsZSBpbiBQYXNjYWwgLS0+CiAgICAgICAgPGxvZz4KICAgICAgICAgICAgPGlucHV0IHR5cGU9InZhbHVlIj5ybXNfcmF3PC9pbnB1dD4KICAgICAgICAgICAgPG91dHB1dCB0eXBlPSJ2YWx1ZSI+ZGJfcmF3PC9vdXRwdXQ+CiAgICAgICAgPC9sb2c+CiAgICAgICAgPCEtLSBNdWx0aXBsaXppZXJlbjogMjAgw5cgbG9nMTAocm1zKSAtLT4KICAgICAgICA8bXVsdGlwbHk+CiAgICAgICAgICAgIDxpbnB1dCBhcz0iZmFjdG9yMSIgdHlwZT0idmFsdWUiPmRiX3JhdzwvaW5wdXQ+CiAgICAgICAgICAgIDxpbnB1dCBhcz0iZmFjdG9yMiI+MjA8L2lucHV0PgogICAgICAgICAgICA8b3V0cHV0IHR5cGU9InZhbHVlIj5kYl9zbW9vdGg8L291dHB1dD4KICAgICAgICA8L211bHRpcGx5PgogICAgICAgIDwhLS0gVmVybGF1ZiAtLT4KICAgICAgICA8YXBwZW5kPgogICAgICAgICAgICA8aW5wdXQgdHlwZT0idmFsdWUiPmRiX3Ntb290aDwvaW5wdXQ+CiAgICAgICAgICAgIDxvdXRwdXQ+ZGJfaGlzdG9yeTwvb3V0cHV0PgogICAgICAgIDwvYXBwZW5kPgogICAgPC9hbmFseXNpcz4KCiAgICA8IS0tIOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkAogICAgICAgICBBTlpFSUdFCiAgICDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZAgLS0+CiAgICA8dmlld3M+CiAgICAgICAgPHZpZXcgbGFiZWw9IlNjaGFsbHBlZ2VsIj4KICAgICAgICAgICAgPCEtLSBHcm/Dn2VyIGRCLVdlcnQgLS0+CiAgICAgICAgICAgIDx2YWx1ZSBsYWJlbD0iU2NoYWxscGVnZWwiIHVuaXQ9ImRCIiBwcmVjaXNpb249IjAiIHNpemU9IjMiPgogICAgICAgICAgICAgICAgPGlucHV0PmRiX3Ntb290aDwvaW5wdXQ+CiAgICAgICAgICAgIDwvdmFsdWU+CgogICAgICAgICAgICA8c2VwYXJhdG9yLz4KCiAgICAgICAgICAgIDxpbmZvIGxhYmVsPSJSZWZlcmVuei1UYWJlbGxlIj4KICAgICAgICAgICAgICAgIH4wICBkQiAg4oCUIEjDtnJzY2h3ZWxsZSAodW5ow7ZyYmFyKQogICAgICAgICAgICAgICAgfjMwIGRCICDigJQgRmzDvHN0ZXJuCiAgICAgICAgICAgICAgICB+NDAgZEIgIOKAlCBTdGlsbGVzIFppbW1lcgogICAgICAgICAgICAgICAgfjYwIGRCICDigJQgTm9ybWFsZSBVbnRlcmhhbHR1bmcKICAgICAgICAgICAgICAgIH43MCBkQiAg4oCUIExFR08tVGVjaG5pYy1Nb3RvcgogICAgICAgICAgICAgICAgfjgwIGRCICDigJQgU3RhdWJzYXVnZXIKICAgICAgICAgICAgICAgIH45MCBkQiAg4oCUIExhdXRzcHJlY2hlciBhdWYgTWF4aW11bQogICAgICAgICAgICAgICAgfjEyMCBkQiDigJQgU2NobWVyemdyZW56ZQogICAgICAgICAgICA8L2luZm8+CgogICAgICAgICAgICA8c2VwYXJhdG9yLz4KCiAgICAgICAgICAgIDxncmFwaCBsYWJlbD0iTGF1dHN0w6Rya2UtVmVybGF1ZiIgdGltZU9uWD0idHJ1ZSIKICAgICAgICAgICAgICAgICAgIHhVbml0PSJzIiB5VW5pdD0iZEIiCiAgICAgICAgICAgICAgICAgICB5TWluPSIyMCIgeU1heD0iMTAwIiBwYXJ0aWFsVXBkYXRlPSJ0cnVlIj4KICAgICAgICAgICAgICAgIDxpbnB1dCBheGlzPSJ5Ij5kYl9oaXN0b3J5PC9pbnB1dD4KICAgICAgICAgICAgPC9ncmFwaD4KICAgICAgICA8L3ZpZXc+CiAgICA8L3ZpZXdzPgoKICAgIDwhLS0g4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQCiAgICAgICAgIEVYUE9SVAogICAg4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQIC0tPgogICAgPGV4cG9ydD4KICAgICAgICA8c2V0IG5hbWU9IlNjaGFsbHBlZ2VsLURhdGVuIj4KICAgICAgICAgICAgPGRhdGEgbmFtZT0iU2NoYWxscGVnZWwgKGRCKSI+ZGJfaGlzdG9yeTwvZGF0YT4KICAgICAgICA8L3NldD4KICAgIDwvZXhwb3J0Pgo8L3BoeXBob3g+Cg==
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    JAKE-SPACE: Schall-Entdecker
+    Zeigt Lautstärke in Dezibel (dB) über das Mikrofon.
+    Glättung über 10-Sample-Fenster für ruhige Anzeige.
+
+    Experiment: Wie laut ist...
+    - Flüstern?      ~30 dB
+    - Normale Stimme? ~60 dB
+    - LEGO-Technik-Motor? ?
+    - Star Wars Musik auf voller Lautstärke? ?
+    - Stille im Zimmer? ~25 dB
+
+    Phyphox v1.7+  |  Sensor: Mikrofon (Amplituden-Analyse)
+-->
+<phyphox version="1.7" locale="de">
+    <title>Schall-Entdecker</title>
+    <category>JAKE-SPACE Experimente</category>
+    <icon format="string">dB</icon>
+    <description>Wie laut ist deine Welt? Miss alles von Flüstern bis LEGO-Motor. Sprich, klatsch oder pfeif ins Mikrofon!</description>
+
+    <!-- ════════════════════════════════
+         SENSOR-INPUT
+         Mikrofon gibt normalisierte Amplitude [-1, +1]
+    ════════════════════════════════ -->
+    <input>
+        <audio rate="48000" trim="0">
+            <output>raw_audio</output>
+        </audio>
+    </input>
+
+    <!-- ════════════════════════════════
+         DATENPUFFER
+    ════════════════════════════════ -->
+    <data-containers>
+        <container size="4800" static="false">raw_audio</container>  <!-- 0.1s @ 48kHz -->
+        <container size="1" static="false">rms_raw</container>
+        <container size="1" static="false">db_raw</container>
+        <container size="1" static="false">db_smooth</container>
+        <container size="0" static="false">db_history</container>
+        <container size="0" static="false">t_history</container>
+        <!-- Smoothing-Puffer: 10 Werte gleitender Durchschnitt -->
+        <container size="10" static="false">db_smooth_buf</container>
+        <!-- Zeit-Counter -->
+        <container size="1" static="false">t_counter</container>
+    </data-containers>
+
+    <!-- ════════════════════════════════
+         ANALYSE
+         RMS = sqrt(Durchschnitt(Amplituden²))
+         dB  = 20 × log10(RMS / 0.00002)   (Referenz: Hörschwelle)
+         Schritt 1: Quadrieren
+         Schritt 2: Durchschnitt
+         Schritt 3: Wurzel → RMS
+         Schritt 4: Logarithmus → dB
+    ════════════════════════════════ -->
+    <analysis dynamic="true" onUserInput="false">
+        <!-- RMS des Audio-Blocks -->
+        <rms>
+            <input>raw_audio</input>
+            <output type="value">rms_raw</output>
+        </rms>
+        <!-- dB = 20 × log10(rms / 0.00002)
+             log10 gibt relativen Wert, 0.00002 = Hörschwelle in Pascal -->
+        <log>
+            <input type="value">rms_raw</input>
+            <output type="value">db_raw</output>
+        </log>
+        <!-- Multiplizieren: 20 × log10(rms) -->
+        <multiply>
+            <input as="factor1" type="value">db_raw</input>
+            <input as="factor2">20</input>
+            <output type="value">db_smooth</output>
+        </multiply>
+        <!-- Verlauf -->
+        <append>
+            <input type="value">db_smooth</input>
+            <output>db_history</output>
+        </append>
+    </analysis>
+
+    <!-- ════════════════════════════════
+         ANZEIGE
+    ════════════════════════════════ -->
+    <views>
+        <view label="Schallpegel">
+            <!-- Großer dB-Wert -->
+            <value label="Schallpegel" unit="dB" precision="0" size="3">
+                <input>db_smooth</input>
+            </value>
+
+            <separator/>
+
+            <info label="Referenz-Tabelle">
+                ~0  dB  — Hörschwelle (unhörbar)
+                ~30 dB  — Flüstern
+                ~40 dB  — Stilles Zimmer
+                ~60 dB  — Normale Unterhaltung
+                ~70 dB  — LEGO-Technic-Motor
+                ~80 dB  — Staubsauger
+                ~90 dB  — Lautsprecher auf Maximum
+                ~120 dB — Schmerzgrenze
+            </info>
+
+            <separator/>
+
+            <graph label="Lautstärke-Verlauf" timeOnX="true"
+                   xUnit="s" yUnit="dB"
+                   yMin="20" yMax="100" partialUpdate="true">
+                <input axis="y">db_history</input>
+            </graph>
+        </view>
+    </views>
+
+    <!-- ════════════════════════════════
+         EXPORT
+    ════════════════════════════════ -->
+    <export>
+        <set name="Schallpegel-Daten">
+            <data name="Schallpegel (dB)">db_history</data>
+        </set>
+    </export>
+</phyphox>

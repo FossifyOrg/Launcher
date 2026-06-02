@@ -1,1 +1,24 @@
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLQogICAgRmlsZVByb3ZpZGVyLUtvbmZpZ3VyYXRpb24gZsO8ciBMQVVOQ0hQQUQuCiAgICBFcm3DtmdsaWNodCBkYXMgc2ljaGVyZSBUZWlsZW4gdm9uIERhdGVpZW4gYXVzIGRlbSBpbnRlcm5lbiBTcGVpY2hlcgogICAgbWl0IFBoeXBob3ggKGbDvHIgRXhwZXJpbWVudC1TaG9ydGN1dHMpLgoKICAgIEVpbmJpbmRlbiBpbiBBbmRyb2lkTWFuaWZlc3QueG1sOgogICAgPHByb3ZpZGVyCiAgICAgICAgYW5kcm9pZDpuYW1lPSJhbmRyb2lkeC5jb3JlLmNvbnRlbnQuRmlsZVByb3ZpZGVyIgogICAgICAgIGFuZHJvaWQ6YXV0aG9yaXRpZXM9IiR7YXBwbGljYXRpb25JZH0uZmlsZXByb3ZpZGVyIgogICAgICAgIGFuZHJvaWQ6ZXhwb3J0ZWQ9ImZhbHNlIgogICAgICAgIGFuZHJvaWQ6Z3JhbnRVcmlQZXJtaXNzaW9ucz0idHJ1ZSI+CiAgICAgICAgPG1ldGEtZGF0YQogICAgICAgICAgICBhbmRyb2lkOm5hbWU9ImFuZHJvaWQuc3VwcG9ydC5GSUxFX1BST1ZJREVSX1BBVEhTIgogICAgICAgICAgICBhbmRyb2lkOnJlc291cmNlPSJAeG1sL2ZpbGVfcGF0aHMiIC8+CiAgICA8L3Byb3ZpZGVyPgotLT4KPHBhdGhzPgogICAgPCEtLSBQaHlwaG94LUV4cGVyaW1lbnRlIGF1cyBQaHlwaG94TGF1bmNoSGVscGVyIChmaWxlc0Rpci9waHlwaG94LykgLS0+CiAgICA8ZmlsZXMtcGF0aCBuYW1lPSJwaHlwaG94X2V4cGVyaW1lbnRzIiBwYXRoPSJwaHlwaG94LyIvPgoKICAgIDwhLS0gT2ZmbGluZS1LSSBNb2RlbGwgKGZpbGVzRGlyL21vZGVscy8pIOKAlCBmw7xyIHp1a8O8bmZ0aWdlIE51dHp1bmcgLS0+CiAgICA8ZmlsZXMtcGF0aCBuYW1lPSJhaV9tb2RlbHMiIHBhdGg9Im1vZGVscy8iLz4KPC9wYXRocz4K
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    FileProvider-Konfiguration für LAUNCHPAD.
+    Ermöglicht das sichere Teilen von Dateien aus dem internen Speicher
+    mit Phyphox (für Experiment-Shortcuts).
+
+    Einbinden in AndroidManifest.xml:
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
+-->
+<paths>
+    <!-- Phyphox-Experimente aus PhyphoxLaunchHelper (filesDir/phyphox/) -->
+    <files-path name="phyphox_experiments" path="phyphox/"/>
+
+    <!-- Offline-KI Modell (filesDir/models/) — für zukünftige Nutzung -->
+    <files-path name="ai_models" path="models/"/>
+</paths>

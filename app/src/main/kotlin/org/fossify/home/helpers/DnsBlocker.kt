@@ -1,1 +1,112 @@
-cGFja2FnZSBvcmcuZm9zc2lmeS5ob21lLmhlbHBlcnMKCmltcG9ydCBhbmRyb2lkLmNvbnRlbnQuQ29udGV4dAppbXBvcnQgYW5kcm9pZC5uZXQuVnBuU2VydmljZQppbXBvcnQgYW5kcm9pZC51dGlsLkxvZwppbXBvcnQgamF2YS5uZXQuSW5ldEFkZHJlc3MKCi8qKgogKiBETlMtU0lOS0hPTEU6IExva2FsZXIgRmlsdGVyIGbDvHIgVHJhY2tpbmctIHVuZCBXZXJiZWRvbWFpbi1BbmZyYWdlbi4KICoKICogQXJjaGl0ZWt0dXI6IFZQTi1JbnRlcmZhY2UgKGtlaW4gZWNodGVyIFZQTi1TZXJ2ZXIpIGbDpG5ndCBETlMtQW5mcmFnZW4KICogbG9rYWwgYWIuIEdlYmxvY2t0ZSBEb21haW5zIGVyaGFsdGVuIDAuMC4wLjAgYWxzIEFudHdvcnQuCiAqCiAqIFZlcmhpbmRlcnQ6CiAqICAgLSBIeXBlck9TL1hpYW9taS1UZWxlbWV0cmllIChtaXVpLmNvbSwgZGF0YS5taXN0YXQueGlhb21pLmNvbSBldGMuKQogKiAgIC0gR29vZ2xlIEFuYWx5dGljcywgRmlyZWJhc2UgTG9nZ2luZwogKiAgIC0gQXBwLWludGVybmUgQWQtTmV0d29ya3MgKFVuaXR5IEFkcywgQWRNb2IsIEFwcGxvdmluKQogKiAgIC0gRmFjZWJvb2svTWV0YS1QaXhlbAogKgogKiBLZWluIEludGVybmV0LVNlcnZlciBuw7Z0aWcg4oCUIGzDpHVmdCB2b2xsc3TDpG5kaWcgbG9rYWwgYXVmIGRlbSBHZXLDpHQuCiAqCiAqIEludGVncmF0aW9uOiBOZXRHdWFyZCAoZ2l0aHViLmNvbS9NNjZCL05ldEd1YXJkKSBhbHMgVnBuU2VydmljZS1CYXNpcyBlbXBmb2hsZW4uCiAqIEN1cnNvci1Qcm9tcHQ6ICJJbnRlZ3JpZXJlIE5ldEd1YXJkJ3MgRG5zU2VydmVyUGFja2V0LmphdmEgYWxzIFZwblNlcnZpY2UtU3Via2xhc3NlLgogKiAgICAgICAgICAgICAgICAgTnV0emUgRG5zQmxvY2tlci5zaG91bGRCbG9jaygpIGFscyBGaWx0ZXIuIEtlaW4gVUkuIgogKi8Kb2JqZWN0IERuc0Jsb2NrZXIgewoKICAgIHByaXZhdGUgY29uc3QgdmFsIFRBRyA9ICJEbnNCbG9ja2VyIgoKICAgIHZhbCBCTE9DS0VEX0RPTUFJTlM6IFNldDxTdHJpbmc+ID0gc2V0T2YoCiAgICAgICAgLy8gWGlhb21pIC8gSHlwZXJPUyBUZWxlbWV0cmllCiAgICAgICAgImFkLnhpYW9taS5jb20iLAogICAgICAgICJkYXRhLm1pc3RhdC54aWFvbWkuY29tIiwKICAgICAgICAidHJhY2tpbmcubWl1aS5jb20iLAogICAgICAgICJzZGtjb25maWcuYWQueGlhb21pLmNvbSIsCiAgICAgICAgIm1zZy5taXB1c2guZ2xvYmFsLnhpYW9taS5jb20iLAogICAgICAgICJ0cmFja2luZy5pbnRsLm1pdWkuY29tIiwKICAgICAgICAiZ2xvYmFsLm1pdWkuY29tIiwKICAgICAgICAiZi5taXVpLmNvbSIsCiAgICAgICAgIm1pdWkuY29tIiwKCiAgICAgICAgLy8gR29vZ2xlIEFkcyAmIEFuYWx5dGljcwogICAgICAgICJhZHMuZ29vZ2xlLmNvbSIsCiAgICAgICAgImFuYWx5dGljcy5nb29nbGUuY29tIiwKICAgICAgICAiZG91YmxlY2xpY2submV0IiwKICAgICAgICAiZ29vZ2xlYWRzZXJ2aWNlcy5jb20iLAogICAgICAgICJwYWdlYWQyLmdvb2dsZXN5bmRpY2F0aW9uLmNvbSIsCiAgICAgICAgImFkc2VydmljZS5nb29nbGUuY29tIiwKICAgICAgICAiZ29vZ2xldGFnbWFuYWdlci5jb20iLAogICAgICAgICJnb29nbGV0YWdzZXJ2aWNlcy5jb20iLAogICAgICAgICJhcHAtbWVhc3VyZW1lbnQuY29tIiwKICAgICAgICAiZmlyZWJhc2Vsb2dnaW5nLXBhLmdvb2dsZWFwaXMuY29tIiwKCiAgICAgICAgLy8gRmlyZWJhc2UgQ3Jhc2ggLyBBbmFseXRpY3MgKE5JQ0hUIGZpcmViYXNlLmdvb2dsZS5jb20gc2VsYnN0IOKAlCBuw7Z0aWcgZsO8ciBRUi1QYWlyaW5nKQogICAgICAgICJmaXJlYmFzZS1zZXR0aW5ncy5jcmFzaGx5dGljcy5jb20iLAogICAgICAgICJjcmFzaGx5dGljcy5jb20iLAogICAgICAgICJlLmNyYXNobHl0aWNzLmNvbSIsCgogICAgICAgIC8vIEZhY2Vib29rIC8gTWV0YQogICAgICAgICJncmFwaC5mYWNlYm9vay5jb20iLAogICAgICAgICJjb25uZWN0LmZhY2Vib29rLm5ldCIsCiAgICAgICAgImFuLmZhY2Vib29rLmNvbSIsCiAgICAgICAgInBpeGVsLmZhY2Vib29rLmNvbSIsCgogICAgICAgIC8vIEFkIE5ldHdvcmtzIChVbml0eSwgQXBwTG92aW4sIGV0Yy4pCiAgICAgICAgInVuaXR5YWRzLnVuaXR5M2QuY29tIiwKICAgICAgICAiYWRtb2IuY29tIiwKICAgICAgICAiYXBwbG92aW4uY29tIiwKICAgICAgICAiY2hhcnRib29zdC5jb20iLAogICAgICAgICJ2dW5nbGUuY29tIiwKICAgICAgICAiaXJvbnNvdXJjZS5jb20iLAogICAgICAgICJzdXBlcnNvbmljYWRzLmNvbSIsCgogICAgICAgIC8vIEFuYWx5dGljcyBTREtzCiAgICAgICAgImFtcGxpdHVkZS5jb20iLAogICAgICAgICJhcGkuYW1wbGl0dWRlLmNvbSIsCiAgICAgICAgImFwaS5zZWdtZW50LmlvIiwKICAgICAgICAiY2RuLnNlZ21lbnQuY29tIiwKICAgICAgICAiYXBpLm1peHBhbmVsLmNvbSIsCiAgICAgICAgImQuYXBwc2ZseWVyLmNvbSIsCiAgICAgICAgImFwcC5hZGp1c3QuY29tIiwKICAgICAgICAiYXBpLmJyYW5jaC5pbyIsCgogICAgICAgIC8vIFRyYWNraW5nIC8gU2NvcmluZwogICAgICAgICJiLnNjb3JlY2FyZHJlc2VhcmNoLmNvbSIsCiAgICAgICAgImUubmV4YWMuY29tIiwKICAgICAgICAibW9hdC5jb20iLAogICAgKQoKICAgIC8qKgogICAgICogU0VDVVJJVFk6IFByw7xmdCBvYiBlaW5lIERvbWFpbiBnZWJsb2NrdCB3ZXJkZW4gc29sbC4KICAgICAqIFN1YmRvbWFpbnMgd2VyZGVuIGVya2FubnQ6ICJzdWIuZG91YmxlY2xpY2submV0IiDihpIgZ2VibG9ja3QuCiAgICAgKi8KICAgIGZ1biBzaG91bGRCbG9jayhkb21haW46IFN0cmluZyk6IEJvb2xlYW4gewogICAgICAgIHZhbCBub3JtYWxpemVkID0gZG9tYWluLnRyaW1FbmQoJy4nKS5sb3dlcmNhc2UoKQogICAgICAgIHJldHVybiBCTE9DS0VEX0RPTUFJTlMuYW55IHsgYmxvY2tlZCAtPgogICAgICAgICAgICBub3JtYWxpemVkID09IGJsb2NrZWQgfHwgbm9ybWFsaXplZC5lbmRzV2l0aCgiLiRibG9ja2VkIikKICAgICAgICB9CiAgICB9CgogICAgLyoqIFNpbmtob2xlLUFkcmVzc2UgZsO8ciBnZWJsb2NrdGUgRG9tYWlucyAqLwogICAgZnVuIGdldFNpbmtob2xlQWRkcmVzcygpOiBJbmV0QWRkcmVzcyA9IEluZXRBZGRyZXNzLmdldEJ5TmFtZSgiMC4wLjAuMCIpCgogICAgLyoqIFZQTi1QZXJtaXNzaW9uIHByw7xmZW4g4oCUIG51bGwgPSBQZXJtaXNzaW9uIHNjaG9uIHZvcmhhbmRlbiAqLwogICAgZnVuIGNoZWNrUGVybWlzc2lvbihjb250ZXh0OiBDb250ZXh0KSA9IFZwblNlcnZpY2UucHJlcGFyZShjb250ZXh0KQoKICAgIGZ1biBsb2dTdGF0cyhibG9ja2VkOiBJbnQsIHRvdGFsOiBJbnQpIHsKICAgICAgICBpZiAodG90YWwgPiAwKSB7CiAgICAgICAgICAgIExvZy5pKFRBRywgIkROUy1GaWx0ZXI6ICRibG9ja2VkLyR0b3RhbCBnZWJsb2NrdCAoJHtibG9ja2VkICogMTAwIC8gdG90YWx9JSkiKQogICAgICAgIH0KICAgIH0KfQo=
+package org.fossify.home.helpers
+
+import android.content.Context
+import android.net.VpnService
+import android.util.Log
+import java.net.InetAddress
+
+/**
+ * DNS-SINKHOLE: Lokaler Filter für Tracking- und Werbedomain-Anfragen.
+ *
+ * Architektur: VPN-Interface (kein echter VPN-Server) fängt DNS-Anfragen
+ * lokal ab. Geblockte Domains erhalten 0.0.0.0 als Antwort.
+ *
+ * Verhindert:
+ *   - HyperOS/Xiaomi-Telemetrie (miui.com, data.mistat.xiaomi.com etc.)
+ *   - Google Analytics, Firebase Logging
+ *   - App-interne Ad-Networks (Unity Ads, AdMob, Applovin)
+ *   - Facebook/Meta-Pixel
+ *
+ * Kein Internet-Server nötig — läuft vollständig lokal auf dem Gerät.
+ *
+ * Integration: NetGuard (github.com/M66B/NetGuard) als VpnService-Basis empfohlen.
+ * Cursor-Prompt: "Integriere NetGuard's DnsServerPacket.java als VpnService-Subklasse.
+ *                 Nutze DnsBlocker.shouldBlock() als Filter. Kein UI."
+ */
+object DnsBlocker {
+
+    private const val TAG = "DnsBlocker"
+
+    val BLOCKED_DOMAINS: Set<String> = setOf(
+        // Xiaomi / HyperOS Telemetrie
+        "ad.xiaomi.com",
+        "data.mistat.xiaomi.com",
+        "tracking.miui.com",
+        "sdkconfig.ad.xiaomi.com",
+        "msg.mipush.global.xiaomi.com",
+        "tracking.intl.miui.com",
+        "global.miui.com",
+        "f.miui.com",
+        "miui.com",
+
+        // Google Ads & Analytics
+        "ads.google.com",
+        "analytics.google.com",
+        "doubleclick.net",
+        "googleadservices.com",
+        "pagead2.googlesyndication.com",
+        "adservice.google.com",
+        "googletagmanager.com",
+        "googletagservices.com",
+        "app-measurement.com",
+        "firebaselogging-pa.googleapis.com",
+
+        // Firebase Crash / Analytics (NICHT firebase.google.com selbst — nötig für QR-Pairing)
+        "firebase-settings.crashlytics.com",
+        "crashlytics.com",
+        "e.crashlytics.com",
+
+        // Facebook / Meta
+        "graph.facebook.com",
+        "connect.facebook.net",
+        "an.facebook.com",
+        "pixel.facebook.com",
+
+        // Ad Networks (Unity, AppLovin, etc.)
+        "unityads.unity3d.com",
+        "admob.com",
+        "applovin.com",
+        "chartboost.com",
+        "vungle.com",
+        "ironsource.com",
+        "supersonicads.com",
+
+        // Analytics SDKs
+        "amplitude.com",
+        "api.amplitude.com",
+        "api.segment.io",
+        "cdn.segment.com",
+        "api.mixpanel.com",
+        "d.appsflyer.com",
+        "app.adjust.com",
+        "api.branch.io",
+
+        // Tracking / Scoring
+        "b.scorecardresearch.com",
+        "e.nexac.com",
+        "moat.com",
+    )
+
+    /**
+     * SECURITY: Prüft ob eine Domain geblockt werden soll.
+     * Subdomains werden erkannt: "sub.doubleclick.net" → geblockt.
+     */
+    fun shouldBlock(domain: String): Boolean {
+        val normalized = domain.trimEnd('.').lowercase()
+        return BLOCKED_DOMAINS.any { blocked ->
+            normalized == blocked || normalized.endsWith(".$blocked")
+        }
+    }
+
+    /** Sinkhole-Adresse für geblockte Domains */
+    fun getSinkholeAddress(): InetAddress = InetAddress.getByName("0.0.0.0")
+
+    /** VPN-Permission prüfen — null = Permission schon vorhanden */
+    fun checkPermission(context: Context) = VpnService.prepare(context)
+
+    fun logStats(blocked: Int, total: Int) {
+        if (total > 0) {
+            Log.i(TAG, "DNS-Filter: $blocked/$total geblockt (${blocked * 100 / total}%)")
+        }
+    }
+}
