@@ -1,6 +1,9 @@
+// companion/app/build.gradle.kts
+// AGP 9.0+ has built-in Kotlin support — org.jetbrains.kotlin.android must NOT be applied.
+// Kotlin compiles automatically via com.android.application alone.
+
 plugins {
-    id("com.android.application") version "9.2.1"
-    id("org.jetbrains.kotlin.android") version "2.3.10"
+    id("com.android.application")
 }
 
 android {
@@ -24,7 +27,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions { jvmTarget = "17" }
+    kotlin {
+        jvmToolchain(17)
+    }
 }
 
 dependencies {
