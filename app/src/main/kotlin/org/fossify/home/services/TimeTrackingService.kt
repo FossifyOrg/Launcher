@@ -1,51 +1,44 @@
-// File: app/src/main/java/org/fossify/home/services/TimeTrackingService.kt
-// M2: Background service for tracking app usage and enforcing time budgets
+// File: app/src/main/kotlin/org/fossify/home/services/TimeTrackingService.kt
+// M2: Background service skeleton for tracking app usage and enforcing time budgets
+//
+// NOTE (LAUNCHPAD audit fix):
+//  - Removed the non-existent `androidx.work.BackgroundWork` import.
+//  - Stub tracking methods are no longer `suspend` (they were being called from a plain
+//    Handler Runnable / Worker, which doesn't compile). Real DB work in M4/M5 should move to
+//    a CoroutineWorker.
+//  - Implements a proper foreground notification so startForegroundService() cannot crash
+//    with "did not call startForeground()".
 
 package org.fossify.home.services
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
 import android.util.Log
-import androidx.work.BackgroundWork
+import androidx.core.app.NotificationCompat
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import org.fossify.home.databases.AppsDatabase
-import org.fossify.home.databases.CryptoCashTransaction
-import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.models.TimeBudget
 import java.util.concurrent.TimeUnit
 
-/**
- * TimeTrackingService: Background service for real-time app usage tracking.
- *
- * Responsibilities:
- * 1. Track active app (using PACKAGE_USAGE_STATS)
- * 2. Measure time spent in each app
- * 3. Deduct from Krypto-Cash balance
- * 4. Trigger cool-down when time expires
- * 5. Log transactions for ledger
- *
- * M2 approach: Periodic checks + event-driven enforcement
- * M5: Can upgrade to UsageStatsManager polling or Device Admin callbacks
- */
 class TimeTrackingService : Service() {
     private val tag = "TimeTrackingService"
-    private lateinit var database: AppsDatabase
     private lateinit var handlerThread: HandlerThread
     private lateinit var handler: Handler
 
     override fun onCreate() {
         super.onCreate()
         Log.d(tag, "TimeTrackingService created")
-        database = AppsDatabase.getInstance(this)
-
-        // Background thread for tracking
         handlerThread = HandlerThread("TimeTrackingWorker")
         handlerThread.start()
         handler = Handler(handlerThread.looper)
@@ -53,28 +46,43 @@ class TimeTrackingService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(tag, "TimeTrackingService started")
-
-        // Start periodic tracking
+        startInForeground()
         startTracking()
-
-        // Return sticky: restart if killed
         return START_STICKY
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(tag, "TimeTrackingService destroyed")
-        handlerThread.quit()
+        if (this::handlerThread.isInitialized) handlerThread.quit()
     }
 
-    /**
-     * Start background tracking loop.
-     * Checks app usage every 10 seconds.
-     */
+    private fun startInForeground() {
+        val channelId = "launchpad_time_tracking"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val mgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if (mgr.getNotificationChannel(channelId) == null) {
+                mgr.createNotificationChannel(
+                    NotificationChannel(
+                        channelId,
+                        "Bildschirmzeit",
+                        NotificationManager.IMPORTANCE_MIN
+                    )
+                )
+            }
+        }
+        val notification: Notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("LAUNCHPAD")
+            .setContentText("Bildschirmzeit wird verfolgt")
+            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .setOngoing(true)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .build()
+        startForeground(NOTIFICATION_ID, notification)
+    }
+
     private fun startTracking() {
         handler.post(object : Runnable {
             override fun run() {
@@ -85,115 +93,67 @@ class TimeTrackingService : Service() {
                 } catch (e: Exception) {
                     Log.e(tag, "Error in tracking loop", e)
                 }
-
-                // Reschedule for next check (10 seconds)
                 handler.postDelayed(this, 10 * 1000)
             }
         })
     }
 
-    /**
-     * Get currently active app (simplified version).
-     * Full version uses UsageStatsManager in M5.
-     *
-     * M2: Simple polling via ActivityManager.getRunningAppProcesses()
-     */
-    private suspend fun trackActiveApp() {
-        // TODO: Implement using:
-        // - UsageStatsManager.queryUsageStats()
-        // - Or getForegroundApp() via accessibility service
-        // - Or Device Admin callbacks (M5)
+    // --- Stub tracking logic (full PACKAGE_USAGE_STATS implementation deferred to M5) ---
 
-        // For now, framework ready; actual implementation in M4-M5
+    private fun trackActiveApp() {
         Log.d(tag, "Tracking active app...")
     }
 
-    /**
-     * Check if time budget expired during current session.
-     * Trigger cool-down if yes.
-     */
-    private suspend fun checkForTimeExpiration() {
+    private fun checkForTimeExpiration() {
         val budget = getTimeBudget()
-
         if (budget.balanceMinutes <= 0 && !budget.inCooldown) {
             Log.w(tag, "Time budget expired! Triggering cool-down...")
             triggerCooldown()
         }
     }
 
-    /**
-     * Check if cool-down period expired.
-     * Re-enable time tracking if yes.
-     */
-    private suspend fun checkForCooldownExpiration() {
+    private fun checkForCooldownExpiration() {
         val budget = getTimeBudget()
-
         if (budget.inCooldown && budget.cooldownExpiresAt != null) {
-            val now = System.currentTimeMillis()
-            if (now > budget.cooldownExpiresAt) {
+            if (System.currentTimeMillis() > budget.cooldownExpiresAt) {
                 Log.d(tag, "Cool-down expired, resuming normal tracking")
-                // Cool-down auto-expires; no action needed
             }
         }
     }
 
-    /**
-     * Get current time budget from database.
-     */
-    private suspend fun getTimeBudget(): TimeBudget {
-        // TODO: Query Room for latest balance and cool-down state
-        return TimeBudget(
-            balanceMinutes = 0,
-            weekCapMinutes = 120,
-            dailyCapMinutes = 60,
-            cooldownDurationMinutes = 15,
-            inCooldown = false,
-            cooldownExpiresAt = null,
-            lastTransactionTime = null
-        )
+    private fun getTimeBudget(): TimeBudget {
+        // TODO(M4): query Room for the real balance + cool-down state.
+        return TimeBudget(balanceMinutes = 0)
     }
 
-    /**
-     * Trigger cool-down screen when time expires.
-     */
     private fun triggerCooldown() {
-        // TODO: Send broadcast or launch CooldownActivity
-        val intent = Intent(this, Class.forName("org.fossify.home.activities.CooldownActivity"))
+        val intent = Intent().setClassName(this, "org.fossify.home.activities.CooldownActivity")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e(tag, "Could not launch CooldownActivity", e)
+        }
+    }
+
+    companion object {
+        private const val NOTIFICATION_ID = 4711
     }
 }
 
 /**
- * TimeTrackingWorker: WorkManager background task for periodic checks.
- *
- * Runs every 30 minutes even if app is backgrounded.
- * Uses to:
- * 1. Auto-expire cool-down if needed
- * 2. Clean up expired doge-requests
- * 3. Auto-approve additional (if scope expands)
- * 4. Sync with parent app (M4)
+ * TimeTrackingWorker: WorkManager periodic task (every 30 min) for housekeeping.
  */
-class TimeTrackingWorker(context: android.content.Context, params: WorkerParameters) :
+class TimeTrackingWorker(context: Context, params: WorkerParameters) :
     Worker(context, params) {
 
     private val tag = "TimeTrackingWorker"
-    private val database = AppsDatabase.getInstance(context)
 
     override fun doWork(): Result {
         return try {
             Log.d(tag, "Running periodic time tracking check...")
-
-            // 1. Auto-expire cool-down if needed
             autoExpireCooldown()
-
-            // 2. Clean up expired doge-requests
             cleanupExpiredDogeRequests()
-
-            // 3. Sync with parent (M4)
-            // syncWithParentApp()
-
-            Log.d(tag, "Periodic check completed successfully")
             Result.success()
         } catch (e: Exception) {
             Log.e(tag, "Error in periodic check", e)
@@ -201,54 +161,38 @@ class TimeTrackingWorker(context: android.content.Context, params: WorkerParamet
         }
     }
 
-    private suspend fun autoExpireCooldown() {
-        // TODO: Query Room for cool-down state
-        // If expiresAt is in past, cool-down has naturally expired
-        // No action needed (CooldownActivity will auto-dismiss)
+    private fun autoExpireCooldown() {
         Log.d(tag, "Checking cool-down expiration...")
     }
 
-    private suspend fun cleanupExpiredDogeRequests() {
-        // TODO: Query Room for expired doge_requests
-        // Mark as EXPIRED
+    private fun cleanupExpiredDogeRequests() {
         Log.d(tag, "Cleaning up expired doge requests...")
     }
 
     companion object {
-        /**
-         * Schedule periodic time tracking checks.
-         * Call once on app startup.
-         */
-        fun schedulePeriodicChecks(context: android.content.Context) {
-            val timeTrackingWork = PeriodicWorkRequestBuilder<TimeTrackingWorker>(
-                30, TimeUnit.MINUTES
-            ).build()
-
+        fun schedulePeriodicChecks(context: Context) {
+            val work = PeriodicWorkRequestBuilder<TimeTrackingWorker>(30, TimeUnit.MINUTES).build()
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 "launchpad_time_tracking",
-                androidx.work.ExistingPeriodicWorkPolicy.KEEP,
-                timeTrackingWork
+                ExistingPeriodicWorkPolicy.KEEP,
+                work
             )
         }
     }
 }
 
 /**
- * TimeTrackingStartup: Initializer to start service on app startup.
+ * Helper to start tracking from app startup. Call from a foreground context.
  */
 class TimeTrackingStartup {
-    fun initializeTimeTracking(context: android.content.Context) {
-        // Start background service
+    fun initializeTimeTracking(context: Context) {
         val intent = Intent(context, TimeTrackingService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent)
         } else {
             context.startService(intent)
         }
-
-        // Schedule periodic WorkManager tasks
         TimeTrackingWorker.schedulePeriodicChecks(context)
-
         Log.d("TimeTracking", "Time tracking initialized")
     }
 }
