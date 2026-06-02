@@ -78,7 +78,7 @@ class SetupActivity : AppCompatActivity() {
         body("Ein fairer Launcher für Jake — mit Zeitlimits, Versprechen und klaren Regeln.\n\nDrücke auf \"Einrichten\" und in 2 Minuten ist alles bereit.")
     }
 
-    // ─── Step 2: PIN ───────────────────────────────────────────────────────
+    // ─── Step 2: PIN ──────────────────────────────────────────────────────────
 
     private lateinit var pinField1: EditText
     private lateinit var pinField2: EditText
@@ -185,7 +185,7 @@ class SetupActivity : AppCompatActivity() {
         }
     }
 
-    // ─── Navigation ───────────────────────────────────────────────────────
+    // ─── Navigation ───────────────────────────────────────────────────────────
 
     private fun advance() {
         when (currentStep) {
@@ -195,7 +195,7 @@ class SetupActivity : AppCompatActivity() {
         }
     }
 
-    // ─── Helpers ───────────────────────────────────────────────────────
+    // ─── Helpers ──────────────────────────────────────────────────────────────
 
     private fun title(text: String) {
         content.addView(TextView(this).apply {
@@ -212,7 +212,7 @@ class SetupActivity : AppCompatActivity() {
             this.text = text
             textSize = 15f
             setTextColor(Color.argb(200, 255, 255, 255))
-            setLineSpacing(1.4f, 1.0f)
+            setLineSpacing(0f, 1.4f)
         })
     }
 

@@ -78,7 +78,11 @@ import org.fossify.home.extensions.launchApp
 import org.fossify.home.extensions.launchAppInfo
 import android.app.AlertDialog
 import android.widget.Toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.TimeBudgetManager
 import org.fossify.home.extensions.launchersDB
@@ -907,8 +911,8 @@ class MainActivity : SimpleActivity(), FlingListener {
             startActivity(Intent(this, JakeDashboardActivity::class.java))
         }
 
-        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
-            val budget = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val budget = withContext(Dispatchers.IO) {
                 org.fossify.home.helpers.TimeBudgetManager(this@MainActivity, AppsDatabase.getInstance(this@MainActivity)).getCurrentBudget()
             }
             when {
