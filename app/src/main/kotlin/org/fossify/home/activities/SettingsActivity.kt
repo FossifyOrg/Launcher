@@ -57,6 +57,7 @@ class SettingsActivity : SimpleActivity() {
         setupShowHomeAppLabels()
         setupLanguage()
         setupManageHiddenIcons()
+        setupElternModus()  // LAUNCHPAD M1
         updateTextColors(binding.settingsHolder)
 
         arrayOf(
@@ -269,6 +270,13 @@ class SettingsActivity : SimpleActivity() {
     private fun setupManageHiddenIcons() {
         binding.settingsManageHiddenIconsHolder.setOnClickListener {
             startActivity(Intent(this, HiddenIconsActivity::class.java))
+        }
+    }
+
+    // LAUNCHPAD M1: Entry point to parent controls
+    private fun setupElternModus() {
+        binding.settingsElternModusHolder.setOnClickListener {
+            startActivity(Intent(this, ElternModusActivity::class.java))
         }
     }
 
