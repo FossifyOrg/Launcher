@@ -3,7 +3,10 @@ plugins {
     // (AGP 9.2.1 + Kotlin 2.3.10 applied by the root build.gradle.kts). Declaring a
     // version here causes "already on classpath with unknown version" conflict.
     id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
+
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 android {
     namespace = "org.fossify.launchpad.companion"
@@ -28,6 +31,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    // kotlinOptions is configured via KotlinCompile tasks below (so the Kotlin plugin
+    // must be applied to this module). Putting kotlinOptions directly inside the
+    // android block can be unresolved when the Kotlin plugin isn't applied here.
+}
+
+// Configure the Kotlin compiler JVM target using the KotlinGradle plugin task API.
+// This avoids unresolved reference errors when kotlinOptions is not available inside
+// the android block.
+tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = "17"
     }
