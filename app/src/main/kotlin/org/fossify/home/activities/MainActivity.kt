@@ -105,6 +105,7 @@ import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HiddenIcon
 import org.fossify.home.models.HomeScreenGridItem
 import org.fossify.home.receivers.LockDeviceAdminReceiver
+import org.fossify.home.services.TimeTrackingStartup
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -173,6 +174,10 @@ class MainActivity : SimpleActivity(), FlingListener {
         }
 
         handleIntentAction(intent)
+
+        // LAUNCHPAD M2: start screen-time tracking (foreground service + periodic WorkManager).
+        // Idempotent; MainActivity is a foreground context so startForegroundService is allowed.
+        TimeTrackingStartup().initializeTimeTracking(this)
 
         binding.homeScreenGrid.root.itemClickListener = {
             performItemClick(it)
