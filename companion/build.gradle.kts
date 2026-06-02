@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id("com.android.application") version "9.2.1"
+    id("org.jetbrains.kotlin.android") version "2.3.10"
 }
 
 android {
@@ -13,10 +13,6 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-    }
-
-    buildFeatures {
-        viewBinding = true
     }
 
     buildTypes {
