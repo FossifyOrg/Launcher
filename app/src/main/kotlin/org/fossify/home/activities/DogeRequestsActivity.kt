@@ -170,7 +170,7 @@ class DogeRequestsActivity : AppCompatActivity() {
             hint = "z.B. 'YouTube – Minecraft Tutorials'"
             inputType = InputType.TYPE_CLASS_TEXT
             // Pre-fill if launched from a denied launch
-            prefillPkg?.let { setText(it) }
+            prefillPkg?.let { pkg -> setText(pkg) }
         }
         content.addView(input)
         content.addView(Button(this).apply {
