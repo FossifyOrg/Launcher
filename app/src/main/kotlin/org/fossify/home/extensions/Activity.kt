@@ -52,7 +52,7 @@ fun Activity.launchApp(packageName: String, activityName: String) {
         if (enforce) {
             val db = AppsDatabase.getInstance(applicationContext)
             val budget = runBlocking { TimeBudgetManager(this@launchApp, db).getCurrentBudget() }
-            val decision = runBlocking { LaunchGate(this, db).canLaunch(packageName, budget) }
+            val decision = runBlocking { LaunchGate(this@launchApp, db).canLaunch(packageName, budget) }
             if (!decision.allowed) {
                 AlertDialog.Builder(this)
                     .setTitle("Nicht verfügbar")
