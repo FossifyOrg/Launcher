@@ -1,76 +1,69 @@
 // File: app/src/main/kotlin/org/fossify/home/activities/ElternModusActivity.kt
-// M1/M2: Parent Mode menu and controls (wired to Room).
+// LAUNCHPAD: Parent control centre — proper Settings-style layout.
 
 package org.fossify.home.activities
 
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
-import android.util.Log
-import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.fossify.home.R
 import org.fossify.home.databases.AllowedApp
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.databases.CryptoCashTransaction
-import org.fossify.home.helpers.CooldownRulesConfig
-import org.fossify.home.helpers.CooldownRulesValidator
-import org.fossify.home.helpers.KioskManager
-import org.fossify.home.helpers.LaunchpadConstants
-import org.fossify.home.helpers.LaunchpadPrefs
-import org.fossify.home.helpers.PinGateHelper
-import org.fossify.home.helpers.UsageTracker
+import org.fossify.home.helpers.*
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-/**
- * ElternModusActivity: Parent control center.
- *
- * Wired in this pass:
- * - Live Krypto-Cash balance (CryptoCashDao)
- * - Time top-up writing an EARN transaction with a correct balanceAfter snapshot
- * - App whitelist management (allowed_apps)
- * - Transaction history (ledger audit trail)
- * - Cool-down rules JSON import + validation (persisted to prefs)
- */
 class ElternModusActivity : AppCompatActivity() {
-    private val tag = "ElternModusActivity"
 
-    private lateinit var database: AppsDatabase
+    private lateinit var db: AppsDatabase
     private lateinit var pinGate: PinGateHelper
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    private var balanceView: TextView? = null
+    // Dashboard views
+    private lateinit var balanceBig: android.widget.TextView
+    private lateinit var modeBadge: android.widget.TextView
+    private lateinit var lastTx: android.widget.TextView
+    private lateinit var enforcementLabel: android.widget.TextView
+
+    // Row subtitles
+    private lateinit var appsCount: android.widget.TextView
+    private lateinit var zusagenCount: android.widget.TextView
+    private lateinit var dogeCount: android.widget.TextView
+    private lateinit var usageStatus: android.widget.TextView
+    private lateinit var pairStatus: android.widget.TextView
+
+    // Switches
+    private lateinit var kindermodusSwitch: org.fossify.commons.views.MyMaterialSwitch
+    private lateinit var kioskSwitch: org.fossify.commons.views.MyMaterialSwitch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_eltern_modus)
 
-        database = AppsDatabase.getInstance(this)
+        db = AppsDatabase.getInstance(this)
         pinGate = PinGateHelper(this)
 
-        if (!pinGate.isPinConfigured()) {
-            showPinSetupFlow()
-        } else if (pinGate.isParentModeActive()) {
-            showParentModeMenu()
-        } else {
-            showPinVerificationFlow()
+        // Require PIN (or first-time setup)
+        if (pinGate.isPinConfigured() && !pinGate.isParentModeActive()) {
+            requestPin()
+            return
+        }
+
+        initUi()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (pinGate.isParentModeActive() || !pinGate.isPinConfigured()) {
+            refresh()
         }
     }
 
@@ -79,400 +72,247 @@ class ElternModusActivity : AppCompatActivity() {
         scope.cancel()
     }
 
-    private fun container(): LinearLayout = findViewById(R.id.eltern_container)
-
-    private fun heading(text: String, size: Float = 20f) = TextView(this).apply {
-        this.text = text
-        textSize = size
-        setPadding(0, 24, 0, 16)
-    }
-
-    private fun fullWidthButton(label: String, onClick: () -> Unit) = Button(this).apply {
-        text = label
-        layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        ).apply { setMargins(0, 8, 0, 8) }
-        setOnClickListener { onClick() }
-    }
-
-    // ─── PIN flows ──────────────────────────────────────────────────────────────
-
-    private fun showPinSetupFlow() {
-        val c = container()
-        c.removeAllViews()
-        c.addView(heading("Eltern-PIN einrichten"))
-
-        val pin1 = EditText(this).apply {
-            hint = "4-stellige PIN"
+    private fun requestPin() {
+        val input = EditText(this).apply {
             inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            hint = "Eltern-PIN"
         }
-        val pin2 = EditText(this).apply {
-            hint = "PIN wiederholen"
-            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-        }
-        c.addView(pin1)
-        c.addView(pin2)
-        c.addView(fullWidthButton("PIN speichern") {
-            val a = pin1.text.toString()
-            val b = pin2.text.toString()
-            when {
-                a.length < 4 -> toast("PIN muss mindestens 4 Ziffern haben")
-                a != b -> toast("PINs stimmen nicht überein")
-                pinGate.setPinCode(a) -> {
-                    pinGate.activateParentMode()
-                    showParentModeMenu()
+        AlertDialog.Builder(this)
+            .setTitle("Eltern-Modus")
+            .setMessage("PIN eingeben:")
+            .setView(input)
+            .setPositiveButton("OK") { _, _ ->
+                if (pinGate.verifyPin(input.text.toString())) {
+                    pinGate.activateParentMode(30)
+                    initUi()
+                    refresh()
+                } else {
+                    toast("Falscher PIN")
+                    finish()
                 }
-                else -> toast("Fehler beim Speichern der PIN")
             }
-        })
+            .setNegativeButton("Abbrechen") { _, _ -> finish() }
+            .setCancelable(false)
+            .show()
     }
 
-    private fun showPinVerificationFlow() {
-        val c = container()
-        c.removeAllViews()
-        c.addView(heading("Eltern-PIN"))
+    private fun initUi() {
+        setContentView(R.layout.activity_eltern_modus)
 
-        val pin = EditText(this).apply {
-            hint = "PIN eingeben"
-            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-        }
-        c.addView(pin)
-        c.addView(fullWidthButton("Verifizieren") {
-            if (pinGate.verifyPin(pin.text.toString())) {
-                pinGate.activateParentMode(durationMinutes = 30)
-                showParentModeMenu()
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.em_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply { title = "Eltern-Modus"; setDisplayHomeAsUpEnabled(true) }
+        toolbar.setNavigationOnClickListener { finish() }
+
+        // Dashboard
+        balanceBig = findViewById(R.id.em_balance_big)
+        modeBadge = findViewById(R.id.em_mode_badge)
+        lastTx = findViewById(R.id.em_last_tx)
+        enforcementLabel = findViewById(R.id.em_enforcement_label)
+
+        // Row subtitles
+        appsCount = findViewById(R.id.em_apps_count)
+        zusagenCount = findViewById(R.id.em_zusagen_count)
+        dogeCount = findViewById(R.id.em_doge_count)
+        usageStatus = findViewById(R.id.em_usage_status)
+        pairStatus = findViewById(R.id.em_pair_status)
+
+        // Switches
+        kindermodusSwitch = findViewById(R.id.em_kindermodus_switch)
+        kioskSwitch = findViewById(R.id.em_kiosk_switch)
+
+        // Wire rows
+        listOf<Pair<Int, () -> Unit>>(
+            R.id.em_row_add_time to { showAddTimeDialog() },
+            R.id.em_row_transactions to { showTransactions() },
+            R.id.em_row_apps to { startActivity(Intent(this, AppsManagementActivity::class.java)) },
+            R.id.em_row_zusagen to { startActivity(Intent(this, ZusagenActivity::class.java).putExtra("isParentMode", true)) },
+            R.id.em_row_doge to { startActivity(Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true)) },
+            R.id.em_row_cooldown_rules to { showCooldownEditor() },
+            R.id.em_row_usage to { openUsageSettings() },
+            R.id.em_row_kiosk to { toggleKiosk() },
+            R.id.em_row_qr to { startActivity(Intent(this, PairingActivity::class.java)) },
+        ).forEach { (id, action) -> findViewById<android.view.View>(id).setOnClickListener { action() } }
+
+        // Switches
+        val prefs = getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+        kindermodusSwitch.isChecked = prefs.getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+        kindermodusSwitch.setOnCheckedChangeListener { _, checked -> toggleKindermodus(checked) }
+
+        kioskSwitch.isChecked = KioskManager.isKioskEnabled(this)
+        kioskSwitch.setOnCheckedChangeListener { _, checked ->
+            if (!KioskManager.isDeviceOwner(this)) {
+                kioskSwitch.isChecked = false
+                showKioskSetupDialog()
             } else {
-                toast("PIN falsch")
-                pin.text.clear()
+                KioskManager.setKioskEnabled(this, checked)
+                if (checked) KioskManager.applyRestrictions(this) else KioskManager.stopKiosk(this)
             }
-        })
+        }
     }
 
-    // ─── Main menu ────────────────────────────────────────────────────────────────
-
-    private fun showParentModeMenu() {
-        val c = container()
-        c.removeAllViews()
-        c.addView(heading("Eltern-Modus"))
-
-        balanceView = TextView(this).apply {
-            textSize = 16f
-            setPadding(0, 8, 0, 16)
-            text = "Verfügbare Zeit: …"
-        }
-        c.addView(balanceView)
-        refreshBalance()
-
-        c.addView(fullWidthButton("+ Zeit hinzufügen") { showAdjustTimeDialog() })
-        c.addView(fullWidthButton("Apps verwalten") { showAppManagementScreen() })
-        c.addView(fullWidthButton("Transaktionen anzeigen") { showTransactionHistory() })
-        c.addView(fullWidthButton("Versprechen (Zusagen)") {
-            startActivity(
-                Intent(this, ZusagenActivity::class.java).putExtra("isParentMode", true)
-            )
-        })
-        c.addView(fullWidthButton("Medien-Anfragen (Doge-Coins)") {
-            startActivity(
-                Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true)
-            )
-        })
-        c.addView(fullWidthButton("Kopplung (QR)") {
-            startActivity(Intent(this, PairingActivity::class.java))
-        })
-        c.addView(fullWidthButton("Ruhezeiten konfigurieren") { showCooldownConfig() })
-        c.addView(fullWidthButton("Nutzungszugriff (Zeit-Tracking)") {
-            val granted = UsageTracker.hasUsageAccess(this)
-            toast(if (granted) "Nutzungszugriff ist aktiv ✓" else "Bitte LAUNCHPAD aktivieren")
-            if (!granted) {
-                try {
-                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                } catch (e: Exception) {
-                    toast("Einstellungen nicht verfügbar")
-                }
-            }
-        })
-
-        val enforceState = if (isEnforcementEnabled()) "AN" else "AUS"
-        c.addView(fullWidthButton("Kindermodus (Whitelist + Zeit): $enforceState") { toggleEnforcement() })
-
-        val kioskState = when {
-            !KioskManager.isDeviceOwner(this) -> "nicht eingerichtet"
-            KioskManager.isKioskEnabled(this) -> "AN"
-            else -> "AUS"
-        }
-        c.addView(fullWidthButton("Kiosk-Modus (Gerätesperre): $kioskState") { toggleKiosk() })
-
-        c.addView(fullWidthButton("Eltern-Modus beenden") {
-            pinGate.deactivateParentMode()
-            finish()
-        })
-    }
-
-    private fun refreshBalance() {
+    private fun refresh() {
+        if (!this::balanceBig.isInitialized) return
         scope.launch {
-            val balance = withContext(Dispatchers.IO) { database.cryptoCashDao().getCurrentBalance() }
-            balanceView?.text = "Verfügbare Zeit: $balance Minuten"
+            val balance = withContext(Dispatchers.IO) { db.cryptoCashDao().getCurrentBalance() }
+            val tx = withContext(Dispatchers.IO) { db.cryptoCashDao().getLastTransaction() }
+            val appCount = withContext(Dispatchers.IO) { db.allowedAppDao().getAllEnabledApps().size }
+            val zusagenPending = withContext(Dispatchers.IO) { db.zusageDao().getZusagenByStatus("ACTIVE").size }
+            val dogePending = withContext(Dispatchers.IO) { db.dogeRequestDao().getPending().size }
+            val paired = PairingManager(this@ElternModusActivity).isPaired()
+            val usageGranted = UsageTracker.hasUsageAccess(this@ElternModusActivity)
+            val enforcement = getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+                .getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+
+            balanceBig.text = "$balance Min"
+            balanceBig.setTextColor(when {
+                balance <= 0 -> android.graphics.Color.parseColor("#FF4444")
+                balance < 15 -> android.graphics.Color.parseColor("#FF6B35")
+                else -> android.graphics.Color.parseColor("#4CAF50")
+            })
+
+            modeBadge.text = if (enforcement) "AKTIV" else "SETUP"
+            modeBadge.setBackgroundColor(
+                android.graphics.Color.parseColor(if (enforcement) "#4CAF50" else "#FF6B35")
+            )
+
+            val fmt = SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+            lastTx.text = tx?.let { "Letzte Transaktion: ${fmt.format(Date(it.createdAt))}" } ?: "Keine Transaktionen"
+            enforcementLabel.text = if (enforcement) "Kindermodus AN" else "Kindermodus AUS"
+
+            appsCount.text = "$appCount Apps freigegeben"
+            zusagenCount.text = if (zusagenPending > 0) "$zusagenPending wartende Versprechen" else "Keine aktiven Versprechen"
+            dogeCount.text = if (dogePending > 0) "$dogePending offene Anfragen" else "Keine offenen Anfragen"
+            usageStatus.text = if (usageGranted) "Erteilt ✓" else "Nicht erteilt — Tippe zum Öffnen"
+            pairStatus.text = if (paired) "Gekoppelt ✓" else "Nicht gekoppelt"
         }
     }
 
-    // ─── Time adjustment (EARN transaction) ─────────────────────────────────────────
+    // ─── Actions ──────────────────────────────────────────────────────────────
 
-    private fun showAdjustTimeDialog() {
-        val minutesInput = EditText(this).apply {
-            hint = "Minuten (z.B. 10)"
+    private fun showAddTimeDialog() {
+        val mins = EditText(this).apply {
+            hint = "Minuten (z.B. 30)"
             inputType = InputType.TYPE_CLASS_NUMBER
         }
-        val reasonInput = EditText(this).apply {
+        val reason = EditText(this).apply {
             hint = "Grund (z.B. Hausaufgaben)"
             inputType = InputType.TYPE_CLASS_TEXT
         }
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(48, 24, 48, 0)
-            addView(minutesInput)
-            addView(reasonInput)
+            setPadding(48, 16, 48, 0)
+            addView(mins); addView(reason)
         }
-
         AlertDialog.Builder(this)
             .setTitle("Zeit hinzufügen")
             .setView(box)
             .setPositiveButton("Hinzufügen") { _, _ ->
-                val minutes = minutesInput.text.toString().toIntOrNull()
-                val reason = reasonInput.text.toString().ifBlank { "Manuelle Anpassung" }
-                if (minutes == null || minutes <= 0) {
-                    toast("Bitte gültige Minutenzahl eingeben")
-                    return@setPositiveButton
-                }
-                addEarnTransaction(minutes, reason)
-            }
-            .setNegativeButton("Abbrechen", null)
-            .show()
-    }
-
-    private fun addEarnTransaction(minutes: Int, reason: String) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                val current = database.cryptoCashDao().getCurrentBalance()
-                database.cryptoCashDao().insertTransaction(
-                    CryptoCashTransaction(
-                        deltaMinutes = minutes,
-                        type = LaunchpadConstants.TX_TYPE_EARN,
-                        actor = "parent",
-                        reasonType = "manual_adjustment",
-                        reasonText = reason,
-                        childVisibleText = "$reason +$minutes Min",
-                        source = "parent_app",
-                        balanceAfter = current + minutes // maintain No-Regression running sum
-                    )
-                )
-            }
-            toast("+$minutes Minuten hinzugefügt")
-            refreshBalance()
-        }
-    }
-
-    // ─── App whitelist management ─────────────────────────────────────────────────
-
-    private fun showAppManagementScreen() {
-        val c = container()
-        c.removeAllViews()
-        c.addView(heading("Apps verwalten"))
-        c.addView(TextView(this).apply {
-            text = "Aktivierte Apps erscheinen auf Jakes Startbildschirm."
-            setPadding(0, 0, 0, 16)
-        })
-        c.addView(fullWidthButton("← Zurück") { showParentModeMenu() })
-
-        val listHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        c.addView(listHolder)
-
-        scope.launch {
-            val (apps, enabledPkgs) = withContext(Dispatchers.IO) {
-                val pm = packageManager
-                val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-                val resolved: List<ResolveInfo> = pm.queryIntentActivities(intent, 0)
-                val seen = LinkedHashMap<String, String>()
-                for (ri in resolved) {
-                    val pkg = ri.activityInfo.packageName
-                    if (pkg == packageName) continue
-                    if (!seen.containsKey(pkg)) seen[pkg] = ri.loadLabel(pm).toString()
-                }
-                val enabled = database.allowedAppDao().getAll().map { it.packageName }.toSet()
-                seen.entries.sortedBy { it.value.lowercase() } to enabled
-            }
-
-            for (entry in apps) {
-                val pkg = entry.key
-                val label = entry.value
-                val row = CheckBox(this@ElternModusActivity).apply {
-                    text = label
-                    isChecked = enabledPkgs.contains(pkg)
-                    setPadding(8, 12, 8, 12)
-                    setOnCheckedChangeListener { _, checked -> toggleApp(pkg, checked) }
-                }
-                listHolder.addView(row)
-            }
-            if (apps.isEmpty()) {
-                listHolder.addView(TextView(this@ElternModusActivity).apply {
-                    text = "Keine startbaren Apps gefunden."
-                })
-            }
-        }
-    }
-
-    private fun toggleApp(pkg: String, enable: Boolean) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                if (enable) {
-                    database.allowedAppDao().insertApp(
-                        AllowedApp(packageName = pkg, category = LaunchpadConstants.CATEGORY_NEUTRAL)
-                    )
-                } else {
-                    database.allowedAppDao().deleteApp(pkg)
+                val m = mins.text.toString().toIntOrNull()
+                if (m == null || m <= 0) { toast("Ungültige Minutenzahl"); return@setPositiveButton }
+                val r = reason.text.toString().ifBlank { "Manuelle Anpassung" }
+                scope.launch {
+                    withContext(Dispatchers.IO) {
+                        val cur = db.cryptoCashDao().getCurrentBalance()
+                        db.cryptoCashDao().insertTransaction(CryptoCashTransaction(
+                            deltaMinutes = m, type = LaunchpadConstants.TX_TYPE_EARN,
+                            actor = "parent", reasonType = "manual", reasonText = r,
+                            childVisibleText = "$r +$m Min", source = "parent_app",
+                            balanceAfter = cur + m
+                        ))
+                    }
+                    toast("+$m Minuten hinzugefügt")
+                    refresh()
                 }
             }
-        }
+            .setNegativeButton("Abbrechen", null).show()
     }
 
-    // ─── Transaction history ────────────────────────────────────────────────────────
-
-    private fun showTransactionHistory() {
-        val c = container()
-        c.removeAllViews()
-        c.addView(heading("Transaktions-Verlauf"))
-        c.addView(fullWidthButton("← Zurück") { showParentModeMenu() })
-
-        val listHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        c.addView(listHolder)
-
+    private fun showTransactions() {
         scope.launch {
-            val txs = withContext(Dispatchers.IO) {
-                database.cryptoCashDao().getAllTransactions().reversed()
-            }
+            val txs = withContext(Dispatchers.IO) { db.cryptoCashDao().getAllTransactions().reversed() }
             val fmt = SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-            if (txs.isEmpty()) {
-                listHolder.addView(TextView(this@ElternModusActivity).apply {
-                    text = "Noch keine Transaktionen."
-                    setPadding(0, 8, 0, 8)
-                })
+            val msg = if (txs.isEmpty()) "Keine Transaktionen"
+            else txs.take(20).joinToString("\n") {
+                val sign = if (it.deltaMinutes >= 0) "+" else ""
+                "${fmt.format(Date(it.createdAt))}  $sign${it.deltaMinutes} Min — ${it.reasonText}"
             }
-            for (tx in txs) {
-                val sign = if (tx.deltaMinutes >= 0) "+" else ""
-                listHolder.addView(TextView(this@ElternModusActivity).apply {
-                    text = "${fmt.format(Date(tx.createdAt))}  •  $sign${tx.deltaMinutes} Min  •  " +
-                        "${tx.reasonText} (${tx.actor})"
-                    setPadding(0, 8, 0, 8)
-                })
-            }
+            AlertDialog.Builder(this@ElternModusActivity)
+                .setTitle("Transaktionen")
+                .setMessage(msg)
+                .setPositiveButton("OK", null).show()
         }
     }
 
-    // ─── Cool-down rules JSON config ─────────────────────────────────────────────────
-
-    private fun showCooldownConfig() {
-        val c = container()
-        c.removeAllViews()
-        c.addView(heading("Ruhezeiten (JSON)"))
-        c.addView(fullWidthButton("← Zurück") { showParentModeMenu() })
-
+    private fun showCooldownEditor() {
         val prefs = getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
-        val existing = prefs.getString(LaunchpadPrefs.PREF_COOLDOWN_RULES_JSON, null)
-            ?: CooldownRulesConfig.defaultJson()
-
-        val jsonInput = EditText(this).apply {
-            setText(existing)
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
-            minLines = 6
-            setPadding(16, 16, 16, 16)
+        val json = prefs.getString(LaunchpadPrefs.PREF_COOLDOWN_RULES_JSON, null) ?: CooldownRulesConfig.defaultJson()
+        val input = EditText(this).apply {
+            setText(json)
+            inputType = InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
+            minLines = 5
         }
-        c.addView(jsonInput)
-
-        c.addView(fullWidthButton("Speichern") {
-            val json = jsonInput.text.toString()
-            val result = CooldownRulesValidator().validate(json)
-            if (result.isValid) {
-                prefs.edit().putString(LaunchpadPrefs.PREF_COOLDOWN_RULES_JSON, json).apply()
-                toast("Ruhezeiten gespeichert")
-            } else {
-                toast("Ungültig: ${result.error}")
+        AlertDialog.Builder(this)
+            .setTitle("Ruhezeiten (JSON)")
+            .setView(input)
+            .setPositiveButton("Speichern") { _, _ ->
+                val v = CooldownRulesValidator().validate(input.text.toString())
+                if (v.isValid) {
+                    prefs.edit().putString(LaunchpadPrefs.PREF_COOLDOWN_RULES_JSON, input.text.toString()).apply()
+                    toast("Gespeichert")
+                } else toast("Ungültig: ${v.error}")
             }
-        })
+            .setNegativeButton("Abbrechen", null).show()
     }
 
-    // ─── Kindermodus (enforcement master switch) ─────────────────────────────────────
+    private fun openUsageSettings() {
+        if (UsageTracker.hasUsageAccess(this)) { toast("Nutzungszugriff ist bereits erteilt ✓"); return }
+        try { startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
+        catch (e: Exception) { toast("Einstellungen nicht verfügbar") }
+    }
 
-    private fun lpPrefs() =
-        getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
-
-    private fun isEnforcementEnabled(): Boolean =
-        lpPrefs().getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
-
-    private fun toggleEnforcement() {
-        val enabling = !isEnforcementEnabled()
-        if (enabling) {
-            scope.launch {
-                val whitelistCount = withContext(Dispatchers.IO) {
-                    database.allowedAppDao().getAllEnabledApps().size
-                }
-                if (whitelistCount == 0) {
+    private fun toggleKindermodus(enable: Boolean) {
+        scope.launch {
+            if (enable) {
+                val count = withContext(Dispatchers.IO) { db.allowedAppDao().getAllEnabledApps().size }
+                if (count == 0) {
                     AlertDialog.Builder(this@ElternModusActivity)
                         .setTitle("Kindermodus aktivieren?")
-                        .setMessage(
-                            "Es sind noch keine Apps freigegeben. Im Kindermodus sieht Jake dann " +
-                                "KEINE Apps. Erst unter \"Apps verwalten\" Apps freigeben.\n\n" +
-                                "Trotzdem aktivieren?"
-                        )
+                        .setMessage("Es sind noch keine Apps freigegeben. Jake sieht dann keine Apps.\n\nTrotzdem aktivieren?")
                         .setPositiveButton("Aktivieren") { _, _ ->
-                            lpPrefs().edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true).apply()
+                            setPref(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true)
                             toast("Kindermodus AN")
-                            showParentModeMenu()
+                            refresh()
                         }
-                        .setNegativeButton("Abbrechen", null)
-                        .show()
+                        .setNegativeButton("Abbrechen") { _, _ ->
+                            kindermodusSwitch.isChecked = false
+                        }.show()
                 } else {
-                    lpPrefs().edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true).apply()
-                    toast("Kindermodus AN ($whitelistCount Apps frei)")
-                    showParentModeMenu()
+                    setPref(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true)
+                    toast("Kindermodus AN ($count Apps freigegeben)")
+                    refresh()
                 }
+            } else {
+                setPref(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+                toast("Kindermodus AUS — alle Apps sichtbar")
+                refresh()
             }
-        } else {
-            lpPrefs().edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false).apply()
-            toast("Kindermodus AUS — alle Apps sichtbar")
-            showParentModeMenu()
         }
     }
 
-    // ─── Kiosk / Device-Owner ──────────────────────────────────────────────────────
+    private fun toggleKiosk() { /* handled by switch listener */ }
 
-    private fun toggleKiosk() {
-        if (!KioskManager.isDeviceOwner(this)) {
-            val cmd = KioskManager.deviceOwnerSetupCommand(this)
-            AlertDialog.Builder(this)
-                .setTitle("Kiosk-Modus benötigt Device Owner")
-                .setMessage(
-                    "Dieses Gerät ist nicht als Device Owner eingerichtet.\n\n" +
-                        "Auf einem frisch zurückgesetzten Gerät (ohne Google-Konto) einmalig " +
-                        "per ADB ausführen:\n\n$cmd\n\n" +
-                        "Danach kann der Kiosk-Modus hier aktiviert werden."
-                )
-                .setPositiveButton("OK", null)
-                .show()
-            return
-        }
-
-        val enabling = !KioskManager.isKioskEnabled(this)
-        KioskManager.setKioskEnabled(this, enabling)
-        if (enabling) {
-            KioskManager.applyRestrictions(this)
-            toast("Kiosk-Modus aktiviert — beim Launcher-Start aktiv")
-        } else {
-            KioskManager.stopKiosk(this)
-            toast("Kiosk-Modus deaktiviert")
-        }
-        showParentModeMenu()
+    private fun showKioskSetupDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Device Owner benötigt")
+            .setMessage("Kiosk-Modus benötigt einen einmaligen ADB-Befehl:\n\n${KioskManager.deviceOwnerSetupCommand(this)}\n\nAuf einem frisch zurückgesetzten Gerät ausführen.")
+            .setPositiveButton("OK", null).show()
     }
 
-    private fun toast(message: String) =
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun setPref(key: String, value: Boolean) {
+        getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+            .edit().putBoolean(key, value).apply()
+    }
+
+    private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

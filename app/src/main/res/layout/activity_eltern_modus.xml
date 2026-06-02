@@ -1,15 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:background="?android:attr/colorBackground">
 
-    <!-- ElternModusActivity builds its UI programmatically into this container. -->
-    <LinearLayout
-        android:id="@+id/eltern_container"
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/em_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_primary" />
 
-</ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ── Dashboard Card ── -->
+            <LinearLayout
+                android:id="@+id/em_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#1A1A2E"
+                android:padding="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/em_balance_big"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="— Min"
+                        android:textSize="36sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/em_mode_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SETUP"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:background="#FF6B35"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/em_balance_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verfügbares Zeitguthaben"
+                    android:textSize="12sp"
+                    android:textColor="#AAAAAA"
+                    android:paddingTop="2dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#33FFFFFF"
+                    android:layout_marginVertical="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/em_last_tx"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Keine Transaktionen"
+                        android:textSize="12sp"
+                        android:textColor="#AAAAAA" />
+
+                    <TextView
+                        android:id="@+id/em_enforcement_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kindermodus AUS"
+                        android:textSize="12sp"
+                        android:textColor="#AAAAAA" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ── Section: Zeit ── -->
+            <TextView style="@style/SettingsSectionLabelStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ZEITGUTHABEN" />
+
+            <LinearLayout android:id="@+id/em_row_add_time"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Zeit hinzufügen" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="+" android:textSize="24sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/em_row_transactions"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Transaktions-Verlauf" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <!-- ── Section: Apps ── -->
+            <TextView style="@style/SettingsSectionLabelStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="APPS" />
+
+            <LinearLayout android:id="@+id/em_row_apps"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Apps verwalten" />
+                    <TextView android:id="@+id/em_apps_count"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="0 Apps freigegeben"
+                        android:textSize="12sp" android:textColor="?android:attr/textColorSecondary" />
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <!-- ── Section: Inhalte ── -->
+            <TextView style="@style/SettingsSectionLabelStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="JAKES INHALTE" />
+
+            <LinearLayout android:id="@+id/em_row_zusagen"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Versprechen (Zusagen)" />
+                    <TextView android:id="@+id/em_zusagen_count"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Keine aktiven Versprechen"
+                        android:textSize="12sp" android:textColor="?android:attr/textColorSecondary" />
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/em_row_doge"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Medien-Anfragen" />
+                    <TextView android:id="@+id/em_doge_count"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Keine offenen Anfragen"
+                        android:textSize="12sp" android:textColor="?android:attr/textColorSecondary" />
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <!-- ── Section: Modus ── -->
+            <TextView style="@style/SettingsSectionLabelStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="KINDERMODUS" />
+
+            <RelativeLayout android:id="@+id/em_row_kindermodus"
+                style="@style/SettingsHolderSwitchStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background">
+                <org.fossify.commons.views.MyMaterialSwitch
+                    android:id="@+id/em_kindermodus_switch"
+                    style="@style/SettingsSwitchStyle"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Whitelist + Zeitlimit aktiv" />
+            </RelativeLayout>
+
+            <LinearLayout android:id="@+id/em_row_cooldown_rules"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Ruhezeiten konfigurieren" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <!-- ── Section: Sicherheit ── -->
+            <TextView style="@style/SettingsSectionLabelStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="SICHERHEIT" />
+
+            <LinearLayout android:id="@+id/em_row_usage"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Nutzungszugriff (Zeitmessung)" />
+                    <TextView android:id="@+id/em_usage_status"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Nicht erteilt"
+                        android:textSize="12sp" android:textColor="?android:attr/textColorSecondary" />
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <RelativeLayout android:id="@+id/em_row_kiosk"
+                style="@style/SettingsHolderSwitchStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background">
+                <org.fossify.commons.views.MyMaterialSwitch
+                    android:id="@+id/em_kiosk_switch"
+                    style="@style/SettingsSwitchStyle"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Kiosk-Modus (Gerätesperre)" />
+            </RelativeLayout>
+
+            <!-- ── Section: Erweitert ── -->
+            <TextView style="@style/SettingsSectionLabelStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="ERWEITERT" />
+
+            <LinearLayout android:id="@+id/em_row_qr"
+                style="@style/SettingsHolderTextViewOneLinerStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/ripple_background" android:orientation="horizontal"
+                android:gravity="center_vertical" android:paddingEnd="16dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <org.fossify.commons.views.MyTextView style="@style/SettingsTextLabelStyle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Eltern-App koppeln (QR)" />
+                    <TextView android:id="@+id/em_pair_status"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Nicht gekoppelt"
+                        android:textSize="12sp" android:textColor="?android:attr/textColorSecondary" />
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="›" android:textSize="22sp" android:textColor="?colorPrimary" />
+            </LinearLayout>
+
+            <android.view.View
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

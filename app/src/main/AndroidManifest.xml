@@ -101,6 +101,13 @@
             android:label="@string/hidden_icons"
             android:parentActivityName=".activities.SettingsActivity" />
 
+        <!-- LAUNCHPAD: App whitelist management -->
+        <activity
+            android:name=".activities.AppsManagementActivity"
+            android:exported="false"
+            android:label="Apps verwalten"
+            android:parentActivityName=".activities.ElternModusActivity" />
+
         <!-- LAUNCHPAD Setup wizard (first run) -->
         <activity
             android:name=".activities.SetupActivity"
