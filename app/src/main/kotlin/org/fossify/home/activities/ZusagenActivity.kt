@@ -1,226 +1,239 @@
-// File: app/src/main/java/org/fossify/home/activities/ZusagenActivity.kt
-// M2: Zusagen (promises) UI for parents and child
+// File: app/src/main/kotlin/org/fossify/home/activities/ZusagenActivity.kt
+// M2: Zusagen (promises) UI for parents and child — wired to Room via ZusageDao + mappers.
 
 package org.fossify.home.activities
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.fossify.home.databases.AppsDatabase
+import org.fossify.home.helpers.toEntity
+import org.fossify.home.helpers.toModel
+import org.fossify.home.models.Zusage
 import org.fossify.home.models.ZusageManager
-import org.fossify.home.databases.Zusage as RoomZusage
 
-/**
- * ZusagenActivity: Manage family promises.
- *
- * Parent view:
- * - Create new zusage
- * - Review pending zusagen (awaiting 24h auto-approval)
- * - Approve or reject zusagen
- * - View fulfilled zusagen
- *
- * Child view:
- * - See active zusagen (promises to look forward to)
- * - See fulfilled zusagen (what was kept)
- * - No editing (read-only for child)
- */
 class ZusagenActivity : AppCompatActivity() {
     private val tag = "ZusagenActivity"
 
     private lateinit var database: AppsDatabase
-    private lateinit var manager: ZusageManager
+    private val manager = ZusageManager()
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var isParentMode = false
+
+    private lateinit var content: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(android.R.layout.simple_list_item_1) // Placeholder
 
         database = AppsDatabase.getInstance(this)
-        manager = ZusageManager()
         isParentMode = intent.getBooleanExtra("isParentMode", false)
 
-        if (isParentMode) {
-            showParentView()
-        } else {
-            showChildView()
+        content = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(32, 32, 32, 32)
         }
+        setContentView(ScrollView(this).apply { addView(content) })
+
+        if (isParentMode) showParentView() else showChildView()
     }
 
-    /**
-     * Parent view: Create, review, approve, reject zusagen.
-     */
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
+
+    private fun label(text: String, size: Float = 16f, topPad: Int = 24) = TextView(this).apply {
+        this.text = text
+        textSize = size
+        setPadding(0, topPad, 0, 8)
+    }
+
+    // ─── Parent view ────────────────────────────────────────────────────────────────
+
     private fun showParentView() {
-        Log.d(tag, "Showing parent zusagen view")
+        content.removeAllViews()
+        content.addView(label("Zusagen verwalten", size = 20f, topPad = 0))
 
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(16, 16, 16, 16)
-        }
-
-        // Title
-        container.addView(TextView(this).apply {
-            text = "Zusagen verwalten"
-            textSize = 20f
-            setPadding(0, 0, 0, 16)
-        })
-
-        // Create new zusage section
-        container.addView(TextView(this).apply {
-            text = "Neue Zusage"
-            textSize = 16f
-            isEnabled = false
-            setPadding(0, 16, 0, 8)
-        })
-
-        // Zusage text input
-        val zusageInput = EditText(this).apply {
+        content.addView(label("Neue Zusage"))
+        val textInput = EditText(this).apply {
             hint = "z.B. 'Nach Hausaufgaben, dann 20 Min Minecraft'"
-            setPadding(8, 8, 8, 8)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+            inputType = InputType.TYPE_CLASS_TEXT
         }
-        container.addView(zusageInput)
-
-        // Condition input (optional)
         val conditionInput = EditText(this).apply {
             hint = "Bedingung (optional): z.B. 'Hausaufgaben fertig'"
-            setPadding(8, 8, 8, 8)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+            inputType = InputType.TYPE_CLASS_TEXT
         }
-        container.addView(conditionInput)
+        content.addView(textInput)
+        content.addView(conditionInput)
 
-        // Create button
-        container.addView(Button(this).apply {
+        content.addView(Button(this).apply {
             text = "Zusage erstellen"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 8, 0, 16) }
+            layoutParams = matchWidth()
             setOnClickListener {
-                val text = zusageInput.text.toString()
-                val condition = conditionInput.text.toString().takeIf { it.isNotEmpty() }
-
-                if (text.isEmpty()) {
-                    showMessage("Zusage text erforderlich")
+                val text = textInput.text.toString()
+                if (text.isBlank()) {
+                    toast("Zusage-Text erforderlich")
                     return@setOnClickListener
                 }
-
-                // Create zusage (would be saved to Room)
-                val zusage = manager.createZusage(text, "Parent", condition)
-                Log.d(tag, "Created zusage: ${zusage.id}")
-                showMessage("Zusage erstellt: Auto-Genehmigung in 24h")
-                zusageInput.text.clear()
-                conditionInput.text.clear()
-                refreshZusagenList(container)
+                val condition = conditionInput.text.toString().ifBlank { null }
+                createZusage(text, condition) {
+                    textInput.text.clear()
+                    conditionInput.text.clear()
+                }
             }
         })
 
-        // Pending zusagen section
-        container.addView(TextView(this).apply {
-            text = "Wartende Genehmigungen (24h Auto-Genehmigung)"
-            textSize = 16f
-            isEnabled = false
-            setPadding(0, 16, 0, 8)
-        })
+        content.addView(label("Wartende Genehmigungen (24h Auto-Genehmigung)"))
+        val pending = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        content.addView(pending)
 
-        val pendingContainer = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-        container.addView(pendingContainer)
-
-        // Refresh button
-        container.addView(Button(this).apply {
-            text = "Aktualisieren"
-            setOnClickListener { refreshZusagenList(container) }
-        })
-
-        setContentView(container)
+        refreshPending(pending)
     }
 
-    /**
-     * Child view: See active and fulfilled zusagen.
-     * Read-only.
-     */
+    private fun createZusage(text: String, condition: String?, onDone: () -> Unit) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                val zusage = manager.createZusage(text, "Eltern", condition)
+                database.zusageDao().insertZusage(zusage.toEntity())
+            }
+            toast("Zusage erstellt — Auto-Genehmigung in 24h")
+            onDone()
+            // Rebuild parent view so the pending list refreshes.
+            showParentView()
+        }
+    }
+
+    private fun refreshPending(target: LinearLayout) {
+        scope.launch {
+            val pending = withContext(Dispatchers.IO) {
+                val all = database.zusageDao().getAllZusagen().map { it.toModel() }
+                manager.getPendingZusagen(all)
+            }
+            target.removeAllViews()
+            if (pending.isEmpty()) {
+                target.addView(label("(Keine wartenden Zusagen)", size = 14f, topPad = 8))
+                return@launch
+            }
+            for (z in pending) {
+                target.addView(renderPendingRow(z))
+            }
+        }
+    }
+
+    private fun renderPendingRow(z: Zusage): LinearLayout {
+        val row = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, 12, 0, 12)
+        }
+        row.addView(TextView(this).apply {
+            text = z.text + (z.condition?.let { "  (Bedingung: $it)" } ?: "")
+            textSize = 15f
+        })
+        val buttons = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        buttons.addView(Button(this).apply {
+            text = "Genehmigen"
+            setOnClickListener { decide(z, approve = true) }
+        })
+        buttons.addView(Button(this).apply {
+            text = "Ablehnen"
+            setOnClickListener { promptReject(z) }
+        })
+        row.addView(buttons)
+        return row
+    }
+
+    private fun promptReject(z: Zusage) {
+        val reasonInput = EditText(this).apply { hint = "Grund" }
+        AlertDialog.Builder(this)
+            .setTitle("Zusage ablehnen")
+            .setView(reasonInput)
+            .setPositiveButton("Ablehnen") { _, _ ->
+                decide(z, approve = false, reason = reasonInput.text.toString().ifBlank { "Abgelehnt" })
+            }
+            .setNegativeButton("Abbrechen", null)
+            .show()
+    }
+
+    private fun decide(z: Zusage, approve: Boolean, reason: String = "") {
+        scope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val updated = if (approve) {
+                        manager.approveZusage(z, "Eltern")
+                    } else {
+                        manager.rejectZusage(z, "Eltern", reason)
+                    }
+                    database.zusageDao().updateZusage(updated.toEntity())
+                }
+                toast(if (approve) "Zusage genehmigt" else "Zusage abgelehnt")
+            } catch (e: IllegalStateException) {
+                toast("Nicht möglich: ${e.message}")
+            }
+            showParentView()
+        }
+    }
+
+    // ─── Child view (read-only) ──────────────────────────────────────────────────────
+
     private fun showChildView() {
-        Log.d(tag, "Showing child zusagen view")
+        content.removeAllViews()
+        content.addView(label("Mama und Papas Zusagen", size = 20f, topPad = 0))
+        content.addView(label("Hier siehst du, was Mama und Papa dir versprechen. ✨", size = 14f))
 
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(16, 16, 16, 16)
+        content.addView(label("Das erwartet dich:"))
+        val activeHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        content.addView(activeHolder)
+
+        content.addView(label("Das hat geklappt:"))
+        val fulfilledHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        content.addView(fulfilledHolder)
+
+        scope.launch {
+            val all = withContext(Dispatchers.IO) {
+                database.zusageDao().getAllZusagen().map { it.toModel() }
+            }
+            val active = manager.getActiveZusagen(all)
+            val fulfilled = all.filter { it.status == "FULFILLED" }
+
+            if (active.isEmpty()) {
+                activeHolder.addView(label("(Noch keine aktiven Zusagen)", size = 14f, topPad = 4))
+            } else {
+                for (z in active) activeHolder.addView(TextView(this@ZusagenActivity).apply {
+                    text = "• ${z.childVisibleText}"
+                    setPadding(8, 6, 8, 6)
+                })
+            }
+
+            if (fulfilled.isEmpty()) {
+                fulfilledHolder.addView(label("(Noch nichts erfüllt)", size = 14f, topPad = 4))
+            } else {
+                for (z in fulfilled) fulfilledHolder.addView(TextView(this@ZusagenActivity).apply {
+                    text = "✓ ${z.text}"
+                    setPadding(8, 6, 8, 6)
+                })
+            }
         }
-
-        // Title
-        container.addView(TextView(this).apply {
-            text = "Mama und Papa's Zusagen"
-            textSize = 20f
-            setPadding(0, 0, 0, 16)
-        })
-
-        // Info text
-        container.addView(TextView(this).apply {
-            text = "Hier siehst du, was Mama und Papa dir versprechen. ✨"
-            textSize = 14f
-            setPadding(0, 0, 0, 16)
-        })
-
-        // Active zusagen (things to look forward to)
-        container.addView(TextView(this).apply {
-            text = "Das erwartet dich:"
-            textSize = 16f
-            isEnabled = false
-            setPadding(0, 16, 0, 8)
-        })
-
-        // Placeholder active zusagen list
-        container.addView(TextView(this).apply {
-            text = "(Keine aktiven Zusagen)\n\nWenn Mama oder Papa eine Zusage machen, erscheint sie hier."
-            textSize = 14f
-            setPadding(8, 8, 8, 8)
-        })
-
-        // Fulfilled zusagen (things that were kept)
-        container.addView(TextView(this).apply {
-            text = "Das hat geklappt:"
-            textSize = 16f
-            isEnabled = false
-            setPadding(0, 16, 0, 8)
-        })
-
-        // Placeholder fulfilled list
-        container.addView(TextView(this).apply {
-            text = "(Keine erfüllten Zusagen)\n\nWenn eine Zusage erfüllt ist, erscheint hier ein Häkchen."
-            textSize = 14f
-            setPadding(8, 8, 8, 8)
-        })
-
-        setContentView(container)
     }
 
-    /**
-     * Refresh and display zusagen list.
-     */
-    private fun refreshZusagenList(container: LinearLayout) {
-        Log.d(tag, "Refreshing zusagen list")
-        // In real implementation: Query Room database
-        // Filter based on parent/child mode
-        // Render list of zusagen with actions
-    }
+    private fun matchWidth() = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+    ).apply { setMargins(0, 8, 0, 16) }
 
-    private fun showMessage(message: String) {
-        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
-    }
+    private fun toast(message: String) =
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }

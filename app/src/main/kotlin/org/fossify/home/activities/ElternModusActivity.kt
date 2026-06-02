@@ -1,46 +1,59 @@
-// File: app/src/main/java/org/fossify/home/activities/ElternModusActivity.kt
-// M1: Parent Mode menu and controls
+// File: app/src/main/kotlin/org/fossify/home/activities/ElternModusActivity.kt
+// M1/M2: Parent Mode menu and controls (wired to Room).
 
 package org.fossify.home.activities
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ResolveInfo
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
-import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.fossify.home.R
+import org.fossify.home.databases.AllowedApp
 import org.fossify.home.databases.AppsDatabase
-import org.fossify.home.helpers.PinGateHelper
+import org.fossify.home.databases.CryptoCashTransaction
+import org.fossify.home.helpers.CooldownRulesConfig
+import org.fossify.home.helpers.CooldownRulesValidator
 import org.fossify.home.helpers.LaunchpadConstants
+import org.fossify.home.helpers.LaunchpadPrefs
+import org.fossify.home.helpers.PinGateHelper
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * ElternModusActivity: Parent control center.
  *
- * M1 Features:
- * - PIN setup/verification
- * - Mode toggle (KID ↔ PARENT)
- * - Basic time adjustment (manual Krypto-Cash top-up)
- * - View current balance
- * - App whitelist management (enable/disable apps)
- * - View recent transactions (audit trail)
- *
- * Future (M2+):
- * - Zusagen management
- * - Doge-Coin approvals
- * - QR pairing setup
- * - Detailed analytics
+ * Wired in this pass:
+ * - Live Krypto-Cash balance (CryptoCashDao)
+ * - Time top-up writing an EARN transaction with a correct balanceAfter snapshot
+ * - App whitelist management (allowed_apps)
+ * - Transaction history (ledger audit trail)
+ * - Cool-down rules JSON import + validation (persisted to prefs)
  */
 class ElternModusActivity : AppCompatActivity() {
     private val tag = "ElternModusActivity"
 
     private lateinit var database: AppsDatabase
     private lateinit var pinGate: PinGateHelper
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    private var isPinSetup = false
-    private var isParentModeVerified = false
+    private var balanceView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,256 +62,311 @@ class ElternModusActivity : AppCompatActivity() {
         database = AppsDatabase.getInstance(this)
         pinGate = PinGateHelper(this)
 
-        isPinSetup = pinGate.isPinConfigured()
-        isParentModeVerified = false
-
-        if (!isPinSetup) {
+        if (!pinGate.isPinConfigured()) {
             showPinSetupFlow()
+        } else if (pinGate.isParentModeActive()) {
+            showParentModeMenu()
         } else {
             showPinVerificationFlow()
         }
     }
 
-    /**
-     * First-time PIN setup for parent.
-     */
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
+
+    private fun container(): LinearLayout = findViewById(R.id.eltern_container)
+
+    private fun heading(text: String, size: Float = 20f) = TextView(this).apply {
+        this.text = text
+        textSize = size
+        setPadding(0, 24, 0, 16)
+    }
+
+    private fun fullWidthButton(label: String, onClick: () -> Unit) = Button(this).apply {
+        text = label
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { setMargins(0, 8, 0, 8) }
+        setOnClickListener { onClick() }
+    }
+
+    // ─── PIN flows ──────────────────────────────────────────────────────────────
+
     private fun showPinSetupFlow() {
-        Log.d(tag, "Starting PIN setup flow")
+        val c = container()
+        c.removeAllViews()
+        c.addView(heading("Eltern-PIN einrichten"))
 
-        val container = findViewById<LinearLayout>(R.id.eltern_container)
-        container.removeAllViews()
-
-        // Title
-        val title = TextView(this).apply {
-            text = "Eltern-PIN einrichten"
-            textSize = 20f
-            setPadding(16, 16, 16, 0)
-        }
-        container.addView(title)
-
-        // PIN input
-        val pinInput = EditText(this).apply {
+        val pin1 = EditText(this).apply {
             hint = "4-stellige PIN"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER
-            setPadding(16, 16, 16, 16)
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         }
-        container.addView(pinInput)
-
-        // Confirm input
-        val confirmInput = EditText(this).apply {
+        val pin2 = EditText(this).apply {
             hint = "PIN wiederholen"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER
-            setPadding(16, 16, 16, 16)
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         }
-        container.addView(confirmInput)
-
-        // Setup button
-        val setupButton = Button(this).apply {
-            text = "PIN speichern"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 0, 16, 16) }
-            setOnClickListener {
-                val pin1 = pinInput.text.toString()
-                val pin2 = confirmInput.text.toString()
-
-                when {
-                    pin1.isEmpty() || pin2.isEmpty() -> {
-                        showMessage("PIN erforderlich")
-                    }
-                    pin1 != pin2 -> {
-                        showMessage("PINs stimmen nicht überein")
-                    }
-                    pin1.length < 4 -> {
-                        showMessage("PIN muss mindestens 4 Ziffern haben")
-                    }
-                    else -> {
-                        if (pinGate.setPinCode(pin1)) {
-                            isPinSetup = true
-                            pinGate.activateParentMode()
-                            showParentModeMenu()
-                        } else {
-                            showMessage("Fehler beim Speichern der PIN")
-                        }
-                    }
-                }
-            }
-        }
-        container.addView(setupButton)
-    }
-
-    /**
-     * PIN verification (existing PIN).
-     */
-    private fun showPinVerificationFlow() {
-        Log.d(tag, "Starting PIN verification flow")
-
-        val container = findViewById<LinearLayout>(R.id.eltern_container)
-        container.removeAllViews()
-
-        val title = TextView(this).apply {
-            text = "Eltern-PIN"
-            textSize = 20f
-            setPadding(16, 16, 16, 0)
-        }
-        container.addView(title)
-
-        val pinInput = EditText(this).apply {
-            hint = "PIN eingeben"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD
-            setPadding(16, 16, 16, 16)
-        }
-        container.addView(pinInput)
-
-        val verifyButton = Button(this).apply {
-            text = "Verifizieren"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 0, 16, 16) }
-            setOnClickListener {
-                val pin = pinInput.text.toString()
-                if (pinGate.verifyPin(pin)) {
-                    isParentModeVerified = true
-                    pinGate.activateParentMode(durationMinutes = 30)
+        c.addView(pin1)
+        c.addView(pin2)
+        c.addView(fullWidthButton("PIN speichern") {
+            val a = pin1.text.toString()
+            val b = pin2.text.toString()
+            when {
+                a.length < 4 -> toast("PIN muss mindestens 4 Ziffern haben")
+                a != b -> toast("PINs stimmen nicht überein")
+                pinGate.setPinCode(a) -> {
+                    pinGate.activateParentMode()
                     showParentModeMenu()
+                }
+                else -> toast("Fehler beim Speichern der PIN")
+            }
+        })
+    }
+
+    private fun showPinVerificationFlow() {
+        val c = container()
+        c.removeAllViews()
+        c.addView(heading("Eltern-PIN"))
+
+        val pin = EditText(this).apply {
+            hint = "PIN eingeben"
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        }
+        c.addView(pin)
+        c.addView(fullWidthButton("Verifizieren") {
+            if (pinGate.verifyPin(pin.text.toString())) {
+                pinGate.activateParentMode(durationMinutes = 30)
+                showParentModeMenu()
+            } else {
+                toast("PIN falsch")
+                pin.text.clear()
+            }
+        })
+    }
+
+    // ─── Main menu ────────────────────────────────────────────────────────────────
+
+    private fun showParentModeMenu() {
+        val c = container()
+        c.removeAllViews()
+        c.addView(heading("Eltern-Modus"))
+
+        balanceView = TextView(this).apply {
+            textSize = 16f
+            setPadding(0, 8, 0, 16)
+            text = "Verfügbare Zeit: …"
+        }
+        c.addView(balanceView)
+        refreshBalance()
+
+        c.addView(fullWidthButton("+ Zeit hinzufügen") { showAdjustTimeDialog() })
+        c.addView(fullWidthButton("Apps verwalten") { showAppManagementScreen() })
+        c.addView(fullWidthButton("Transaktionen anzeigen") { showTransactionHistory() })
+        c.addView(fullWidthButton("Versprechen (Zusagen)") {
+            startActivity(
+                Intent(this, ZusagenActivity::class.java).putExtra("isParentMode", true)
+            )
+        })
+        c.addView(fullWidthButton("Ruhezeiten konfigurieren") { showCooldownConfig() })
+        c.addView(fullWidthButton("Eltern-Modus beenden") {
+            pinGate.deactivateParentMode()
+            finish()
+        })
+    }
+
+    private fun refreshBalance() {
+        scope.launch {
+            val balance = withContext(Dispatchers.IO) { database.cryptoCashDao().getCurrentBalance() }
+            balanceView?.text = "Verfügbare Zeit: $balance Minuten"
+        }
+    }
+
+    // ─── Time adjustment (EARN transaction) ─────────────────────────────────────────
+
+    private fun showAdjustTimeDialog() {
+        val minutesInput = EditText(this).apply {
+            hint = "Minuten (z.B. 10)"
+            inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        val reasonInput = EditText(this).apply {
+            hint = "Grund (z.B. Hausaufgaben)"
+            inputType = InputType.TYPE_CLASS_TEXT
+        }
+        val box = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 24, 48, 0)
+            addView(minutesInput)
+            addView(reasonInput)
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Zeit hinzufügen")
+            .setView(box)
+            .setPositiveButton("Hinzufügen") { _, _ ->
+                val minutes = minutesInput.text.toString().toIntOrNull()
+                val reason = reasonInput.text.toString().ifBlank { "Manuelle Anpassung" }
+                if (minutes == null || minutes <= 0) {
+                    toast("Bitte gültige Minutenzahl eingeben")
+                    return@setPositiveButton
+                }
+                addEarnTransaction(minutes, reason)
+            }
+            .setNegativeButton("Abbrechen", null)
+            .show()
+    }
+
+    private fun addEarnTransaction(minutes: Int, reason: String) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                val current = database.cryptoCashDao().getCurrentBalance()
+                database.cryptoCashDao().insertTransaction(
+                    CryptoCashTransaction(
+                        deltaMinutes = minutes,
+                        type = LaunchpadConstants.TX_TYPE_EARN,
+                        actor = "parent",
+                        reasonType = "manual_adjustment",
+                        reasonText = reason,
+                        childVisibleText = "$reason +$minutes Min",
+                        source = "parent_app",
+                        balanceAfter = current + minutes // maintain No-Regression running sum
+                    )
+                )
+            }
+            toast("+$minutes Minuten hinzugefügt")
+            refreshBalance()
+        }
+    }
+
+    // ─── App whitelist management ─────────────────────────────────────────────────
+
+    private fun showAppManagementScreen() {
+        val c = container()
+        c.removeAllViews()
+        c.addView(heading("Apps verwalten"))
+        c.addView(TextView(this).apply {
+            text = "Aktivierte Apps erscheinen auf Jakes Startbildschirm."
+            setPadding(0, 0, 0, 16)
+        })
+        c.addView(fullWidthButton("← Zurück") { showParentModeMenu() })
+
+        val listHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        c.addView(listHolder)
+
+        scope.launch {
+            val (apps, enabledPkgs) = withContext(Dispatchers.IO) {
+                val pm = packageManager
+                val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                val resolved: List<ResolveInfo> = pm.queryIntentActivities(intent, 0)
+                val seen = LinkedHashMap<String, String>()
+                for (ri in resolved) {
+                    val pkg = ri.activityInfo.packageName
+                    if (pkg == packageName) continue
+                    if (!seen.containsKey(pkg)) seen[pkg] = ri.loadLabel(pm).toString()
+                }
+                val enabled = database.allowedAppDao().getAll().map { it.packageName }.toSet()
+                seen.entries.sortedBy { it.value.lowercase() } to enabled
+            }
+
+            for (entry in apps) {
+                val pkg = entry.key
+                val label = entry.value
+                val row = CheckBox(this@ElternModusActivity).apply {
+                    text = label
+                    isChecked = enabledPkgs.contains(pkg)
+                    setPadding(8, 12, 8, 12)
+                    setOnCheckedChangeListener { _, checked -> toggleApp(pkg, checked) }
+                }
+                listHolder.addView(row)
+            }
+            if (apps.isEmpty()) {
+                listHolder.addView(TextView(this@ElternModusActivity).apply {
+                    text = "Keine startbaren Apps gefunden."
+                })
+            }
+        }
+    }
+
+    private fun toggleApp(pkg: String, enable: Boolean) {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                if (enable) {
+                    database.allowedAppDao().insertApp(
+                        AllowedApp(packageName = pkg, category = LaunchpadConstants.CATEGORY_NEUTRAL)
+                    )
                 } else {
-                    showMessage("PIN falsch")
-                    pinInput.text.clear()
+                    database.allowedAppDao().deleteApp(pkg)
                 }
             }
         }
-        container.addView(verifyButton)
     }
 
-    /**
-     * Main parent mode menu.
-     */
-    private fun showParentModeMenu() {
-        Log.d(tag, "Showing parent mode menu")
+    // ─── Transaction history ────────────────────────────────────────────────────────
 
-        val container = findViewById<LinearLayout>(R.id.eltern_container)
-        container.removeAllViews()
+    private fun showTransactionHistory() {
+        val c = container()
+        c.removeAllViews()
+        c.addView(heading("Transaktions-Verlauf"))
+        c.addView(fullWidthButton("← Zurück") { showParentModeMenu() })
 
-        val title = TextView(this).apply {
-            text = "Eltern-Modus"
-            textSize = 20f
-            setPadding(16, 16, 16, 16)
-        }
-        container.addView(title)
+        val listHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        c.addView(listHolder)
 
-        // Show current balance
-        showCurrentBalance(container)
-
-        // Menu buttons
-        val adjustTimeButton = Button(this).apply {
-            text = "+ Zeit hinzufügen"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 8, 16, 8) }
-            setOnClickListener { showAdjustTimeDialog() }
-        }
-        container.addView(adjustTimeButton)
-
-        val manageAppsButton = Button(this).apply {
-            text = "Apps verwalten"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 8, 16, 8) }
-            setOnClickListener { showAppManagementScreen() }
-        }
-        container.addView(manageAppsButton)
-
-        val transactionsButton = Button(this).apply {
-            text = "Transaktionen anzeigen"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 8, 16, 8) }
-            setOnClickListener { showTransactionHistory() }
-        }
-        container.addView(transactionsButton)
-
-        val cooldownButton = Button(this).apply {
-            text = "Ruhezeiten konfigurieren"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 8, 16, 8) }
-            setOnClickListener { showCooldownConfig() }
-        }
-        container.addView(cooldownButton)
-
-        val exitButton = Button(this).apply {
-            text = "Beenden"
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(16, 8, 16, 8) }
-            setOnClickListener {
-                pinGate.deactivateParentMode()
-                finish()
+        scope.launch {
+            val txs = withContext(Dispatchers.IO) {
+                database.cryptoCashDao().getAllTransactions().reversed()
+            }
+            val fmt = SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+            if (txs.isEmpty()) {
+                listHolder.addView(TextView(this@ElternModusActivity).apply {
+                    text = "Noch keine Transaktionen."
+                    setPadding(0, 8, 0, 8)
+                })
+            }
+            for (tx in txs) {
+                val sign = if (tx.deltaMinutes >= 0) "+" else ""
+                listHolder.addView(TextView(this@ElternModusActivity).apply {
+                    text = "${fmt.format(Date(tx.createdAt))}  •  $sign${tx.deltaMinutes} Min  •  " +
+                        "${tx.reasonText} (${tx.actor})"
+                    setPadding(0, 8, 0, 8)
+                })
             }
         }
-        container.addView(exitButton)
     }
 
-    /**
-     * Show current Krypto-Cash balance.
-     */
-    private fun showCurrentBalance(container: LinearLayout) {
-        // TODO: Query database for latest balance
-        val balanceText = TextView(this).apply {
-            text = "Verfügbare Zeit: 45 Minuten"
-            textSize = 16f
+    // ─── Cool-down rules JSON config ─────────────────────────────────────────────────
+
+    private fun showCooldownConfig() {
+        val c = container()
+        c.removeAllViews()
+        c.addView(heading("Ruhezeiten (JSON)"))
+        c.addView(fullWidthButton("← Zurück") { showParentModeMenu() })
+
+        val prefs = getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+        val existing = prefs.getString(LaunchpadPrefs.PREF_COOLDOWN_RULES_JSON, null)
+            ?: CooldownRulesConfig.defaultJson()
+
+        val jsonInput = EditText(this).apply {
+            setText(existing)
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+            minLines = 6
             setPadding(16, 16, 16, 16)
         }
-        container.addView(balanceText)
+        c.addView(jsonInput)
+
+        c.addView(fullWidthButton("Speichern") {
+            val json = jsonInput.text.toString()
+            val result = CooldownRulesValidator().validate(json)
+            if (result.isValid) {
+                prefs.edit().putString(LaunchpadPrefs.PREF_COOLDOWN_RULES_JSON, json).apply()
+                toast("Ruhezeiten gespeichert")
+            } else {
+                toast("Ungültig: ${result.error}")
+            }
+        })
     }
 
-    /**
-     * Adjust time (add Krypto-Cash).
-     */
-    private fun showAdjustTimeDialog() {
-        Log.d(tag, "Showing time adjustment dialog")
-        // TODO: Implement dialog for +5, +10, +15, +30 minutes
-        // Requires reason entry (homework, chore, etc)
-        // Creates EARN transaction
-    }
-
-    /**
-     * Manage app whitelist.
-     */
-    private fun showAppManagementScreen() {
-        Log.d(tag, "Showing app management screen")
-        // TODO: List all installed apps with toggle for enabled/disabled
-        // Modifies allowed_apps table
-    }
-
-    /**
-     * Show transaction audit trail.
-     */
-    private fun showTransactionHistory() {
-        Log.d(tag, "Showing transaction history")
-        // TODO: Query crypto_cash_tx table and display in reverse chronological order
-        // Shows: Date, Reason, +/- Minutes, Actor
-    }
-
-    /**
-     * Configure cool-down rules (JSON import).
-     */
-    private fun showCooldownConfig() {
-        Log.d(tag, "Showing cool-down configuration")
-        // TODO: Show cool-down duration setting (default 15 min)
-        // Show rules JSON import field
-        // Allows importing rules like:
-        // { "duration": 15, "startTime": "18:00", "allowedApps": ["audiobook_app", "drawing_app"] }
-    }
-
-    private fun showMessage(message: String) {
-        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
-    }
+    private fun toast(message: String) =
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
