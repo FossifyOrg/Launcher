@@ -21,6 +21,9 @@ interface AllowedAppDao {
     @Query("SELECT * FROM allowed_apps WHERE is_enabled = 1")
     suspend fun getAllEnabledApps(): List<AllowedApp>
 
+    @Query("SELECT * FROM allowed_apps")
+    suspend fun getAll(): List<AllowedApp>
+
     @Query("SELECT EXISTS(SELECT 1 FROM allowed_apps WHERE package_name = :pkg AND is_enabled = 1)")
     suspend fun isAppAllowed(pkg: String): Boolean
 
@@ -37,7 +40,7 @@ interface AllowedAppDao {
     suspend fun updateApp(app: AllowedApp)
 
     @Query("UPDATE allowed_apps SET is_enabled = :enabled WHERE package_name = :pkg")
-    suspend fun setEnabled(pkg: String, enabled: Boolean)
+    suspend fun setEnabled(pkg: String, enabled: Int)
 
     @Query("DELETE FROM allowed_apps WHERE package_name = :pkg")
     suspend fun deleteApp(pkg: String)
@@ -53,8 +56,14 @@ interface CryptoCashDao {
     @Query("SELECT * FROM crypto_cash_transactions WHERE week_number = :week AND year = :year AND is_deleted = 0")
     suspend fun getTransactionsForWeek(week: Int, year: Int): List<CryptoCashTransaction>
 
-    @Query("SELECT balance_after FROM crypto_cash_transactions WHERE is_deleted = 0 ORDER BY created_at DESC LIMIT 1")
-    suspend fun getCurrentBalance(): Int?
+    @Query("SELECT * FROM crypto_cash_transactions WHERE is_deleted = 0 ORDER BY created_at DESC LIMIT 1")
+    suspend fun getLastTransaction(): CryptoCashTransaction?
+
+    @Query("SELECT * FROM crypto_cash_transactions WHERE is_deleted = 0 ORDER BY created_at DESC LIMIT 1")
+    suspend fun getLatestBalance(): CryptoCashTransaction?
+
+    @Query("SELECT COALESCE((SELECT balance_after FROM crypto_cash_transactions WHERE is_deleted = 0 ORDER BY created_at DESC LIMIT 1), 0)")
+    suspend fun getCurrentBalance(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(tx: CryptoCashTransaction)
@@ -77,7 +86,7 @@ interface ParentCommandDao {
     suspend fun markExecuted(id: String, at: Long)
 }
 
-// ─── Explore DAOs ─────────────────────────────────────────────────────────────
+// ─── Explore DAO ──────────────────────────────────────────────────────────────
 
 @Dao
 interface ExploreDao {
@@ -145,8 +154,8 @@ interface DogeRequestDao {
     @Query("SELECT * FROM doge_requests WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): DogeRequest?
 
-    @Query("SELECT content_type, COUNT(*) as cnt FROM doge_requests GROUP BY content_type ORDER BY cnt DESC")
-    suspend fun getPatternSummary(): List<ContentTypeCount>
+    @Query("SELECT content_type, COUNT(*) as cnt FROM doge_requests GROUP BY content_type ORDER BY cnt DESC LIMIT 10")
+    suspend fun getContentTypeStats(): List<ContentTypeCount>
 
     data class ContentTypeCount(val content_type: String, val cnt: Int)
 }

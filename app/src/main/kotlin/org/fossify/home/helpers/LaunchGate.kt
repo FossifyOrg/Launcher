@@ -10,7 +10,6 @@ import org.fossify.home.models.TimeBudget
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.helpers.LaunchpadPrefs
-import com.intellij.openapi.util.text.HtmlBuilder
 
 /**
  * LaunchGate: Central enforcement point for all app launches.

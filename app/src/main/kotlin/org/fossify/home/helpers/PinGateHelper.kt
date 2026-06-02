@@ -6,7 +6,6 @@ package org.fossify.home.helpers
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.intellij.openapi.util.text.HtmlBuilder
 import org.fossify.commons.helpers.BaseConfig
 import org.fossify.commons.helpers.SecurityUtils
 
