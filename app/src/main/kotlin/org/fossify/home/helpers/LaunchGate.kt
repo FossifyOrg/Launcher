@@ -1,23 +1,21 @@
-// File: app/src/main/java/org/fossify/home/extensions/Activity.kt (MODIFIED)
-// M1: Launch gate enforcement at app launch point
+// File: app/src/main/kotlin/org/fossify/home/helpers/LaunchGate.kt
+// M1/M2: Launch gate + time-budget manager.
+//
+// NOTE (LAUNCHPAD audit fix): cool-down state is now derived from an explicit
+// `cooldownUntil` timestamp in prefs, NOT from "is the last transaction a SPEND". The old
+// heuristic flagged cool-down after EVERY spend, which would have blocked all launches the
+// moment real per-minute usage tracking started writing SPEND rows.
 
 package org.fossify.home.helpers
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import org.fossify.home.models.TimeBudget
 import org.fossify.home.databases.AppsDatabase
-import org.fossify.home.helpers.LaunchpadConstants
-import org.fossify.home.helpers.LaunchpadPrefs
+import org.fossify.home.databases.CryptoCashTransaction
+import org.fossify.home.models.TimeBudget
 
 /**
  * LaunchGate: Central enforcement point for all app launches.
- * Checks:
- * 1. Whitelist (is app allowed?)
- * 2. Time budget (do we have time left?)
- * 3. Cool-down state (are we in cool-down?)
- * 4. Age restrictions (for future use)
  */
 class LaunchGate(
     private val context: Context,
@@ -27,82 +25,63 @@ class LaunchGate(
 
     data class LaunchDecision(
         val allowed: Boolean,
-        val reason: String?, // Why denied (if denied)
-        val childVisibleMessage: String? // What to show Jake (friendly message)
+        val reason: String?,
+        val childVisibleMessage: String?
     )
 
-    /**
-     * Main launch gate: called before ANY app launch.
-     * Returns decision with reason if denied.
-     */
     suspend fun canLaunch(
         packageName: String,
         timeBudget: TimeBudget
     ): LaunchDecision {
-        Log.d(tag, "Launch gate check for: $packageName")
-
         // Check 1: Whitelist
-        val allowed = database.allowedAppDao().isAppAllowed(packageName)
-        if (!allowed) {
-            return LaunchDecision(
-                allowed = false,
-                reason = "App not in whitelist",
-                childVisibleMessage = "Diese App ist nicht erlaubt."
-            )
+        if (!database.allowedAppDao().isAppAllowed(packageName)) {
+            return LaunchDecision(false, "App not in whitelist", "Diese App ist nicht erlaubt.")
         }
 
-        // Check 2: Cool-down
+        val category = database.allowedAppDao().getAppCategory(packageName)
+        val isCooldownApp = category == LaunchpadConstants.CATEGORY_COOLDOWN
+
+        // Cool-down apps (audiobooks, drawing, LEGO) are always allowed — they are the
+        // restorative activities offered DURING cool-down and don't consume budget.
+        if (isCooldownApp) {
+            return LaunchDecision(true, null, null)
+        }
+
+        // Check 2: Cool-down phase
         if (timeBudget.inCooldown) {
             val minutesRemaining = timeBudget.minutesUntilCooldownExpires() ?: 0
             return LaunchDecision(
-                allowed = false,
-                reason = "In cool-down phase ($minutesRemaining min remaining)",
-                childVisibleMessage = "Bildschirmpause! Noch ${minutesRemaining} Minuten. Audiobook, Zeichnen oder LEGO?"
+                false,
+                "In cool-down phase ($minutesRemaining min remaining)",
+                "Bildschirmpause! Noch $minutesRemaining Minuten. Audiobook, Zeichnen oder LEGO?"
             )
         }
 
         // Check 3: Time budget
         if (timeBudget.balanceMinutes <= 0) {
             return LaunchDecision(
-                allowed = false,
-                reason = "Time budget exhausted",
-                childVisibleMessage = "Keine Zeit mehr heute. Komm morgen wieder!"
+                false,
+                "Time budget exhausted",
+                "Keine Zeit mehr. Erst wieder Zeit verdienen!"
             )
         }
 
-        // Check 4: Category restrictions (future: can add per-app daily caps)
-        val appCategory = database.allowedAppDao().getAppCategory(packageName)
-        if (appCategory == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE && timeBudget.balanceMinutes < 5) {
+        // Check 4: Minimum threshold for high-stimulation apps
+        if (category == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE && timeBudget.balanceMinutes < 5) {
             return LaunchDecision(
-                allowed = false,
-                reason = "Insufficient time for high-stimulation app (minimum 5 min)",
-                childVisibleMessage = "Nur noch ${timeBudget.balanceMinutes} Minuten. Etwas Ruhigeres starten?"
+                false,
+                "Insufficient time for high-stimulation app (minimum 5 min)",
+                "Nur noch ${timeBudget.balanceMinutes} Minuten. Etwas Ruhigeres starten?"
             )
         }
 
-        // All checks passed
-        Log.d(tag, "Launch approved: $packageName (${timeBudget.balanceMinutes} min available)")
-        return LaunchDecision(
-            allowed = true,
-            reason = null,
-            childVisibleMessage = null
-        )
-    }
-
-    /**
-     * Called when app launch is DENIED by gate.
-     * Shows child-friendly message.
-     */
-    fun showDenialDialog(decision: LaunchDecision) {
-        // This would integrate with MainActivity to show a dialog
-        Log.w(tag, "Launch denied: ${decision.reason}")
-        // Dialog would show decision.childVisibleMessage
+        Log.d(tag, "Launch approved: $packageName (${timeBudget.balanceMinutes} min)")
+        return LaunchDecision(true, null, null)
     }
 }
 
 /**
- * TimeBudgetManager: Tracks current session time, expiration, cool-down state.
- * Synced from Room database.
+ * TimeBudgetManager: reads/writes the screen-time budget and cool-down window.
  */
 class TimeBudgetManager(
     private val context: Context,
@@ -110,59 +89,62 @@ class TimeBudgetManager(
 ) {
     private val tag = "TimeBudgetManager"
 
+    private fun prefs() =
+        context.getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+
     suspend fun getCurrentBudget(): TimeBudget {
-        val ledger = database.cryptoCashDao().getLatestBalance()
+        val balance = database.cryptoCashDao().getCurrentBalance()
         val lastTx = database.cryptoCashDao().getLastTransaction()
-        val cooldownState = getCooldownState(lastTx)
+        val cooldownUntil = prefs().getLong(LaunchpadPrefs.PREF_COOLDOWN_UNTIL, 0L)
+        val now = System.currentTimeMillis()
+        val inCooldown = now < cooldownUntil
 
         return TimeBudget(
-            balanceMinutes = ledger?.balanceAfter ?: 0,
-            weekCapMinutes = 120,
-            dailyCapMinutes = 60,
-            cooldownDurationMinutes = 15,
-            inCooldown = cooldownState.first,
-            cooldownExpiresAt = cooldownState.second,
+            balanceMinutes = balance,
+            weekCapMinutes = LaunchpadConstants.DEFAULT_WEEK_CAP_MINUTES,
+            dailyCapMinutes = LaunchpadConstants.DEFAULT_SCHOOL_DAY_CAP_MINUTES,
+            cooldownDurationMinutes = LaunchpadConstants.DEFAULT_COOLDOWN_DURATION_MINUTES,
+            inCooldown = inCooldown,
+            cooldownExpiresAt = if (inCooldown) cooldownUntil else null,
             lastTransactionTime = lastTx?.createdAt
         )
     }
 
-    private suspend fun getCooldownState(lastTx: org.fossify.home.databases.CryptoCashTransaction?): Pair<Boolean, Long?> {
-        if (lastTx == null) return Pair(false, null)
+    /**
+     * Spend up to [minutes] of budget for [pkg]. Writes a single SPEND ledger row with a
+     * correct balanceAfter snapshot (never negative). Begins cool-down when the balance hits 0.
+     * Returns the new balance.
+     */
+    suspend fun spend(minutes: Int, pkg: String): Int {
+        var balance = database.cryptoCashDao().getCurrentBalance()
+        val toSpend = minutes.coerceAtMost(balance)
+        if (toSpend <= 0) return balance
 
-        // Cool-down activates when time expires (balance reaches 0 or SPEND brings it to 0)
-        val inCooldown = lastTx.type == "SPEND" && lastTx.deltaMinutes < 0
-        if (!inCooldown) return Pair(false, null)
-
-        val cooldownDuration = 15 * 60 * 1000 // 15 minutes
-        val expiresAt = lastTx.createdAt + cooldownDuration
-        val now = System.currentTimeMillis()
-
-        return if (now > expiresAt) {
-            Pair(false, null) // Cool-down has expired
-        } else {
-            Pair(true, expiresAt)
-        }
-    }
-
-    suspend fun recordAppLaunch(packageName: String, durationMinutes: Int) {
-        Log.d(tag, "Recording app launch: $packageName for $durationMinutes min")
-        // Creates SPEND transaction and updates balance
+        balance -= toSpend
         database.cryptoCashDao().insertTransaction(
-            org.fossify.home.databases.CryptoCashTransaction(
-                deltaMinutes = -durationMinutes,
-                type = "SPEND",
+            CryptoCashTransaction(
+                deltaMinutes = -toSpend,
+                type = LaunchpadConstants.TX_TYPE_SPEND,
                 actor = "jake",
                 reasonType = "app_usage",
-                reasonText = "Launched: $packageName",
-                childVisibleText = "App -$durationMinutes Min",
+                reasonText = "Nutzung: $pkg",
+                childVisibleText = "$pkg -$toSpend Min",
                 source = "launcher_rule",
-                balanceAfter = 0 // Will be recalculated on next read
+                balanceAfter = balance
             )
         )
+        Log.d(tag, "Spent $toSpend min on $pkg, balance=$balance")
+        if (balance <= 0) beginCooldown()
+        return balance
     }
 
-    suspend fun recordAppExit(packageName: String, actualMinutesUsed: Int) {
-        // Update transaction if app was used less than expected
-        Log.d(tag, "Recording app exit: $packageName (used $actualMinutesUsed min)")
+    /** Start a cool-down window of [durationMinutes] from now. */
+    fun beginCooldown(durationMinutes: Int = LaunchpadConstants.DEFAULT_COOLDOWN_DURATION_MINUTES) {
+        val until = System.currentTimeMillis() + durationMinutes * 60_000L
+        prefs().edit().putLong(LaunchpadPrefs.PREF_COOLDOWN_UNTIL, until).apply()
+        Log.d(tag, "Cool-down started until $until")
     }
+
+    fun isInCooldown(): Boolean =
+        System.currentTimeMillis() < prefs().getLong(LaunchpadPrefs.PREF_COOLDOWN_UNTIL, 0L)
 }

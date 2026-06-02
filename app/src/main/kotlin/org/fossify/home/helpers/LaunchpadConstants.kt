@@ -96,6 +96,7 @@ object LaunchpadPrefs {
     const val PREF_PARENT_MODE_ACTIVATED_AT = "parent_mode_activated_at"
     const val PREF_LAST_SYNC_QR = "last_sync_qr"
     const val PREF_COOLDOWN_RULES_JSON = "cooldown_rules_json"
+    const val PREF_COOLDOWN_UNTIL = "cooldown_until" // epoch ms; cool-down active while now < value
 
     // Dedicated SharedPreferences file for LAUNCHPAD (separate from commons config).
     const val PREFS_FILE = "launchpad_prefs"

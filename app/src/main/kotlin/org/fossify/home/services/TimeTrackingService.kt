@@ -1,10 +1,10 @@
 // File: app/src/main/kotlin/org/fossify/home/services/TimeTrackingService.kt
-// M2: Foreground service that surfaces live screen-time budget; periodic WorkManager housekeeping.
+// M2/M5: Foreground service that meters real screen-time usage and enforces the budget.
 //
-// NOTE: the loop now reads the REAL budget from Room (via TimeBudgetManager) instead of a
-// hardcoded 0 — wiring this into app launch is safe (no spurious cool-down). Decrementing the
-// balance from actual foreground-app usage requires PACKAGE_USAGE_STATS and is M5 scope; the
-// hook is marked below.
+// Counts wall-clock time while the screen is ON and a *whitelisted, non-cool-down* app is in
+// the foreground (detected via UsageStatsManager). Every whole minute is debited from the
+// Krypto-Cash ledger via TimeBudgetManager.spend(); when the balance reaches 0 the cool-down
+// window starts and CooldownActivity is shown. Requires Usage Access (granted in Eltern-Modus).
 
 package org.fossify.home.services
 
@@ -18,6 +18,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -27,28 +28,34 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.runBlocking
 import org.fossify.home.databases.AppsDatabase
+import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.helpers.TimeBudgetManager
+import org.fossify.home.helpers.UsageTracker
 import java.util.concurrent.TimeUnit
 
 class TimeTrackingService : Service() {
     private val tag = "TimeTrackingService"
     private lateinit var database: AppsDatabase
     private lateinit var budgetManager: TimeBudgetManager
+    private lateinit var powerManager: PowerManager
     private lateinit var handlerThread: HandlerThread
     private lateinit var handler: Handler
 
+    // Sub-minute carry of counted foreground time, and the timestamp of the last counted tick.
+    private var accumulatedMs = 0L
+    private var lastCountedAt = 0L
+
     override fun onCreate() {
         super.onCreate()
-        Log.d(tag, "TimeTrackingService created")
         database = AppsDatabase.getInstance(this)
         budgetManager = TimeBudgetManager(this, database)
+        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         handlerThread = HandlerThread("TimeTrackingWorker")
         handlerThread.start()
         handler = Handler(handlerThread.looper)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(tag, "TimeTrackingService started")
         startInForeground()
         startTracking()
         return START_STICKY
@@ -58,7 +65,6 @@ class TimeTrackingService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(tag, "TimeTrackingService destroyed")
         if (this::handlerThread.isInitialized) handlerThread.quit()
     }
 
@@ -95,14 +101,72 @@ class TimeTrackingService : Service() {
         })
     }
 
-    /**
-     * Reads the live budget from Room. Runs on the background HandlerThread, so the blocking
-     * DB read here is fine. M5: replace the log with real usage-based decrement + cool-down
-     * trigger when balance hits 0 mid-session.
-     */
     private fun tick() {
-        val budget = runBlocking { budgetManager.getCurrentBudget() }
-        Log.d(tag, "budget: balance=${budget.balanceMinutes}min inCooldown=${budget.inCooldown}")
+        // Need Usage Access to know the foreground app.
+        if (!UsageTracker.hasUsageAccess(this)) {
+            resetCounter()
+            return
+        }
+        // Only count while the screen is actually on.
+        if (!powerManager.isInteractive) {
+            resetCounter()
+            return
+        }
+        val pkg = UsageTracker.getForegroundPackage(this)
+        if (pkg == null) {
+            resetCounter()
+            return
+        }
+
+        runBlocking {
+            val budget = budgetManager.getCurrentBudget()
+            if (budget.inCooldown || budget.balanceMinutes <= 0 || !isCountedApp(pkg)) {
+                resetCounter()
+                return@runBlocking
+            }
+
+            val now = System.currentTimeMillis()
+            if (lastCountedAt == 0L) {
+                lastCountedAt = now
+                return@runBlocking
+            }
+            accumulatedMs += now - lastCountedAt
+            lastCountedAt = now
+
+            val wholeMinutes = (accumulatedMs / 60_000L).toInt()
+            if (wholeMinutes >= 1) {
+                accumulatedMs -= wholeMinutes * 60_000L
+                val newBalance = budgetManager.spend(wholeMinutes, pkg)
+                if (newBalance <= 0) {
+                    resetCounter()
+                    launchCooldown()
+                }
+            }
+        }
+    }
+
+    private fun resetCounter() {
+        accumulatedMs = 0L
+        lastCountedAt = 0L
+    }
+
+    private suspend fun isCountedApp(pkg: String): Boolean {
+        if (pkg == packageName) return false
+        if (!database.allowedAppDao().isAppAllowed(pkg)) return false
+        val category = database.allowedAppDao().getAppCategory(pkg)
+        return category != LaunchpadConstants.CATEGORY_COOLDOWN
+    }
+
+    private fun launchCooldown() {
+        try {
+            startActivity(
+                Intent()
+                    .setClassName(this, "org.fossify.home.activities.CooldownActivity")
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        } catch (e: Exception) {
+            Log.e(tag, "Could not launch CooldownActivity", e)
+        }
     }
 
     companion object {
@@ -112,22 +176,16 @@ class TimeTrackingService : Service() {
 }
 
 /**
- * TimeTrackingWorker: WorkManager periodic task (every 30 min) for housekeeping.
+ * Periodic (30 min) housekeeping. Full auto-expire / cleanup logic is M4/M5.
  */
 class TimeTrackingWorker(context: Context, params: WorkerParameters) :
     Worker(context, params) {
 
-    private val tag = "TimeTrackingWorker"
-
-    override fun doWork(): Result {
-        return try {
-            Log.d(tag, "Running periodic time tracking check...")
-            // M4/M5: auto-expire cool-down, clean up expired doge approvals, parent sync.
-            Result.success()
-        } catch (e: Exception) {
-            Log.e(tag, "Error in periodic check", e)
-            Result.retry()
-        }
+    override fun doWork(): Result = try {
+        Log.d("TimeTrackingWorker", "Periodic check")
+        Result.success()
+    } catch (e: Exception) {
+        Result.retry()
     }
 
     companion object {
@@ -143,8 +201,8 @@ class TimeTrackingWorker(context: Context, params: WorkerParameters) :
 }
 
 /**
- * Starts the tracking service + schedules periodic checks. Must be called from a foreground
- * context (e.g. MainActivity.onCreate) so startForegroundService() is permitted. Idempotent.
+ * Starts the tracking service + schedules periodic checks. Call from a foreground context
+ * (MainActivity.onCreate). Idempotent.
  */
 class TimeTrackingStartup {
     fun initializeTimeTracking(context: Context) {
@@ -155,6 +213,5 @@ class TimeTrackingStartup {
             context.startService(intent)
         }
         TimeTrackingWorker.schedulePeriodicChecks(context)
-        Log.d("TimeTracking", "Time tracking initialized")
     }
 }

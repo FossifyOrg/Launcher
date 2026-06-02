@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.os.Bundle
+import android.provider.Settings
 import android.text.InputType
 import android.util.Log
 import android.widget.Button
@@ -32,6 +33,7 @@ import org.fossify.home.helpers.CooldownRulesValidator
 import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.PinGateHelper
+import org.fossify.home.helpers.UsageTracker
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -175,6 +177,17 @@ class ElternModusActivity : AppCompatActivity() {
             )
         })
         c.addView(fullWidthButton("Ruhezeiten konfigurieren") { showCooldownConfig() })
+        c.addView(fullWidthButton("Nutzungszugriff (Zeit-Tracking)") {
+            val granted = UsageTracker.hasUsageAccess(this)
+            toast(if (granted) "Nutzungszugriff ist aktiv ✓" else "Bitte LAUNCHPAD aktivieren")
+            if (!granted) {
+                try {
+                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                } catch (e: Exception) {
+                    toast("Einstellungen nicht verfügbar")
+                }
+            }
+        })
         c.addView(fullWidthButton("Eltern-Modus beenden") {
             pinGate.deactivateParentMode()
             finish()
