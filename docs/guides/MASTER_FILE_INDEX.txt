@@ -1,0 +1,374 @@
+================================================================================
+LAUNCHPAD M1 - MASTER FILE INDEX
+All files ready in /agent/workspace/
+================================================================================
+
+GETTING STARTED
+===============
+1. Read: 00_INTEGRATION_QUICKSTART.md (12 steps, 4-5 hours)
+2. Reference: VERIFICATION_CHECKLIST.md (post-integration validation)
+3. Deep-dive: 15_m1_implementation_summary.md (full M1 spec + roadmap)
+
+================================================================================
+FILE ORGANIZATION & DESTINATIONS
+================================================================================
+
+CORE MODELS & TESTS (for :shared module)
+-------------------------------------------
+Source File                          Destination Path
+─────────────────────────────────────────────────────────────────────────────
+03_shared_module_core.kt             shared/src/main/java/org/fossify/launchpad/models/
+                                     → KryptoCashModels.kt
+                                     Contains: LedgerEntry, LedgerState, TimeBudget,
+                                              ParentCommand, Zusage, DogeRequest,
+                                              QRPairingPayload
+
+04_no_regression_tests.kt            shared/src/test/java/org/fossify/launchpad/models/
+                                     → NoRegressionTest.kt
+                                     Contains: 8 JUnit tests for ledger validation
+
+
+DATABASE & CONFIG (for :app module)
+-----------------------------------
+01_room_entities.kt                  app/src/main/java/org/fossify/home/databases/entities/
+                                     → LaunchpadEntities.kt
+                                     Contains: 8 @Entity classes (allowed_apps,
+                                              crypto_cash_tx, parent_commands,
+                                              zusagen, doge_requests,
+                                              explore_allowlist/blocklist/suggestions)
+
+02_config_keys.kt                    app/src/main/java/org/fossify/home/helpers/
+                                     → Constants.kt (append or new file)
+                                     Contains: LaunchpadConstants, LaunchpadPrefs
+
+13_room_database_setup.kt            app/src/main/java/org/fossify/home/databases/
+                                     → AppsDatabase.kt (MERGE with existing)
+                                     ⚠️  CRITICAL: Merge, don't replace
+                                     - Add 8 entities from 01_room_entities.kt
+                                     - Add MIGRATION_5_6 function
+                                     - Add DAO interfaces (AllowedAppDao, etc)
+
+
+LAUNCHER MODIFICATIONS (MainActivity.kt, Activity.kt)
+----------------------------------------------------
+05_launch_gate_core.kt               app/src/main/java/org/fossify/home/extensions/
+                                     → LaunchGate.kt
+                                     Usage: Integrate into Activity.kt:40 launchApp()
+
+06_whitelist_filtering.kt            app/src/main/java/org/fossify/home/activities/
+                                     → AppWhitelistFilter.kt
+                                     Usage: Integrate into MainActivity.kt:1082
+                                            getAllAppLaunchers()
+
+07_pin_gate_helper.kt                app/src/main/java/org/fossify/home/helpers/
+                                     → PinGateHelper.kt
+                                     Usage: Integrate into MainActivity.kt:840
+                                            (menu PIN-gating)
+
+
+NEW ACTIVITIES (register in manifest)
+------------------------------------
+08_eltern_modus_activity.kt          app/src/main/java/org/fossify/home/activities/
+                                     → ElternModusActivity.kt
+                                     Manifest: <activity android:name=
+                                               "org.fossify.home.activities.ElternModusActivity"/>
+
+09_entdecken_webview.kt              app/src/main/java/org/fossify/home/fragments/
+                                     → EntdeckenFragment.kt
+                                     (Fragment, integrated into MainActivity)
+
+10_cooldown_activity.kt              app/src/main/java/org/fossify/home/activities/
+                                     → CooldownActivity.kt
+                                     Manifest: <activity android:name=
+                                               "org.fossify.home.activities.CooldownActivity"/>
+
+
+SECURITY PROTOCOL (for :shared)
+-------------------------------
+11_qr_pairing_protocol.kt            shared/src/main/java/org/fossify/launchpad/crypto/
+                                     → QrPairingProtocol.kt
+                                     Contains: RSA-2048 + AES-256-GCM pairing logic
+
+
+BUILD CONFIGURATION
+------------------
+12_gradle_setup.gradle               • settings.gradle (include :shared, :companion)
+                                     • gradle.properties (APP_ID, COMPILE_SDK, etc)
+                                     • app/build.gradle.kts (modify existing)
+                                     • shared/build.gradle.kts (new file)
+                                     • companion/build.gradle.kts (new file)
+
+14_manifest_updates.xml              app/src/main/AndroidManifest.xml (MERGE)
+                                     ⚠️  Merge, don't replace
+                                     - Add 4 new activities
+                                     - Add permissions
+                                     - Add Device Admin receiver
+
+
+================================================================================
+CRITICAL MERGE POINTS (Don't Replace, Merge!)
+================================================================================
+
+1. AppsDatabase.kt (13_room_database_setup.kt)
+   ─────────────────────────────────────────
+   Keep: Existing @Entity classes, DAOs from v5
+   Add:  - 8 new @Entity classes from 01_room_entities.kt
+         - MIGRATION_5_6 function
+         - 8 new DAO interfaces
+   Update: @Database version = 6 (was 5)
+
+2. AndroidManifest.xml (14_manifest_updates.xml)
+   ────────────────────────────────────────────
+   Keep: Existing activities, services, receivers
+   Add:  - ElternModusActivity
+         - CooldownActivity
+         - PinGateActivity
+         - Device Admin receiver
+   Keep: Existing permissions, add new ones for WebView/camera
+
+3. MainActivity.kt
+   ───────────────
+   Line 1082 (getAllAppLaunchers):
+   Keep: Existing app list building logic
+   Add:  AppWhitelistFilter call before returning
+
+   Line 840 (showMainLongPressMenu):
+   Add:  PIN-gate check before showing menu
+
+   Line 1043-1056 (onFlingDown):
+   Remove: expandNotificationsPanel() call
+
+4. Activity.kt extensions
+   ──────────────────────
+   Line 40 (launchApp):
+   Add:  LaunchGate.canLaunch() check before startActivity()
+
+   Line 82 (handleGridItemPopupMenu):
+   Add:  PIN-gate check for sensitive menu items
+
+
+================================================================================
+FILE SIZES & COMPLEXITY
+================================================================================
+
+Small (~100 lines)
+├─ 02_config_keys.kt (85 lines)
+├─ 05_launch_gate_core.kt (150 lines - core logic simple)
+└─ 07_pin_gate_helper.kt (180 lines)
+
+Medium (~200-400 lines)
+├─ 01_room_entities.kt (280 lines - mostly data classes)
+├─ 03_shared_module_core.kt (320 lines - data + validation)
+├─ 06_whitelist_filtering.kt (200 lines)
+├─ 11_qr_pairing_protocol.kt (350 lines - crypto, well-commented)
+└─ 12_gradle_setup.gradle (250 lines of templates)
+
+Large (~400-600 lines)
+├─ 04_no_regression_tests.kt (480 lines - 8 comprehensive tests)
+├─ 08_eltern_modus_activity.kt (550 lines - UI + logic)
+├─ 09_entdecken_webview.kt (520 lines - WebView filtering)
+└─ 10_cooldown_activity.kt (480 lines - timer + UI)
+
+Documentation
+├─ 00_INTEGRATION_QUICKSTART.md (500 lines - step-by-step guide)
+├─ 15_m1_implementation_summary.md (800 lines - comprehensive spec)
+├─ VERIFICATION_CHECKLIST.md (650 lines - testing guide)
+└─ MASTER_FILE_INDEX.txt (this file)
+
+
+================================================================================
+DEPENDENCIES (ensure available in gradle.properties)
+================================================================================
+
+Required (from Fossify 6.1.6)
+────────────────────────────
+✓ fossify:commons:6.1.6
+✓ androidx:room:2.6.1
+✓ androidx:lifecycle:2.7.0
+✓ androidx:coroutines:1.8.0
+✓ androidx:appcompat:1.6.1
+
+Optional (M4+)
+──────────────
+( ) zxing:android-embedded:4.3.0 (QR scanning - M4)
+( ) zxing:core:3.5.2 (QR scanning - M4)
+
+
+================================================================================
+QUICK START WORKFLOW
+================================================================================
+
+Step 1: Baseline (30 min)
+   □ Fork Fossify Launcher or create project
+   □ Verify fossify-commons 6.1.6 available
+   □ Test baseline Gradle build succeeds
+
+Step 2: Modules (20 min)
+   □ Create :shared module (Android Library)
+   □ Create :companion module (Android App)
+   □ Update settings.gradle to include both
+   □ Verify 3-module build succeeds
+
+Step 3: Shared Core (20 min)
+   □ Copy 03_shared_module_core.kt → shared/src/main/java/.../models/
+   □ Copy 04_no_regression_tests.kt → shared/src/test/java/.../models/
+   □ Copy 11_qr_pairing_protocol.kt → shared/src/main/java/.../crypto/
+   □ Run: ./gradlew :shared:test (8 tests pass)
+
+Step 4: Database (45 min)
+   □ Copy 01_room_entities.kt → app/src/main/java/.../databases/entities/
+   □ MERGE 13_room_database_setup.kt into AppsDatabase.kt
+   □ Copy 02_config_keys.kt → app/src/main/java/.../helpers/
+   □ Verify build succeeds
+   □ Test Room migration on emulator
+
+Step 5: Launch Gate (45 min)
+   □ Copy 05_launch_gate_core.kt → app/src/main/java/.../extensions/
+   □ Copy 06_whitelist_filtering.kt → app/src/main/java/.../activities/
+   □ Integrate into MainActivity.getAllAppLaunchers() (line 1082)
+   □ Integrate into Activity.launchApp() (line 40)
+   □ Test whitelist filtering works
+
+Step 6: PIN & Menus (45 min)
+   □ Copy 07_pin_gate_helper.kt → app/src/main/java/.../helpers/
+   □ Integrate into MainActivity.showMainLongPressMenu() (line 840)
+   □ Integrate into Activity.handleGridItemPopupMenu() (line 82)
+   □ Remove expandNotificationsPanel from onFlingDown() (lines 1043-1056)
+   □ Test PIN-gating works
+
+Step 7: Parent Mode (30 min)
+   □ Copy 08_eltern_modus_activity.kt → app/src/main/java/.../activities/
+   □ Register in AndroidManifest.xml
+   □ Test ElternModusActivity launches, PIN works
+
+Step 8: Cool-down (20 min)
+   □ Copy 10_cooldown_activity.kt → app/src/main/java/.../activities/
+   □ Register in AndroidManifest.xml
+   □ Integrate into LaunchGate (trigger when time = 0)
+   □ Test cool-down timer works
+
+Step 9: WebView (30 min)
+   □ Copy 09_entdecken_webview.kt → app/src/main/java/.../fragments/
+   □ Create ExploreAllowlist/BlocklistDao in AppsDatabase.kt
+   □ Integrate into MainActivity as Fragment or tab
+   □ Test domain filtering works
+
+Step 10: Manifest & Branding (20 min)
+   □ MERGE 14_manifest_updates.xml into AndroidManifest.xml
+   □ Set app name = "LAUNCHPAD" in strings.xml
+   □ Add icon (rocket-scaled.png)
+   □ Add font (Luckiest Guy)
+   □ Set applicationId = com.inkandironglow.launchpad
+
+Step 11: Build (15 min)
+   □ ./gradlew clean build
+   □ ./gradlew :shared:test (all pass)
+   □ ./gradlew :app:assembleDebug
+   □ APK generated without errors
+
+Step 12: Deploy & Test (30 min)
+   □ Install on Poco X5 or emulator
+   □ Run VERIFICATION_CHECKLIST.md (all checks pass)
+   □ Manual smoke tests (whitelist, PIN, cool-down, WebView)
+
+TOTAL TIME: ~4-5 hours
+
+
+================================================================================
+TROUBLESHOOTING QUICK LINKS
+================================================================================
+
+Build fails:
+   → Check fossify-commons 6.1.6 version in gradle.properties
+   → Check Kotlin version ≥ 1.9.0
+   → Check Android SDK 36 available
+
+Tests fail:
+   → Run: ./gradlew :shared:test -i (verbose output)
+   → Check LedgerState.validateNoRegression() logic
+
+No whitelisted apps visible:
+   → Check Room migration ran (tables exist in database inspector)
+   → Check allowed_apps table populated with system apps
+   → Check AppWhitelistFilter.filterToWhitelist() called in MainActivity
+
+PIN not working:
+   → Check fossify-commons Security API available
+   → Check PinGateHelper.verifyPin() hash logic
+   → Check PIN set correctly (Eltern-Modus setup)
+
+WebView blocking all sites:
+   → Check EntdeckenContentFilter.isAllowlisted() queries Room
+   → Check explore_allowlist table populated
+   → Check shouldInterceptRequest() is called
+
+Manifest merge conflicts:
+   → Search for duplicate activity registrations
+   → Use Android Studio's manifest merger tool (Build → Analyze APK)
+
+
+================================================================================
+REFERENCE DOCUMENTS (in workspace)
+================================================================================
+
+For Integration:
+   → 00_INTEGRATION_QUICKSTART.md (step-by-step)
+   → MASTER_FILE_INDEX.txt (this file)
+
+For Understanding:
+   → 15_m1_implementation_summary.md (complete spec)
+   → 01_room_entities.kt (database schema)
+   → 03_shared_module_core.kt (data models)
+   → 04_no_regression_tests.kt (No-Regression principle)
+
+For Testing:
+   → VERIFICATION_CHECKLIST.md (comprehensive checks)
+   → 04_no_regression_tests.kt (unit tests to run)
+
+For Future:
+   → 15_m1_implementation_summary.md § "Next Steps (After M1 Integration)"
+   → M2-M5 roadmap in same document
+
+
+================================================================================
+CONTACT & QUESTIONS
+================================================================================
+
+Before starting:
+✓ Review 00_INTEGRATION_QUICKSTART.md
+✓ Ensure Fossify baseline builds
+✓ Check all dependencies in gradle.properties
+
+During integration:
+✓ Follow exact file paths shown above
+✓ Use MERGE strategy for AppsDatabase.kt and AndroidManifest.xml
+✓ Don't skip Room migration test (Step 4)
+
+After integration:
+✓ Run all checks in VERIFICATION_CHECKLIST.md
+✓ Run ./gradlew :shared:test (8 unit tests)
+✓ Manual smoke tests on device
+
+Questions?
+✓ Check 15_m1_implementation_summary.md for detailed explanation
+✓ Check VERIFICATION_CHECKLIST.md for debugging guide
+
+
+================================================================================
+ETHICAL PRINCIPLES (Don't Forget!)
+================================================================================
+
+✓ No-Regression: Earned time never deleted, devalued, or reverted
+✓ Default-Deny: No free internet; curated content only
+✓ Transparency: All transactions visible; reasons shown
+✓ No Coercion: Time never used as punishment
+✓ Child Agency: Promises honored; approvals genuine
+✓ Parental Responsibility: No analytics obsession; just what's fair
+
+Jake wird geliebt. Nicht optimiert. ❤️
+
+
+================================================================================
+ALL FILES READY IN /agent/workspace/
+Begin with: 00_INTEGRATION_QUICKSTART.md
+================================================================================

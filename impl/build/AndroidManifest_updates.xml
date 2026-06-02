@@ -1,0 +1,117 @@
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!-- File: app/src/main/AndroidManifest.xml
+     M1: Manifest updates for LAUNCHPAD activities and permissions --&gt;
+
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+
+    &lt;!-- Existing Fossify Launcher permissions --&gt;
+    &lt;uses-permission android:name="android.permission.INTERNET" /&gt;
+    &lt;uses-permission android:name="android.permission.GET_PACKAGE_SIZE" /&gt;
+    &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" /&gt;
+    &lt;uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" /&gt;
+    &lt;uses-permission android:name="android.permission.GET_APP_OPS_STATS" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_LOGS" /&gt;
+    &lt;uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.VIBRATE" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" /&gt;
+
+    &lt;!-- New LAUNCHPAD permissions --&gt;
+    &lt;!-- WebView for Entdecken --&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /&gt;
+    &lt;uses-permission android:name="android.permission.CAMERA" /&gt;
+    &lt;!-- QR scanning (M4) --&gt;
+    &lt;!-- &lt;uses-permission android:name="android.permission.CAMERA" /&gt; --&gt;
+
+    &lt;application&gt;
+        &lt;!-- Main Launcher Activity (existing) --&gt;
+        &lt;activity
+            android:name="org.fossify.home.activities.MainActivity"
+            android:theme="@style/LauncherTheme"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="false"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+                &lt;category android:name="android.intent.category.HOME" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+
+        &lt;!-- Eltern-Modus Activity (M1) --&gt;
+        &lt;activity
+            android:name="org.fossify.home.activities.ElternModusActivity"
+            android:theme="@style/ElternTheme"
+            android:launchMode="singleTask"
+            android:exported="false"
+            android:screenOrientation="portrait" /&gt;
+
+        &lt;!-- Cool-down Activity (M1) --&gt;
+        &lt;activity
+            android:name="org.fossify.home.activities.CooldownActivity"
+            android:theme="@style/CooldownTheme"
+            android:launchMode="singleInstance"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait" /&gt;
+
+        &lt;!-- PIN Entry Activity (M1) --&gt;
+        &lt;activity
+            android:name="org.fossify.home.activities.PinGateActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:screenOrientation="portrait" /&gt;
+
+        &lt;!-- Entdecken Fragment (loaded in MainActivity or separate Activity) --&gt;
+        &lt;!-- No separate activity needed if using Fragment --&gt;
+
+        &lt;!-- Device Admin Receiver (for future Device Owner mode) --&gt;
+        &lt;receiver
+            android:name="org.fossify.home.receivers.LockDeviceAdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.app.action.DEVICE_ADMIN_ENABLED" /&gt;
+            &lt;/intent-filter&gt;
+            &lt;meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policies" /&gt;
+        &lt;/receiver&gt;
+
+        &lt;!-- Content Providers (if any) --&gt;
+
+        &lt;!-- Services (optional) --&gt;
+        &lt;!-- TimeTrackingService for background time tracking (M2+) --&gt;
+
+        &lt;!-- Broadcast Receivers --&gt;
+        &lt;receiver android:name="org.fossify.home.receivers.BootReceiver"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.BOOT_COMPLETED" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+
+&lt;!-- Themes to be defined in styles.xml --&gt;
+&lt;!--
+&lt;style name="LauncherTheme" parent="Theme.AppCompat.NoActionBar"&gt;
+    &lt;item name="android:windowBackground"&gt;@color/launcher_bg&lt;/item&gt;
+    &lt;item name="android:textColorPrimary"&gt;@color/text_primary&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="ElternTheme" parent="Theme.AppCompat"&gt;
+    &lt;item name="android:windowBackground"&gt;@color/eltern_bg&lt;/item&gt;
+    &lt;item name="colorPrimary"&gt;@color/eltern_primary&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="CooldownTheme" parent="Theme.AppCompat.NoActionBar"&gt;
+    &lt;item name="android:windowBackground"&gt;@color/cooldown_bg&lt;/item&gt;
+    &lt;item name="android:windowFullscreen"&gt;true&lt;/item&gt;
+&lt;/style&gt;
+--&gt;

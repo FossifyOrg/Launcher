@@ -1,0 +1,231 @@
+// File: settings.gradle or settings.gradle.kts
+// M1: Gradle monorepo structure for LAUNCHPAD
+
+include ':app'
+include ':shared'
+include ':companion'
+
+rootProject.name = 'LAUNCHPAD'
+
+// --- Project Configuration ---
+// app/          LAUNCHPAD launcher (forked Fossify Launcher)
+// shared/       Common models, crypto, sync protocol (Android Library)
+// companion/    Parent Companion App (for future M4)
+
+---
+
+// File: gradle.properties
+// M1: Build configuration constants
+
+// Project identifiers
+ORG_IDENTIFIER=org.fossify
+APP_ID=com.inkandironglow.launchpad
+APP_NAME=LAUNCHPAD
+APP_VERSION_NAME=0.1.0-M1
+APP_VERSION_CODE=1
+
+// SDK versions
+COMPILE_SDK=36
+TARGET_SDK=36
+MIN_SDK=26
+
+// Dependencies
+FOSSIFY_COMMONS_VERSION=6.1.6
+ROOM_VERSION=2.6.1
+LIFECYCLE_VERSION=2.7.0
+COROUTINES_VERSION=1.8.0
+
+// Build settings
+ORG_GRADLE_JVMARGS=-Xmx4g
+KOTLIN_VERSION=1.9.0
+
+---
+
+// File: app/build.gradle.kts
+// M1: LAUNCHPAD launcher app build configuration
+
+plugins {
+    id("com.android.application")
+    kotlin("android")
+    kotlin("kapt")
+    kotlin("plugin.serialization")
+}
+
+android {
+    namespace = "com.inkandironglow.launchpad"
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = "com.inkandironglow.launchpad"
+        minSdk = 26
+        targetSdk = 36
+        versionCode = 1
+        versionName = "0.1.0-M1"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            isMinifyEnabled = false
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    // Fossify Commons (6.1.6)
+    implementation("org.fossify:commons:${findProperty("FOSSIFY_COMMONS_VERSION")}")
+
+    // Room Database
+    implementation("androidx.room:room-runtime:${findProperty("ROOM_VERSION")}")
+    implementation("androidx.room:room-ktx:${findProperty("ROOM_VERSION")}")
+    kapt("androidx.room:room-compiler:${findProperty("ROOM_VERSION")}")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${findProperty("LIFECYCLE_VERSION")}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${findProperty("LIFECYCLE_VERSION")}")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${findProperty("COROUTINES_VERSION")}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${findProperty("COROUTINES_VERSION")}")
+
+    // Android Framework
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Local :shared module
+    implementation(project(":shared"))
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.room:room-testing:${findProperty("ROOM_VERSION")}")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+---
+
+// File: shared/build.gradle.kts
+// M1: Common :shared library (models, crypto, protocols)
+
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    kotlin("plugin.serialization")
+}
+
+android {
+    namespace = "org.fossify.launchpad"
+    compileSdk = 36
+
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 36
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = false // Not a UI library
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    // Kotlin Serialization (for JSON command payloads)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    // Android Framework (minimal, just what's needed for data models)
+    implementation("androidx.room:room-common:${findProperty("ROOM_VERSION")}")
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${findProperty("COROUTINES_VERSION")}")
+}
+
+---
+
+// File: companion/build.gradle.kts
+// M1: Parent Companion App (stub, full development in M4)
+
+plugins {
+    id("com.android.application")
+    kotlin("android")
+    kotlin("kapt")
+}
+
+android {
+    namespace = "org.fossify.launchpad.companion"
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = "org.fossify.launchpad.companion"
+        minSdk = 26
+        targetSdk = 36
+        versionCode = 1
+        versionName = "0.1.0-M1"
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    // Fossify Commons
+    implementation("org.fossify:commons:${findProperty("FOSSIFY_COMMONS_VERSION")}")
+
+    // Local :shared module
+    implementation(project(":shared"))
+
+    // Android Framework
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // QR code generation/scanning (for M4)
+    // implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    // implementation("com.google.zxing:core:3.5.2")
+}
