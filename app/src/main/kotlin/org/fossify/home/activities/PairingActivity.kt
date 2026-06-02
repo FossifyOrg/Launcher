@@ -51,6 +51,16 @@ class PairingActivity : AppCompatActivity() {
 
         content.addView(heading("Kopplung mit Eltern-Gerät"))
 
+        // Show local IP so parent can enter it in the companion app
+        val localIp = org.fossify.home.helpers.LaunchpadServer.getLocalIp(this)
+        if (localIp != null) {
+            content.addView(TextView(this).apply {
+                text = "📡 Jakes Gerät IP: $localIp:${org.fossify.home.helpers.LaunchpadServer.PORT}"
+                textSize = 15f
+                setPadding(0, 0, 0, 8)
+            })
+        }
+
         statusView = TextView(this).apply { setPadding(0, 8, 0, 16) }
         content.addView(statusView)
 

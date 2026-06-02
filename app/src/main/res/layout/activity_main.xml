@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Rules page overlay — slides in from the left, GONE by default -->
+    <FrameLayout
+        android:id="@+id/rules_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationX="-100%"
+        android:visibility="visible"
+        android:elevation="4dp" />
+
     <include
         android:id="@+id/home_screen_grid"
         layout="@layout/home_screen_grid"

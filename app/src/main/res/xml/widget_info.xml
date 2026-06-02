@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="180dp"
+    android:minHeight="60dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+    android:updatePeriodMillis="300000"
+    android:initialLayout="@layout/widget_launchpad"
+    android:previewLayout="@layout/widget_launchpad"
+    android:description="@string/app_launcher_name"
+    android:widgetCategory="home_screen"
+    android:resizeMode="horizontal|vertical" />

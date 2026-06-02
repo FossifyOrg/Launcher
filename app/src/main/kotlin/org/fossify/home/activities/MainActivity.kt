@@ -77,6 +77,7 @@ import org.fossify.home.extensions.isDefaultLauncher
 import org.fossify.home.extensions.launchApp
 import org.fossify.home.extensions.launchAppInfo
 import android.app.AlertDialog
+import android.widget.FrameLayout
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -105,6 +106,7 @@ import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HiddenIcon
 import org.fossify.home.models.HomeScreenGridItem
+import org.fossify.home.fragments.RulesFragment
 import org.fossify.home.helpers.KioskManager
 import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.receivers.LockDeviceAdminReceiver
@@ -135,6 +137,9 @@ class MainActivity : SimpleActivity(), FlingListener {
 
     private var wallpaperColorChangeListener: OnColorsChangedListener? = null
     private var wallpaperSupportsDarkText: Boolean? = null
+
+    // LAUNCHPAD: rules overlay state
+    private var rulesVisible = false
 
     private lateinit var mDetector: GestureDetectorCompat
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -181,8 +186,19 @@ class MainActivity : SimpleActivity(), FlingListener {
         // LAUNCHPAD M2: start screen-time tracking (foreground service + periodic WorkManager).
         TimeTrackingStartup().initializeTimeTracking(this)
 
+        // LAUNCHPAD M4: start LAN API server for companion app
+        org.fossify.home.helpers.LaunchpadServer.start(this)
+
         // LAUNCHPAD: init notification channels
         org.fossify.home.helpers.NotificationHelper.init(this)
+
+        // LAUNCHPAD: mount RulesFragment into rules_overlay (invisible until summoned)
+        val rulesOverlay = binding.root.findViewById<FrameLayout>(R.id.rules_overlay)
+        if (rulesOverlay != null && supportFragmentManager.findFragmentById(R.id.rules_overlay) == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.rules_overlay, RulesFragment())
+                .commitAllowingStateLoss()
+        }
 
         binding.homeScreenGrid.root.itemClickListener = {
             performItemClick(it)
@@ -271,6 +287,9 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         // LAUNCHPAD M3: enter kiosk lock-task if enabled and provisioned as device owner.
         KioskManager.onLauncherResumed(this, AppsDatabase.getInstance(this))
+
+        // LAUNCHPAD: hide rules overlay when app resumes
+        if (rulesVisible) hideRulesOverlay(animate = false)
 
         // LAUNCHPAD: refresh Jake's status bar
         refreshStatusBar()
@@ -450,6 +469,16 @@ class MainActivity : SimpleActivity(), FlingListener {
 
                 if (mLongPressedIcon != null && hasFingerMoved) {
                     binding.homeScreenGrid.root.draggedItemMoved(event.x.toInt(), event.y.toInt())
+
+                    // LAUNCHPAD: auto-advance page when icon is dragged to right/left edge
+                    val edgeThreshold = (mScreenHeight * 0.12f).toInt()
+                    val screenWidth = realScreenSize.x
+                    if (event.x > screenWidth - edgeThreshold) {
+                        // Dragging near right edge → try to move to next page
+                        binding.homeScreenGrid.root.nextPage(redraw = false)
+                    } else if (event.x < edgeThreshold) {
+                        binding.homeScreenGrid.root.prevPage(redraw = false)
+                    }
                 }
 
                 if (hasFingerMoved && !mIgnoreMoveEvents) {
@@ -1141,21 +1170,59 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     override fun onFlingRight() {
-        if (mIgnoreXMoveEvents) {
+        if (mIgnoreXMoveEvents) return
+        mIgnoreUpEvent = true
+
+        // If rules overlay is visible, dismiss it; otherwise try prev page or show rules
+        if (rulesVisible) {
+            hideRulesOverlay()
             return
         }
-
-        mIgnoreUpEvent = true
-        binding.homeScreenGrid.root.prevPage(redraw = true)
+        val moved = binding.homeScreenGrid.root.prevPage(redraw = true)
+        if (!moved) {
+            // Already on first page → show Jakes Regeln from the left
+            showRulesOverlay()
+        }
     }
 
     override fun onFlingLeft() {
-        if (mIgnoreXMoveEvents) {
+        if (mIgnoreXMoveEvents) return
+        mIgnoreUpEvent = true
+
+        if (rulesVisible) {
+            hideRulesOverlay()
             return
         }
-
-        mIgnoreUpEvent = true
         binding.homeScreenGrid.root.nextPage(redraw = true)
+    }
+
+    // ─── LAUNCHPAD: Rules overlay ─────────────────────────────────────────────
+
+    private fun showRulesOverlay(animate: Boolean = true) {
+        val overlay = binding.root.findViewById<FrameLayout>(R.id.rules_overlay) ?: return
+        rulesVisible = true
+        overlay.visibility = android.view.View.VISIBLE
+        if (animate) {
+            overlay.translationX = -overlay.width.toFloat()
+            overlay.animate().translationX(0f).setDuration(280)
+                .setInterpolator(android.view.animation.DecelerateInterpolator()).start()
+        } else {
+            overlay.translationX = 0f
+        }
+    }
+
+    private fun hideRulesOverlay(animate: Boolean = true) {
+        val overlay = binding.root.findViewById<FrameLayout>(R.id.rules_overlay) ?: return
+        rulesVisible = false
+        if (animate) {
+            overlay.animate().translationX(-overlay.width.toFloat()).setDuration(250)
+                .setInterpolator(android.view.animation.AccelerateInterpolator())
+                .withEndAction { overlay.visibility = android.view.View.INVISIBLE }
+                .start()
+        } else {
+            overlay.translationX = -overlay.width.toFloat()
+            overlay.visibility = android.view.View.INVISIBLE
+        }
     }
 
     @SuppressLint("WrongConstant")
