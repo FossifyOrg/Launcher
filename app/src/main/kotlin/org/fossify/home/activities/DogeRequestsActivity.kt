@@ -38,6 +38,7 @@ class DogeRequestsActivity : AppCompatActivity() {
     private val manager = DogeManager()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var isParentMode = false
+    private var prefillPkg: String? = null   // package name from blocked-app denial dialog
 
     private lateinit var content: LinearLayout
 
@@ -45,8 +46,7 @@ class DogeRequestsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         database = AppsDatabase.getInstance(this)
         isParentMode = intent.getBooleanExtra("isParentMode", false)
-        // Pre-fill if launched from a blocked-app denial dialog
-        val prefillPkg = intent.getStringExtra("prefill_package")
+        prefillPkg = intent.getStringExtra("prefill_package")
 
         content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
