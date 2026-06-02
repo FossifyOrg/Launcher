@@ -220,7 +220,9 @@ class DogeManager {
             contentDescription.contains("minecraft", ignoreCase = true) -> 25
             // General entertainment → moderate
             contentDescription.contains("youtube", ignoreCase = true) -> 20
-            contentDescription.contains("video", ignoreCase = true) -> 20
+            // NOTE: no "video" branch — "Video streaming" and other generic video strings
+            // should fall through to the default 15, not 20. The "video" branch was too
+            // broad and caused testSuggestApprovalDuration to fail.
             // Short-form by default
             else -> 15
         }

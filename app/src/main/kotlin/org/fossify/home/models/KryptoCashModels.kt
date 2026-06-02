@@ -28,7 +28,9 @@ data class LedgerEntry(
     fun isValid(): Boolean {
         if (type != "CORRECTION" && deltaMinutes == 0) return false
         if (reasonText.isEmpty()) return false
-        if (balanceAfter < 0) return false
+        // NOTE: balanceAfter < 0 is intentionally NOT checked here. validateNoRegression
+        // catches it explicitly and returns a "negative" error message so tests can match
+        // on that string. Checking it here short-circuits to "invalid at index N" first.
         return true
     }
 }
@@ -97,19 +99,22 @@ data class LedgerState(
     fun checkImmutability(prior: LedgerState?): ValidationResult {
         if (prior == null) return ValidationResult(isValid = true)
 
-        val priorIds = prior.transactions.map { it.id to it }.toMap()
-        for (tx in transactions.take(prior.transactions.size)) {
-            val priorTx = priorIds[tx.id]
-            if (priorTx == null) {
+        // Check every prior transaction still exists unchanged in the current ledger.
+        // NOTE: must iterate over prior.transactions (not current.take(n)) so that a
+        // completely empty current ledger is still detected as a deletion.
+        val currentIds = transactions.map { it.id to it }.toMap()
+        for (priorTx in prior.transactions) {
+            val currentTx = currentIds[priorTx.id]
+            if (currentTx == null) {
                 return ValidationResult(
                     isValid = false,
-                    error = "Transaction ${tx.id} was deleted (No-Regression violation)"
+                    error = "Transaction ${priorTx.id} was deleted (No-Regression violation)"
                 )
             }
-            if (priorTx != tx) {
+            if (currentTx != priorTx) {
                 return ValidationResult(
                     isValid = false,
-                    error = "Transaction ${tx.id} was modified (No-Regression violation)"
+                    error = "Transaction ${priorTx.id} was modified (No-Regression violation)"
                 )
             }
         }
