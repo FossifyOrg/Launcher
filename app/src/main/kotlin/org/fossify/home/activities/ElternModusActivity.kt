@@ -193,6 +193,9 @@ class ElternModusActivity : AppCompatActivity() {
             }
         })
 
+        val enforceState = if (isEnforcementEnabled()) "AN" else "AUS"
+        c.addView(fullWidthButton("Kindermodus (Whitelist + Zeit): $enforceState") { toggleEnforcement() })
+
         val kioskState = when {
             !KioskManager.isDeviceOwner(this) -> "nicht eingerichtet"
             KioskManager.isKioskEnabled(this) -> "AN"
@@ -395,6 +398,49 @@ class ElternModusActivity : AppCompatActivity() {
                 toast("Ungültig: ${result.error}")
             }
         })
+    }
+
+    // ─── Kindermodus (enforcement master switch) ─────────────────────────────────────
+
+    private fun lpPrefs() =
+        getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+
+    private fun isEnforcementEnabled(): Boolean =
+        lpPrefs().getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+
+    private fun toggleEnforcement() {
+        val enabling = !isEnforcementEnabled()
+        if (enabling) {
+            scope.launch {
+                val whitelistCount = withContext(Dispatchers.IO) {
+                    database.allowedAppDao().getAllEnabledApps().size
+                }
+                if (whitelistCount == 0) {
+                    AlertDialog.Builder(this@ElternModusActivity)
+                        .setTitle("Kindermodus aktivieren?")
+                        .setMessage(
+                            "Es sind noch keine Apps freigegeben. Im Kindermodus sieht Jake dann " +
+                                "KEINE Apps. Erst unter \"Apps verwalten\" Apps freigeben.\n\n" +
+                                "Trotzdem aktivieren?"
+                        )
+                        .setPositiveButton("Aktivieren") { _, _ ->
+                            lpPrefs().edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true).apply()
+                            toast("Kindermodus AN")
+                            showParentModeMenu()
+                        }
+                        .setNegativeButton("Abbrechen", null)
+                        .show()
+                } else {
+                    lpPrefs().edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, true).apply()
+                    toast("Kindermodus AN ($whitelistCount Apps frei)")
+                    showParentModeMenu()
+                }
+            }
+        } else {
+            lpPrefs().edit().putBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false).apply()
+            toast("Kindermodus AUS — alle Apps sichtbar")
+            showParentModeMenu()
+        }
     }
 
     // ─── Kiosk / Device-Owner ──────────────────────────────────────────────────────

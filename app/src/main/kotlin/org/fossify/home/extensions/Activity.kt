@@ -37,24 +37,33 @@ import org.fossify.home.helpers.ITEM_TYPE_FOLDER
 import org.fossify.home.helpers.ITEM_TYPE_ICON
 import org.fossify.home.helpers.ITEM_TYPE_WIDGET
 import org.fossify.home.helpers.LaunchGate
+import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.TimeBudgetManager
 import org.fossify.home.helpers.UNINSTALL_APP_REQUEST_CODE
 import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.HomeScreenGridItem
 
 fun Activity.launchApp(packageName: String, activityName: String) {
-    // LAUNCHPAD M1: Launch gate check (whitelist + time budget + cool-down)
-    val db = AppsDatabase.getInstance(applicationContext)
-    val budget = runBlocking { TimeBudgetManager(this@launchApp, db).getCurrentBudget() }
-    val gate = LaunchGate(this, db)
-    val decision = runBlocking { gate.canLaunch(packageName, budget) }
-    if (!decision.allowed) {
-        AlertDialog.Builder(this)
-            .setTitle("Nicht verfügbar")
-            .setMessage(decision.childVisibleMessage ?: "Diese App ist gerade nicht verfügbar.")
-            .setPositiveButton("OK", null)
-            .show()
-        return
+    // LAUNCHPAD M1: Launch gate (whitelist + time budget + cool-down) — only enforced once the
+    // parent has switched on Kindermodus. Fail-open so a gate error never blocks launching.
+    try {
+        val enforce = getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+            .getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+        if (enforce) {
+            val db = AppsDatabase.getInstance(applicationContext)
+            val budget = runBlocking { TimeBudgetManager(this@launchApp, db).getCurrentBudget() }
+            val decision = runBlocking { LaunchGate(this, db).canLaunch(packageName, budget) }
+            if (!decision.allowed) {
+                AlertDialog.Builder(this)
+                    .setTitle("Nicht verfügbar")
+                    .setMessage(decision.childVisibleMessage ?: "Diese App ist gerade nicht verfügbar.")
+                    .setPositiveButton("OK", null)
+                    .show()
+                return
+            }
+        }
+    } catch (e: Exception) {
+        android.util.Log.e("LAUNCHPAD", "launch gate failed; allowing launch", e)
     }
 
     try {

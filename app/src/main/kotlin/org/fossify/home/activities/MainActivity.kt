@@ -105,6 +105,7 @@ import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HiddenIcon
 import org.fossify.home.models.HomeScreenGridItem
 import org.fossify.home.helpers.KioskManager
+import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.receivers.LockDeviceAdminReceiver
 import org.fossify.home.services.TimeTrackingStartup
 import kotlin.math.abs
@@ -1164,16 +1165,27 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         launchersDB.insertAll(allApps)
 
-        // LAUNCHPAD M1: Filter to whitelist (DEFAULT-DENY)
-        val launchpadDb = AppsDatabase.getInstance(applicationContext)
-        val allowedPackages = runBlocking {
-            launchpadDb.allowedAppDao().getAllEnabledApps().map { it.packageName }.toSet()
-        }
-        // If no whitelist configured yet (first run), show all apps
-        return if (allowedPackages.isEmpty()) {
+        // LAUNCHPAD M1: DEFAULT-DENY whitelist — but ONLY once the parent has switched on
+        // Kindermodus (enforcement). Until then the launcher behaves normally so it can be
+        // set up. Fail-open on any error so the launcher can never brick itself into an empty
+        // home screen.
+        return try {
+            val prefs = applicationContext.getSharedPreferences(
+                LaunchpadPrefs.PREFS_FILE, MODE_PRIVATE
+            )
+            if (!prefs.getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)) {
+                allApps
+            } else {
+                val allowed = runBlocking {
+                    AppsDatabase.getInstance(applicationContext).allowedAppDao()
+                        .getAllEnabledApps().map { it.packageName }.toSet()
+                }
+                if (allowed.isEmpty()) allApps
+                else ArrayList(allApps.filter { it.packageName in allowed })
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("LAUNCHPAD", "whitelist filter failed; showing all apps", e)
             allApps
-        } else {
-            ArrayList(allApps.filter { it.packageName in allowedPackages })
         }
     }
 

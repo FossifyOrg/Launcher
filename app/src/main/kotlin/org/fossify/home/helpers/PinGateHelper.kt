@@ -105,6 +105,9 @@ class PinGateHelper(
      * action is not gated). Returns false to signal the caller to show a PIN dialog.
      */
     fun checkMenuAction(actionId: Int): Boolean {
+        // First-run safety: if no parent PIN has been set yet, do NOT gate — otherwise the
+        // parent can never reach Settings to set the PIN up in the first place.
+        if (!isPinConfigured()) return true
         if (isParentModeActive()) return true
         return !shouldGateAction(actionId)
     }

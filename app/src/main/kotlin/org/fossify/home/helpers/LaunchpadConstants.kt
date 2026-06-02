@@ -98,6 +98,10 @@ object LaunchpadPrefs {
     const val PREF_COOLDOWN_RULES_JSON = "cooldown_rules_json"
     const val PREF_COOLDOWN_UNTIL = "cooldown_until" // epoch ms; cool-down active while now < value
     const val PREF_KIOSK_ENABLED = "kiosk_enabled" // M3: lock-task kiosk mode (device owner only)
+    // Master "Kindermodus" switch. OFF by default so the launcher behaves normally during
+    // setup (all apps visible, no launch gate, no time metering). The parent turns it ON in
+    // Eltern-Modus after configuring the whitelist + PIN + time budget.
+    const val PREF_ENFORCEMENT_ENABLED = "enforcement_enabled"
 
     // M4: QR pairing — launcher keypair (Base64), AES session key, paired parent identity
     const val PREF_PAIR_PRIVATE_KEY = "pair_private_key" // PKCS8 Base64

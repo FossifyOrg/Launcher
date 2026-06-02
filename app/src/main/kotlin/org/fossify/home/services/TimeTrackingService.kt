@@ -29,6 +29,7 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.runBlocking
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.LaunchpadConstants
+import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.TimeBudgetManager
 import org.fossify.home.helpers.UsageTracker
 import java.util.concurrent.TimeUnit
@@ -102,6 +103,13 @@ class TimeTrackingService : Service() {
     }
 
     private fun tick() {
+        // Only meter time once the parent has switched on Kindermodus (enforcement).
+        val enforce = getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+            .getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+        if (!enforce) {
+            resetCounter()
+            return
+        }
         // Need Usage Access to know the foreground app.
         if (!UsageTracker.hasUsageAccess(this)) {
             resetCounter()
