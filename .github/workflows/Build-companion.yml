@@ -47,4 +47,3 @@ jobs:
           name: launchpad-eltern-companion
           path: companion/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
-
