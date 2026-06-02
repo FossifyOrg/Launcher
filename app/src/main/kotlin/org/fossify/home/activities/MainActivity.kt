@@ -179,8 +179,10 @@ class MainActivity : SimpleActivity(), FlingListener {
         handleIntentAction(intent)
 
         // LAUNCHPAD M2: start screen-time tracking (foreground service + periodic WorkManager).
-        // Idempotent; MainActivity is a foreground context so startForegroundService is allowed.
         TimeTrackingStartup().initializeTimeTracking(this)
+
+        // LAUNCHPAD: init notification channels
+        org.fossify.home.helpers.NotificationHelper.init(this)
 
         binding.homeScreenGrid.root.itemClickListener = {
             performItemClick(it)
@@ -909,6 +911,12 @@ class MainActivity : SimpleActivity(), FlingListener {
         bar.visibility = android.view.View.VISIBLE
         bar.setOnClickListener {
             startActivity(Intent(this, JakeDashboardActivity::class.java))
+        }
+
+        // 🌐 Entdecken button
+        val exploreBtn = binding.root.findViewById<android.widget.TextView>(R.id.status_explore_btn)
+        exploreBtn?.setOnClickListener {
+            startActivity(Intent(this, EntdeckenActivity::class.java))
         }
 
         CoroutineScope(Dispatchers.Main).launch {

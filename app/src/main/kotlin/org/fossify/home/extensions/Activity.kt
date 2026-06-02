@@ -39,6 +39,7 @@ import org.fossify.home.helpers.ITEM_TYPE_WIDGET
 import org.fossify.home.helpers.LaunchGate
 import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.TimeBudgetManager
+import org.fossify.home.models.TimeBudget
 import org.fossify.home.helpers.UNINSTALL_APP_REQUEST_CODE
 import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.HomeScreenGridItem
@@ -54,11 +55,7 @@ fun Activity.launchApp(packageName: String, activityName: String) {
             val budget = runBlocking { TimeBudgetManager(this@launchApp, db).getCurrentBudget() }
             val decision = runBlocking { LaunchGate(this@launchApp, db).canLaunch(packageName, budget) }
             if (!decision.allowed) {
-                AlertDialog.Builder(this)
-                    .setTitle("Nicht verfügbar")
-                    .setMessage(decision.childVisibleMessage ?: "Diese App ist gerade nicht verfügbar.")
-                    .setPositiveButton("OK", null)
-                    .show()
+                showDenialDialog(this@launchApp, packageName, decision.childVisibleMessage, budget)
                 return
             }
         }
@@ -82,6 +79,34 @@ fun Activity.launchApp(packageName: String, activityName: String) {
             showErrorToast(e)
         }
     }
+}
+
+private fun showDenialDialog(
+    activity: android.app.Activity,
+    packageName: String,
+    message: String?,
+    budget: org.fossify.home.models.TimeBudget
+) {
+    val displayMessage = message ?: "Diese App ist gerade nicht verfügbar."
+
+    // Only offer "Anfragen" when it's a time/cooldown block (app IS whitelisted)
+    val canRequest = budget.balanceMinutes <= 0 || budget.inCooldown
+
+    val builder = AlertDialog.Builder(activity)
+        .setTitle("Nicht verfügbar")
+        .setMessage(displayMessage)
+        .setPositiveButton("OK", null)
+
+    if (canRequest) {
+        builder.setNeutralButton("Anfragen") { _, _ ->
+            // Open Doge request screen in child mode so Jake can request access
+            val intent = android.content.Intent(activity, org.fossify.home.activities.DogeRequestsActivity::class.java)
+                .putExtra("isParentMode", false)
+                .putExtra("prefill_package", packageName)
+            activity.startActivity(intent)
+        }
+    }
+    builder.show()
 }
 
 fun Activity.launchAppInfo(packageName: String) {

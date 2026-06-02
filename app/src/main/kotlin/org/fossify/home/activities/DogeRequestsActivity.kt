@@ -45,6 +45,8 @@ class DogeRequestsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         database = AppsDatabase.getInstance(this)
         isParentMode = intent.getBooleanExtra("isParentMode", false)
+        // Pre-fill if launched from a blocked-app denial dialog
+        val prefillPkg = intent.getStringExtra("prefill_package")
 
         content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -167,6 +169,8 @@ class DogeRequestsActivity : AppCompatActivity() {
         val input = EditText(this).apply {
             hint = "z.B. 'YouTube – Minecraft Tutorials'"
             inputType = InputType.TYPE_CLASS_TEXT
+            // Pre-fill if launched from a denied launch
+            prefillPkg?.let { setText(it) }
         }
         content.addView(input)
         content.addView(Button(this).apply {
@@ -226,7 +230,9 @@ class DogeRequestsActivity : AppCompatActivity() {
                 val request = manager.createRequest(text)
                 database.dogeRequestDao().insertRequest(request.toEntity())
             }
-            toast("Anfrage gesendet")
+            // Notify parent
+            org.fossify.home.helpers.NotificationHelper.notifyDogeRequest(this@DogeRequestsActivity, text)
+            toast("Anfrage gesendet — Mama/Papa werden benachrichtigt")
             onDone()
             showChildView()
         }

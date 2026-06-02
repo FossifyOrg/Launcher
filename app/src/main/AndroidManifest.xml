@@ -108,6 +108,13 @@
             android:label="Mein Status"
             android:theme="@style/AppTheme" />
 
+        <!-- LAUNCHPAD: Safe browsing (Entdecken-Modus) -->
+        <activity
+            android:name=".activities.EntdeckenActivity"
+            android:exported="false"
+            android:label="Entdecken"
+            android:theme="@style/AppTheme" />
+
         <!-- LAUNCHPAD: App whitelist management -->
         <activity
             android:name=".activities.AppsManagementActivity"
