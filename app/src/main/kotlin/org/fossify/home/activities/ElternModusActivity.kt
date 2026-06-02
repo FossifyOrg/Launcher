@@ -177,6 +177,9 @@ class ElternModusActivity : AppCompatActivity() {
                 Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true)
             )
         })
+        c.addView(fullWidthButton("Kopplung (QR)") {
+            startActivity(Intent(this, PairingActivity::class.java))
+        })
         c.addView(fullWidthButton("Ruhezeiten konfigurieren") { showCooldownConfig() })
         c.addView(fullWidthButton("Nutzungszugriff (Zeit-Tracking)") {
             val granted = UsageTracker.hasUsageAccess(this)

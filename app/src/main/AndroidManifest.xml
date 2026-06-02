@@ -130,6 +130,13 @@
             android:label="Medien-Anfragen"
             android:parentActivityName=".activities.ElternModusActivity" />
 
+        <!-- LAUNCHPAD M4: parent pairing (QR) -->
+        <activity
+            android:name=".activities.PairingActivity"
+            android:exported="false"
+            android:label="Kopplung"
+            android:parentActivityName=".activities.ElternModusActivity" />
+
         <!-- LAUNCHPAD M2: Time tracking background service -->
         <service
             android:name=".services.TimeTrackingService"
