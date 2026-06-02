@@ -17,6 +17,7 @@ import kotlinx.coroutines.*
 import org.fossify.home.R
 import org.fossify.home.databases.AllowedApp
 import org.fossify.home.databases.AppsDatabase
+import org.fossify.home.helpers.LaunchpadWidgetProvider
 import org.fossify.home.databases.CryptoCashTransaction
 import org.fossify.home.helpers.*
 import java.text.SimpleDateFormat
@@ -223,6 +224,7 @@ class ElternModusActivity : AppCompatActivity() {
                     }
                     toast("+$m Minuten hinzugefügt")
                     refresh()
+                    LaunchpadWidgetProvider.requestUpdate(this@ElternModusActivity)
                 }
             }
             .setNegativeButton("Abbrechen", null).show()
