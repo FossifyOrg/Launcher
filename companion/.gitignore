@@ -1,0 +1,6 @@
+# Standalone Gradle project — keep build output and machine-specific config out of git.
+.gradle/
+build/
+/local.properties
+*.iml
+/.idea/

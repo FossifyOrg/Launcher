@@ -47,7 +47,6 @@ class CompanionActivity : AppCompatActivity() {
         }
         root.addView(toolbar, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
         setSupportActionBar(toolbar)
-        toolbar.inflateMenu(android.R.menu.empty)
 
         val scroll = ScrollView(this)
         content = LinearLayout(this).apply {
