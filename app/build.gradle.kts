@@ -145,4 +145,12 @@ dependencies {
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)
     detektPlugins(libs.compose.detekt)
+
+    // LAUNCHPAD: coroutines (runBlocking / suspend DAOs), WorkManager (time tracking)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // LAUNCHPAD: unit tests for domain logic
+    testImplementation(libs.junit)
+    testImplementation(libs.org.json)
 }

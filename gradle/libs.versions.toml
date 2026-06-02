@@ -12,6 +12,11 @@ room = "2.8.4"
 commons = "6.1.6"
 #Gradle
 gradlePlugins-agp = "9.2.1"
+#LAUNCHPAD additions
+coroutines = "1.8.1"
+work = "2.9.1"
+junit = "4.13.2"
+orgJson = "20240303"
 #build
 app-build-compileSDKVersion = "36"
 app-build-targetSDK = "36"
@@ -27,6 +32,11 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 compose-detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektCompose" }
 #Fossify
 fossify-commons = { module = "org.fossify:commons", version.ref = "commons" }
+#LAUNCHPAD additions
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+junit = { module = "junit:junit", version.ref = "junit" }
+org-json = { module = "org.json:json", version.ref = "orgJson" }
 [bundles]
 room = [
     "androidx-room-ktx",
