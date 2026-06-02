@@ -1,96 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="#1A1A2E"
-    android:padding="32dp">
-
-    <TextView
-        android:id="@+id/cooldown_emoji"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="😌"
-        android:textSize="64sp"
-        android:layout_marginBottom="24dp" />
-
-    <TextView
-        android:id="@+id/cooldown_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bildschirm-Pause"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/cooldown_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zeit für etwas Ruhiges"
-        android:textSize="16sp"
-        android:textColor="#AAAAAA"
-        android:layout_marginBottom="32dp" />
-
-    <ProgressBar
-        android:id="@+id/cooldown_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:max="100"
-        android:progress="0"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:id="@+id/cooldown_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="15:00"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="monospace" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Was du jetzt machen kannst:"
-        android:textSize="14sp"
-        android:textColor="#AAAAAA"
-        android:textAlignment="center"
-        android:layout_marginBottom="16dp" />
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="32dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📚 Lesen"
+            android:text="😌"
+            android:textSize="64sp"
+            android:paddingBottom="16dp" />
+
+        <TextView
+            android:id="@+id/cooldown_timer_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15:00"
+            android:textSize="48sp"
+            android:textStyle="bold"
             android:textColor="#FFFFFF"
+            android:fontFamily="monospace"
+            android:paddingBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/cooldown_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:max="15"
+            android:progress="15"
+            android:paddingBottom="24dp" />
+
+        <TextView
+            android:id="@+id/cooldown_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#DDDDDD"
             android:textSize="16sp"
-            android:layout_marginEnd="16dp" />
+            android:gravity="center"
+            android:paddingBottom="24dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- CooldownActivity injects a title at index 0 and adds activity buttons here. -->
+        <LinearLayout
+            android:id="@+id/cooldown_app_buttons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🎨 Zeichnen"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:layout_marginEnd="16dp" />
+            android:orientation="vertical" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🧱 LEGO"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
