@@ -1,9 +1,7 @@
-// companion/app/build.gradle.kts
-// AGP 9.0+ has built-in Kotlin support — org.jetbrains.kotlin.android must NOT be applied.
-// Kotlin compiles automatically via com.android.application alone.
-
 plugins {
-    id("com.android.application")
+    // Standalone project: versions must be explicit (no shared root classpath).
+    // AGP 9.0+ has built-in Kotlin support — org.jetbrains.kotlin.android must NOT be applied.
+    id("com.android.application") version "9.2.1"
 }
 
 android {
