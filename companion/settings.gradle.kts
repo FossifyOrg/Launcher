@@ -10,10 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { setUrl("https://www.jitpack.io") }
-        mavenLocal()
     }
 }
+rootProject.name = "launchpad-companion"
 include(":app")
-// :companion is a standalone Android project (separate APK for the parent's phone).
-// Build it independently: cd companion && ./gradlew assembleDebug
