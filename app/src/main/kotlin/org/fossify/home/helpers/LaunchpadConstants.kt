@@ -97,6 +97,7 @@ object LaunchpadPrefs {
     const val PREF_LAST_SYNC_QR = "last_sync_qr"
     const val PREF_COOLDOWN_RULES_JSON = "cooldown_rules_json"
     const val PREF_COOLDOWN_UNTIL = "cooldown_until" // epoch ms; cool-down active while now < value
+    const val PREF_KIOSK_ENABLED = "kiosk_enabled" // M3: lock-task kiosk mode (device owner only)
 
     // Dedicated SharedPreferences file for LAUNCHPAD (separate from commons config).
     const val PREFS_FILE = "launchpad_prefs"

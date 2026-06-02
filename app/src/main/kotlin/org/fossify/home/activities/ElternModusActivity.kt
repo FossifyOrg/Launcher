@@ -30,6 +30,7 @@ import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.databases.CryptoCashTransaction
 import org.fossify.home.helpers.CooldownRulesConfig
 import org.fossify.home.helpers.CooldownRulesValidator
+import org.fossify.home.helpers.KioskManager
 import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.PinGateHelper
@@ -188,6 +189,14 @@ class ElternModusActivity : AppCompatActivity() {
                 }
             }
         })
+
+        val kioskState = when {
+            !KioskManager.isDeviceOwner(this) -> "nicht eingerichtet"
+            KioskManager.isKioskEnabled(this) -> "AN"
+            else -> "AUS"
+        }
+        c.addView(fullWidthButton("Kiosk-Modus (Gerätesperre): $kioskState") { toggleKiosk() })
+
         c.addView(fullWidthButton("Eltern-Modus beenden") {
             pinGate.deactivateParentMode()
             finish()
@@ -383,6 +392,36 @@ class ElternModusActivity : AppCompatActivity() {
                 toast("Ungültig: ${result.error}")
             }
         })
+    }
+
+    // ─── Kiosk / Device-Owner ──────────────────────────────────────────────────────
+
+    private fun toggleKiosk() {
+        if (!KioskManager.isDeviceOwner(this)) {
+            val cmd = KioskManager.deviceOwnerSetupCommand(this)
+            AlertDialog.Builder(this)
+                .setTitle("Kiosk-Modus benötigt Device Owner")
+                .setMessage(
+                    "Dieses Gerät ist nicht als Device Owner eingerichtet.\n\n" +
+                        "Auf einem frisch zurückgesetzten Gerät (ohne Google-Konto) einmalig " +
+                        "per ADB ausführen:\n\n$cmd\n\n" +
+                        "Danach kann der Kiosk-Modus hier aktiviert werden."
+                )
+                .setPositiveButton("OK", null)
+                .show()
+            return
+        }
+
+        val enabling = !KioskManager.isKioskEnabled(this)
+        KioskManager.setKioskEnabled(this, enabling)
+        if (enabling) {
+            KioskManager.applyRestrictions(this)
+            toast("Kiosk-Modus aktiviert — beim Launcher-Start aktiv")
+        } else {
+            KioskManager.stopKiosk(this)
+            toast("Kiosk-Modus deaktiviert")
+        }
+        showParentModeMenu()
     }
 
     private fun toast(message: String) =

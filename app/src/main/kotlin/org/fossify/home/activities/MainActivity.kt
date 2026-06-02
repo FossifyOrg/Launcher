@@ -104,6 +104,7 @@ import org.fossify.home.interfaces.ItemMenuListener
 import org.fossify.home.models.AppLauncher
 import org.fossify.home.models.HiddenIcon
 import org.fossify.home.models.HomeScreenGridItem
+import org.fossify.home.helpers.KioskManager
 import org.fossify.home.receivers.LockDeviceAdminReceiver
 import org.fossify.home.services.TimeTrackingStartup
 import kotlin.math.abs
@@ -263,6 +264,10 @@ class MainActivity : SimpleActivity(), FlingListener {
     override fun onResume() {
         super.onResume()
         wasJustPaused = false
+
+        // LAUNCHPAD M3: enter kiosk lock-task if enabled and provisioned as device owner.
+        KioskManager.onLauncherResumed(this, AppsDatabase.getInstance(this))
+
         refreshWallpaperSupportsDarkText()
         Handler(Looper.getMainLooper()).postDelayed({
             if (isAllAppsFragmentExpanded() || isWidgetsFragmentExpanded()) {
