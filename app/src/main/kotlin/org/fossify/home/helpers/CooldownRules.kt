@@ -1,21 +1,21 @@
-// File: shared/src/main/java/org/fossify/launchpad/config/CooldownRules.kt
+// File: app/src/main/kotlin/org/fossify/home/helpers/CooldownRules.kt
 // M2: Cool-down rules configuration via JSON import
+//
+// NOTE (LAUNCHPAD audit fix): originally used kotlinx.serialization, which requires the
+// kotlin-serialization Gradle plugin + dependency that this project does not apply. Switched
+// to android's built-in org.json so no extra plugin/dependency is needed. ValidationResult is
+// now imported from org.fossify.home.models.
 
 package org.fossify.home.helpers
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
+import org.fossify.home.models.ValidationResult
+import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * Cool-down Rules: JSON-configurable rule set for when/how cool-down activates.
  *
- * Default (M1):
- * - Activates when time budget = 0
- * - 15-minute duration
- * - Audiobooks, drawing, LEGO, reading allowed
- *
- * Customizable (M2):
- * Parents can import rules JSON like:
+ * Example JSON:
  * {
  *   "duration": 20,
  *   "allowed_apps": ["org.librarysimplified.r2.simplereader", "com.ibis.paintx"],
@@ -24,7 +24,6 @@ import kotlinx.serialization.json.Json
  *   "weekdays_only": false
  * }
  */
-@Serializable
 data class CooldownRulesConfig(
     val duration: Int = 15, // Minutes
     val allowed_apps: List<String> = defaultAllowedApps(),
@@ -32,13 +31,12 @@ data class CooldownRulesConfig(
     val trigger_on_scheduled_time: Boolean = false,
     val scheduled_times: List<String> = emptyList(), // HH:mm format
     val weekdays_only: Boolean = false,
-    val start_time: String = "00:00", // Daily start
-    val end_time: String = "23:59", // Daily end
+    val start_time: String = "00:00",
+    val end_time: String = "23:59",
     val message: String = "Bildschirmpause! Dein Hirn braucht eine Pause.",
     val enabled: Boolean = true
 ) {
     fun isValidJson(): Boolean {
-        // Basic validation
         if (duration <= 0 || duration > 120) return false
         if (allowed_apps.isEmpty()) return false
         if (!isValidTimeFormat(start_time)) return false
@@ -54,10 +52,8 @@ data class CooldownRulesConfig(
         val currentMinute = now.get(java.util.Calendar.MINUTE)
         val currentTime = String.format("%02d:%02d", currentHour, currentMinute)
 
-        // Check if current time is within active window
         if (currentTime < start_time || currentTime > end_time) return false
 
-        // Check weekdays_only
         if (weekdays_only) {
             val dayOfWeek = now.get(java.util.Calendar.DAY_OF_WEEK)
             if (dayOfWeek in listOf(java.util.Calendar.SATURDAY, java.util.Calendar.SUNDAY)) {
@@ -69,7 +65,10 @@ data class CooldownRulesConfig(
     }
 
     private fun isValidTimeFormat(time: String): Boolean {
-        return time.matches(Regex("""\d{2}:\d{2}"""))
+        if (!time.matches(Regex("""\d{2}:\d{2}"""))) return false
+        val hh = time.substring(0, 2).toIntOrNull() ?: return false
+        val mm = time.substring(3, 5).toIntOrNull() ?: return false
+        return hh in 0..23 && mm in 0..59
     }
 
     companion object {
@@ -84,7 +83,20 @@ data class CooldownRulesConfig(
 
         fun fromJson(jsonString: String): CooldownRulesConfig {
             return try {
-                Json.decodeFromString<CooldownRulesConfig>(jsonString)
+                val obj = JSONObject(jsonString)
+                CooldownRulesConfig(
+                    duration = obj.optInt("duration", 15),
+                    allowed_apps = obj.optJSONArray("allowed_apps").toStringList()
+                        .ifEmpty { defaultAllowedApps() },
+                    trigger_on_zero_balance = obj.optBoolean("trigger_on_zero_balance", true),
+                    trigger_on_scheduled_time = obj.optBoolean("trigger_on_scheduled_time", false),
+                    scheduled_times = obj.optJSONArray("scheduled_times").toStringList(),
+                    weekdays_only = obj.optBoolean("weekdays_only", false),
+                    start_time = obj.optString("start_time", "00:00"),
+                    end_time = obj.optString("end_time", "23:59"),
+                    message = obj.optString("message", "Bildschirmpause! Dein Hirn braucht eine Pause."),
+                    enabled = obj.optBoolean("enabled", true)
+                )
             } catch (e: Exception) {
                 // Return defaults if JSON invalid
                 CooldownRulesConfig()
@@ -92,28 +104,29 @@ data class CooldownRulesConfig(
         }
 
         fun toJson(config: CooldownRulesConfig): String {
-            return Json.encodeToString(config)
+            val obj = JSONObject()
+            obj.put("duration", config.duration)
+            obj.put("allowed_apps", JSONArray(config.allowed_apps))
+            obj.put("trigger_on_zero_balance", config.trigger_on_zero_balance)
+            obj.put("trigger_on_scheduled_time", config.trigger_on_scheduled_time)
+            obj.put("scheduled_times", JSONArray(config.scheduled_times))
+            obj.put("weekdays_only", config.weekdays_only)
+            obj.put("start_time", config.start_time)
+            obj.put("end_time", config.end_time)
+            obj.put("message", config.message)
+            obj.put("enabled", config.enabled)
+            return obj.toString()
         }
 
-        fun defaultJson(): String {
-            return """
-            {
-              "duration": 15,
-              "allowed_apps": [
-                "org.librarysimplified.r2.simplereader",
-                "com.ibis.paintx",
-                "com.lego.common"
-              ],
-              "trigger_on_zero_balance": true,
-              "trigger_on_scheduled_time": false,
-              "scheduled_times": [],
-              "weekdays_only": false,
-              "start_time": "00:00",
-              "end_time": "23:59",
-              "message": "Bildschirmpause! Dein Hirn braucht eine Pause.",
-              "enabled": true
+        fun defaultJson(): String = toJson(CooldownRulesConfig())
+
+        private fun JSONArray?.toStringList(): List<String> {
+            if (this == null) return emptyList()
+            val out = ArrayList<String>(length())
+            for (i in 0 until length()) {
+                out.add(getString(i))
             }
-            """.trimIndent()
+            return out
         }
     }
 }
@@ -124,7 +137,7 @@ data class CooldownRulesConfig(
 class CooldownRulesValidator {
     fun validate(jsonString: String): ValidationResult {
         return try {
-            val config = Json.decodeFromString<CooldownRulesConfig>(jsonString)
+            val config = CooldownRulesConfig.fromJson(jsonString)
 
             when {
                 config.duration <= 0 -> ValidationResult(
@@ -153,30 +166,3 @@ class CooldownRulesValidator {
         }
     }
 }
-
-/**
- * Example JSON imports:
-
-{
-  "duration": 20,
-  "allowed_apps": ["org.librarysimplified.r2.simplereader", "com.ibis.paintx"],
-  "enabled": true
-}
-
-{
-  "duration": 15,
-  "allowed_apps": ["com.lego.common", "com.amazon.kindle"],
-  "weekdays_only": true,
-  "start_time": "18:00",
-  "end_time": "20:00",
-  "message": "Abendliche Bildschirmpause!"
-}
-
-{
-  "duration": 10,
-  "allowed_apps": ["com.audible.application"],
-  "trigger_on_scheduled_time": true,
-  "scheduled_times": ["13:00", "18:00"],
-  "message": "Zeit zum Ausruhen und zur Achtsamkeit"
-}
- */

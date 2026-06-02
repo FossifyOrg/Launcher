@@ -1,4 +1,4 @@
-// File: app/src/main/java/org/fossify/home/helpers/Constants.kt
+// File: app/src/main/kotlin/org/fossify/home/helpers/LaunchpadConstants.kt
 // M1: LAUNCHPAD config keys and constants
 
 package org.fossify.home.helpers
@@ -68,8 +68,9 @@ object LaunchpadConstants {
     const val QR_PAIRING_NONCE_LENGTH_BYTES = 16
     const val QR_PAIRING_KEY_LENGTH_BYTES = 32 // AES-256
 
-    // Cool-down
-    const val COOLDOWN_ALLOWED_PACKAGES = listOf(
+    // Cool-down allowed packages. NOTE: must be `val` not `const val` — Kotlin `const`
+    // only permits primitives and String, never a List.
+    val COOLDOWN_ALLOWED_PACKAGES = listOf(
         // Audiobooks
         "org.librarysimplified.r2.simplereader",
         "com.audible.application",
@@ -82,16 +83,20 @@ object LaunchpadConstants {
 }
 
 object LaunchpadPrefs {
-    // SharedPreferences keys (used via BaseConfig from fossify-commons)
+    // SharedPreferences keys
     const val PREF_LAUNCHER_MODE = "launcher_mode" // kid or parent
     const val PREF_PARENT_LOCK_TYPE = "parent_lock_type" // PIN, etc
-    const val PREF_PARENT_LOCK_HASH = "parent_lock_hash" // via commons-Security
+    const val PREF_PARENT_LOCK_HASH = "parent_lock_hash"
     const val PREF_BASE_TIME_MINUTES = "base_time_minutes"
     const val PREF_WEEK_CAP_MINUTES = "week_cap_minutes"
     const val PREF_SCHOOL_DAY_CAP_MINUTES = "school_day_cap_minutes"
     const val PREF_COOLDOWN_MINUTES = "cooldown_minutes"
     const val PREF_LOCKDOWN_LEVEL = "lockdown_level"
-    const val PREF_PARENT_MODE_ACTIVE = "parent_mode_active" // transient: is Eltern-Modus currently active?
-    const val PREF_LAST_SYNC_QR = "last_sync_qr" // timestamp of last QR-pairing sync
-    const val PREF_COOLDOWN_RULES_JSON = "cooldown_rules_json" // rules imported via JSON
+    const val PREF_PARENT_MODE_ACTIVE = "parent_mode_active"
+    const val PREF_PARENT_MODE_ACTIVATED_AT = "parent_mode_activated_at"
+    const val PREF_LAST_SYNC_QR = "last_sync_qr"
+    const val PREF_COOLDOWN_RULES_JSON = "cooldown_rules_json"
+
+    // Dedicated SharedPreferences file for LAUNCHPAD (separate from commons config).
+    const val PREFS_FILE = "launchpad_prefs"
 }

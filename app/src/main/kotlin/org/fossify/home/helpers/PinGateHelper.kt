@@ -1,177 +1,136 @@
-// File: app/src/main/java/org/fossify/home/helpers/PinGateHelper.kt
-// M1: PIN protection for sensitive menus via fossify-commons Security
+// File: app/src/main/kotlin/org/fossify/home/helpers/PinGateHelper.kt
+// M1: PIN protection for sensitive menus
+//
+// NOTE (LAUNCHPAD audit fix): previously depended on org.fossify.commons.helpers.BaseConfig
+// (whose `prefs` is not reliably public) and a non-existent SecurityUtils class. Now uses a
+// dedicated SharedPreferences file and a self-contained salted SHA-256 hash. Menu id `hide`
+// was corrected to the real `hide_icon`. A real 30-minute parent-mode timeout is enforced.
 
 package org.fossify.home.helpers
 
 import android.content.Context
-import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
-import org.fossify.commons.helpers.BaseConfig
-import org.fossify.commons.helpers.SecurityUtils
+import org.fossify.home.R
+import java.security.MessageDigest
+import java.security.SecureRandom
 
-/**
- * PinGateHelper: Unified PIN verification for menus and settings.
- * Uses fossify-commons BaseConfig and Security API.
- *
- * Integration with fossify-commons 6.1.6:
- * - Uses BaseConfig (SharedPreferences wrapper)
- * - Uses SecurityUtils for PIN hashing (if available)
- * - Falls back to basic SHA-256 if SecurityUtils unavailable
- */
 class PinGateHelper(
-    private val context: Context,
-    private val config: BaseConfig = BaseConfig(context)
+    private val context: Context
 ) {
     private val tag = "PinGateHelper"
 
-    /**
-     * Check if parent PIN is set up.
-     */
-    fun isPinConfigured(): Boolean {
-        return config.prefs.contains(LaunchpadPrefs.PREF_PARENT_LOCK_HASH)
-    }
+    private val prefs: SharedPreferences =
+        context.applicationContext.getSharedPreferences(
+            LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE
+        )
 
-    /**
-     * Set up parent PIN (called during Eltern-Modus setup).
-     */
+    private val parentModeTimeoutMs = 30 * 60 * 1000L
+
+    fun isPinConfigured(): Boolean =
+        prefs.contains(LaunchpadPrefs.PREF_PARENT_LOCK_HASH)
+
     fun setPinCode(pin: String): Boolean {
-        try {
-            val hash = hashPin(pin)
-            config.prefs.edit().putString(LaunchpadPrefs.PREF_PARENT_LOCK_HASH, hash).apply()
+        return try {
+            // Generate a per-install salt the first time a PIN is set.
+            val salt = prefs.getString(SALT_KEY, null) ?: generateSalt().also {
+                prefs.edit().putString(SALT_KEY, it).apply()
+            }
+            prefs.edit().putString(LaunchpadPrefs.PREF_PARENT_LOCK_HASH, hashPin(pin, salt)).apply()
             Log.d(tag, "PIN configured successfully")
-            return true
+            true
         } catch (e: Exception) {
             Log.e(tag, "Failed to set PIN", e)
-            return false
+            false
         }
     }
 
-    /**
-     * Verify entered PIN against stored hash.
-     * Returns true if correct, false otherwise.
-     */
     fun verifyPin(enteredPin: String): Boolean {
-        try {
-            val storedHash = config.prefs.getString(LaunchpadPrefs.PREF_PARENT_LOCK_HASH, "") ?: ""
-            if (storedHash.isEmpty()) {
+        return try {
+            val storedHash = prefs.getString(LaunchpadPrefs.PREF_PARENT_LOCK_HASH, "").orEmpty()
+            val salt = prefs.getString(SALT_KEY, "").orEmpty()
+            if (storedHash.isEmpty() || salt.isEmpty()) {
                 Log.w(tag, "No PIN configured yet")
                 return false
             }
-
-            val enteredHash = hashPin(enteredPin)
-            val matches = enteredHash == storedHash
-
-            if (!matches) {
-                Log.w(tag, "PIN verification failed")
-            }
-            return matches
+            constantTimeEquals(hashPin(enteredPin, salt), storedHash)
         } catch (e: Exception) {
             Log.e(tag, "PIN verification error", e)
-            return false
+            false
         }
     }
 
-    /**
-     * Check if Eltern-Modus is currently active.
-     * Transient flag that lasts for the session or a timeout.
-     */
     fun isParentModeActive(): Boolean {
-        return config.prefs.getBoolean(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVE, false)
+        if (!prefs.getBoolean(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVE, false)) return false
+        val activatedAt = prefs.getLong(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVATED_AT, 0L)
+        if (System.currentTimeMillis() - activatedAt > parentModeTimeoutMs) {
+            // Session expired — auto-deactivate.
+            deactivateParentMode()
+            return false
+        }
+        return true
     }
 
-    /**
-     * Activate Eltern-Modus (allow sensitive operations without re-verifying PIN).
-     * Should timeout after 30 minutes or on app close.
-     */
     fun activateParentMode(durationMinutes: Int = 30) {
-        config.prefs.edit().putBoolean(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVE, true).apply()
+        prefs.edit()
+            .putBoolean(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVE, true)
+            .putLong(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVATED_AT, System.currentTimeMillis())
+            .apply()
         Log.d(tag, "Parent mode activated for $durationMinutes min")
-        // TODO: Implement timeout handler
     }
 
-    /**
-     * Deactivate Eltern-Modus.
-     */
     fun deactivateParentMode() {
-        config.prefs.edit().putBoolean(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVE, false).apply()
+        prefs.edit().putBoolean(LaunchpadPrefs.PREF_PARENT_MODE_ACTIVE, false).apply()
         Log.d(tag, "Parent mode deactivated")
     }
 
     /**
-     * Should this menu action be PIN-gated?
+     * Which menu actions require PIN. Ids must exist in menu_home_screen / menu_app_icon.
      */
     fun shouldGateAction(actionId: Int): Boolean {
         return when (actionId) {
-            // Menu actions that require PIN
             R.id.launcher_settings -> true
             R.id.set_as_default -> true
             R.id.app_info -> true
             R.id.uninstall -> true
-            R.id.hide -> true
+            R.id.hide_icon -> true
             R.id.rename -> true
             R.id.remove -> true
-            // Safe actions (no PIN needed)
-            R.id.widgets -> false
-            R.id.wallpapers -> false
-            R.id.resize -> false
             else -> false
         }
     }
 
     /**
-     * Attempt menu action with PIN verification.
-     * Returns true if allowed (either PIN verified or parent mode active).
+     * Returns true if the action may proceed without a PIN prompt (parent mode active or
+     * action is not gated). Returns false to signal the caller to show a PIN dialog.
      */
     fun checkMenuAction(actionId: Int): Boolean {
-        // If parent mode is active, allow without verification
-        if (isParentModeActive()) {
-            Log.d(tag, "Parent mode active, allowing action $actionId")
-            return true
-        }
-
-        // Otherwise check if this action requires PIN
-        if (shouldGateAction(actionId)) {
-            Log.d(tag, "Action $actionId requires PIN verification")
-            return false // Signal caller to show PIN entry dialog
-        }
-
-        // Action doesn't require PIN
-        return true
+        if (isParentModeActive()) return true
+        return !shouldGateAction(actionId)
     }
 
-    /**
-     * Hash PIN using commons-Security or fallback to SHA-256.
-     * Never store plain-text PINs!
-     */
-    private fun hashPin(pin: String): String {
-        return try {
-            // Try to use commons-Security if available
-            val pinHashMethod = SecurityUtils::class.java.getMethod("hashPassword", String::class.java)
-            pinHashMethod.invoke(null, pin) as String
-        } catch (e: Exception) {
-            // Fallback to SHA-256
-            val digest = java.security.MessageDigest.getInstance("SHA-256")
-            val hashBytes = digest.digest(pin.toByteArray())
-            hashBytes.joinToString("") { "%02x".format(it) }
-        }
+    private fun hashPin(pin: String, salt: String): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val bytes = digest.digest((salt + pin).toByteArray(Charsets.UTF_8))
+        return bytes.joinToString("") { "%02x".format(it) }
     }
-}
 
-/**
- * PinEntryDialog integration:
- * This would be a reusable dialog/activity for PIN entry.
- * Call from MainActivity when shouldGateAction returns false.
- */
-interface PinGateCallback {
-    fun onPinVerified()
-    fun onPinDenied()
-    fun onPinCancelled()
-}
+    private fun generateSalt(): String {
+        val bytes = ByteArray(16)
+        SecureRandom().nextBytes(bytes)
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
 
-class PinGateActivity : android.app.Activity() {
-    // TODO: Implement PIN entry UI with numeric keyboard
-    // Shows: "Eltern PIN eingeben"
-    // On success: calls callback.onPinVerified() and sets parent mode active
-    // On failure (3 attempts): calls callback.onPinDenied()
-    // On cancel: calls callback.onPinCancelled()
+    private fun constantTimeEquals(a: String, b: String): Boolean {
+        if (a.length != b.length) return false
+        var result = 0
+        for (i in a.indices) {
+            result = result or (a[i].code xor b[i].code)
+        }
+        return result == 0
+    }
+
+    companion object {
+        private const val SALT_KEY = "parent_lock_salt"
+    }
 }
