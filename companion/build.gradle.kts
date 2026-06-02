@@ -1,6 +1,9 @@
 plugins {
-    id("com.android.application") version "9.2.1"
-    id("org.jetbrains.kotlin.android") version "2.3.10"
+    // Versions omitted: both plugins are already on the classpath via the root project
+    // (AGP 9.2.1 + Kotlin 2.3.10 applied by the root build.gradle.kts). Declaring a
+    // version here causes "already on classpath with unknown version" conflict.
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
