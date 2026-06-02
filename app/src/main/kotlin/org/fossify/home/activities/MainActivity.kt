@@ -149,6 +149,10 @@ class MainActivity : SimpleActivity(), FlingListener {
         private const val ANIMATION_DURATION = 150L
         private const val APP_DRAWER_CLOSE_DELAY = 300L
         private const val APP_DRAWER_STATE = "app_drawer_state"
+
+        // LAUNCHPAD: shown once per process cold start so HOME-press always sees the rocket.
+        @JvmStatic
+        private var rocketShownThisProcess = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -198,6 +202,14 @@ class MainActivity : SimpleActivity(), FlingListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.rules_overlay, RulesFragment())
                 .commitAllowingStateLoss()
+        }
+
+        // LAUNCHPAD: play the rocket splash on first cold start of this process.
+        // Subsequent HOME presses are instant (the static flag persists across activity recreation
+        // but resets when the launcher process is killed).
+        if (!rocketShownThisProcess) {
+            rocketShownThisProcess = true
+            showRocketSplash()
         }
 
         binding.homeScreenGrid.root.itemClickListener = {
@@ -921,6 +933,37 @@ class MainActivity : SimpleActivity(), FlingListener {
             }
             show()
         }
+    }
+
+    // ─── LAUNCHPAD: Rocket splash overlay ─────────────────────────────────────
+
+    private fun showRocketSplash() {
+        val overlay = binding.root.findViewById<FrameLayout>(R.id.rocket_splash) ?: return
+        val anim = overlay.findViewById<com.airbnb.lottie.LottieAnimationView>(R.id.rocket_splash_animation) ?: return
+
+        overlay.visibility = android.view.View.VISIBLE
+        overlay.alpha = 1f
+        anim.progress = 0f
+        anim.playAnimation()
+
+        // Fade out and remove after the rocket clip finishes (3s) — with a 4.5s safety timeout.
+        val hide = Runnable {
+            overlay.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction { overlay.visibility = android.view.View.GONE }
+                .start()
+        }
+        anim.addAnimatorListener(object : android.animation.Animator.AnimatorListener {
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                overlay.removeCallbacks(hide)
+                hide.run()
+            }
+            override fun onAnimationStart(animation: android.animation.Animator) {}
+            override fun onAnimationCancel(animation: android.animation.Animator) { hide.run() }
+            override fun onAnimationRepeat(animation: android.animation.Animator) {}
+        })
+        overlay.postDelayed(hide, 4_500L)
     }
 
     // ─── LAUNCHPAD: Jake's status bar ─────────────────────────────────────────

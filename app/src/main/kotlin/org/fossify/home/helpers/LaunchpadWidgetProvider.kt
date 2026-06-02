@@ -43,16 +43,18 @@ class LaunchpadWidgetProvider : AppWidgetProvider() {
                     else -> Quadruple("⏱️", "$balance Min", "#4CAF50", balance.coerceAtMost(120))
                 }
 
+                val color = android.graphics.Color.parseColor(dotColor)
                 views.setTextViewText(R.id.widget_icon, icon)
                 views.setTextViewText(R.id.widget_balance, balanceText)
-                views.setInt(R.id.widget_mode_dot, "setBackgroundColor",
-                    android.graphics.Color.parseColor(dotColor))
+                views.setInt(R.id.widget_mode_dot, "setBackgroundColor", color)
                 views.setProgressBar(R.id.widget_progress, 120, progress, false)
-                views.setInt(R.id.widget_progress, "setProgressTintList",
-                    android.content.res.ColorStateList.valueOf(
-                        android.graphics.Color.parseColor(dotColor)
-                    ).let { 0 } // RemoteViews can't set tint this way; use setInt below
-                )
+                // Tint the progress bar — RemoteViews supports setColorStateList on API 31+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                    views.setColorStateList(
+                        R.id.widget_progress, "setProgressTintList",
+                        android.content.res.ColorStateList.valueOf(color)
+                    )
+                }
 
                 // Tap → open Jake's dashboard
                 val pi = PendingIntent.getActivity(
