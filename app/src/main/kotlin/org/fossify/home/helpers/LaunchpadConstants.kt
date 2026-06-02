@@ -99,6 +99,13 @@ object LaunchpadPrefs {
     const val PREF_COOLDOWN_UNTIL = "cooldown_until" // epoch ms; cool-down active while now < value
     const val PREF_KIOSK_ENABLED = "kiosk_enabled" // M3: lock-task kiosk mode (device owner only)
 
+    // M4: QR pairing — launcher keypair (Base64), AES session key, paired parent identity
+    const val PREF_PAIR_PRIVATE_KEY = "pair_private_key" // PKCS8 Base64
+    const val PREF_PAIR_PUBLIC_KEY = "pair_public_key" // X509 Base64
+    const val PREF_PAIR_SESSION_KEY = "pair_session_key" // AES raw Base64
+    const val PREF_PAIR_PARENT_ID = "pair_parent_id"
+    const val PREF_PAIR_NONCE = "pair_nonce"
+
     // Dedicated SharedPreferences file for LAUNCHPAD (separate from commons config).
     const val PREFS_FILE = "launchpad_prefs"
 }

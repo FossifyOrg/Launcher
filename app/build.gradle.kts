@@ -150,6 +150,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.work.runtime.ktx)
 
+    // LAUNCHPAD M4: QR code rendering for parent pairing
+    implementation(libs.zxing.core)
+
     // LAUNCHPAD: unit tests for domain logic
     testImplementation(libs.junit)
     testImplementation(libs.org.json)

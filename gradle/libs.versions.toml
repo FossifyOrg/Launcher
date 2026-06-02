@@ -17,6 +17,7 @@ coroutines = "1.8.1"
 work = "2.9.1"
 junit = "4.13.2"
 orgJson = "20240303"
+zxing = "3.5.3"
 #build
 app-build-compileSDKVersion = "36"
 app-build-targetSDK = "36"
@@ -37,6 +38,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 junit = { module = "junit:junit", version.ref = "junit" }
 org-json = { module = "org.json:json", version.ref = "orgJson" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
 [bundles]
 room = [
     "androidx-room-ktx",
