@@ -37,6 +37,7 @@ class EntdeckenActivity : AppCompatActivity() {
 
     // Block back-press when WebView can go back
     @Deprecated("Deprecated in Java")
+    @Suppress("GestureBackNavigation")
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.entdecken_container)
         if (fragment is EntdeckenFragment) {

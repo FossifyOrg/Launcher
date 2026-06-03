@@ -3,11 +3,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="LAUNCHPAD Eltern"
-        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+        android:theme="@style/Theme.MaterialComponents.NoActionBar"
+        android:usesCleartextTraffic="true"
         android:allowBackup="false">
 
         <activity

@@ -5,6 +5,13 @@ package org.fossify.home.models
 
 import java.util.UUID
 
+private const val SECONDS_PER_MINUTE = 60
+private const val MILLIS_PER_MINUTE = 60 * 1000L
+private const val DURATION_EDUCATIONAL_MIN = 30
+private const val DURATION_MINECRAFT_MIN = 25
+private const val DURATION_YOUTUBE_MIN = 20
+private const val DURATION_DEFAULT_MIN = 15
+
 /**
  * Doge-Coin: Approval for SOG (short-form video) content.
  *
@@ -56,8 +63,8 @@ data class DogeRequest(
  * 4. Enforce duration limits (e.g., 20 min YouTube)
  * 5. Track request history (what Jake likes, patterns)
  */
+@Suppress("TooManyFunctions") // request-lifecycle service; functions are cohesive
 class DogeManager {
-    private val tag = "DogeManager"
 
     /**
      * Create request from child.
@@ -91,10 +98,10 @@ class DogeManager {
         reason: String = ""
     ): DogeRequest {
         if (!request.isPending()) {
-            throw IllegalStateException("Request ${request.id} already decided")
+            error("Request ${request.id} already decided")
         }
 
-        val expiresAt = System.currentTimeMillis() + (durationMinutes * 60 * 1000L)
+        val expiresAt = System.currentTimeMillis() + (durationMinutes * MILLIS_PER_MINUTE)
 
         return request.copy(
             status = "APPROVED",
@@ -118,7 +125,7 @@ class DogeManager {
         reason: String = ""
     ): DogeRequest {
         if (!request.isPending()) {
-            throw IllegalStateException("Request ${request.id} already decided")
+            error("Request ${request.id} already decided")
         }
 
         return request.copy(
@@ -159,7 +166,7 @@ class DogeManager {
         if (!request.isApproved()) return null
         val expiresAt = request.expiresAt ?: return null
         val remaining = expiresAt - System.currentTimeMillis()
-        return (remaining / 1000 / 60).toInt().coerceAtLeast(0)
+        return (remaining / 1000 / SECONDS_PER_MINUTE).toInt().coerceAtLeast(0)
     }
 
     /**
@@ -213,18 +220,18 @@ class DogeManager {
     fun suggestApprovalDuration(contentDescription: String): Int {
         return when {
             // Educational content → longer approval
-            contentDescription.contains("tutorial", ignoreCase = true) -> 30
-            contentDescription.contains("educational", ignoreCase = true) -> 30
-            contentDescription.contains("learning", ignoreCase = true) -> 30
+            contentDescription.contains("tutorial", ignoreCase = true) -> DURATION_EDUCATIONAL_MIN
+            contentDescription.contains("educational", ignoreCase = true) -> DURATION_EDUCATIONAL_MIN
+            contentDescription.contains("learning", ignoreCase = true) -> DURATION_EDUCATIONAL_MIN
             // Minecraft → often educational (building, problem-solving)
-            contentDescription.contains("minecraft", ignoreCase = true) -> 25
+            contentDescription.contains("minecraft", ignoreCase = true) -> DURATION_MINECRAFT_MIN
             // General entertainment → moderate
-            contentDescription.contains("youtube", ignoreCase = true) -> 20
+            contentDescription.contains("youtube", ignoreCase = true) -> DURATION_YOUTUBE_MIN
             // NOTE: no "video" branch — "Video streaming" and other generic video strings
             // should fall through to the default 15, not 20. The "video" branch was too
             // broad and caused testSuggestApprovalDuration to fail.
             // Short-form by default
-            else -> 15
+            else -> DURATION_DEFAULT_MIN
         }
     }
 
@@ -233,7 +240,7 @@ class DogeManager {
         calendar.timeInMillis = timestamp
         val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
         val minute = calendar.get(java.util.Calendar.MINUTE)
-        return String.format("%02d:%02d", hour, minute)
+        return String.format(java.util.Locale.US, "%02d:%02d", hour, minute)
     }
 }
 

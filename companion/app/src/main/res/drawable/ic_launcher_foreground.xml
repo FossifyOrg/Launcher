@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive-icon foreground: a guardian shield with a check — the parent/approval motif. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Shield -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,27 L77,37 L77,57 C77,69 67,78 54,83 C41,78 31,69 31,57 L31,37 Z" />
+
+    <!-- Check mark -->
+    <path
+        android:strokeColor="#1A1A2E"
+        android:strokeWidth="7"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M43,55 L51,63 L67,45" />
+</vector>

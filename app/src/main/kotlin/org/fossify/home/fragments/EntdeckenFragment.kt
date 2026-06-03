@@ -131,6 +131,7 @@ class EntdeckenContentFilter {
         loaded = true
     }
 
+    @Suppress("ReturnCount", "TooGenericExceptionCaught") // guard-style returns; broad fail-safe catch
     fun shouldAllowUrl(urlString: String): FilterDecision {
         if (urlString == "about:blank") return FilterDecision(true, null)
         return try {
@@ -155,6 +156,7 @@ class EntdeckenContentFilter {
         return allowedDomains.contains(extractBaseDomain(domain))
     }
 
+    @Suppress("TooGenericExceptionCaught") // broad catch: invalid regex patterns fall back safely
     private fun isBlocklisted(domain: String): Boolean {
         for (pattern in hardBlockPatterns) {
             if (domain.endsWith(pattern)) return true
@@ -165,6 +167,7 @@ class EntdeckenContentFilter {
                     return true
                 }
             } catch (e: Exception) {
+                Log.w(tag, "Invalid block pattern: $pattern", e)
                 if (domain.endsWith(pattern)) return true
             }
         }

@@ -6,12 +6,20 @@ package org.fossify.home.activities
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.TimeBudgetManager
 
+@Suppress("MagicNumber", "CyclomaticComplexMethod") // UI built programmatically
 class JakeDashboardActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -24,7 +32,10 @@ class JakeDashboardActivity : AppCompatActivity() {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.parseColor("#1A1A2E"))
-            layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
             setPadding(0, 0, 0, 0)
         }
 
@@ -85,7 +96,11 @@ class JakeDashboardActivity : AppCompatActivity() {
                     resources.getDrawable(tv.resourceId, theme)
                 }
                 addView(TextView(context).apply { text = emoji; textSize = 32f; gravity = android.view.Gravity.CENTER })
-                addView(TextView(context).apply { text = label; textSize = 12f; setTextColor(Color.argb(200, 255, 255, 255)); gravity = android.view.Gravity.CENTER; setPadding(0, 4, 0, 0) })
+                addView(TextView(context).apply {
+                    text = label; textSize = 12f
+                    setTextColor(Color.argb(200, 255, 255, 255))
+                    gravity = android.view.Gravity.CENTER; setPadding(0, 4, 0, 0)
+                })
                 setOnClickListener { onClick() }
             }
         }
@@ -105,7 +120,9 @@ class JakeDashboardActivity : AppCompatActivity() {
 
         // Load live data
         scope.launch {
-            val budget = withContext(Dispatchers.IO) { TimeBudgetManager(this@JakeDashboardActivity, db).getCurrentBudget() }
+            val budget = withContext(Dispatchers.IO) {
+                TimeBudgetManager(this@JakeDashboardActivity, db).getCurrentBudget()
+            }
             timeView.text = "${budget.balanceMinutes}"
             timeView.setTextColor(when {
                 budget.balanceMinutes <= 0 -> Color.parseColor("#FF4444")

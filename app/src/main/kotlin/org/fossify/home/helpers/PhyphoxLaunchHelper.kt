@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // fail-safe catches
+
 package org.fossify.home.helpers
 
 import android.content.Context
@@ -27,7 +29,6 @@ object PhyphoxLaunchHelper {
     private const val TAG = "PhyphoxLaunchHelper"
     private const val ASSET_DIR = "phyphox"
     private const val PHYPHOX_MIME = "application/phyphox"
-    private const val PHYPHOX_PACKAGE = "de.rwth_aachen.phyphox"
 
     /**
      * Startet ein Phyphox-Experiment.
@@ -64,6 +65,7 @@ object PhyphoxLaunchHelper {
         packageName == "phyphox.experiment"
 
     /** Alle verfügbaren Experimente als Liste */
+    @Suppress("UnusedParameter") // context kept for API symmetry
     fun availableExperiments(context: Context): List<PhyphoxExperiment> = listOf(
         PhyphoxExperiment(
             filename    = "01_magnet_explorer.phyphox",

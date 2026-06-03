@@ -8,6 +8,9 @@
 // kiosk: lock-task pinned to the launcher + whitelisted apps, status bar disabled, launcher
 // uninstall blocked, safe-boot / add-user restricted.
 
+// Device-policy literals + intentional fail-safe catches.
+@file:Suppress("MagicNumber", "TooManyFunctions", "TooGenericExceptionCaught")
+
 package org.fossify.home.helpers
 
 import android.app.Activity
@@ -36,7 +39,12 @@ object KioskManager {
         context.getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
 
     fun isDeviceOwner(context: Context): Boolean =
-        try { dpm(context).isDeviceOwnerApp(context.packageName) } catch (e: Exception) { false }
+        try {
+            dpm(context).isDeviceOwnerApp(context.packageName)
+        } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "isDeviceOwner check failed", e)
+            false
+        }
 
     fun isKioskEnabled(context: Context): Boolean =
         prefs(context).getBoolean(LaunchpadPrefs.PREF_KIOSK_ENABLED, false)

@@ -6,6 +6,8 @@
 // decrypt, AES key (de)serialisation) so the launcher can hold a keypair, publish its public
 // key in a QR, receive an encrypted session key, and decrypt commands.
 
+@file:Suppress("MagicNumber", "TooManyFunctions", "TooGenericExceptionCaught") // crypto sizes; fail-safe catches
+
 package org.fossify.home.helpers
 
 import android.util.Base64
@@ -95,6 +97,7 @@ class QrPairingProtocol {
             cipher.init(Cipher.DECRYPT_MODE, sessionKey, GCMParameterSpec(GCM_TAG_SIZE_BITS, iv))
             String(cipher.doFinal(ciphertext), Charsets.UTF_8)
         } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "QR decrypt failed", e)
             null
         }
     }
@@ -112,7 +115,8 @@ data class QrPayloadJson(
     val publicKeyB64: String,    // Base64 X509 RSA public key
     val nonceHex: String,
     val timestamp: Long,
-    val persistent: Boolean = true
+    val persistent: Boolean = true,
+    val ip: String = ""          // LAN IP of the launcher device (e.g. "192.168.1.42")
 ) {
     fun toJson(): String = JSONObject().apply {
         put("version", version)
@@ -121,6 +125,7 @@ data class QrPayloadJson(
         put("nonceHex", nonceHex)
         put("timestamp", timestamp)
         put("persistent", persistent)
+        if (ip.isNotEmpty()) put("ip", ip)
     }.toString()
 
     companion object {
@@ -132,7 +137,8 @@ data class QrPayloadJson(
                 publicKeyB64 = o.optString("publicKeyB64", ""),
                 nonceHex = o.optString("nonceHex", ""),
                 timestamp = o.optLong("timestamp", 0L),
-                persistent = o.optBoolean("persistent", true)
+                persistent = o.optBoolean("persistent", true),
+                ip = o.optString("ip", "")
             )
         }
     }

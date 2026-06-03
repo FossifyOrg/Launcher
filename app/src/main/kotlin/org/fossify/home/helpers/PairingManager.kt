@@ -3,6 +3,8 @@
 // the parent app to scan, receives the parent's AES session key (RSA-encrypted), and decrypts
 // incoming commands with it. Transport (LAN/QR-return/paste) is supplied by the caller.
 
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // crypto sizes; fail-safe catch
+
 package org.fossify.home.helpers
 
 import android.content.Context
@@ -50,9 +52,20 @@ class PairingManager(context: Context) {
             identity = launcherIdentity,
             publicKeyB64 = p.getString(LaunchpadPrefs.PREF_PAIR_PUBLIC_KEY, "").orEmpty(),
             nonceHex = p.getString(LaunchpadPrefs.PREF_PAIR_NONCE, "").orEmpty(),
-            timestamp = System.currentTimeMillis()
+            timestamp = System.currentTimeMillis(),
+            ip = getLanIp()
         )
         return payload.toJson()
+    }
+
+    private fun getLanIp(): String = try {
+        java.net.NetworkInterface.getNetworkInterfaces().toList()
+            .flatMap { it.inetAddresses.toList() }
+            .firstOrNull { !it.isLoopbackAddress && it is java.net.Inet4Address }
+            ?.hostAddress ?: ""
+    } catch (e: Exception) {
+        Log.w(tag, "getLanIp failed", e)
+        ""
     }
 
     /**

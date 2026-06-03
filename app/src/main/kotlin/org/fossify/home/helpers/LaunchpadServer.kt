@@ -7,6 +7,9 @@
 //   GET  /api/pending    → {doge:[...], zusagen:[...]}
 //   POST /api/command    → apply CommandProcessor; returns {ok, message}
 
+// HTTP status codes + broad intentional fail-safe catches.
+@file:Suppress("MagicNumber", "CyclomaticComplexMethod", "NestedBlockDepth", "TooGenericExceptionCaught")
+
 package org.fossify.home.helpers
 
 import android.content.Context
@@ -154,12 +157,16 @@ object LaunchpadServer {
 
     private fun getLocalIp(): String = getLocalIp(null) ?: "unknown"
 
+    @Suppress("UnusedParameter") // kept for API symmetry with getLocalIp()
     fun getLocalIp(context: android.content.Context?): String? {
         return try {
             java.net.NetworkInterface.getNetworkInterfaces().toList()
                 .flatMap { it.inetAddresses.toList() }
                 .firstOrNull { !it.isLoopbackAddress && it is java.net.Inet4Address }
                 ?.hostAddress
-        } catch (e: Exception) { null }
+        } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "getLocalIp failed", e)
+            null
+        }
     }
 }

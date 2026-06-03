@@ -6,6 +6,8 @@
 // Krypto-Cash ledger via TimeBudgetManager.spend(); when the balance reaches 0 the cool-down
 // window starts and CooldownActivity is shown. Requires Usage Access (granted in Eltern-Modus).
 
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // polling intervals; fail-safe catches
+
 package org.fossify.home.services
 
 import android.app.Notification
@@ -193,6 +195,7 @@ class TimeTrackingWorker(context: Context, params: WorkerParameters) :
         Log.d("TimeTrackingWorker", "Periodic check")
         Result.success()
     } catch (e: Exception) {
+        Log.w("TimeTrackingWorker", "Periodic check failed", e)
         Result.retry()
     }
 

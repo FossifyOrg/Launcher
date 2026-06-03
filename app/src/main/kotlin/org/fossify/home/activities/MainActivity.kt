@@ -115,6 +115,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
+@Suppress("MagicNumber")
 class MainActivity : SimpleActivity(), FlingListener {
     private var mTouchDownX = -1
     private var mTouchDownY = -1
@@ -959,9 +960,9 @@ class MainActivity : SimpleActivity(), FlingListener {
                 overlay.removeCallbacks(hide)
                 hide.run()
             }
-            override fun onAnimationStart(animation: android.animation.Animator) {}
+            override fun onAnimationStart(animation: android.animation.Animator) { /* no-op */ }
             override fun onAnimationCancel(animation: android.animation.Animator) { hide.run() }
-            override fun onAnimationRepeat(animation: android.animation.Animator) {}
+            override fun onAnimationRepeat(animation: android.animation.Animator) { /* no-op */ }
         })
         overlay.postDelayed(hide, 4_500L)
     }
@@ -993,7 +994,10 @@ class MainActivity : SimpleActivity(), FlingListener {
 
         CoroutineScope(Dispatchers.Main).launch {
             val budget = withContext(Dispatchers.IO) {
-                org.fossify.home.helpers.TimeBudgetManager(this@MainActivity, AppsDatabase.getInstance(this@MainActivity)).getCurrentBudget()
+                org.fossify.home.helpers.TimeBudgetManager(
+                    this@MainActivity,
+                    AppsDatabase.getInstance(this@MainActivity)
+                ).getCurrentBudget()
             }
             when {
                 budget.inCooldown -> {

@@ -10,5 +10,9 @@ on:
 
 jobs:
   call-image-minimizer-workflow:
+    # The upstream reusable workflow mints a GitHub App token from FossifyOrg org
+    # secrets/vars that don't exist in forks, so it hard-fails on every PR here.
+    # Only run it in the upstream org; it is skipped (not failed) in forks.
+    if: ${{ github.repository_owner == 'FossifyOrg' }}
     uses: FossifyOrg/.github/.github/workflows/image-minimizer.yml@main
     secrets: inherit

@@ -13,6 +13,7 @@ import com.airbnb.lottie.LottieAnimationView
 import org.fossify.home.R
 import org.fossify.home.helpers.LaunchpadPrefs
 
+@Suppress("MagicNumber")
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +32,9 @@ class SplashActivity : AppCompatActivity() {
             override fun onAnimationEnd(animation: Animator) {
                 navigate()
             }
-            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) { /* no-op */ }
             override fun onAnimationCancel(animation: Animator) { navigate() }
-            override fun onAnimationRepeat(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) { /* no-op */ }
         })
 
         // Safety net: if Lottie fails to fire the callback, navigate after 4s

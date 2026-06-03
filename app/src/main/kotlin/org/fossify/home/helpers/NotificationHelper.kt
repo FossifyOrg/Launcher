@@ -1,6 +1,8 @@
 // File: app/src/main/kotlin/org/fossify/home/helpers/NotificationHelper.kt
 // LAUNCHPAD: Send local notifications to parent when Jake makes a request.
 
+@file:Suppress("MagicNumber", "NestedBlockDepth", "TooGenericExceptionCaught") // framework literals; fail-safe catch
+
 package org.fossify.home.helpers
 
 import android.app.NotificationChannel

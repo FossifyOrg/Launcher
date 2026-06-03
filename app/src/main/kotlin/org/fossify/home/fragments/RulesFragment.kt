@@ -13,7 +13,12 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.fossify.home.R
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.CooldownRulesConfig
@@ -21,6 +26,7 @@ import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.TimeBudgetManager
 
+@Suppress("MagicNumber") // UI built programmatically
 class RulesFragment : Fragment() {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())

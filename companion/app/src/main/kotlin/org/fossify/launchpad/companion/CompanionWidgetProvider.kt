@@ -54,14 +54,25 @@ private suspend fun render(context: Context, manager: AppWidgetManager, widgetId
     if (ip == null) {
         views.setTextViewText(R.id.widget_doge_count, "?")
         views.setTextViewText(R.id.widget_zusagen_count, "?")
-        views.setTextViewText(R.id.widget_status_text, "IP nicht konfiguriert — tippen zum Einrichten")
+        views.setTextViewText(R.id.widget_status_text, "Nicht verbunden — tippen zum Koppeln")
         views.setInt(R.id.widget_status_dot, "setBackgroundColor", Color.parseColor("#FF6B35"))
         manager.updateAppWidget(widgetId, views)
         return
     }
 
+    if (ip == "DEMO") {
+        views.setTextViewText(R.id.widget_doge_count, "2")
+        views.setTextViewText(R.id.widget_zusagen_count, "1")
+        views.setInt(R.id.widget_status_dot, "setBackgroundColor", Color.parseColor("#FF6B35"))
+        views.setTextColor(R.id.widget_doge_count, Color.parseColor("#FF6B35"))
+        views.setTextColor(R.id.widget_zusagen_count, Color.parseColor("#FF6B35"))
+        views.setTextViewText(R.id.widget_status_text, "🧪 Demo-Modus — 3 offen")
+        manager.updateAppWidget(widgetId, views)
+        return
+    }
+
     try {
-        val response = get("http://$ip/api/pending", timeoutMs = 3000)
+        val response = get("http://$ip:7391/api/pending", timeoutMs = 3000)
         if (response != null) {
             val obj = JSONObject(response)
             val dogeCount = obj.optJSONArray("doge")?.length() ?: 0

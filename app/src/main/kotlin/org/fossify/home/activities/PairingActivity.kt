@@ -30,6 +30,7 @@ import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.CommandProcessor
 import org.fossify.home.helpers.PairingManager
 
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
 class PairingActivity : AppCompatActivity() {
     private lateinit var database: AppsDatabase
     private lateinit var pairing: PairingManager
@@ -113,11 +114,13 @@ class PairingActivity : AppCompatActivity() {
         scope.cancel()
     }
 
+    @Suppress("TooGenericExceptionCaught") // broad catch: intentional fail-safe on QR render
     private fun showQr(reset: Boolean) {
         val payload = pairing.getOrCreateQrPayload(reset)
         try {
             qrView.setImageBitmap(renderQr(payload, qrSizePx()))
         } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "QR render failed", e)
             toast("QR konnte nicht erzeugt werden")
         }
         refreshStatus()
