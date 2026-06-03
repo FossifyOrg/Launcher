@@ -1,12 +1,6 @@
-// File: companion/src/main/kotlin/org/fossify/launchpad/companion/CompanionActivity.kt
-// LAUNCHPAD Companion App: parent phone app for approving Jake's requests.
-//
-// Connects via QR code shown in the launcher's Eltern-Modus → Kopplung screen.
-// The QR encodes the launcher's LAN IP + RSA public key; the companion reads the IP
-// and connects to LaunchpadServer on port 7391 (same WiFi network required).
-//
-// Demo mode: long-press the title bar or tap "Demo-Modus aktivieren" to test the
-// full UI with fake data — no launcher or QR needed.
+// File: companion/app/src/main/kotlin/org/fossify/launchpad/companion/CompanionActivity.kt
+// Companion app for LAUNCHPAD. Scans parent QR code, establishes encrypted session, displays
+// pending approvals/commands, sends approval/denial responses.
 
 package org.fossify.launchpad.companion
 
@@ -14,23 +8,24 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.util.Log
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.InputType
-import android.view.Gravity
 import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import android.util.Log
 import org.fossify.launchpad.companion.BuildConfig
 import org.fossify.launchpad.companion.helpers.TestModeManager
 import kotlinx.coroutines.CoroutineScope
@@ -42,67 +37,44 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.OutputStreamWriter
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.KeyFactory
+import java.security.PublicKey
+import java.security.SecureRandom
+import java.security.spec.X509EncodedKeySpec
+import java.util.Base64
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
-@Suppress("MagicNumber", "TooManyFunctions")
+@Suppress("MagicNumber")
 class CompanionActivity : AppCompatActivity() {
-
-    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private lateinit var prefs: SharedPreferences
-    private lateinit var content: LinearLayout
-
-    // Fake responses for demo mode
-    private val demoStatus = """{"balance":45,"enforcement":true,"cooldown":false}"""
-    private val demoPending = """{"doge":[{"id":"demo-1","description":"Minecraft Stream schauen (30 Min)"},{"id":"demo-2","description":"YouTube: Technik-Video (20 Min)"}],"zusagen":[{"id":"demo-3","text":"Zimmer aufräumen vor dem Abendessen"}]}"""
-
-    private val cameraPermLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) launchQrScanner() else promptForIpFallback()
-    }
-
-    private val qrScanLauncher = registerForActivityResult(ScanContract()) { result ->
-        if (result.contents != null) handleQrResult(result.contents)
-    }
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = getSharedPreferences("companion_prefs", Context.MODE_PRIVATE)
+        prefs = getSharedPreferences("LAUNCHPAD_COMPANION", Context.MODE_PRIVATE)
 
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.parseColor("#121212"))
-        }
-        val toolbar = androidx.appcompat.widget.Toolbar(this).apply {
-            title = "LAUNCHPAD Eltern"
-            setBackgroundColor(Color.parseColor("#1A1A2E"))
-            setTitleTextColor(Color.WHITE)
-            setOnLongClickListener { confirmDemoMode(); true }
-        }
-        root.addView(toolbar, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
-        setSupportActionBar(toolbar)
-
-        val scroll = ScrollView(this)
-        content = LinearLayout(this).apply {
+        val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(24, 24, 24, 24)
         }
-        scroll.addView(content)
-        root.addView(scroll, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
+        setContentView(ScrollView(this).apply { addView(content) })
 
-        val refreshBtn = Button(this).apply {
-            text = "↻ Aktualisieren"
-            setBackgroundColor(Color.parseColor("#1A1A2E"))
-            setTextColor(Color.WHITE)
-            setOnClickListener { loadData() }
+        content.addView(heading("LAUNCHPAD Companion"))
+        content.addView(spacer(8))
+
+        val launcherIp = prefs.getString("launcher_ip", null)
+        if (launcherIp != null && launcherIp.isNotBlank()) {
+            content.addView(status("Verbunden mit: $launcherIp"))
+            loadData()
+        } else {
+            showPairingScreen(content)
         }
-        root.addView(refreshBtn, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
-
-        setContentView(root)
-
-        if (prefs.getString("launcher_ip", null) == null) showPairingScreen() else loadData()
     }
 
     override fun onDestroy() {
@@ -110,64 +82,34 @@ class CompanionActivity : AppCompatActivity() {
         scope.cancel()
     }
 
-    // ─── Pairing screen ───────────────────────────────────────────────────────
-
-    private fun showPairingScreen() {
+    private fun showPairingScreen(content: LinearLayout) {
         content.removeAllViews()
-        content.addView(spacer(32))
+        content.addView(heading("Gerät koppeln"))
+        content.addView(spacer(16))
 
-        content.addView(TextView(this).apply {
-            text = "LAUNCHPAD Eltern verbinden"
-            textSize = 22f
-            setTypeface(null, Typeface.BOLD)
-            setTextColor(Color.WHITE)
-            gravity = Gravity.CENTER
-        })
-        content.addView(spacer(12))
-        content.addView(TextView(this).apply {
-            text = "Öffne auf Jakes Gerät:\nEltern-Modus → Kopplung → QR-Code anzeigen.\nDann hier scannen."
-            textSize = 14f
-            setTextColor(Color.GRAY)
-            gravity = Gravity.CENTER
-            setLineSpacing(0f, 1.3f)
-        })
-        content.addView(spacer(32))
+        val scanQrLauncher = registerForActivityResult(ScanContract()) { result ->
+            if (result.contents != null) {
+                handleQrResult(result.contents)
+            }
+        }
 
-        content.addView(Button(this).apply {
-            text = "📷 QR-Code scannen"
-            textSize = 16f
-            setBackgroundColor(Color.parseColor("#FF6B35"))
-            setTextColor(Color.WHITE)
-            setPadding(0, 20, 0, 20)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 0, 0, 12) }
-            setOnClickListener { requestCameraAndScan() }
+        content.addView(button("QR-Code scannen") {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                scanQrLauncher.launch(ScanOptions())
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            }
         })
 
-        content.addView(Button(this).apply {
-            text = "IP manuell eingeben"
-            setBackgroundColor(Color.argb(50, 255, 255, 255))
-            setTextColor(Color.LTGRAY)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setOnClickListener { promptForIpFallback() }
-        })
+        content.addView(button("IP manuell eingeben") { promptForIpFallback() })
+
         // Test Mode button (DEBUG only) — same-device testing
         if (BuildConfig.DEBUG) {
-            content.addView(Button(this).apply {
-                text = "🧪 Test auf diesem Gerät"
-                setBackgroundColor(Color.parseColor("#9C27B0"))
-                setTextColor(Color.WHITE)
-                setPadding(0, 20, 0, 20)
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { setMargins(0, 0, 0, 12) }
-                setOnClickListener {
-                    scope.launch {
-                        activateTestMode()
-                    }
+            content.addView(button("🧪 Test auf diesem Gerät") {
+                scope.launch {
+                    activateTestMode()
                 }
             })
         }
@@ -175,31 +117,15 @@ class CompanionActivity : AppCompatActivity() {
         content.addView(spacer(32))
         content.addView(TextView(this).apply {
             text = "Tipp: Titel lang gedrückt halten → Demo-Modus (kein Gerät nötig)"
-            textSize = 11f
-            setTextColor(Color.DKGRAY)
-            gravity = Gravity.CENTER
+            textSize = 12f
+            setTextColor(Color.GRAY)
         })
     }
 
-    // ─── QR scanning ──────────────────────────────────────────────────────────
-
-    private fun requestCameraAndScan() {
-        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            launchQrScanner()
-        } else {
-            cameraPermLauncher.launch(Manifest.permission.CAMERA)
-        }
-    }
-
-    private fun launchQrScanner() {
-        qrScanLauncher.launch(ScanOptions().apply {
-            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-            setPrompt("QR-Code von LAUNCHPAD scannen")
-            setBeepEnabled(true)
-            setOrientationLocked(false)
-        })
-    }
-
+    /**
+     * Handle QR result: extract IP and connect to it.
+     * In test mode with DEBUG build, defaults to localhost if no IP in QR.
+     */
     private fun handleQrResult(qrContent: String) {
         try {
             val json = JSONObject(qrContent)
@@ -224,322 +150,15 @@ class CompanionActivity : AppCompatActivity() {
         }
     }
 
-    // ─── IP fallback dialog ────────────────────────────────────────────────────
-
-    private fun promptForIpFallback() {
-        val stored = prefs.getString("launcher_ip", "").takeIf { it != "DEMO" } ?: ""
-        val input = EditText(this).apply {
-            hint = "192.168.1.x"
-            inputType = InputType.TYPE_CLASS_PHONE
-            setText(stored)
-        }
-        AlertDialog.Builder(this)
-            .setTitle("Jake's Gerät IP")
-            .setMessage("IP-Adresse von Jakes Gerät (Port 7391):")
-            .setView(input)
-            .setPositiveButton("Verbinden") { _, _ ->
-                val ip = input.text.toString().trim()
-                if (ip.isNotBlank()) {
-                    prefs.edit().putString("launcher_ip", ip).apply()
-                    loadData()
-                }
-            }
-            .setCancelable(prefs.getString("launcher_ip", null) != null)
-            .show()
-    }
-
-    // ─── Demo mode ────────────────────────────────────────────────────────────
-
-    private fun confirmDemoMode() {
-        AlertDialog.Builder(this)
-            .setTitle("🧪 Demo-Modus")
-            .setMessage("Simuliert einen verbundenen Launcher mit Fake-Daten.\nKeine echte Verbindung oder QR-Code nötig.\n\nAktivieren?")
-            .setPositiveButton("Demo starten") { _, _ ->
-                prefs.edit().putString("launcher_ip", "DEMO").apply()
-                loadData()
-            }
-            .setNegativeButton("Abbrechen", null)
-            .show()
-    }
-
-    private fun isDemoMode() = prefs.getString("launcher_ip", null) == "DEMO"
-
-    // ─── Data loading ──────────────────────────────────────────────────────────
-
-    private fun loadData() {
-        val ip = prefs.getString("launcher_ip", null) ?: return showPairingScreen()
-        content.removeAllViews()
-        content.addView(loadingView(if (isDemoMode()) "Demo-Modus lädt …" else "Verbinde mit $ip:7391 …"))
-
-        scope.launch {
-            val statusResult = withContext(Dispatchers.IO) {
-                if (isDemoMode()) demoStatus else apiGet("http://$ip:7391/api/status")
-            }
-            val pendingResult = withContext(Dispatchers.IO) {
-                if (isDemoMode()) demoPending else apiGet("http://$ip:7391/api/pending")
-            }
-
-            content.removeAllViews()
-
-            if (statusResult == null) {
-                content.addView(errorView("Keine Verbindung zu $ip:7391.\nIst Jake's Gerät im gleichen WLAN?"))
-                content.addView(settingsSection(ip))
-                return@launch
-            }
-
-            try {
-                val s = JSONObject(statusResult)
-                content.addView(statusCard(
-                    balance = s.optInt("balance", 0),
-                    enforcement = s.optBoolean("enforcement", false),
-                    cooldown = s.optBoolean("cooldown", false)
-                ))
-            } catch (e: Exception) { /* malformed response — skip status card */ }
-
-            val pending = try { JSONObject(pendingResult ?: "{}") } catch (e: Exception) { JSONObject() }
-            val dogeList = pending.optJSONArray("doge") ?: JSONArray()
-            val zusageList = pending.optJSONArray("zusagen") ?: JSONArray()
-
-            if (dogeList.length() == 0 && zusageList.length() == 0) {
-                content.addView(emptyState())
-            } else {
-                if (dogeList.length() > 0) {
-                    content.addView(sectionHeader("🎬 Medien-Anfragen (${dogeList.length()})"))
-                    for (i in 0 until dogeList.length()) {
-                        val item = dogeList.getJSONObject(i)
-                        content.addView(requestCard(
-                            id = item.optString("id", ""),
-                            title = item.optString("description", "Anfrage"),
-                            type = "doge",
-                            ip = ip
-                        ))
-                    }
-                }
-                if (zusageList.length() > 0) {
-                    content.addView(sectionHeader("🤝 Versprechen (${zusageList.length()})"))
-                    for (i in 0 until zusageList.length()) {
-                        val item = zusageList.getJSONObject(i)
-                        content.addView(requestCard(
-                            id = item.optString("id", ""),
-                            title = item.optString("text", "Versprechen"),
-                            type = "zusage",
-                            ip = ip
-                        ))
-                    }
-                }
-            }
-            content.addView(settingsSection(ip))
-        }
-    }
-
-    // ─── Request cards ─────────────────────────────────────────────────────────
-
-    private fun requestCard(id: String, title: String, type: String, ip: String): LinearLayout {
-        val card = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.parseColor("#1E1E1E"))
-            setPadding(20, 16, 20, 16)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 8, 0, 8) }
-        }
-        card.addView(TextView(this).apply {
-            text = title
-            textSize = 15f
-            setTypeface(null, Typeface.BOLD)
-            setTextColor(Color.WHITE)
-            setPadding(0, 0, 0, 12)
-        })
-        val btnRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-        btnRow.addView(approveButton(id, type, ip))
-        btnRow.addView(denyButton(id, type, ip))
-        card.addView(btnRow)
-        return card
-    }
-
-    private fun approveButton(id: String, type: String, ip: String) = Button(this).apply {
-        text = "✓ Genehmigen"
-        setBackgroundColor(Color.parseColor("#4CAF50"))
-        setTextColor(Color.WHITE)
-        layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            .apply { setMargins(0, 0, 8, 0) }
-        setOnClickListener {
-            isEnabled = false
-            val cmd = if (type == "doge") """{"type":"approve_doge","id":"$id","minutes":20}"""
-                      else """{"type":"approve_zusage","id":"$id"}"""
-            sendCommand(ip, cmd)
-        }
-    }
-
-    private fun denyButton(id: String, type: String, ip: String) = Button(this).apply {
-        text = "✗ Ablehnen"
-        setBackgroundColor(Color.parseColor("#FF4444"))
-        setTextColor(Color.WHITE)
-        layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-        setOnClickListener {
-            isEnabled = false
-            val cmd = if (type == "doge") """{"type":"reject_doge","id":"$id"}"""
-                      else """{"type":"reject_zusage","id":"$id","reason":"Nicht jetzt"}"""
-            sendCommand(ip, cmd)
-        }
-    }
-
-    private fun sendCommand(ip: String, json: String) {
-        scope.launch {
-            val result = withContext(Dispatchers.IO) {
-                if (isDemoMode()) """{"ok":true}"""
-                else apiPost("http://$ip:7391/api/command", json)
-            }
-            toast(if (result != null) "Gesendet ✓" else "Fehler beim Senden")
-            delay(500)
-            loadData()
-            CompanionWidgetProvider.requestUpdate(this@CompanionActivity)
-        }
-    }
-
-    // ─── HTTP helpers ──────────────────────────────────────────────────────────
-
-    private fun apiGet(url: String): String? {
-        return try {
-            val conn = URL(url).openConnection() as HttpURLConnection
-            conn.connectTimeout = 3000
-            conn.readTimeout = 5000
-            conn.connect()
-            if (conn.responseCode == 200) conn.inputStream.bufferedReader().readText() else null
-        } catch (e: Exception) { null }
-    }
-
-    private fun apiPost(url: String, body: String): String? {
-        return try {
-            val conn = URL(url).openConnection() as HttpURLConnection
-            conn.requestMethod = "POST"
-            conn.setRequestProperty("Content-Type", "application/json")
-            conn.doOutput = true
-            conn.connectTimeout = 3000
-            conn.readTimeout = 5000
-            OutputStreamWriter(conn.outputStream).use { it.write(body) }
-            if (conn.responseCode == 200) conn.inputStream.bufferedReader().readText() else null
-        } catch (e: Exception) { null }
-    }
-
-    // ─── UI helpers ───────────────────────────────────────────────────────────
-
-    private fun loadingView(text: String) = TextView(this).apply {
-        this.text = text; textSize = 14f; setTextColor(Color.GRAY)
-        setPadding(0, 32, 0, 32); gravity = Gravity.CENTER
-    }
-
-    private fun errorView(text: String) = TextView(this).apply {
-        this.text = "⚠️ $text"; textSize = 14f; setTextColor(Color.parseColor("#FF6B35"))
-        setPadding(0, 32, 0, 32); gravity = Gravity.CENTER
-    }
-
-    private fun emptyState() = TextView(this).apply {
-        text = "✓ Keine offenen Anfragen\n\nJake hat gerade nichts angefragt."
-        textSize = 15f; setTextColor(Color.parseColor("#4CAF50"))
-        setPadding(0, 48, 0, 48); gravity = Gravity.CENTER
-    }
-
-    private fun sectionHeader(text: String) = TextView(this).apply {
-        this.text = text; textSize = 13f; setTypeface(null, Typeface.BOLD)
-        setTextColor(Color.GRAY); setPadding(0, 20, 0, 4)
-    }
-
-    private fun statusCard(balance: Int, enforcement: Boolean, cooldown: Boolean): LinearLayout {
-        val card = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            setBackgroundColor(Color.parseColor("#1A1A2E"))
-            setPadding(20, 16, 20, 16)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 0, 0, 16) }
-        }
-        val balColor = when {
-            !enforcement -> "#AAAAAA"
-            balance <= 0 -> "#FF4444"
-            balance < 10 -> "#FF6B35"
-            else -> "#4CAF50"
-        }
-        val icon = when {
-            isDemoMode() -> "🧪"
-            cooldown -> "⏸️"
-            !enforcement -> "🔓"
-            balance <= 0 -> "📵"
-            else -> "⏱️"
-        }
-        card.addView(TextView(this).apply { text = icon; textSize = 28f; setPadding(0, 0, 16, 0) })
-        val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        col.addView(TextView(this).apply {
-            text = if (!enforcement) "Kein Limit" else "$balance Min verfügbar"
-            textSize = 18f; setTypeface(null, Typeface.BOLD)
-            setTextColor(Color.parseColor(balColor))
-        })
-        col.addView(TextView(this).apply {
-            text = when {
-                isDemoMode() -> "Demo-Modus (Fake-Daten)"
-                enforcement -> "Kindermodus AN"
-                else -> "Einrichtungsmodus"
-            }
-            textSize = 12f; setTextColor(Color.GRAY)
-        })
-        card.addView(col)
-        return card
-    }
-
-    private fun settingsSection(ip: String): LinearLayout {
-        val section = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(0, 16, 0, 0)
-        }
-        section.addView(Button(this).apply {
-            text = "📷 Neu koppeln (QR scannen)"
-            setBackgroundColor(Color.TRANSPARENT)
-            setTextColor(Color.GRAY)
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            setOnClickListener {
-                prefs.edit().remove("launcher_ip").apply()
-                showPairingScreen()
-            }
-        })
-        if (ip != "DEMO") {
-            section.addView(Button(this).apply {
-                text = "🧪 Demo-Modus aktivieren"
-                setBackgroundColor(Color.TRANSPARENT)
-                setTextColor(Color.DKGRAY)
-                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                setOnClickListener { confirmDemoMode() }
-            })
-        } else {
-            section.addView(Button(this).apply {
-                text = "🔌 Demo-Modus beenden"
-                setBackgroundColor(Color.TRANSPARENT)
-                setTextColor(Color.DKGRAY)
-                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                setOnClickListener {
-                    prefs.edit().remove("launcher_ip").apply()
-                    showPairingScreen()
-                }
-            })
-        }
-        return section
-    }
-
-    private fun spacer(dp: Int) = android.view.View(this).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            (dp * resources.displayMetrics.density).toInt()
-        )
-    }
-
-    private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-
     /**
      * Test Mode: read QR payload from cache file (same-device testing).
      * Connects to localhost:7391 instead of scanning real QR.
+     * Also generates AES session key, encrypts with public key from QR, writes back to cache.
      */
     private suspend fun activateTestMode() {
         val testQrJson = withContext(Dispatchers.IO) {
             try {
+                // Read test QR from main app's cache
                 TestModeManager.readTestQrPayload(this@CompanionActivity)
             } catch (e: Exception) {
                 Log.e("TestMode", "Failed to read test QR", e)
@@ -547,15 +166,272 @@ class CompanionActivity : AppCompatActivity() {
             }
         }
 
-        if (testQrJson != null) {
-            try {
-                handleQrResult(testQrJson)
-                toast("🧪 Test-Modus: lokale Verbindung zu localhost:7391")
-            } catch (e: Exception) {
-                toast("Test QR ungültig: ${e.message?.take(40)}")
-            }
-        } else {
+        if (testQrJson == null) {
             toast("Test-QR nicht gefunden.\nMain-App: Test-Modus aktivieren")
+            return
         }
+
+        try {
+            // Parse QR to extract public key and identity
+            val qrJson = JSONObject(testQrJson)
+            val publicKeyB64 = qrJson.optString("publicKeyB64", "")
+
+            if (publicKeyB64.isEmpty()) {
+                toast("Test QR enthält keinen Public Key")
+                return
+            }
+
+            // Generate random AES-256 session key (32 bytes)
+            val keyGen = KeyGenerator.getInstance("AES")
+            keyGen.init(256, SecureRandom())
+            val sessionKey = keyGen.generateKey()
+            val sessionKeyBytes = sessionKey.encoded
+
+            // Encrypt session key with public key from QR (RSA/ECB/PKCS1Padding)
+            val publicKeyBytes = Base64.getDecoder().decode(publicKeyB64)
+            val keySpec = X509EncodedKeySpec(publicKeyBytes)
+            val keyFactory = KeyFactory.getInstance("RSA")
+            val publicKey: PublicKey = keyFactory.generatePublic(keySpec)
+
+            val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey)
+            val encryptedSessionKey = cipher.doFinal(sessionKeyBytes)
+            val encryptedSessionKeyBase64 = Base64.getEncoder().encodeToString(encryptedSessionKey)
+
+            // Write encrypted session key to cache for Main App to read and decrypt
+            withContext(Dispatchers.IO) {
+                TestModeManager.writeTestSessionKey(this@CompanionActivity, encryptedSessionKeyBase64)
+            }
+
+            // Now proceed with normal QR handling (connects to localhost)
+            handleQrResult(testQrJson)
+            toast("🧪 Test-Modus: Session Key verschlüsselt\nlokale Verbindung zu localhost:7391")
+
+        } catch (e: Exception) {
+            Log.e("TestMode", "Session key encryption failed", e)
+            toast("Test QR ungültig: ${e.message?.take(40)}")
+        }
+    }
+
+    // ─── IP fallback dialog ────────────────────────────────────────────────────
+
+    private fun promptForIpFallback() {
+        val input = android.widget.EditText(this).apply {
+            hint = "z.B. 192.168.1.100"
+            inputType = android.text.InputType.TYPE_CLASS_TEXT
+        }
+        AlertDialog.Builder(this)
+            .setTitle("Gerät-IP eingeben")
+            .setView(input)
+            .setPositiveButton("Verbinden") { _, _ ->
+                val ip = input.text.toString().trim()
+                if (ip.isNotBlank()) {
+                    prefs.edit().putString("launcher_ip", ip).apply()
+                    toast("Verbunden mit $ip ✓")
+                    loadData()
+                }
+            }
+            .setNegativeButton("Abbrechen", null)
+            .show()
+    }
+
+    // ─── Data loading & UI refresh ──────────────────────────────────────────
+
+    private fun loadData() {
+        scope.launch {
+            val launcherIp = prefs.getString("launcher_ip", null)
+            if (launcherIp == null) {
+                toast("Keine Geräte-IP gespeichert")
+                return@launch
+            }
+
+            val statusJson = withContext(Dispatchers.IO) {
+                try {
+                    fetchApi("$launcherIp/api/status")
+                } catch (e: Exception) {
+                    Log.e("API", "Status fetch failed", e)
+                    null
+                }
+            }
+
+            if (statusJson != null) {
+                val content = LinearLayout(this@CompanionActivity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(24, 24, 24, 24)
+                }
+                setContentView(ScrollView(this@CompanionActivity).apply { addView(content) })
+
+                content.addView(heading("Geräte-Status"))
+                try {
+                    val json = JSONObject(statusJson)
+                    val limit = json.optString("limit", "Unbekannt")
+                    content.addView(status("Limit: $limit"))
+                } catch (e: Exception) {
+                    content.addView(status("Status: OK"))
+                }
+
+                content.addView(spacer(16))
+                content.addView(heading("Ausstehende Genehmigungen", 18f))
+
+                val pendingJson = withContext(Dispatchers.IO) {
+                    try {
+                        fetchApi("$launcherIp/api/pending")
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+
+                if (pendingJson != null) {
+                    try {
+                        val pending = JSONArray(pendingJson)
+                        for (i in 0 until pending.length()) {
+                            val item = pending.getJSONObject(i)
+                            val id = item.optString("id")
+                            val action = item.optString("action")
+                            content.addView(renderPendingItem(id, action))
+                        }
+                    } catch (e: Exception) {
+                        content.addView(status("Keine ausstehenden Genehmigungen"))
+                    }
+                } else {
+                    content.addView(status("Keine ausstehenden Genehmigungen"))
+                }
+
+                content.addView(spacer(16))
+                content.addView(button("Neu laden") { loadData() })
+                content.addView(button("Zurück zur Kopplung") {
+                    prefs.edit().remove("launcher_ip").apply()
+                    val newContent = LinearLayout(this@CompanionActivity).apply {
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 24, 24, 24)
+                    }
+                    setContentView(ScrollView(this@CompanionActivity).apply { addView(newContent) })
+                    showPairingScreen(newContent)
+                })
+            }
+        }
+    }
+
+    private fun renderPendingItem(id: String, action: String): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(16, 16, 16, 16)
+            setBackgroundColor(Color.parseColor("#f5f5f5"))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(0, 8, 0, 8) }
+
+            addView(TextView(this@CompanionActivity).apply {
+                text = action
+                textSize = 16f
+                setTypeface(null, Typeface.BOLD)
+            })
+
+            addView(LinearLayout(this@CompanionActivity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { setMargins(0, 8, 0, 0) }
+
+                addView(button("✓ Genehmigen") {
+                    scope.launch {
+                        withContext(Dispatchers.IO) {
+                            val ip = prefs.getString("launcher_ip", null)
+                            if (ip != null) {
+                                try {
+                                    fetchApi("$ip/api/command", method = "POST", body = "{\"id\":\"$id\",\"approved\":true}")
+                                } catch (e: Exception) {
+                                    Log.e("API", "Approval failed", e)
+                                }
+                            }
+                        }
+                        loadData()
+                    }
+                }.apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        0,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1f
+                    ).apply { setMargins(0, 0, 4, 0) }
+                })
+
+                addView(button("✗ Ablehnen") {
+                    scope.launch {
+                        withContext(Dispatchers.IO) {
+                            val ip = prefs.getString("launcher_ip", null)
+                            if (ip != null) {
+                                try {
+                                    fetchApi("$ip/api/command", method = "POST", body = "{\"id\":\"$id\",\"approved\":false}")
+                                } catch (e: Exception) {
+                                    Log.e("API", "Denial failed", e)
+                                }
+                            }
+                        }
+                        loadData()
+                    }
+                }.apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        0,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1f
+                    ).apply { setMargins(4, 0, 0, 0) }
+                })
+            })
+        }
+    }
+
+    private fun fetchApi(url: String, method: String = "GET", body: String = ""): String {
+        val connection = URL(url).openConnection() as HttpURLConnection
+        connection.requestMethod = method
+        connection.connectTimeout = 5000
+        connection.readTimeout = 5000
+
+        if (method == "POST" && body.isNotBlank()) {
+            connection.doOutput = true
+            connection.outputStream.use { it.write(body.toByteArray()) }
+        }
+
+        val reader = BufferedReader(InputStreamReader(connection.inputStream))
+        val response = reader.readText()
+        reader.close()
+        return response
+    }
+
+    // ─── UI helpers ────────────────────────────────────────────────────────
+
+    private fun heading(text: String, size: Float = 20f) = TextView(this).apply {
+        this.text = text
+        textSize = size
+        setTypeface(null, Typeface.BOLD)
+        setPadding(0, 12, 0, 12)
+    }
+
+    private fun status(text: String) = TextView(this).apply {
+        this.text = text
+        textSize = 14f
+        setTextColor(Color.DKGRAY)
+        setPadding(0, 8, 0, 8)
+    }
+
+    private fun button(label: String, onClick: () -> Unit) = Button(this).apply {
+        text = label
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { setMargins(0, 8, 0, 8) }
+        setOnClickListener { onClick() }
+    }
+
+    private fun spacer(height: Int) = TextView(this).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            height
+        )
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

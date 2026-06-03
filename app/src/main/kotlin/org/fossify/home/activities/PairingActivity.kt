@@ -1,4 +1,8 @@
 // File: app/src/main/kotlin/org/fossify/home/activities/PairingActivity.kt
+// M4: launcher-side pairing screen. Renders the pairing QR (parent app scans it), accepts the
+// returned RSA-encrypted session key, and applies commands (encrypted via the session key, or
+// plaintext for testing) through CommandProcessor. UI is built programmatically.
+
 package org.fossify.home.activities
 
 import android.graphics.Bitmap
@@ -28,7 +32,7 @@ import org.fossify.home.helpers.CommandProcessor
 import org.fossify.home.helpers.PairingManager
 import org.fossify.home.helpers.TestModeManager
 
-@Suppress("MagicNumber", "TooManyFunctions")
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
 class PairingActivity : AppCompatActivity() {
     private lateinit var database: AppsDatabase
     private lateinit var pairing: PairingManager
@@ -50,6 +54,7 @@ class PairingActivity : AppCompatActivity() {
 
         content.addView(heading("Kopplung mit Eltern-Gerät"))
 
+        // Show local IP so parent can enter it in the companion app
         val localIp = org.fossify.home.helpers.LaunchpadServer.getLocalIp(this)
         if (localIp != null) {
             content.addView(TextView(this).apply {
@@ -74,12 +79,14 @@ class PairingActivity : AppCompatActivity() {
             toast("Kopplung zurückgesetzt")
         })
 
+        // LAUNCHPAD M4: Test Mode (DEBUG only) — same-device testing
         if (BuildConfig.DEBUG) {
             content.addView(button("🧪 Test-Modus (gleiches Gerät)") {
                 activateTestMode()
             })
         }
 
+        // Step 2: receive the parent's encrypted session key.
         content.addView(heading("Sitzungsschlüssel (vom Eltern-Gerät)", 16f))
         val sessionInput = editText("Base64 des verschlüsselten Schlüssels")
         content.addView(sessionInput)
@@ -89,6 +96,7 @@ class PairingActivity : AppCompatActivity() {
             refreshStatus()
         })
 
+        // Step 3: apply commands.
         content.addView(heading("Befehl anwenden", 16f))
         val commandInput = editText("Verschlüsselter Befehl (Base64) oder Klartext-JSON").apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
@@ -115,6 +123,7 @@ class PairingActivity : AppCompatActivity() {
         scope.cancel()
     }
 
+    @Suppress("TooGenericExceptionCaught") // broad catch: intentional fail-safe on QR render
     private fun showQr(reset: Boolean) {
         val payload = pairing.getOrCreateQrPayload(reset)
         try {
@@ -148,15 +157,65 @@ class PairingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Test Mode: write QR payload and private key to cache for Companion app.
+     * Companion will read QR, encrypt session key with public key, write encrypted key back.
+     * Main app will then read encrypted key and decrypt with this private key.
+     */
     private fun activateTestMode() {
         scope.launch {
             val payload = pairing.getOrCreateQrPayload(reset = false)
             val success = withContext(Dispatchers.IO) {
-                TestModeManager.writeTestQrPayload(this@PairingActivity, payload)
+                // Write QR payload to cache
+                val qrWritten = TestModeManager.writeTestQrPayload(this@PairingActivity, payload)
+
+                // Also try to write private key for reference during session key decryption
+                // Note: The actual decryption will happen in pairing.receiveSessionKey()
+                // We write it here to help with debugging if needed
+                val privateKeyWritten = try {
+                    val privateKeyPem = pairing.getPrivateKeyForTesting()
+                    if (privateKeyPem != null) {
+                        TestModeManager.writeTestPrivateKey(this@PairingActivity, privateKeyPem)
+                    } else {
+                        // If private key not available, that's okay - pairing manager has it
+                        true
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.w("TestMode", "Could not write private key", e)
+                    true // Don't fail if we can't write private key
+                }
+
+                qrWritten && privateKeyWritten
             }
+
             if (success) {
                 toast("🧪 Test-Modus aktiviert\nCompanion: \"Test auf diesem Gerät\" drücken")
                 refreshStatus()
+
+                // Poll for session key from Companion app (up to 10 seconds)
+                withContext(Dispatchers.IO) {
+                    var sessionKeyFound = false
+                    for (i in 0..50) {
+                        Thread.sleep(200) // Check every 200ms
+                        val encryptedKey = TestModeManager.readTestSessionKey(this@PairingActivity)
+                        if (encryptedKey != null) {
+                            sessionKeyFound = true
+                            // Companion has written the encrypted session key
+                            // Now we simulate receiving it (in real flow, companion sends it via HTTP)
+                            withContext(Dispatchers.Main) {
+                                pairing.receiveSessionKey(encryptedKey)
+                                refreshStatus()
+                                toast("🧪 Session Key automatisch empfangen! Gekoppelt ✓")
+                            }
+                            break
+                        }
+                    }
+                    if (!sessionKeyFound) {
+                        withContext(Dispatchers.Main) {
+                            toast("⚠️ Session Key nicht innerhalb von 10s erhalten.\nCompanion hat vermutlich noch nicht \"Test\" aktiviert.")
+                        }
+                    }
+                }
             } else {
                 toast("Test-Modus Aktivierung fehlgeschlagen")
             }
