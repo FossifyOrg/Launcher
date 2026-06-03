@@ -63,7 +63,9 @@ import org.fossify.home.helpers.ITEM_TYPE_FOLDER
 import org.fossify.home.helpers.ITEM_TYPE_ICON
 import org.fossify.home.helpers.ITEM_TYPE_SHORTCUT
 import org.fossify.home.helpers.ITEM_TYPE_WIDGET
+import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.WIDGET_HOST_ID
+import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.models.HomeScreenGridItem
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -237,6 +239,22 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
         ensureBackgroundThread {
             val providers = appWidgetManager.installedProviders
             gridItems = context.homeScreenGridItemsDB.getAllItems() as ArrayList<HomeScreenGridItem>
+
+            // LAUNCHPAD: hide non-whitelisted app icons when Kindermodus is active.
+            // Items are only removed from the in-memory list, not from the DB, so they
+            // reappear immediately if the parent removes a package from the whitelist.
+            val enforce = context.getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
+                .getBoolean(LaunchpadPrefs.PREF_ENFORCEMENT_ENABLED, false)
+            if (enforce) {
+                val allowed = kotlinx.coroutines.runBlocking {
+                    AppsDatabase.getInstance(context).allowedAppDao()
+                        .getAllEnabledApps().map { it.packageName }.toSet()
+                }
+                if (allowed.isNotEmpty()) {
+                    gridItems.removeIf { it.type == ITEM_TYPE_ICON && it.packageName !in allowed }
+                }
+            }
+
             gridItems.toImmutableList().forEach { item ->
                 if (item.type == ITEM_TYPE_ICON) {
                     item.drawable = context.getDrawableForPackageName(item.packageName)

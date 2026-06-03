@@ -85,28 +85,24 @@ private fun showDenialDialog(
     activity: android.app.Activity,
     packageName: String,
     message: String?,
-    budget: org.fossify.home.models.TimeBudget
+    @Suppress("UnusedParameter") budget: org.fossify.home.models.TimeBudget
 ) {
     val displayMessage = message ?: "Diese App ist gerade nicht verfügbar."
 
-    // Only offer "Anfragen" when it's a time/cooldown block (app IS whitelisted)
-    val canRequest = budget.balanceMinutes <= 0 || budget.inCooldown
-
-    val builder = AlertDialog.Builder(activity)
+    AlertDialog.Builder(activity)
         .setTitle("Nicht verfügbar")
         .setMessage(displayMessage)
         .setPositiveButton("OK", null)
-
-    if (canRequest) {
-        builder.setNeutralButton("Anfragen") { _, _ ->
-            // Open Doge request screen in child mode so Jake can request access
-            val intent = android.content.Intent(activity, org.fossify.home.activities.DogeRequestsActivity::class.java)
+        .setNeutralButton("Anfragen") { _, _ ->
+            val intent = android.content.Intent(
+                activity,
+                org.fossify.home.activities.DogeRequestsActivity::class.java
+            )
                 .putExtra("isParentMode", false)
                 .putExtra("prefill_package", packageName)
             activity.startActivity(intent)
         }
-    }
-    builder.show()
+        .show()
 }
 
 fun Activity.launchAppInfo(packageName: String) {
