@@ -1,3 +1,7 @@
+// Same-device test harness: file-level fail-safe catches mirror the other pairing helpers
+// (QrPairingProtocol, PairingManager). All exceptions are logged via Log.e with the throwable.
+@file:Suppress("TooGenericExceptionCaught")
+
 package org.fossify.home.helpers
 
 import android.content.Context
@@ -90,7 +94,6 @@ object TestModeManager {
             true
         } catch (e: Exception) {
             Log.e(TAG, "✗ FAILED to write test QR payload: ${e.message}", e)
-            e.printStackTrace()
             false
         }
     }
@@ -122,7 +125,6 @@ object TestModeManager {
             }
         } catch (e: Exception) {
             Log.e(TAG, "✗ FAILED to read test QR payload: ${e.message}", e)
-            e.printStackTrace()
             null
         }
     }
@@ -146,7 +148,6 @@ object TestModeManager {
             true
         } catch (e: Exception) {
             Log.e(TAG, "✗ FAILED to write test session key: ${e.message}", e)
-            e.printStackTrace()
             false
         }
     }
@@ -177,7 +178,6 @@ object TestModeManager {
             }
         } catch (e: Exception) {
             Log.e(TAG, "✗ FAILED to read test session key: ${e.message}", e)
-            e.printStackTrace()
             null
         }
     }

@@ -223,28 +223,32 @@ class PairingActivity : AppCompatActivity() {
                 // Poll for session key from Companion app (up to 10 seconds)
                 withContext(Dispatchers.IO) {
                     var sessionKeyFound = false
-                    for (i in 0..50) {
-                        Thread.sleep(200) // Check every 200ms
-                        val encryptedKey = TestModeManager.readTestSessionKey(this@PairingActivity)
-                        if (encryptedKey != null) {
-                            sessionKeyFound = true
-                            // Companion has written the encrypted session key
-                            // Now decrypt and store it using PairingManager's standard method
-                            withContext(Dispatchers.Main) {
-                                val ok = pairing.receiveSessionKey(encryptedKey)
-                                refreshStatus()
-                                if (ok) {
-                                    toast("🧪 Session Key automatisch empfangen! Gekoppelt ✓")
-                                } else {
-                                    toast("⚠️ Session Key Entschlüsselung fehlgeschlagen")
+                    repeat(51) {
+                        if (!sessionKeyFound) {
+                            Thread.sleep(200) // Check every 200ms
+                            val encryptedKey = TestModeManager.readTestSessionKey(this@PairingActivity)
+                            if (encryptedKey != null) {
+                                sessionKeyFound = true
+                                // Companion has written the encrypted session key
+                                // Now decrypt and store it using PairingManager's standard method
+                                withContext(Dispatchers.Main) {
+                                    val ok = pairing.receiveSessionKey(encryptedKey)
+                                    refreshStatus()
+                                    if (ok) {
+                                        toast("🧪 Session Key automatisch empfangen! Gekoppelt ✓")
+                                    } else {
+                                        toast("⚠️ Session Key Entschlüsselung fehlgeschlagen")
+                                    }
                                 }
                             }
-                            break
                         }
                     }
                     if (!sessionKeyFound) {
                         withContext(Dispatchers.Main) {
-                            toast("⚠️ Session Key nicht innerhalb von 10s erhalten.\nCompanion hat vermutlich noch nicht \"Test\" aktiviert.")
+                            toast(
+                                "⚠️ Session Key nicht innerhalb von 10s erhalten.\n" +
+                                    "Companion hat vermutlich noch nicht \"Test\" aktiviert."
+                            )
                         }
                     }
                 }
