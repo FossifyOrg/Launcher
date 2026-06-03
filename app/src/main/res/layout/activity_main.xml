@@ -64,7 +64,7 @@
     <include
         android:id="@+id/home_screen_grid"
         layout="@layout/home_screen_grid"
-        android:layout_below="@id/launchpad_status_bar"
+        android:layout_above="@id/launchpad_status_bar"
         tools:ignore="IncludeLayoutParam" />
 
     <include
@@ -88,7 +88,7 @@
         android:id="@+id/launchpad_status_bar"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"

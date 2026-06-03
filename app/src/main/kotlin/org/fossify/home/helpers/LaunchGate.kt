@@ -59,8 +59,8 @@ class LaunchGate(
             )
         }
 
-        // Check 3: Time budget
-        if (timeBudget.balanceMinutes <= 0) {
+        // Check 3: Time budget — only coin-gated (ACTIVE_LEISURE) apps are blocked at 0
+        if (category == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE && timeBudget.balanceMinutes <= 0) {
             return LaunchDecision(
                 false,
                 "Time budget exhausted",

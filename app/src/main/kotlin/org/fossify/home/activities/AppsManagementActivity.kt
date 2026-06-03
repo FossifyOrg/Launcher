@@ -7,11 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +25,7 @@ import org.fossify.home.databases.AllowedApp
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.LaunchpadConstants
 
-@Suppress("MagicNumber") // UI built programmatically
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
 class AppsManagementActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -33,8 +33,8 @@ class AppsManagementActivity : AppCompatActivity() {
     private lateinit var listHolder: LinearLayout
     private lateinit var searchBox: EditText
 
-    // packageName → (label, enabled)
-    private var allApps: List<Triple<String, String, Boolean>> = emptyList()
+    // packageName → (label, category): category is null when not whitelisted
+    private var allApps: List<Triple<String, String, String?>> = emptyList()
     private var filter = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,20 +106,22 @@ class AppsManagementActivity : AppCompatActivity() {
             val pm = packageManager
             val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
             val resolved = pm.queryIntentActivities(intent, 0)
-            val enabled = withContext(Dispatchers.IO) { db.allowedAppDao().getAll().map { it.packageName }.toSet() }
+            val allowedMap = withContext(Dispatchers.IO) {
+                db.allowedAppDao().getAll().associate { it.packageName to it.category }
+            }
 
             allApps = resolved
                 .map { ri ->
                     Triple(
                         ri.activityInfo.packageName,
                         ri.loadLabel(pm).toString(),
-                        enabled.contains(ri.activityInfo.packageName)
+                        allowedMap[ri.activityInfo.packageName]
                     )
                 }
                 .filter { (pkg, _, _) -> pkg != packageName }
                 .distinctBy { (pkg, _, _) -> pkg }
                 .sortedWith(
-                    compareByDescending<Triple<String, String, Boolean>> { (_, _, on) -> on }
+                    compareByDescending<Triple<String, String, String?>> { (_, _, cat) -> cat != null }
                         .thenBy { (_, label, _) -> label.lowercase() }
                 )
 
@@ -132,8 +134,11 @@ class AppsManagementActivity : AppCompatActivity() {
         val filtered = allApps.filter { (pkg, label, _) ->
             filter.isEmpty() || label.lowercase().contains(filter) || pkg.lowercase().contains(filter)
         }
-        for ((pkg, label, enabled) in filtered) {
-            val row = RelativeLayout(this).apply {
+        for ((pkg, label, category) in filtered) {
+            val enabled = category != null
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = android.view.Gravity.CENTER_VERTICAL
                 setPadding(32, 0, 32, 0)
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 88.dp)
             }
@@ -141,13 +146,23 @@ class AppsManagementActivity : AppCompatActivity() {
                 text = label
                 isChecked = enabled
                 setPadding(8, 0, 8, 0)
-                layoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT
-                )
-                setOnCheckedChangeListener { _, checked -> toggleApp(pkg, checked) }
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                setOnCheckedChangeListener { _, checked -> toggleApp(pkg, checked, category) }
             }
             row.addView(cb)
+            if (enabled) {
+                val isLeisure = category == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE
+                val catBtn = Button(this).apply {
+                    text = if (isLeisure) "🪙" else "🆓"
+                    textSize = 18f
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    setOnClickListener { toggleCategory(pkg, category!!) }
+                }
+                row.addView(catBtn)
+            }
             listHolder.addView(row)
         }
         if (filtered.isEmpty()) {
@@ -158,17 +173,30 @@ class AppsManagementActivity : AppCompatActivity() {
         }
     }
 
-    private fun toggleApp(pkg: String, enable: Boolean) {
+    private fun toggleApp(pkg: String, enable: Boolean, currentCategory: String?) {
+        val newCategory = if (enable) (currentCategory ?: LaunchpadConstants.CATEGORY_NEUTRAL) else null
         scope.launch(Dispatchers.IO) {
             if (enable) {
-                db.allowedAppDao().insertApp(
-                    AllowedApp(packageName = pkg, category = LaunchpadConstants.CATEGORY_NEUTRAL)
-                )
+                db.allowedAppDao().insertApp(AllowedApp(packageName = pkg, category = newCategory!!))
             } else {
                 db.allowedAppDao().deleteApp(pkg)
             }
-            // Update local state
-            allApps = allApps.map { (p, l, e) -> Triple(p, l, if (p == pkg) enable else e) }
+            allApps = allApps.map { (p, l, c) -> Triple(p, l, if (p == pkg) newCategory else c) }
+            withContext(Dispatchers.Main) { renderList() }
+        }
+    }
+
+    private fun toggleCategory(pkg: String, currentCategory: String) {
+        val newCategory = if (currentCategory == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE) {
+            LaunchpadConstants.CATEGORY_NEUTRAL
+        } else {
+            LaunchpadConstants.CATEGORY_ACTIVE_LEISURE
+        }
+        scope.launch(Dispatchers.IO) {
+            db.allowedAppDao().deleteApp(pkg)
+            db.allowedAppDao().insertApp(AllowedApp(packageName = pkg, category = newCategory))
+            allApps = allApps.map { (p, l, c) -> Triple(p, l, if (p == pkg) newCategory else c) }
+            withContext(Dispatchers.Main) { renderList() }
         }
     }
 

@@ -47,6 +47,7 @@ class TimeTrackingService : Service() {
     // Sub-minute carry of counted foreground time, and the timestamp of the last counted tick.
     private var accumulatedMs = 0L
     private var lastCountedAt = 0L
+    @Volatile private var lastCooldownLaunch = 0L
 
     override fun onCreate() {
         super.onCreate()
@@ -130,7 +131,22 @@ class TimeTrackingService : Service() {
 
         runBlocking {
             val budget = budgetManager.getCurrentBudget()
-            if (budget.inCooldown || budget.balanceMinutes <= 0 || !isCountedApp(pkg)) {
+
+            // If balance is 0 or in cooldown, keep re-launching CooldownActivity when a
+            // coin-gated app is still in the foreground (e.g. user pressed Back to escape).
+            if (budget.inCooldown || budget.balanceMinutes <= 0) {
+                if (isCountedApp(pkg)) {
+                    val now = System.currentTimeMillis()
+                    if (now - lastCooldownLaunch >= COOLDOWN_RELAUNCH_THROTTLE_MS) {
+                        lastCooldownLaunch = now
+                        launchCooldown()
+                    }
+                }
+                resetCounter()
+                return@runBlocking
+            }
+
+            if (!isCountedApp(pkg)) {
                 resetCounter()
                 return@runBlocking
             }
@@ -149,6 +165,7 @@ class TimeTrackingService : Service() {
                 val newBalance = budgetManager.spend(wholeMinutes, pkg)
                 if (newBalance <= 0) {
                     resetCounter()
+                    lastCooldownLaunch = System.currentTimeMillis()
                     launchCooldown()
                 }
             }
@@ -164,7 +181,7 @@ class TimeTrackingService : Service() {
         if (pkg == packageName) return false
         if (!database.allowedAppDao().isAppAllowed(pkg)) return false
         val category = database.allowedAppDao().getAppCategory(pkg)
-        return category != LaunchpadConstants.CATEGORY_COOLDOWN
+        return category == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE
     }
 
     private fun launchCooldown() {
@@ -182,6 +199,7 @@ class TimeTrackingService : Service() {
     companion object {
         private const val NOTIFICATION_ID = 4711
         private const val POLL_INTERVAL_MS = 10_000L
+        private const val COOLDOWN_RELAUNCH_THROTTLE_MS = 30_000L
     }
 }
 
