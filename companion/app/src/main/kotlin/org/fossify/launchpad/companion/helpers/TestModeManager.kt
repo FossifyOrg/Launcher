@@ -1,4 +1,4 @@
-package org.fossify.home.helpers
+package org.fossify.launchpad.companion.helpers
 
 import android.content.Context
 import android.util.Log

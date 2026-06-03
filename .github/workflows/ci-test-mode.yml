@@ -2,13 +2,16 @@ name: CI - Test Mode Build
 
 on:
   push:
-    branches:
-      - feature/test-mode-session-key-exchange
-      - main
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'companion/**'
   pull_request:
-    branches:
-      - feature/test-mode-session-key-exchange
-      - main
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'companion/**'
+  workflow_dispatch:
 
 jobs:
   build-main-app:
@@ -54,18 +57,17 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Make gradlew executable in companion
-        run: chmod +x companion/gradlew || chmod +x gradlew
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build Companion App Debug APK
-        run: |
-          cd companion && ./gradlew app:assembleDebug
+        run: ./gradlew -p companion :app:assembleDebug
 
       - name: Upload Companion App Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: companion-debug
-          path: companion/app/build/outputs/apk/debug/app-debug.apk
+          path: companion/app/build/outputs/apk/debug/*.apk
           retention-days: 7
 
   build-status:
