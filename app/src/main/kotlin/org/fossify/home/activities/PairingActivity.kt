@@ -1,8 +1,4 @@
 // File: app/src/main/kotlin/org/fossify/home/activities/PairingActivity.kt
-// M4: launcher-side pairing screen. Renders the pairing QR (parent app scans it), accepts the
-// returned RSA-encrypted session key, and applies commands (encrypted via the session key, or
-// plaintext for testing) through CommandProcessor. UI is built programmatically.
-
 package org.fossify.home.activities
 
 import android.graphics.Bitmap
@@ -26,11 +22,13 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.fossify.home.BuildConfig
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.CommandProcessor
 import org.fossify.home.helpers.PairingManager
+import org.fossify.home.helpers.TestModeManager
 
-@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
+@Suppress("MagicNumber", "TooManyFunctions")
 class PairingActivity : AppCompatActivity() {
     private lateinit var database: AppsDatabase
     private lateinit var pairing: PairingManager
@@ -52,7 +50,6 @@ class PairingActivity : AppCompatActivity() {
 
         content.addView(heading("Kopplung mit Eltern-Gerät"))
 
-        // Show local IP so parent can enter it in the companion app
         val localIp = org.fossify.home.helpers.LaunchpadServer.getLocalIp(this)
         if (localIp != null) {
             content.addView(TextView(this).apply {
@@ -77,7 +74,12 @@ class PairingActivity : AppCompatActivity() {
             toast("Kopplung zurückgesetzt")
         })
 
-        // Step 2: receive the parent's encrypted session key.
+        if (BuildConfig.DEBUG) {
+            content.addView(button("🧪 Test-Modus (gleiches Gerät)") {
+                activateTestMode()
+            })
+        }
+
         content.addView(heading("Sitzungsschlüssel (vom Eltern-Gerät)", 16f))
         val sessionInput = editText("Base64 des verschlüsselten Schlüssels")
         content.addView(sessionInput)
@@ -87,7 +89,6 @@ class PairingActivity : AppCompatActivity() {
             refreshStatus()
         })
 
-        // Step 3: apply commands.
         content.addView(heading("Befehl anwenden", 16f))
         val commandInput = editText("Verschlüsselter Befehl (Base64) oder Klartext-JSON").apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
@@ -114,7 +115,6 @@ class PairingActivity : AppCompatActivity() {
         scope.cancel()
     }
 
-    @Suppress("TooGenericExceptionCaught") // broad catch: intentional fail-safe on QR render
     private fun showQr(reset: Boolean) {
         val payload = pairing.getOrCreateQrPayload(reset)
         try {
@@ -145,6 +145,21 @@ class PairingActivity : AppCompatActivity() {
                     .apply(json)
             }
             toast(result.message)
+        }
+    }
+
+    private fun activateTestMode() {
+        scope.launch {
+            val payload = pairing.getOrCreateQrPayload(reset = false)
+            val success = withContext(Dispatchers.IO) {
+                TestModeManager.writeTestQrPayload(this@PairingActivity, payload)
+            }
+            if (success) {
+                toast("🧪 Test-Modus aktiviert\nCompanion: \"Test auf diesem Gerät\" drücken")
+                refreshStatus()
+            } else {
+                toast("Test-Modus Aktivierung fehlgeschlagen")
+            }
         }
     }
 
