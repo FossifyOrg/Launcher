@@ -61,7 +61,7 @@ private suspend fun render(context: Context, manager: AppWidgetManager, widgetId
     }
 
     try {
-        val response = get("http://$ip/api/pending", timeoutMs = 3000)
+        val response = get("http://$ip:7391/api/pending", timeoutMs = 3000)
         if (response != null) {
             val obj = JSONObject(response)
             val dogeCount = obj.optJSONArray("doge")?.length() ?: 0
