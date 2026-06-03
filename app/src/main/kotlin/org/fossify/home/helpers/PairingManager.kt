@@ -52,9 +52,20 @@ class PairingManager(context: Context) {
             identity = launcherIdentity,
             publicKeyB64 = p.getString(LaunchpadPrefs.PREF_PAIR_PUBLIC_KEY, "").orEmpty(),
             nonceHex = p.getString(LaunchpadPrefs.PREF_PAIR_NONCE, "").orEmpty(),
-            timestamp = System.currentTimeMillis()
+            timestamp = System.currentTimeMillis(),
+            ip = getLanIp()
         )
         return payload.toJson()
+    }
+
+    private fun getLanIp(): String = try {
+        java.net.NetworkInterface.getNetworkInterfaces().toList()
+            .flatMap { it.inetAddresses.toList() }
+            .firstOrNull { !it.isLoopbackAddress && it is java.net.Inet4Address }
+            ?.hostAddress ?: ""
+    } catch (e: Exception) {
+        Log.w(tag, "getLanIp failed", e)
+        ""
     }
 
     /**
