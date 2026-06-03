@@ -273,7 +273,7 @@ class CompanionActivity : AppCompatActivity() {
 
             val statusJson = withContext(Dispatchers.IO) {
                 try {
-                    fetchApi("$launcherIp/api/status")
+                    fetchApi("/api/status")
                 } catch (e: Exception) {
                     Log.e("API", "Status fetch failed", e)
                     null
@@ -295,7 +295,7 @@ class CompanionActivity : AppCompatActivity() {
 
                 val pendingJson = withContext(Dispatchers.IO) {
                     try {
-                        fetchApi("$launcherIp/api/pending")
+                        fetchApi("/api/pending")
                     } catch (e: Exception) {
                         Log.e("API", "Pending fetch failed", e)
                         null
@@ -457,9 +457,8 @@ class CompanionActivity : AppCompatActivity() {
     private fun sendCommand(commandJson: String) {
         scope.launch {
             val response = withContext(Dispatchers.IO) {
-                val ip = prefs.getString("launcher_ip", null) ?: return@withContext null
                 try {
-                    fetchApi("$ip/api/command", method = "POST", body = commandJson)
+                    fetchApi("/api/command", method = "POST", body = commandJson)
                 } catch (e: Exception) {
                     Log.e("API", "Command failed", e)
                     null
@@ -479,8 +478,10 @@ class CompanionActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchApi(url: String, method: String = "GET", body: String = ""): String {
-        val connection = URL(url).openConnection() as HttpURLConnection
+    private fun fetchApi(path: String, method: String = "GET", body: String = ""): String {
+        val base = prefs.getString("launcher_ip", null)
+            ?: throw java.io.IOException("Keine Geräte-IP gespeichert")
+        val connection = URL("$base$path").openConnection() as HttpURLConnection
         connection.requestMethod = method
         connection.connectTimeout = 5000
         connection.readTimeout = 5000
