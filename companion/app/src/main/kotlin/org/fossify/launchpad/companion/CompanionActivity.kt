@@ -23,17 +23,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import org.fossify.launchpad.companion.helpers.TestModeManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -44,7 +43,46 @@ import java.security.spec.X509EncodedKeySpec
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
+
+// ─── Test Mode Manager (inline for companion) ──────────────────────────────
+object TestModeManager {
+    private const val TAG = "TestModeManager"
+    private const val TEST_QR_FILE = "launchpad_test_qr.json"
+    private const val TEST_SESSION_KEY_FILE = "launchpad_test_session_key.txt"
+
+    fun getTestQrCacheFile(context: Context): File =
+        File(context.cacheDir, TEST_QR_FILE)
+
+    fun getTestSessionKeyFile(context: Context): File =
+        File(context.cacheDir, TEST_SESSION_KEY_FILE)
+
+    fun readTestQrPayload(context: Context): String? {
+        return try {
+            val file = getTestQrCacheFile(context)
+            if (file.exists()) {
+                file.readText()
+            } else {
+                Log.w(TAG, "Test QR file not found")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to read test QR payload", e)
+            null
+        }
+    }
+
+    fun writeTestSessionKey(context: Context, encryptedSessionKeyBase64: String): Boolean {
+        return try {
+            val file = getTestSessionKeyFile(context)
+            file.writeText(encryptedSessionKeyBase64)
+            Log.d(TAG, "Test session key written")
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to write test session key", e)
+            false
+        }
+    }
+}
 
 @Suppress("MagicNumber")
 class CompanionActivity : AppCompatActivity() {
@@ -118,10 +156,6 @@ class CompanionActivity : AppCompatActivity() {
         })
     }
 
-    /**
-     * Handle QR result: extract IP and connect to it.
-     * In test mode with DEBUG build, defaults to localhost if no IP in QR.
-     */
     private fun handleQrResult(qrContent: String) {
         try {
             val json = JSONObject(qrContent)
@@ -131,7 +165,6 @@ class CompanionActivity : AppCompatActivity() {
             when {
                 identity != "launchpad" -> toast("Kein LAUNCHPAD-QR-Code")
                 ip == null -> {
-                    // Older QR without embedded IP — fall back to IP dialog
                     toast("QR enthält keine IP — bitte manuell eingeben")
                     promptForIpFallback()
                 }
@@ -146,15 +179,9 @@ class CompanionActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Test Mode: read QR payload from cache file (same-device testing).
-     * Connects to localhost:7391 instead of scanning real QR.
-     * Also generates AES session key, encrypts with public key from QR, writes back to cache.
-     */
     private suspend fun activateTestMode() {
         val testQrJson = withContext(Dispatchers.IO) {
             try {
-                // Read test QR from main app's cache
                 TestModeManager.readTestQrPayload(this@CompanionActivity)
             } catch (e: Exception) {
                 Log.e("TestMode", "Failed to read test QR", e)
@@ -168,7 +195,6 @@ class CompanionActivity : AppCompatActivity() {
         }
 
         try {
-            // Parse QR to extract public key and identity
             val qrJson = JSONObject(testQrJson)
             val publicKeyB64 = qrJson.optString("publicKeyB64", "")
 
@@ -177,13 +203,13 @@ class CompanionActivity : AppCompatActivity() {
                 return
             }
 
-            // Generate random AES-256 session key (32 bytes)
+            // Generate random AES-256 session key
             val keyGen = KeyGenerator.getInstance("AES")
             keyGen.init(256, SecureRandom())
             val sessionKey = keyGen.generateKey()
             val sessionKeyBytes = sessionKey.encoded
 
-            // Encrypt session key with public key from QR (RSA/ECB/PKCS1Padding)
+            // Encrypt session key with RSA public key
             val publicKeyBytes = Base64.getDecoder().decode(publicKeyB64)
             val keySpec = X509EncodedKeySpec(publicKeyBytes)
             val keyFactory = KeyFactory.getInstance("RSA")
@@ -194,12 +220,12 @@ class CompanionActivity : AppCompatActivity() {
             val encryptedSessionKey = cipher.doFinal(sessionKeyBytes)
             val encryptedSessionKeyBase64 = Base64.getEncoder().encodeToString(encryptedSessionKey)
 
-            // Write encrypted session key to cache for Main App to read and decrypt
+            // Write encrypted key to cache
             withContext(Dispatchers.IO) {
                 TestModeManager.writeTestSessionKey(this@CompanionActivity, encryptedSessionKeyBase64)
             }
 
-            // Now proceed with normal QR handling (connects to localhost)
+            // Connect via QR
             handleQrResult(testQrJson)
             toast("🧪 Test-Modus: Session Key verschlüsselt\nlokale Verbindung zu localhost:7391")
 
@@ -208,8 +234,6 @@ class CompanionActivity : AppCompatActivity() {
             toast("Test QR ungültig: ${e.message?.take(40)}")
         }
     }
-
-    // ─── IP fallback dialog ────────────────────────────────────────────────────
 
     private fun promptForIpFallback() {
         val input = android.widget.EditText(this).apply {
@@ -230,8 +254,6 @@ class CompanionActivity : AppCompatActivity() {
             .setNegativeButton("Abbrechen", null)
             .show()
     }
-
-    // ─── Data loading & UI refresh ──────────────────────────────────────────
 
     private fun loadData() {
         scope.launch {
@@ -394,8 +416,6 @@ class CompanionActivity : AppCompatActivity() {
         reader.close()
         return response
     }
-
-    // ─── UI helpers ────────────────────────────────────────────────────────
 
     private fun heading(text: String, size: Float = 20f) = TextView(this).apply {
         this.text = text
