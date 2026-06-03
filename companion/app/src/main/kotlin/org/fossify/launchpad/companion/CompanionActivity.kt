@@ -351,12 +351,7 @@ class CompanionActivity : AppCompatActivity() {
                 val item = doge.getJSONObject(i)
                 val id = item.optString("id")
                 val desc = item.optString("description", "Medien-Anfrage")
-                content.addView(
-                    renderApprovalItem(
-                        "📺 Medien-Anfrage", desc,
-                        """{"type":"approve_doge","id":"$id","minutes":20}"""
-                    )
-                )
+                content.addView(renderDogeApprovalItem("📺 Medien-Anfrage", desc, id))
             }
             for (i in 0 until zusagen.length()) {
                 val item = zusagen.getJSONObject(i)
@@ -372,6 +367,66 @@ class CompanionActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("API", "Pending parse failed", e)
             content.addView(status("Keine ausstehenden Anfragen"))
+        }
+    }
+
+    private fun renderDogeApprovalItem(title: String, subtitle: String, id: String): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(16, 16, 16, 16)
+            setBackgroundColor(Color.parseColor("#f5f5f5"))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(0, 8, 0, 8) }
+
+            addView(android.widget.TextView(this@CompanionActivity).apply {
+                text = title
+                textSize = 16f
+                setTypeface(null, Typeface.BOLD)
+            })
+            addView(android.widget.TextView(this@CompanionActivity).apply {
+                text = subtitle
+                textSize = 14f
+                setTextColor(Color.DKGRAY)
+            })
+
+            // Minutes row: – field +
+            val minutesRow = LinearLayout(this@CompanionActivity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = android.view.Gravity.CENTER_VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { topMargin = 12 }
+            }
+            val minutesField = android.widget.EditText(this@CompanionActivity).apply {
+                inputType = android.text.InputType.TYPE_CLASS_NUMBER
+                setText("20")
+                textSize = 18f
+                gravity = android.view.Gravity.CENTER
+                layoutParams = LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT)
+            }
+            minutesRow.addView(button("−") {
+                val v = minutesField.text.toString().toIntOrNull() ?: 20
+                if (v > 5) minutesField.setText((v - 5).toString())
+            })
+            minutesRow.addView(minutesField)
+            minutesRow.addView(button("+") {
+                val v = minutesField.text.toString().toIntOrNull() ?: 20
+                minutesField.setText((v + 5).toString())
+            })
+            minutesRow.addView(android.widget.TextView(this@CompanionActivity).apply {
+                text = " Min."
+                textSize = 14f
+                gravity = android.view.Gravity.CENTER_VERTICAL
+            })
+            addView(minutesRow)
+
+            addView(button("✓ Genehmigen") {
+                val mins = minutesField.text.toString().toIntOrNull() ?: 20
+                sendCommand("""{"type":"approve_doge","id":"$id","minutes":$mins}""")
+            })
         }
     }
 
