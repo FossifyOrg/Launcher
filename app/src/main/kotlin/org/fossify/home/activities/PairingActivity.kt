@@ -158,34 +158,16 @@ class PairingActivity : AppCompatActivity() {
     }
 
     /**
-     * Test Mode: write QR payload and private key to cache for Companion app.
+     * Test Mode: write QR payload to cache for Companion app.
      * Companion will read QR, encrypt session key with public key, write encrypted key back.
-     * Main app will then read encrypted key and decrypt with this private key.
+     * Main app will then read encrypted key and decrypt with private key stored in PairingManager.
      */
     private fun activateTestMode() {
         scope.launch {
             val payload = pairing.getOrCreateQrPayload(reset = false)
             val success = withContext(Dispatchers.IO) {
-                // Write QR payload to cache
-                val qrWritten = TestModeManager.writeTestQrPayload(this@PairingActivity, payload)
-
-                // Also try to write private key for reference during session key decryption
-                // Note: The actual decryption will happen in pairing.receiveSessionKey()
-                // We write it here to help with debugging if needed
-                val privateKeyWritten = try {
-                    val privateKeyPem = pairing.getPrivateKeyForTesting()
-                    if (privateKeyPem != null) {
-                        TestModeManager.writeTestPrivateKey(this@PairingActivity, privateKeyPem)
-                    } else {
-                        // If private key not available, that's okay - pairing manager has it
-                        true
-                    }
-                } catch (e: Exception) {
-                    android.util.Log.w("TestMode", "Could not write private key", e)
-                    true // Don't fail if we can't write private key
-                }
-
-                qrWritten && privateKeyWritten
+                // Write QR payload to cache for Companion to read
+                TestModeManager.writeTestQrPayload(this@PairingActivity, payload)
             }
 
             if (success) {
@@ -201,11 +183,15 @@ class PairingActivity : AppCompatActivity() {
                         if (encryptedKey != null) {
                             sessionKeyFound = true
                             // Companion has written the encrypted session key
-                            // Now we simulate receiving it (in real flow, companion sends it via HTTP)
+                            // Now decrypt and store it using PairingManager's standard method
                             withContext(Dispatchers.Main) {
-                                pairing.receiveSessionKey(encryptedKey)
+                                val ok = pairing.receiveSessionKey(encryptedKey)
                                 refreshStatus()
-                                toast("🧪 Session Key automatisch empfangen! Gekoppelt ✓")
+                                if (ok) {
+                                    toast("🧪 Session Key automatisch empfangen! Gekoppelt ✓")
+                                } else {
+                                    toast("⚠️ Session Key Entschlüsselung fehlgeschlagen")
+                                }
                             }
                             break
                         }
