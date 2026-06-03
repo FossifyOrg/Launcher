@@ -113,6 +113,12 @@ class PairingActivity : AppCompatActivity() {
         showQr(reset = false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // The Companion may have completed test-mode pairing while we were backgrounded.
+        if (::statusView.isInitialized) refreshStatus()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         scope.cancel()
@@ -153,54 +159,23 @@ class PairingActivity : AppCompatActivity() {
     }
 
     /**
-     * Test Mode: write QR payload to cache for Companion app.
-     * Companion will read QR, encrypt session key with public key, write encrypted key back.
-     * Main app will then read encrypted key and decrypt with private key stored in PairingManager.
+     * Test Mode: publish the QR payload via the local LaunchpadServer (port 7391). The Companion
+     * fetches it over 127.0.0.1, encrypts a session key with our public key, and POSTs it back —
+     * at which point the server completes the pairing directly (see LaunchpadServer /api/test-pair).
+     * When the user returns to this screen, onResume() refreshes the status to "gekoppelt".
      */
     private fun activateTestMode() {
         scope.launch {
             val payload = pairing.getOrCreateQrPayload(reset = false)
             val success = withContext(Dispatchers.IO) {
-                // Write QR payload to cache for Companion to read
                 TestModeManager.writeTestQrPayload(payload)
             }
-
             if (success) {
-                toast("🧪 Test-Modus aktiviert\nCompanion: \"Test auf diesem Gerät\" drücken")
+                toast(
+                    "🧪 Test-Modus aktiviert\n" +
+                        "Companion öffnen → \"Test auf diesem Gerät\" drücken"
+                )
                 refreshStatus()
-
-                // Poll for session key from Companion app (up to 10 seconds)
-                withContext(Dispatchers.IO) {
-                    var sessionKeyFound = false
-                    repeat(51) {
-                        if (!sessionKeyFound) {
-                            Thread.sleep(200) // Check every 200ms
-                            val encryptedKey = TestModeManager.readTestSessionKey()
-                            if (encryptedKey != null) {
-                                sessionKeyFound = true
-                                // Companion has written the encrypted session key
-                                // Now decrypt and store it using PairingManager's standard method
-                                withContext(Dispatchers.Main) {
-                                    val ok = pairing.receiveSessionKey(encryptedKey)
-                                    refreshStatus()
-                                    if (ok) {
-                                        toast("🧪 Session Key automatisch empfangen! Gekoppelt ✓")
-                                    } else {
-                                        toast("⚠️ Session Key Entschlüsselung fehlgeschlagen")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (!sessionKeyFound) {
-                        withContext(Dispatchers.Main) {
-                            toast(
-                                "⚠️ Session Key nicht innerhalb von 10s erhalten.\n" +
-                                    "Companion hat vermutlich noch nicht \"Test\" aktiviert."
-                            )
-                        }
-                    }
-                }
             } else {
                 toast("Test-Modus Aktivierung fehlgeschlagen")
             }

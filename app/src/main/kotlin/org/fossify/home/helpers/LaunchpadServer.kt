@@ -97,7 +97,9 @@ object LaunchpadServer {
                     }
                     method == "POST" && path == "/api/test-pair" -> {
                         testSessionKey = body
-                        200 to """{"ok":true}"""
+                        // Complete pairing immediately so it does not depend on a UI poll window.
+                        val ok = PairingManager(context).receiveSessionKey(body)
+                        if (ok) 200 to """{"ok":true}""" else 400 to """{"error":"decrypt failed"}"""
                     }
                     else -> 404 to """{"error":"not found"}"""
                 }

@@ -86,10 +86,14 @@ object TestModeManager {
     }
 }
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "TooGenericExceptionCaught", "TooManyFunctions")
 class CompanionActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    companion object {
+        private const val LAUNCHER_PORT = 7391
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -159,22 +163,34 @@ class CompanionActivity : AppCompatActivity() {
             val json = JSONObject(qrContent)
             val identity = json.optString("identity", "")
             val ip = json.optString("ip", "").takeIf { it.isNotBlank() }
-                ?: if (BuildConfig.DEBUG) "localhost" else null
+                ?: if (BuildConfig.DEBUG) "127.0.0.1" else null
             when {
                 identity != "launchpad" -> toast("Kein LAUNCHPAD-QR-Code")
                 ip == null -> {
                     toast("QR enthält keine IP — bitte manuell eingeben")
                     promptForIpFallback()
                 }
-                else -> {
-                    prefs.edit().putString("launcher_ip", ip).apply()
-                    toast("Verbunden mit $ip ✓")
-                    loadData()
-                }
+                else -> connectTo(normalizeBaseUrl(ip))
             }
         } catch (e: Exception) {
             toast("QR-Code konnte nicht gelesen werden: ${e.message?.take(40)}")
         }
+    }
+
+    /** Turn a bare host ("192.168.1.5"), host:port, or full URL into "http://host:port". */
+    private fun normalizeBaseUrl(raw: String): String {
+        var s = raw.trim().removeSuffix("/")
+        if (!s.startsWith("http://") && !s.startsWith("https://")) s = "http://$s"
+        // Append the launcher port if the host part has none.
+        val afterScheme = s.substringAfter("://")
+        if (!afterScheme.contains(":")) s = "$s:$LAUNCHER_PORT"
+        return s
+    }
+
+    private fun connectTo(baseUrl: String) {
+        prefs.edit().putString("launcher_ip", baseUrl).apply()
+        toast("Verbunden mit $baseUrl ✓")
+        loadData()
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -219,10 +235,11 @@ class CompanionActivity : AppCompatActivity() {
             }
 
             if (posted) {
-                handleQrResult(testQrJson)
-                toast("🧪 Test-Modus aktiv — verbunden via localhost:7391")
+                // Same device → always reach the launcher's server over loopback.
+                connectTo("http://127.0.0.1:$LAUNCHER_PORT")
+                toast("🧪 Test-Modus aktiv — verbunden via 127.0.0.1:$LAUNCHER_PORT")
             } else {
-                toast("⚠️ Session Key konnte nicht übermittelt werden")
+                toast("⚠️ Session Key abgelehnt (Entschlüsselung fehlgeschlagen)")
             }
         } catch (e: Exception) {
             Log.e("TestMode", "Session key encryption failed", e)
@@ -240,11 +257,7 @@ class CompanionActivity : AppCompatActivity() {
             .setView(input)
             .setPositiveButton("Verbinden") { _, _ ->
                 val ip = input.text.toString().trim()
-                if (ip.isNotBlank()) {
-                    prefs.edit().putString("launcher_ip", ip).apply()
-                    toast("Verbunden mit $ip ✓")
-                    loadData()
-                }
+                if (ip.isNotBlank()) connectTo(normalizeBaseUrl(ip))
             }
             .setNegativeButton("Abbrechen", null)
             .show()
@@ -275,40 +288,20 @@ class CompanionActivity : AppCompatActivity() {
                 setContentView(ScrollView(this@CompanionActivity).apply { addView(content) })
 
                 content.addView(heading("Geräte-Status"))
-                try {
-                    val json = JSONObject(statusJson)
-                    val limit = json.optString("limit", "Unbekannt")
-                    content.addView(status("Limit: $limit"))
-                } catch (e: Exception) {
-                    content.addView(status("Status: OK"))
-                }
+                renderStatus(content, statusJson)
 
                 content.addView(spacer(16))
-                content.addView(heading("Ausstehende Genehmigungen", 18f))
+                content.addView(heading("Ausstehende Anfragen", 18f))
 
                 val pendingJson = withContext(Dispatchers.IO) {
                     try {
                         fetchApi("$launcherIp/api/pending")
                     } catch (e: Exception) {
+                        Log.e("API", "Pending fetch failed", e)
                         null
                     }
                 }
-
-                if (pendingJson != null) {
-                    try {
-                        val pending = JSONArray(pendingJson)
-                        for (i in 0 until pending.length()) {
-                            val item = pending.getJSONObject(i)
-                            val id = item.optString("id")
-                            val action = item.optString("action")
-                            content.addView(renderPendingItem(id, action))
-                        }
-                    } catch (e: Exception) {
-                        content.addView(status("Keine ausstehenden Genehmigungen"))
-                    }
-                } else {
-                    content.addView(status("Keine ausstehenden Genehmigungen"))
-                }
+                renderPending(content, pendingJson)
 
                 content.addView(spacer(16))
                 content.addView(button("Neu laden") { loadData() })
@@ -325,7 +318,64 @@ class CompanionActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderPendingItem(id: String, action: String): LinearLayout {
+    private fun renderStatus(content: LinearLayout, statusJson: String) {
+        try {
+            val json = JSONObject(statusJson)
+            val balance = json.optInt("balance", 0)
+            val enforcement = json.optBoolean("enforcement", false)
+            val cooldown = json.optBoolean("cooldown", false)
+            content.addView(status("Guthaben: $balance Min"))
+            content.addView(status("Kontrolle aktiv: ${if (enforcement) "ja" else "nein"}"))
+            content.addView(status("Ruhezeit aktiv: ${if (cooldown) "ja" else "nein"}"))
+        } catch (e: Exception) {
+            Log.e("API", "Status parse failed", e)
+            content.addView(status("Status: OK"))
+        }
+    }
+
+    @Suppress("NestedBlockDepth")
+    private fun renderPending(content: LinearLayout, pendingJson: String?) {
+        if (pendingJson == null) {
+            content.addView(status("Anfragen konnten nicht geladen werden"))
+            return
+        }
+        try {
+            val json = JSONObject(pendingJson)
+            val doge = json.optJSONArray("doge") ?: JSONArray()
+            val zusagen = json.optJSONArray("zusagen") ?: JSONArray()
+            if (doge.length() == 0 && zusagen.length() == 0) {
+                content.addView(status("Keine ausstehenden Anfragen"))
+                return
+            }
+            for (i in 0 until doge.length()) {
+                val item = doge.getJSONObject(i)
+                val id = item.optString("id")
+                val desc = item.optString("description", "Medien-Anfrage")
+                content.addView(
+                    renderApprovalItem(
+                        "📺 Medien-Anfrage", desc,
+                        """{"type":"approve_doge","id":"$id","minutes":20}"""
+                    )
+                )
+            }
+            for (i in 0 until zusagen.length()) {
+                val item = zusagen.getJSONObject(i)
+                val id = item.optString("id")
+                val text = item.optString("text", "Zusage")
+                content.addView(
+                    renderApprovalItem(
+                        "🤝 Zusage", text,
+                        """{"type":"approve_zusage","id":"$id"}"""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("API", "Pending parse failed", e)
+            content.addView(status("Keine ausstehenden Anfragen"))
+        }
+    }
+
+    private fun renderApprovalItem(title: String, subtitle: String, commandJson: String): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(16, 16, 16, 16)
@@ -336,62 +386,41 @@ class CompanionActivity : AppCompatActivity() {
             ).apply { setMargins(0, 8, 0, 8) }
 
             addView(TextView(this@CompanionActivity).apply {
-                text = action
+                text = title
                 textSize = 16f
                 setTypeface(null, Typeface.BOLD)
             })
-
-            addView(LinearLayout(this@CompanionActivity).apply {
-                orientation = LinearLayout.HORIZONTAL
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { setMargins(0, 8, 0, 0) }
-
-                addView(button("✓ Genehmigen") {
-                    scope.launch {
-                        withContext(Dispatchers.IO) {
-                            val ip = prefs.getString("launcher_ip", null)
-                            if (ip != null) {
-                                try {
-                                    fetchApi("$ip/api/command", method = "POST", body = "{\"id\":\"$id\",\"approved\":true}")
-                                } catch (e: Exception) {
-                                    Log.e("API", "Approval failed", e)
-                                }
-                            }
-                        }
-                        loadData()
-                    }
-                }.apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        0,
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        1f
-                    ).apply { setMargins(0, 0, 4, 0) }
-                })
-
-                addView(button("✗ Ablehnen") {
-                    scope.launch {
-                        withContext(Dispatchers.IO) {
-                            val ip = prefs.getString("launcher_ip", null)
-                            if (ip != null) {
-                                try {
-                                    fetchApi("$ip/api/command", method = "POST", body = "{\"id\":\"$id\",\"approved\":false}")
-                                } catch (e: Exception) {
-                                    Log.e("API", "Denial failed", e)
-                                }
-                            }
-                        }
-                        loadData()
-                    }
-                }.apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        0,
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        1f
-                    ).apply { setMargins(4, 0, 0, 0) }
-                })
+            addView(TextView(this@CompanionActivity).apply {
+                text = subtitle
+                textSize = 14f
+                setTextColor(Color.DKGRAY)
             })
+            addView(button("✓ Genehmigen") { sendCommand(commandJson) })
+        }
+    }
+
+    private fun sendCommand(commandJson: String) {
+        scope.launch {
+            val response = withContext(Dispatchers.IO) {
+                val ip = prefs.getString("launcher_ip", null) ?: return@withContext null
+                try {
+                    fetchApi("$ip/api/command", method = "POST", body = commandJson)
+                } catch (e: Exception) {
+                    Log.e("API", "Command failed", e)
+                    null
+                }
+            }
+            val message = if (response != null) {
+                try {
+                    JSONObject(response).optString("message", "OK")
+                } catch (e: Exception) {
+                    "OK"
+                }
+            } else {
+                "Befehl fehlgeschlagen"
+            }
+            toast(message)
+            loadData()
         }
     }
 
