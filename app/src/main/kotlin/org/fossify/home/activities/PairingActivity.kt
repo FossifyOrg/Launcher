@@ -5,8 +5,11 @@
 
 package org.fossify.home.activities
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
@@ -18,6 +21,8 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +45,10 @@ class PairingActivity : AppCompatActivity() {
 
     private lateinit var statusView: TextView
     private lateinit var qrView: ImageView
+
+    companion object {
+        private const val PERMISSION_REQUEST_TEST_MODE = 42
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +90,27 @@ class PairingActivity : AppCompatActivity() {
 
         // LAUNCHPAD M4: Test Mode — same-device testing (always available)
         content.addView(button("🧪 Test-Modus (gleiches Gerät)") {
-            activateTestMode()
+            // Request storage permissions before starting test mode
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Permission is not granted, request it
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        PERMISSION_REQUEST_TEST_MODE
+                    )
+                } else {
+                    // Permission already granted
+                    activateTestMode()
+                }
+            } else {
+                // For Android < 6.0, permissions are granted at install time
+                activateTestMode()
+            }
         })
 
         // Step 2: receive the parent's encrypted session key.
@@ -114,6 +143,25 @@ class PairingActivity : AppCompatActivity() {
         })
 
         showQr(reset = false)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_TEST_MODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, proceed with test mode
+                    activateTestMode()
+                } else {
+                    // Permission denied
+                    toast("Speicherberechtigung erforderlich für Test-Modus")
+                }
+            }
+        }
     }
 
     override fun onDestroy() {

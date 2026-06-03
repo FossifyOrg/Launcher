@@ -8,6 +8,7 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import android.graphics.Color
 import android.graphics.Typeface
@@ -49,43 +50,67 @@ object TestModeManager {
     private const val TAG = "TestModeManager"
     private const val TEST_QR_FILE = "launchpad_test_qr.json"
     private const val TEST_SESSION_KEY_FILE = "launchpad_test_session_key.txt"
+    private const val SHARED_CACHE_DIR = "LAUNCHPAD_TEST"
 
-    /**
-     * Get shared external cache file (accessible by all apps).
-     * Falls back to regular cache if external not available.
-     */
-    fun getTestQrCacheFile(context: Context): File {
-        val externalCache = context.externalCacheDir
-        return if (externalCache != null && externalCache.exists()) {
-            File(externalCache, TEST_QR_FILE)
-        } else {
-            // Fallback to internal cache
-            File(context.cacheDir, TEST_QR_FILE)
+    private fun getSharedCacheDir(context: Context): File {
+        // Try to use public external storage first
+        val externalStorageState = android.os.Environment.getExternalStorageState()
+        val externalStorageAvailable = externalStorageState == android.os.Environment.MEDIA_MOUNTED
+
+        if (externalStorageAvailable) {
+            try {
+                val publicCache = File(android.os.Environment.getExternalStorageDirectory(), SHARED_CACHE_DIR)
+                Log.d(TAG, "Using public external storage: ${publicCache.absolutePath}")
+                return publicCache
+            } catch (e: Exception) {
+                Log.w(TAG, "Could not use public external storage: ${e.message}")
+            }
         }
+
+        val cacheDir = context.cacheDir
+        Log.w(TAG, "Falling back to app cache directory: ${cacheDir.absolutePath}")
+        return cacheDir
+    }
+
+    fun getTestQrCacheFile(context: Context): File {
+        val dir = getSharedCacheDir(context)
+        val file = File(dir, TEST_QR_FILE)
+        Log.d(TAG, "QR cache file path: ${file.absolutePath}")
+        return file
     }
 
     fun getTestSessionKeyFile(context: Context): File {
-        val externalCache = context.externalCacheDir
-        return if (externalCache != null && externalCache.exists()) {
-            File(externalCache, TEST_SESSION_KEY_FILE)
-        } else {
-            // Fallback to internal cache
-            File(context.cacheDir, TEST_SESSION_KEY_FILE)
-        }
+        val dir = getSharedCacheDir(context)
+        val file = File(dir, TEST_SESSION_KEY_FILE)
+        Log.d(TAG, "Session key file path: ${file.absolutePath}")
+        return file
     }
 
     fun readTestQrPayload(context: Context): String? {
         return try {
             val file = getTestQrCacheFile(context)
+            Log.d(TAG, "Attempting to read QR payload from: ${file.absolutePath}")
+            Log.d(TAG, "File exists: ${file.exists()}")
             if (file.exists()) {
-                Log.d(TAG, "Reading test QR from ${file.absolutePath}")
-                file.readText()
+                Log.d(TAG, "File size: ${file.length()} bytes")
+                val content = file.readText()
+                Log.d(TAG, "✓ Successfully read QR payload (${content.length} bytes)")
+                content
             } else {
-                Log.w(TAG, "Test QR file not found at ${file.absolutePath}")
+                Log.w(TAG, "✗ Test QR file not found at ${file.absolutePath}")
+                Log.w(TAG, "  Parent directory: ${file.parentFile?.absolutePath}")
+                Log.w(TAG, "  Parent exists: ${file.parentFile?.exists()}")
+                val parentContents = file.parentFile?.listFiles()
+                if (parentContents != null) {
+                    Log.w(TAG, "  Parent contents: ${parentContents.joinToString { it.name }}")
+                } else {
+                    Log.w(TAG, "  Parent contents: EMPTY or unreadable")
+                }
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to read test QR payload", e)
+            Log.e(TAG, "✗ FAILED to read test QR payload: ${e.message}", e)
+            e.printStackTrace()
             null
         }
     }
@@ -93,12 +118,20 @@ object TestModeManager {
     fun writeTestSessionKey(context: Context, encryptedSessionKeyBase64: String): Boolean {
         return try {
             val file = getTestSessionKeyFile(context)
-            file.parentFile?.mkdirs() // Ensure directory exists
+            Log.d(TAG, "Attempting to write session key to: ${file.absolutePath}")
+            Log.d(TAG, "Session key size: ${encryptedSessionKeyBase64.length} bytes")
+
+            file.parentFile?.mkdirs()
+            Log.d(TAG, "Parent directory created/verified: ${file.parentFile?.absolutePath}")
+
             file.writeText(encryptedSessionKeyBase64)
-            Log.d(TAG, "Test session key written to ${file.absolutePath}")
+
+            Log.d(TAG, "✓ Test session key written successfully to ${file.absolutePath}")
+            Log.d(TAG, "File exists after write: ${file.exists()}, size: ${file.length()} bytes")
             true
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to write test session key", e)
+            Log.e(TAG, "✗ FAILED to write test session key: ${e.message}", e)
+            e.printStackTrace()
             false
         }
     }
@@ -108,6 +141,10 @@ object TestModeManager {
 class CompanionActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    companion object {
+        private const val PERMISSION_REQUEST_TEST_MODE = 42
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +173,27 @@ class CompanionActivity : AppCompatActivity() {
         scope.cancel()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_TEST_MODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, proceed with test mode
+                    scope.launch {
+                        activateTestMode()
+                    }
+                } else {
+                    // Permission denied
+                    toast("Speicherberechtigung erforderlich für Test-Modus")
+                }
+            }
+        }
+    }
+
     private fun showPairingScreen(content: LinearLayout) {
         content.removeAllViews()
         content.addView(heading("Gerät koppeln"))
@@ -161,8 +219,30 @@ class CompanionActivity : AppCompatActivity() {
 
         // Test Mode button — same-device testing (always available)
         content.addView(button("🧪 Test auf diesem Gerät") {
-            scope.launch {
-                activateTestMode()
+            // Request storage permissions before starting test mode
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Permission is not granted, request it
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        PERMISSION_REQUEST_TEST_MODE
+                    )
+                } else {
+                    // Permission already granted
+                    scope.launch {
+                        activateTestMode()
+                    }
+                }
+            } else {
+                // For Android < 6.0, permissions are granted at install time
+                scope.launch {
+                    activateTestMode()
+                }
             }
         })
 
