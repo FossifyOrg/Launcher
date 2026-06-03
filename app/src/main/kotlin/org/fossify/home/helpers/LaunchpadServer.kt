@@ -34,6 +34,9 @@ object LaunchpadServer {
     @Volatile private var running = false
     private var serverSocket: ServerSocket? = null
 
+    @Volatile var testQrPayload: String? = null
+    @Volatile var testSessionKey: String? = null
+
     fun start(context: Context) {
         if (running) return
         running = true
@@ -88,6 +91,14 @@ object LaunchpadServer {
                     method == "GET" && path == "/api/pending" -> handlePending(context)
                     method == "POST" && path == "/api/command" -> handleCommand(context, body)
                     path == "/api/ip" -> 200 to """{"ip":"${getLocalIp()}","port":$PORT}"""
+                    method == "GET" && path == "/api/test-pair" -> {
+                        val p = testQrPayload
+                        if (p != null) 200 to p else 404 to """{"error":"no test payload"}"""
+                    }
+                    method == "POST" && path == "/api/test-pair" -> {
+                        testSessionKey = body
+                        200 to """{"ok":true}"""
+                    }
                     else -> 404 to """{"error":"not found"}"""
                 }
 

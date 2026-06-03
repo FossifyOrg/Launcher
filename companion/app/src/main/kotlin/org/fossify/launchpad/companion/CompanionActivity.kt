@@ -8,7 +8,6 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.os.Build
 import android.util.Log
 import android.graphics.Color
 import android.graphics.Typeface
@@ -33,7 +32,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -46,92 +44,43 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 
 // ─── Test Mode Manager (inline for companion) ──────────────────────────────
+// Communicates with the main app's LaunchpadServer via localhost HTTP.
+// No file I/O or storage permissions required.
+@Suppress("TooGenericExceptionCaught")
 object TestModeManager {
     private const val TAG = "TestModeManager"
-    private const val TEST_QR_FILE = "launchpad_test_qr.json"
-    private const val TEST_SESSION_KEY_FILE = "launchpad_test_session_key.txt"
-    private const val SHARED_CACHE_DIR = "LAUNCHPAD_TEST"
+    private const val TEST_PAIR_URL = "http://127.0.0.1:7391/api/test-pair"
 
-    private fun getSharedCacheDir(context: Context): File {
-        // Try to use public external storage first
-        val externalStorageState = android.os.Environment.getExternalStorageState()
-        val externalStorageAvailable = externalStorageState == android.os.Environment.MEDIA_MOUNTED
-
-        if (externalStorageAvailable) {
-            try {
-                val publicCache = File(android.os.Environment.getExternalStorageDirectory(), SHARED_CACHE_DIR)
-                Log.d(TAG, "Using public external storage: ${publicCache.absolutePath}")
-                return publicCache
-            } catch (e: Exception) {
-                Log.w(TAG, "Could not use public external storage: ${e.message}")
-            }
-        }
-
-        val cacheDir = context.cacheDir
-        Log.w(TAG, "Falling back to app cache directory: ${cacheDir.absolutePath}")
-        return cacheDir
-    }
-
-    fun getTestQrCacheFile(context: Context): File {
-        val dir = getSharedCacheDir(context)
-        val file = File(dir, TEST_QR_FILE)
-        Log.d(TAG, "QR cache file path: ${file.absolutePath}")
-        return file
-    }
-
-    fun getTestSessionKeyFile(context: Context): File {
-        val dir = getSharedCacheDir(context)
-        val file = File(dir, TEST_SESSION_KEY_FILE)
-        Log.d(TAG, "Session key file path: ${file.absolutePath}")
-        return file
-    }
-
-    fun readTestQrPayload(context: Context): String? {
+    fun readTestQrPayload(): String? {
         return try {
-            val file = getTestQrCacheFile(context)
-            Log.d(TAG, "Attempting to read QR payload from: ${file.absolutePath}")
-            Log.d(TAG, "File exists: ${file.exists()}")
-            if (file.exists()) {
-                Log.d(TAG, "File size: ${file.length()} bytes")
-                val content = file.readText()
-                Log.d(TAG, "✓ Successfully read QR payload (${content.length} bytes)")
-                content
+            val conn = URL(TEST_PAIR_URL).openConnection() as HttpURLConnection
+            conn.connectTimeout = 3000
+            conn.readTimeout = 3000
+            if (conn.responseCode == 200) {
+                conn.inputStream.bufferedReader().readText()
             } else {
-                Log.w(TAG, "✗ Test QR file not found at ${file.absolutePath}")
-                Log.w(TAG, "  Parent directory: ${file.parentFile?.absolutePath}")
-                Log.w(TAG, "  Parent exists: ${file.parentFile?.exists()}")
-                val parentContents = file.parentFile?.listFiles()
-                if (parentContents != null) {
-                    Log.w(TAG, "  Parent contents: ${parentContents.joinToString { it.name }}")
-                } else {
-                    Log.w(TAG, "  Parent contents: EMPTY or unreadable")
-                }
+                Log.w(TAG, "No test QR available (${conn.responseCode})")
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "✗ FAILED to read test QR payload: ${e.message}", e)
-            e.printStackTrace()
+            Log.e(TAG, "Failed to fetch test QR via HTTP", e)
             null
         }
     }
 
-    fun writeTestSessionKey(context: Context, encryptedSessionKeyBase64: String): Boolean {
+    fun writeTestSessionKey(encryptedKeyBase64: String): Boolean {
         return try {
-            val file = getTestSessionKeyFile(context)
-            Log.d(TAG, "Attempting to write session key to: ${file.absolutePath}")
-            Log.d(TAG, "Session key size: ${encryptedSessionKeyBase64.length} bytes")
-
-            file.parentFile?.mkdirs()
-            Log.d(TAG, "Parent directory created/verified: ${file.parentFile?.absolutePath}")
-
-            file.writeText(encryptedSessionKeyBase64)
-
-            Log.d(TAG, "✓ Test session key written successfully to ${file.absolutePath}")
-            Log.d(TAG, "File exists after write: ${file.exists()}, size: ${file.length()} bytes")
-            true
+            val conn = URL(TEST_PAIR_URL).openConnection() as HttpURLConnection
+            conn.requestMethod = "POST"
+            conn.doOutput = true
+            conn.connectTimeout = 3000
+            conn.readTimeout = 3000
+            conn.outputStream.use { it.write(encryptedKeyBase64.toByteArray()) }
+            val ok = conn.responseCode == 200
+            Log.d(TAG, "Session key POST → ${conn.responseCode}")
+            ok
         } catch (e: Exception) {
-            Log.e(TAG, "✗ FAILED to write test session key: ${e.message}", e)
-            e.printStackTrace()
+            Log.e(TAG, "Failed to POST test session key", e)
             false
         }
     }
@@ -141,10 +90,6 @@ object TestModeManager {
 class CompanionActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
-    companion object {
-        private const val PERMISSION_REQUEST_TEST_MODE = 42
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,27 +118,6 @@ class CompanionActivity : AppCompatActivity() {
         scope.cancel()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSION_REQUEST_TEST_MODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, proceed with test mode
-                    scope.launch {
-                        activateTestMode()
-                    }
-                } else {
-                    // Permission denied
-                    toast("Speicherberechtigung erforderlich für Test-Modus")
-                }
-            }
-        }
-    }
-
     private fun showPairingScreen(content: LinearLayout) {
         content.removeAllViews()
         content.addView(heading("Gerät koppeln"))
@@ -217,33 +141,9 @@ class CompanionActivity : AppCompatActivity() {
 
         content.addView(button("IP manuell eingeben") { promptForIpFallback() })
 
-        // Test Mode button — same-device testing (always available)
+        // Test Mode button — same-device testing via local HTTP (no permissions needed)
         content.addView(button("🧪 Test auf diesem Gerät") {
-            // Request storage permissions before starting test mode
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // Permission is not granted, request it
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        PERMISSION_REQUEST_TEST_MODE
-                    )
-                } else {
-                    // Permission already granted
-                    scope.launch {
-                        activateTestMode()
-                    }
-                }
-            } else {
-                // For Android < 6.0, permissions are granted at install time
-                scope.launch {
-                    activateTestMode()
-                }
-            }
+            scope.launch { activateTestMode() }
         })
 
         content.addView(spacer(32))
@@ -277,10 +177,11 @@ class CompanionActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun activateTestMode() {
         val testQrJson = withContext(Dispatchers.IO) {
             try {
-                TestModeManager.readTestQrPayload(this@CompanionActivity)
+                TestModeManager.readTestQrPayload()
             } catch (e: Exception) {
                 Log.e("TestMode", "Failed to read test QR", e)
                 null
@@ -301,32 +202,28 @@ class CompanionActivity : AppCompatActivity() {
                 return
             }
 
-            // Generate random AES-256 session key
             val keyGen = KeyGenerator.getInstance("AES")
             keyGen.init(256, SecureRandom())
-            val sessionKey = keyGen.generateKey()
-            val sessionKeyBytes = sessionKey.encoded
+            val sessionKeyBytes = keyGen.generateKey().encoded
 
-            // Encrypt session key with RSA public key
             val publicKeyBytes = Base64.getDecoder().decode(publicKeyB64)
-            val keySpec = X509EncodedKeySpec(publicKeyBytes)
-            val keyFactory = KeyFactory.getInstance("RSA")
-            val publicKey: PublicKey = keyFactory.generatePublic(keySpec)
+            val publicKey: PublicKey = KeyFactory.getInstance("RSA")
+                .generatePublic(X509EncodedKeySpec(publicKeyBytes))
 
             val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
             cipher.init(Cipher.ENCRYPT_MODE, publicKey)
-            val encryptedSessionKey = cipher.doFinal(sessionKeyBytes)
-            val encryptedSessionKeyBase64 = Base64.getEncoder().encodeToString(encryptedSessionKey)
+            val encryptedKeyB64 = Base64.getEncoder().encodeToString(cipher.doFinal(sessionKeyBytes))
 
-            // Write encrypted key to cache
-            withContext(Dispatchers.IO) {
-                TestModeManager.writeTestSessionKey(this@CompanionActivity, encryptedSessionKeyBase64)
+            val posted = withContext(Dispatchers.IO) {
+                TestModeManager.writeTestSessionKey(encryptedKeyB64)
             }
 
-            // Connect via QR
-            handleQrResult(testQrJson)
-            toast("🧪 Test-Modus: Session Key verschlüsselt\nlokale Verbindung zu localhost:7391")
-
+            if (posted) {
+                handleQrResult(testQrJson)
+                toast("🧪 Test-Modus aktiv — verbunden via localhost:7391")
+            } else {
+                toast("⚠️ Session Key konnte nicht übermittelt werden")
+            }
         } catch (e: Exception) {
             Log.e("TestMode", "Session key encryption failed", e)
             toast("Test QR ungültig: ${e.message?.take(40)}")

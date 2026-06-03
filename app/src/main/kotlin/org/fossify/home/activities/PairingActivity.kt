@@ -5,11 +5,8 @@
 
 package org.fossify.home.activities
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
@@ -21,8 +18,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +26,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.fossify.home.BuildConfig
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.CommandProcessor
 import org.fossify.home.helpers.PairingManager
@@ -45,10 +39,6 @@ class PairingActivity : AppCompatActivity() {
 
     private lateinit var statusView: TextView
     private lateinit var qrView: ImageView
-
-    companion object {
-        private const val PERMISSION_REQUEST_TEST_MODE = 42
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,30 +78,8 @@ class PairingActivity : AppCompatActivity() {
             toast("Kopplung zurückgesetzt")
         })
 
-        // LAUNCHPAD M4: Test Mode — same-device testing (always available)
-        content.addView(button("🧪 Test-Modus (gleiches Gerät)") {
-            // Request storage permissions before starting test mode
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // Permission is not granted, request it
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        PERMISSION_REQUEST_TEST_MODE
-                    )
-                } else {
-                    // Permission already granted
-                    activateTestMode()
-                }
-            } else {
-                // For Android < 6.0, permissions are granted at install time
-                activateTestMode()
-            }
-        })
+        // LAUNCHPAD M4: Test Mode — same-device testing via local HTTP (no permissions needed)
+        content.addView(button("🧪 Test-Modus (gleiches Gerät)") { activateTestMode() })
 
         // Step 2: receive the parent's encrypted session key.
         content.addView(heading("Sitzungsschlüssel (vom Eltern-Gerät)", 16f))
@@ -143,25 +111,6 @@ class PairingActivity : AppCompatActivity() {
         })
 
         showQr(reset = false)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSION_REQUEST_TEST_MODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, proceed with test mode
-                    activateTestMode()
-                } else {
-                    // Permission denied
-                    toast("Speicherberechtigung erforderlich für Test-Modus")
-                }
-            }
-        }
     }
 
     override fun onDestroy() {
@@ -213,7 +162,7 @@ class PairingActivity : AppCompatActivity() {
             val payload = pairing.getOrCreateQrPayload(reset = false)
             val success = withContext(Dispatchers.IO) {
                 // Write QR payload to cache for Companion to read
-                TestModeManager.writeTestQrPayload(this@PairingActivity, payload)
+                TestModeManager.writeTestQrPayload(payload)
             }
 
             if (success) {
@@ -226,7 +175,7 @@ class PairingActivity : AppCompatActivity() {
                     repeat(51) {
                         if (!sessionKeyFound) {
                             Thread.sleep(200) // Check every 200ms
-                            val encryptedKey = TestModeManager.readTestSessionKey(this@PairingActivity)
+                            val encryptedKey = TestModeManager.readTestSessionKey()
                             if (encryptedKey != null) {
                                 sessionKeyFound = true
                                 // Companion has written the encrypted session key
