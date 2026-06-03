@@ -139,14 +139,12 @@ class CompanionActivity : AppCompatActivity() {
 
         content.addView(button("IP manuell eingeben") { promptForIpFallback() })
 
-        // Test Mode button (DEBUG only) — same-device testing
-        if (BuildConfig.DEBUG) {
-            content.addView(button("🧪 Test auf diesem Gerät") {
-                scope.launch {
-                    activateTestMode()
-                }
-            })
-        }
+        // Test Mode button — same-device testing (always available)
+        content.addView(button("🧪 Test auf diesem Gerät") {
+            scope.launch {
+                activateTestMode()
+            }
+        })
 
         content.addView(spacer(32))
         content.addView(TextView(this).apply {

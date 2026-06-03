@@ -79,12 +79,10 @@ class PairingActivity : AppCompatActivity() {
             toast("Kopplung zurückgesetzt")
         })
 
-        // LAUNCHPAD M4: Test Mode (DEBUG only) — same-device testing
-        if (BuildConfig.DEBUG) {
-            content.addView(button("🧪 Test-Modus (gleiches Gerät)") {
-                activateTestMode()
-            })
-        }
+        // LAUNCHPAD M4: Test Mode — same-device testing (always available)
+        content.addView(button("🧪 Test-Modus (gleiches Gerät)") {
+            activateTestMode()
+        })
 
         // Step 2: receive the parent's encrypted session key.
         content.addView(heading("Sitzungsschlüssel (vom Eltern-Gerät)", 16f))
