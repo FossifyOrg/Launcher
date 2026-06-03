@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber") // DNS protocol offsets/sizes
+
 package org.fossify.home.helpers
 
 import android.content.Context

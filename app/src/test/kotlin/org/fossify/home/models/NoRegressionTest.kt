@@ -4,7 +4,10 @@
 package org.fossify.home.models
 
 import org.junit.Test
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 
 class NoRegressionTest {
 

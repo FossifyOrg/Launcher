@@ -4,6 +4,8 @@
 // records the command into the parent_commands audit table. Works the same whether the command
 // arrived via QR pairing, LAN sync, or a manual paste.
 
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // fail-safe catches
+
 package org.fossify.home.helpers
 
 import android.content.Context
@@ -34,6 +36,7 @@ class CommandProcessor(
         val obj = try {
             JSONObject(commandJson)
         } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "Invalid command JSON", e)
             return Result(false, "Ungültiges JSON")
         }
         val type = obj.optString("type", "")

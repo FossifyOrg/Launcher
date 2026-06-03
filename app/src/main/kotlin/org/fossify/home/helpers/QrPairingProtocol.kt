@@ -6,6 +6,8 @@
 // decrypt, AES key (de)serialisation) so the launcher can hold a keypair, publish its public
 // key in a QR, receive an encrypted session key, and decrypt commands.
 
+@file:Suppress("MagicNumber", "TooManyFunctions", "TooGenericExceptionCaught") // crypto sizes; fail-safe catches
+
 package org.fossify.home.helpers
 
 import android.util.Base64
@@ -95,6 +97,7 @@ class QrPairingProtocol {
             cipher.init(Cipher.DECRYPT_MODE, sessionKey, GCMParameterSpec(GCM_TAG_SIZE_BITS, iv))
             String(cipher.doFinal(ciphertext), Charsets.UTF_8)
         } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "QR decrypt failed", e)
             null
         }
     }

@@ -3,6 +3,8 @@
 // the parent app to scan, receives the parent's AES session key (RSA-encrypted), and decrypts
 // incoming commands with it. Transport (LAN/QR-return/paste) is supplied by the caller.
 
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // crypto sizes; fail-safe catch
+
 package org.fossify.home.helpers
 
 import android.content.Context

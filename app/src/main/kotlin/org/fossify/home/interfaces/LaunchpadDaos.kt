@@ -63,7 +63,10 @@ interface CryptoCashDao {
     @Query("SELECT * FROM crypto_cash_tx WHERE deleted = 0 ORDER BY createdAt DESC LIMIT 1")
     suspend fun getLatestBalance(): CryptoCashTransaction?
 
-    @Query("SELECT COALESCE((SELECT balanceAfter FROM crypto_cash_tx WHERE deleted = 0 ORDER BY createdAt DESC LIMIT 1), 0)")
+    @Query(
+        "SELECT COALESCE((SELECT balanceAfter FROM crypto_cash_tx " +
+            "WHERE deleted = 0 ORDER BY createdAt DESC LIMIT 1), 0)"
+    )
     suspend fun getCurrentBalance(): Int
 
     @Query("SELECT * FROM crypto_cash_tx WHERE deleted = 0 AND createdAt BETWEEN :from AND :to ORDER BY createdAt ASC")

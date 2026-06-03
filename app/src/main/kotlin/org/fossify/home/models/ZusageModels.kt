@@ -5,6 +5,9 @@ package org.fossify.home.models
 
 import java.util.UUID
 
+private const val AUTO_APPROVE_WINDOW_MS = 24 * 60 * 60 * 1000 // 24 hours
+private const val MILLIS_PER_MINUTE = 60 * 1000L
+
 /**
  * Zusage: A family promise/commitment.
  *
@@ -23,7 +26,7 @@ data class Zusage(
     val status: String, // ACTIVE, FULFILLED, EXPIRED, REVOKED
     val condition: String? = null, // Optional: "homework completed"
     val createdAt: Long = System.currentTimeMillis(),
-    val autoApproveAt: Long = System.currentTimeMillis() + (24 * 60 * 60 * 1000), // 24h
+    val autoApproveAt: Long = System.currentTimeMillis() + AUTO_APPROVE_WINDOW_MS,
     val decidedAt: Long? = null,
     val decidedBy: String? = null,
     val reason: String? = null, // Why fulfilled/expired/revoked
@@ -54,7 +57,6 @@ data class Zusage(
  * 5. Query active/pending zusagen for child
  */
 class ZusageManager {
-    private val tag = "ZusageManager"
 
     /**
      * Create new zusage from parent.
@@ -80,7 +82,7 @@ class ZusageManager {
      */
     fun approveZusage(zusage: Zusage, approvedBy: String): Zusage {
         if (!zusage.canBeApproved()) {
-            throw IllegalStateException("Zusage ${zusage.id} cannot be approved in status ${zusage.status}")
+            error("Zusage ${zusage.id} cannot be approved in status ${zusage.status}")
         }
 
         return zusage.copy(
@@ -97,7 +99,7 @@ class ZusageManager {
      */
     fun rejectZusage(zusage: Zusage, rejectedBy: String, reason: String): Zusage {
         if (zusage.decidedAt != null) {
-            throw IllegalStateException("Zusage ${zusage.id} already decided; cannot reject after approval")
+            error("Zusage ${zusage.id} already decided; cannot reject after approval")
         }
 
         return zusage.copy(
@@ -138,7 +140,7 @@ class ZusageManager {
      */
     fun fulfillZusage(zusage: Zusage, fulfilledBy: String): Zusage {
         if (!zusage.canBeFulfilled()) {
-            throw IllegalStateException("Zusage ${zusage.id} cannot be fulfilled in status ${zusage.status}")
+            error("Zusage ${zusage.id} cannot be fulfilled in status ${zusage.status}")
         }
 
         return zusage.copy(
@@ -194,7 +196,7 @@ class ZusageManager {
      */
     fun getAutoApprovingZusagen(allZusagen: List<Zusage>, withinMinutes: Int = 60): List<Zusage> {
         val now = System.currentTimeMillis()
-        val window = withinMinutes * 60 * 1000L
+        val window = withinMinutes * MILLIS_PER_MINUTE
 
         return allZusagen.filter { zusage ->
             zusage.status == "ACTIVE" &&

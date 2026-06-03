@@ -33,6 +33,7 @@ import org.fossify.home.models.DogeRequest
  * Parent: reviews pending requests, approves with a duration (pre-filled by a content
  * heuristic) or rejects.
  */
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
 class DogeRequestsActivity : AppCompatActivity() {
     private lateinit var database: AppsDatabase
     private val manager = DogeManager()

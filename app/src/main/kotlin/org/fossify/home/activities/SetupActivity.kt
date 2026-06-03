@@ -9,9 +9,18 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.fossify.home.R
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.databases.CryptoCashTransaction
@@ -19,6 +28,7 @@ import org.fossify.home.helpers.LaunchpadConstants
 import org.fossify.home.helpers.LaunchpadPrefs
 import org.fossify.home.helpers.PinGateHelper
 
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically; literals are paddings/colors/sizes
 class SetupActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -75,7 +85,10 @@ class SetupActivity : AppCompatActivity() {
     private fun buildWelcome() {
         nextBtn.text = "Einrichten →"
         title("🚀 Willkommen bei LAUNCHPAD")
-        body("Ein fairer Launcher für Jake — mit Zeitlimits, Versprechen und klaren Regeln.\n\nDrücke auf \"Einrichten\" und in 2 Minuten ist alles bereit.")
+        body(
+            "Ein fairer Launcher für Jake — mit Zeitlimits, Versprechen und klaren Regeln.\n\n" +
+                "Drücke auf \"Einrichten\" und in 2 Minuten ist alles bereit."
+        )
     }
 
     // ─── Step 2: PIN ──────────────────────────────────────────────────────────
@@ -138,7 +151,10 @@ class SetupActivity : AppCompatActivity() {
             val btn = Button(this).apply {
                 text = "$minutes Minuten"
                 setTextColor(if (minutes == chosenBalance) Color.WHITE else Color.argb(200, 255, 255, 255))
-                setBackgroundColor(if (minutes == chosenBalance) Color.parseColor("#FF6B35") else Color.argb(50, 255, 255, 255))
+                setBackgroundColor(
+                    if (minutes == chosenBalance) Color.parseColor("#FF6B35")
+                    else Color.argb(50, 255, 255, 255)
+                )
                 setPadding(0, 16, 0, 16)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -148,7 +164,10 @@ class SetupActivity : AppCompatActivity() {
                     this@SetupActivity.chosenBalance = minutes
                     balanceBtns.forEach { (m, b) ->
                         val sel = this@SetupActivity.chosenBalance
-                        b.setBackgroundColor(if (m == sel) Color.parseColor("#FF6B35") else Color.argb(50, 255, 255, 255))
+                        b.setBackgroundColor(
+                            if (m == sel) Color.parseColor("#FF6B35")
+                            else Color.argb(50, 255, 255, 255)
+                        )
                         b.setTextColor(if (m == sel) Color.WHITE else Color.argb(200, 255, 255, 255))
                     }
                 }

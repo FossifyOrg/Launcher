@@ -2,6 +2,9 @@ package org.fossify.home.models
 
 import java.util.UUID
 
+private const val WEEKLY_CAP_MINUTES = 120
+private const val SECONDS_PER_MINUTE = 60
+
 // NOTE (LAUNCHPAD audit fix): Zusage / DogeRequest / ParentCommand were previously
 // declared here AND in ZusageModels.kt / DogeModels.kt / LaunchpadEntities.kt, causing
 // "conflicting declarations" compile errors. The authoritative model classes now live in
@@ -46,6 +49,7 @@ data class LedgerState(
     val weekTransactionsMinutes: Int,
     val lastUpdateTime: Long = System.currentTimeMillis()
 ) {
+    @Suppress("ReturnCount") // sequential ledger guard checks; each needs a distinct early return
     fun validateNoRegression(): ValidationResult {
         var calculatedBalance = 0
         var weekMinutes = 0
@@ -86,7 +90,7 @@ data class LedgerState(
             )
         }
 
-        if (weekMinutes > 120) {
+        if (weekMinutes > WEEKLY_CAP_MINUTES) {
             return ValidationResult(
                 isValid = false,
                 error = "Weekly cap exceeded: $weekMinutes minutes"
@@ -161,6 +165,6 @@ data class TimeBudget(
     fun minutesUntilCooldownExpires(): Int? {
         if (!inCooldown || cooldownExpiresAt == null) return null
         val remaining = cooldownExpiresAt - System.currentTimeMillis()
-        return (remaining / 1000 / 60).toInt()
+        return (remaining / 1000 / SECONDS_PER_MINUTE).toInt()
     }
 }

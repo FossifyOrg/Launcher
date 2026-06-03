@@ -6,6 +6,8 @@
 // to android's built-in org.json so no extra plugin/dependency is needed. ValidationResult is
 // now imported from org.fossify.home.models.
 
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // time/validation bounds; fail-safe catches
+
 package org.fossify.home.helpers
 
 import org.fossify.home.models.ValidationResult
@@ -24,6 +26,7 @@ import org.json.JSONObject
  *   "weekdays_only": false
  * }
  */
+@Suppress("ConstructorParameterNaming") // snake_case mirrors the JSON schema keys
 data class CooldownRulesConfig(
     val duration: Int = 15, // Minutes
     val allowed_apps: List<String> = defaultAllowedApps(),
@@ -50,7 +53,7 @@ data class CooldownRulesConfig(
         val now = java.util.Calendar.getInstance()
         val currentHour = now.get(java.util.Calendar.HOUR_OF_DAY)
         val currentMinute = now.get(java.util.Calendar.MINUTE)
-        val currentTime = String.format("%02d:%02d", currentHour, currentMinute)
+        val currentTime = String.format(java.util.Locale.US, "%02d:%02d", currentHour, currentMinute)
 
         if (currentTime < start_time || currentTime > end_time) return false
 
@@ -98,7 +101,7 @@ data class CooldownRulesConfig(
                     enabled = obj.optBoolean("enabled", true)
                 )
             } catch (e: Exception) {
-                // Return defaults if JSON invalid
+                android.util.Log.w("LAUNCHPAD", "Invalid cooldown-rules JSON; using defaults", e)
                 CooldownRulesConfig()
             }
         }

@@ -1,6 +1,8 @@
 // File: app/src/main/kotlin/org/fossify/home/helpers/LaunchpadWidgetProvider.kt
 // LAUNCHPAD: 2×1 home screen widget showing live balance.
 
+@file:Suppress("MagicNumber") // widget presentation literals
+
 package org.fossify.home.helpers
 
 import android.app.PendingIntent

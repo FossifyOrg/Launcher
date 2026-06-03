@@ -6,6 +6,8 @@
 // heuristic flagged cool-down after EVERY spend, which would have blocked all launches the
 // moment real per-minute usage tracking started writing SPEND rows.
 
+@file:Suppress("MagicNumber", "ReturnCount") // budget thresholds; sequential guard returns
+
 package org.fossify.home.helpers
 
 import android.content.Context

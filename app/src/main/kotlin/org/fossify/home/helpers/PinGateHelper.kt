@@ -6,6 +6,8 @@
 // dedicated SharedPreferences file and a self-contained salted SHA-256 hash. Menu id `hide`
 // was corrected to the real `hide_icon`. A real 30-minute parent-mode timeout is enforced.
 
+@file:Suppress("MagicNumber", "TooManyFunctions", "TooGenericExceptionCaught") // crypto params; fail-safe catches
+
 package org.fossify.home.helpers
 
 import android.content.Context

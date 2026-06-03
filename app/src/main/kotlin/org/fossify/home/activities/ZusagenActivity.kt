@@ -26,9 +26,8 @@ import org.fossify.home.helpers.toModel
 import org.fossify.home.models.Zusage
 import org.fossify.home.models.ZusageManager
 
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically; padding/size literals
 class ZusagenActivity : AppCompatActivity() {
-    private val tag = "ZusagenActivity"
-
     private lateinit var database: AppsDatabase
     private val manager = ZusageManager()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())

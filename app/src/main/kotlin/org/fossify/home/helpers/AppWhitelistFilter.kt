@@ -23,8 +23,6 @@ import org.fossify.home.helpers.LaunchpadConstants
 class AppWhitelistFilter(
     private val database: AppsDatabase
 ) {
-    private val tag = "AppWhitelistFilter"
-
     /**
      * Filter app list to only include whitelisted apps.
      * Called from MainActivity.getAllAppLaunchers().

@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber") // Room schema/migration version numbers
+
 package org.fossify.home.databases
 
 import android.content.Context

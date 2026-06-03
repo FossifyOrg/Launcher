@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import org.fossify.home.R
 import org.fossify.home.helpers.LaunchpadConstants
+import java.util.Locale
 
 /**
  * CooldownActivity: Shown when time budget expires or cool-down is triggered.
@@ -35,6 +36,7 @@ import org.fossify.home.helpers.LaunchpadConstants
  * - Provides friendly message about cool-down purpose
  * - Auto-dismisses when timer expires
  */
+@Suppress("MagicNumber") // UI built programmatically
 class CooldownActivity : AppCompatActivity() {
     private val tag = "CooldownActivity"
 
@@ -117,6 +119,7 @@ class CooldownActivity : AppCompatActivity() {
     /**
      * Launch a cool-down app (only allowed during cool-down).
      */
+    @Suppress("TooGenericExceptionCaught") // broad catch: intentional fail-safe on app launch
     private fun launchCooldownApp(packageName: String) {
         Log.d(tag, "Launching cool-down app: $packageName")
         try {
@@ -144,11 +147,10 @@ class CooldownActivity : AppCompatActivity() {
                 val minutesRemaining = secondsRemaining / 60
                 val secondsInMinute = secondsRemaining % 60
 
-                val timeString = String.format("%02d:%02d", minutesRemaining, secondsInMinute)
+                val timeString = String.format(Locale.US, "%02d:%02d", minutesRemaining, secondsInMinute)
                 timerText.text = timeString
 
                 // Update progress bar
-                val progressPercentage = (minutesRemaining * 100 / cooldownDurationMinutes).toInt()
                 progressBar.progress = minutesRemaining.toInt()
             }
 

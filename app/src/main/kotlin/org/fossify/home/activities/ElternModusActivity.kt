@@ -13,16 +13,29 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.fossify.home.R
 import org.fossify.home.databases.AllowedApp
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.LaunchpadWidgetProvider
 import org.fossify.home.databases.CryptoCashTransaction
-import org.fossify.home.helpers.*
+import org.fossify.home.helpers.CooldownRulesConfig
+import org.fossify.home.helpers.CooldownRulesValidator
+import org.fossify.home.helpers.KioskManager
+import org.fossify.home.helpers.LaunchpadConstants
+import org.fossify.home.helpers.LaunchpadPrefs
+import org.fossify.home.helpers.PairingManager
+import org.fossify.home.helpers.PinGateHelper
+import org.fossify.home.helpers.UsageTracker
 import java.text.SimpleDateFormat
 import java.util.*
 
+@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
 class ElternModusActivity : AppCompatActivity() {
 
     private lateinit var db: AppsDatabase
@@ -131,8 +144,12 @@ class ElternModusActivity : AppCompatActivity() {
             R.id.em_row_add_time to { showAddTimeDialog() },
             R.id.em_row_transactions to { showTransactions() },
             R.id.em_row_apps to { startActivity(Intent(this, AppsManagementActivity::class.java)) },
-            R.id.em_row_zusagen to { startActivity(Intent(this, ZusagenActivity::class.java).putExtra("isParentMode", true)) },
-            R.id.em_row_doge to { startActivity(Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true)) },
+            R.id.em_row_zusagen to {
+                startActivity(Intent(this, ZusagenActivity::class.java).putExtra("isParentMode", true))
+            },
+            R.id.em_row_doge to {
+                startActivity(Intent(this, DogeRequestsActivity::class.java).putExtra("isParentMode", true))
+            },
             R.id.em_row_cooldown_rules to { showCooldownEditor() },
             R.id.em_row_usage to { openUsageSettings() },
             R.id.em_row_kindermodus to { kindermodusSwitch.toggle() },
@@ -192,7 +209,11 @@ class ElternModusActivity : AppCompatActivity() {
             enforcementLabel.text = if (enforcement) "Kindermodus AN" else "Kindermodus AUS"
 
             appsCount.text = "$appCount Apps freigegeben"
-            zusagenCount.text = if (zusagenPending > 0) "$zusagenPending wartende Versprechen" else "Keine aktiven Versprechen"
+            zusagenCount.text = if (zusagenPending > 0) {
+                "$zusagenPending wartende Versprechen"
+            } else {
+                "Keine aktiven Versprechen"
+            }
             dogeCount.text = if (dogePending > 0) "$dogePending offene Anfragen" else "Keine offenen Anfragen"
             usageStatus.text = if (usageGranted) "Erteilt ✓" else "Nicht erteilt — Tippe zum Öffnen"
             pairStatus.text = if (paired) "Gekoppelt ✓" else "Nicht gekoppelt"
@@ -277,10 +298,15 @@ class ElternModusActivity : AppCompatActivity() {
             .setNegativeButton("Abbrechen", null).show()
     }
 
+    @Suppress("TooGenericExceptionCaught") // broad catch: intentional fail-safe opening settings
     private fun openUsageSettings() {
         if (UsageTracker.hasUsageAccess(this)) { toast("Nutzungszugriff ist bereits erteilt ✓"); return }
-        try { startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
-        catch (e: Exception) { toast("Einstellungen nicht verfügbar") }
+        try {
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "Usage-access settings unavailable", e)
+            toast("Einstellungen nicht verfügbar")
+        }
     }
 
     private fun toggleKindermodus(enable: Boolean) {
@@ -310,14 +336,12 @@ class ElternModusActivity : AppCompatActivity() {
     private fun showKioskSetupDialog() {
         AlertDialog.Builder(this)
             .setTitle("Device Owner benötigt")
-            .setMessage("Kiosk-Modus benötigt einen einmaligen ADB-Befehl:\n\n${KioskManager.deviceOwnerSetupCommand(this)}\n\nAuf einem frisch zurückgesetzten Gerät ausführen.")
+            .setMessage(
+                "Kiosk-Modus benötigt einen einmaligen ADB-Befehl:\n\n" +
+                    "${KioskManager.deviceOwnerSetupCommand(this)}\n\n" +
+                    "Auf einem frisch zurückgesetzten Gerät ausführen."
+            )
             .setPositiveButton("OK", null).show()
-    }
-
-    private fun setPref(key: String, value: Boolean) {
-        // Use applicationContext to match MainActivity's shared prefs access.
-        applicationContext.getSharedPreferences(LaunchpadPrefs.PREFS_FILE, Context.MODE_PRIVATE)
-            .edit().putBoolean(key, value).apply()
     }
 
     private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()

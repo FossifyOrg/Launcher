@@ -1,6 +1,8 @@
 // File: app/src/main/kotlin/org/fossify/home/helpers/UsageTracker.kt
 // M5 hook (now live): foreground-app detection via UsageStatsManager.
 
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // framework literals; fail-safe catches
+
 package org.fossify.home.helpers
 
 import android.app.AppOpsManager
@@ -37,6 +39,7 @@ object UsageTracker {
             }
             mode == AppOpsManager.MODE_ALLOWED
         } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "usage-access check failed", e)
             false
         }
     }
@@ -65,6 +68,7 @@ object UsageTracker {
             }
             latestPkg
         } catch (e: Exception) {
+            android.util.Log.w("LAUNCHPAD", "foreground app lookup failed", e)
             null
         }
     }
