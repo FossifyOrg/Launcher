@@ -136,6 +136,15 @@ class MainActivity : SimpleActivity(), FlingListener {
             ((shortcutId: String, label: String, icon: Drawable) -> Unit)? = null
     private var wasJustPaused: Boolean = false
 
+    // LAUNCHPAD: periodic status-bar refresh (active only while the launcher is resumed).
+    private val statusBarHandler = Handler(Looper.getMainLooper())
+    private val statusBarRefresher = object : Runnable {
+        override fun run() {
+            refreshStatusBar()
+            statusBarHandler.postDelayed(this, STATUS_BAR_REFRESH_MS)
+        }
+    }
+
     private var wallpaperColorChangeListener: OnColorsChangedListener? = null
     private var wallpaperSupportsDarkText: Boolean? = null
 
@@ -150,6 +159,10 @@ class MainActivity : SimpleActivity(), FlingListener {
         private const val ANIMATION_DURATION = 150L
         private const val APP_DRAWER_CLOSE_DELAY = 300L
         private const val APP_DRAWER_STATE = "app_drawer_state"
+
+        // LAUNCHPAD: how often Jake's status bar re-reads the balance while the launcher is
+        // in the foreground, so parent-approved coins / earned time show up without leaving home.
+        private const val STATUS_BAR_REFRESH_MS = 5_000L
 
         // LAUNCHPAD: shown once per process cold start so HOME-press always sees the rocket.
         @JvmStatic
@@ -304,8 +317,9 @@ class MainActivity : SimpleActivity(), FlingListener {
         // LAUNCHPAD: hide rules overlay when app resumes
         if (rulesVisible) hideRulesOverlay(animate = false)
 
-        // LAUNCHPAD: refresh Jake's status bar
-        refreshStatusBar()
+        // LAUNCHPAD: refresh Jake's status bar now, then keep it live while resumed
+        statusBarHandler.removeCallbacks(statusBarRefresher)
+        statusBarHandler.post(statusBarRefresher)
 
         refreshWallpaperSupportsDarkText()
         Handler(Looper.getMainLooper()).postDelayed({
@@ -374,6 +388,7 @@ class MainActivity : SimpleActivity(), FlingListener {
     override fun onPause() {
         super.onPause()
         wasJustPaused = true
+        statusBarHandler.removeCallbacks(statusBarRefresher)
     }
 
     override fun onBackPressedCompat(): Boolean {
