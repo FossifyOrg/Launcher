@@ -50,19 +50,38 @@ object TestModeManager {
     private const val TEST_QR_FILE = "launchpad_test_qr.json"
     private const val TEST_SESSION_KEY_FILE = "launchpad_test_session_key.txt"
 
-    fun getTestQrCacheFile(context: Context): File =
-        File(context.cacheDir, TEST_QR_FILE)
+    /**
+     * Get shared external cache file (accessible by all apps).
+     * Falls back to regular cache if external not available.
+     */
+    fun getTestQrCacheFile(context: Context): File {
+        val externalCache = context.externalCacheDir
+        return if (externalCache != null && externalCache.exists()) {
+            File(externalCache, TEST_QR_FILE)
+        } else {
+            // Fallback to internal cache
+            File(context.cacheDir, TEST_QR_FILE)
+        }
+    }
 
-    fun getTestSessionKeyFile(context: Context): File =
-        File(context.cacheDir, TEST_SESSION_KEY_FILE)
+    fun getTestSessionKeyFile(context: Context): File {
+        val externalCache = context.externalCacheDir
+        return if (externalCache != null && externalCache.exists()) {
+            File(externalCache, TEST_SESSION_KEY_FILE)
+        } else {
+            // Fallback to internal cache
+            File(context.cacheDir, TEST_SESSION_KEY_FILE)
+        }
+    }
 
     fun readTestQrPayload(context: Context): String? {
         return try {
             val file = getTestQrCacheFile(context)
             if (file.exists()) {
+                Log.d(TAG, "Reading test QR from ${file.absolutePath}")
                 file.readText()
             } else {
-                Log.w(TAG, "Test QR file not found")
+                Log.w(TAG, "Test QR file not found at ${file.absolutePath}")
                 null
             }
         } catch (e: Exception) {
@@ -74,8 +93,9 @@ object TestModeManager {
     fun writeTestSessionKey(context: Context, encryptedSessionKeyBase64: String): Boolean {
         return try {
             val file = getTestSessionKeyFile(context)
+            file.parentFile?.mkdirs() // Ensure directory exists
             file.writeText(encryptedSessionKeyBase64)
-            Log.d(TAG, "Test session key written")
+            Log.d(TAG, "Test session key written to ${file.absolutePath}")
             true
         } catch (e: Exception) {
             Log.e(TAG, "Failed to write test session key", e)
