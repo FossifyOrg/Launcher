@@ -30,6 +30,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import android.util.Log
+import org.fossify.launchpad.companion.BuildConfig
+import org.fossify.launchpad.companion.helpers.TestModeManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -151,6 +154,23 @@ class CompanionActivity : AppCompatActivity() {
             )
             setOnClickListener { promptForIpFallback() }
         })
+        // Test Mode button (DEBUG only) — same-device testing
+        if (BuildConfig.DEBUG) {
+            content.addView(Button(this).apply {
+                text = "🧪 Test auf diesem Gerät"
+                setBackgroundColor(Color.parseColor("#9C27B0"))
+                setTextColor(Color.WHITE)
+                setPadding(0, 20, 0, 20)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { setMargins(0, 0, 0, 12) }
+                setOnClickListener {
+                    scope.launch {
+                        activateTestMode()
+                    }
+                }
+            })
+        }
 
         content.addView(spacer(32))
         content.addView(TextView(this).apply {
@@ -184,10 +204,11 @@ class CompanionActivity : AppCompatActivity() {
         try {
             val json = JSONObject(qrContent)
             val identity = json.optString("identity", "")
-            val ip = json.optString("ip", "")
+            val ip = json.optString("ip", "").takeIf { it.isNotBlank() }
+                ?: if (BuildConfig.DEBUG) "localhost" else null
             when {
                 identity != "launchpad" -> toast("Kein LAUNCHPAD-QR-Code")
-                ip.isBlank() -> {
+                ip == null -> {
                     // Older QR without embedded IP — fall back to IP dialog
                     toast("QR enthält keine IP — bitte manuell eingeben")
                     promptForIpFallback()
@@ -511,4 +532,30 @@ class CompanionActivity : AppCompatActivity() {
     }
 
     private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+    /**
+     * Test Mode: read QR payload from cache file (same-device testing).
+     * Connects to localhost:7391 instead of scanning real QR.
+     */
+    private suspend fun activateTestMode() {
+        val testQrJson = withContext(Dispatchers.IO) {
+            try {
+                TestModeManager.readTestQrPayload(this@CompanionActivity)
+            } catch (e: Exception) {
+                Log.e("TestMode", "Failed to read test QR", e)
+                null
+            }
+        }
+
+        if (testQrJson != null) {
+            try {
+                handleQrResult(testQrJson)
+                toast("🧪 Test-Modus: lokale Verbindung zu localhost:7391")
+            } catch (e: Exception) {
+                toast("Test QR ungültig: ${e.message?.take(40)}")
+            }
+        } else {
+            toast("Test-QR nicht gefunden.\nMain-App: Test-Modus aktivieren")
+        }
+    }
 }
