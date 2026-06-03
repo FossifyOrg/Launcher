@@ -6,7 +6,8 @@
 // to android's built-in org.json so no extra plugin/dependency is needed. ValidationResult is
 // now imported from org.fossify.home.models.
 
-@file:Suppress("MagicNumber", "TooGenericExceptionCaught") // time/validation bounds; fail-safe catches
+// Time/validation bounds; intentional fail-safe fallbacks to defaults.
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught", "SwallowedException")
 
 package org.fossify.home.helpers
 
@@ -101,7 +102,7 @@ data class CooldownRulesConfig(
                     enabled = obj.optBoolean("enabled", true)
                 )
             } catch (e: Exception) {
-                android.util.Log.w("LAUNCHPAD", "Invalid cooldown-rules JSON; using defaults", e)
+                // Invalid JSON: intentionally fall back to defaults.
                 CooldownRulesConfig()
             }
         }

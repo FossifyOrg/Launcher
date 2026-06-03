@@ -245,6 +245,7 @@ class SetupActivity : AppCompatActivity() {
     // ─── Back press: only allow on step 2+ ───────────────────────────────────
 
     @Deprecated("Deprecated in Java")
+    @Suppress("GestureBackNavigation")
     override fun onBackPressed() {
         if (currentStep > 1) showStep(currentStep - 1) else super.onBackPressed()
     }

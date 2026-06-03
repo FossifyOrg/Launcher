@@ -172,6 +172,7 @@ class CooldownActivity : AppCompatActivity() {
      * Prevent exiting cool-down (soft enforcement in M1).
      * Hard enforcement via Device Admin in M5.
      */
+    @Suppress("MissingSuperCall", "GestureBackNavigation") // cool-down intentionally blocks back exit
     override fun onBackPressed() {
         // Do nothing - prevent exiting
         Log.d(tag, "Back button pressed during cool-down - ignored")
