@@ -85,6 +85,21 @@ class AppsManagementActivity : AppCompatActivity() {
             )
         )
 
+        val hint = TextView(this).apply {
+            text = "Häkchen = Jake darf die App sehen.\n" +
+                "Tippe auf „Frei\" / „🪙 Coins\", um zu wählen, ob die App Doge-Coins kostet."
+            textSize = 12f
+            setPadding(32, 8, 32, 16)
+            setTextColor(android.graphics.Color.parseColor("#888888"))
+        }
+        root.addView(
+            hint,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
+
         val scroll = ScrollView(this)
         listHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         scroll.addView(listHolder)
@@ -153,8 +168,18 @@ class AppsManagementActivity : AppCompatActivity() {
             if (enabled) {
                 val isLeisure = category == LaunchpadConstants.CATEGORY_ACTIVE_LEISURE
                 val catBtn = Button(this).apply {
-                    text = if (isLeisure) "🪙" else "🆓"
-                    textSize = 18f
+                    text = if (isLeisure) "🪙 Coins" else "Frei"
+                    textSize = 13f
+                    isAllCaps = false
+                    setTextColor(android.graphics.Color.WHITE)
+                    setBackgroundColor(
+                        if (isLeisure) {
+                            android.graphics.Color.parseColor("#E8A317") // gold = needs coins
+                        } else {
+                            android.graphics.Color.parseColor("#4CAF50") // green = free
+                        }
+                    )
+                    setPadding(24, 8, 24, 8)
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
