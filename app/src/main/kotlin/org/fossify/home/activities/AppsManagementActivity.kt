@@ -25,7 +25,7 @@ import org.fossify.home.databases.AllowedApp
 import org.fossify.home.databases.AppsDatabase
 import org.fossify.home.helpers.LaunchpadConstants
 
-@Suppress("MagicNumber", "TooManyFunctions") // UI built programmatically
+@Suppress("MagicNumber", "TooManyFunctions", "NestedBlockDepth") // UI built programmatically
 class AppsManagementActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
