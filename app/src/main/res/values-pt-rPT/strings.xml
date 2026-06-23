@@ -6,7 +6,7 @@
     <string name="launcher_settings">Definições</string>
     <string name="manage_hidden_icons">Gerir ícones ocultos</string>
     <string name="hidden_icons">Ícones ocultos</string>
-    <string name="hidden_icons_placeholder">Algumas aplicações não podem ser desinstaladas, mas pode ocultar os seus ícones.</string>
+    <string name="hidden_icons_placeholder">Devido a restições do sistema algumas aplicações não podem ser desinstaladas, mas pode, pelo menos, ocultar os seus ícones para evitar ver as mesmas.</string>
     <string name="home_screen_settings">Ecrã inicial</string>
     <string name="widget_too_big">O widget é muito grande para o ecrã disponível</string>
     <string name="app_drawer_settings">Menu de aplicações</string>
@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Toque duas vezes para bloquear o ecrã</string>
     <string name="lock_device_admin_hint">Para ativar a funcionalidade de toque duplo para bloquear o ecrã, precisa de conceder permissão de administrador. Note que a aplicação não poderá ser desinstalada até que esta permissão seja removida.</string>
     <string name="lock_device_admin_warning">Desativar a permissão de administrador desativará a funcionalidade de toque duplo para bloquear o ecrã.</string>
+    <string name="show_app_labels">Mostrar rótulos de aplicações</string>
 </resources>

@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">Launcher</string>
+    <string name="launcher_settings">Launcher Settings</string>
+    <string name="app_info">App info</string>
+    <string name="touch_hold_widget">Long press the widget and drag it on your home screen</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="hide_icon">Hide icon</string>
+    <string name="add_hidden_icons">Add hidden icons</string>
+    <string name="manage_hidden_icons">Manage hidden icons</string>
+    <string name="hidden_icons">Hidden icons</string>
+    <string name="hidden_icons_placeholder">Some apps cannot be uninstalled due to system restrictions, but you can at least hide their icons to avoid seeing them.</string>
+    <string name="app_drawer_settings">App drawer</string>
+    <string name="close_app_drawer_on_app_open">Close app drawer on opening an app</string>
+    <string name="auto_show_keyboard_in_app_drawer">Automatically show keyboard in drawer</string>
+    <string name="show_app_labels">Show app labels</string>
+    <string name="home_screen_settings">Home screen</string>
+    <string name="widget_too_big">Widget is too big for current home screen size</string>
+    <string name="double_tap_to_lock">Double tap to lock screen</string>
+    <string name="lock_device_admin_hint">To enable the double tap to lock screen feature, you need to grant admin permission. Note that the app cannot be uninstalled until this permission is removed.</string>
+    <string name="lock_device_admin_warning">Deactivating admin permission will disable the double tap to lock screen feature.</string>
+</resources>
