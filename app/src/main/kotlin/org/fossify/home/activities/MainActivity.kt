@@ -132,6 +132,9 @@ class MainActivity : SimpleActivity(), FlingListener {
         private const val ANIMATION_DURATION = 150L
         private const val APP_DRAWER_CLOSE_DELAY = 300L
         private const val APP_DRAWER_STATE = "app_drawer_state"
+        // TODO: remove before PR merge, but needed to be able to reproduce bug of issue-320
+        private const val ACTION_DEBUG_FORCE_WIDGET_FIRST_DRAW =
+            "org.fossify.home.action.DEBUG_FORCE_WIDGET_FIRST_DRAW"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -504,6 +507,13 @@ class MainActivity : SimpleActivity(), FlingListener {
     }
 
     private fun handleIntentAction(intent: Intent) {
+        // TODO: remove before PR merge, but needed to be able to reproduce bug of issue-320
+        if (BuildConfig.DEBUG && intent.action == ACTION_DEBUG_FORCE_WIDGET_FIRST_DRAW) {
+            binding.homeScreenGrid.root.debugForceWidgetFirstDraw()
+            toast("Debug: forced widget first draw")
+            return
+        }
+
         if (intent.action == LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) {
             val launcherApps =
                 applicationContext.getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps
