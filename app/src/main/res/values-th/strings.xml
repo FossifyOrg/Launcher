@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_launcher_name">ตัวเรียกใช้งาน</string>
+    <string name="launcher_settings">การตั้งค่าตัวเรียกใช้งาน</string>
+    <string name="app_info">ข้อมูลแอป</string>
+    <string name="touch_hold_widget">กดวิดเจ็ตค้างไว้แล้วลากไปวางบนหน้าจอหลักของคุณ</string>
+    <string name="uninstall">ถอนการติดตั้ง</string>
+    <string name="hide_icon">ซ่อนไอคอน</string>
+    <string name="add_hidden_icons">เพิ่มไอคอนที่ซ่อนอยู่</string>
+    <string name="manage_hidden_icons">จัดการไอคอนที่ซ่อนอยู่</string>
+    <string name="hidden_icons">ไอคอนที่ซ่อนอยู่</string>
+    <string name="hidden_icons_placeholder">แอปบางแอปไม่สามารถถอนการติดตั้งได้เนื่องจากข้อจำกัดของระบบ แต่คุณสามารถซ่อนไอคอนของแอปเหล่านั้นเพื่อหลีกเลี่ยงการเห็นได้</string>
+    <string name="app_drawer_settings">ลิ้นชักแอป</string>
+    <string name="close_app_drawer_on_app_open">ปิดลิ้นชักแอปเมื่อเปิดแอป</string>
+    <string name="auto_show_keyboard_in_app_drawer">แสดงแป้นพิมพ์ในลิ้นชักโดยอัตโนมัติ</string>
+    <string name="show_app_labels">แสดงป้ายกำกับแอป</string>
+    <string name="home_screen_settings">หน้าจอหลัก</string>
+    <string name="widget_too_big">วิดเจ็ตมีขนาดใหญ่เกินไปสำหรับขนาดหน้าจอหลักในปัจจุบัน</string>
+    <string name="double_tap_to_lock">แตะสองครั้งเพื่อล็อกหน้าจอ</string>
+    <string name="lock_device_admin_hint">ในการเปิดใช้งานฟีเจอร์แตะสองครั้งเพื่อล็อกหน้าจอ คุณต้องให้สิทธิ์ผู้ดูแลระบบ โปรดทราบว่าไม่สามารถถอนการติดตั้งแอปได้จนกว่าจะยกเลิกการให้สิทธิ์นี้</string>
+    <string name="lock_device_admin_warning">การปิดใช้งานสิทธิ์ผู้ดูแลระบบจะปิดใช้งานคุณสมบัติการแตะสองครั้งเพื่อล็อกหน้าจอ</string>
+</resources>

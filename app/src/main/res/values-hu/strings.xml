@@ -17,4 +17,6 @@
     <string name="lock_device_admin_warning">Az rendszergazdai engedély kikapcsolása letiltja a képernyő lezárásához szükséges dupla koppintás funkciót.</string>
     <string name="double_tap_to_lock">Dupla koppintás a képernyő zárolásához</string>
     <string name="lock_device_admin_hint">A képernyőzárolás dupla koppintás funkciójának engedélyezéséhez rendszergazdai hozzáférést kell adnia. Vegye figyelembe, hogy az alkalmazás nem távolítható el, amíg ez az engedély nem kerül eltávolításra.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Billentyűzet automata megjelenítése a fióknál</string>
+    <string name="show_app_labels">Alkalmazásnevek megjelenítése</string>
 </resources>

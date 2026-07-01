@@ -13,9 +13,10 @@
     <string name="close_app_drawer_on_app_open">Fechar gaveta de aplicativos ao abrir um aplicativo</string>
     <string name="home_screen_settings">Tela inicial</string>
     <string name="widget_too_big">O widget é muito grande para o tamanho atual da tela inicial</string>
-    <string name="app_launcher_name">Iniciador</string>
+    <string name="app_launcher_name">Launcher</string>
     <string name="double_tap_to_lock">Toque duas vezes para bloquear a tela</string>
     <string name="lock_device_admin_hint">Para habilitar o recurso de toque duplo para bloquear a tela, você precisa conceder permissão de administrador. Observe que o aplicativo não pode ser desinstalado até que essa permissão seja removida.</string>
     <string name="lock_device_admin_warning">Desativar a permissão de administrador desabilitará o recurso de toque duplo para bloquear a tela.</string>
     <string name="auto_show_keyboard_in_app_drawer">Mostrar teclado ao abrir Gaveta</string>
+    <string name="show_app_labels">Mostrar rótulos de aplicativos</string>
 </resources>
