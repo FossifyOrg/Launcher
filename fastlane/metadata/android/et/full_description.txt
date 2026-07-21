@@ -11,7 +11,7 @@ Halda oma rakendusi vaevata – peida või eemalda need vaid paari puudutusega, 
 Sinu privaatsus on Fossify Käivitaja keskmes. Ilma internetiühenduseta ja pealetükkivate õigusteta jäävad sinu andmed sinu enda kontrolli alla. Ei mingit jälitamist ega reklaame – ainult käivitaja, mis austab sinu privaatsust.<br><br>
 <b>🌐 AVATUD LÄHTEKOODI GARANTII:</b><br>
 Fossify Launcher on loodud avatud lähtekoodile tuginedes, võimaldades sul meie koodi GitHubis üle vaadata ning toetades usaldust ja privaatsusele pühendunud kogukonda.<br><br>
-Leia Fossify Käivitaja abil tasakaal kiiruse, kohandatavuse ja privaatsuse vahel .<br><br>
+Leia Fossify Käivitaja abil tasakaal kiiruse, kohandatavuse ja privaatsuse vahel.<br><br>
 Kõik Fossify rakendused: https://www.fossify.org<br><br>
 Avatud lähtekood: https://www.github.com/FossifyOrg<br><br>
 Liitu kogukonnaga Redditis: https://www.reddit.com/r/Fossify<br><br>
