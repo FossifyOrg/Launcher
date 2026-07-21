@@ -17,6 +17,6 @@
     <string name="home_screen_settings">홈 화면</string>
     <string name="widget_too_big">위젯이 현재 홈 화면의 크기에 비해 너무 큽니다</string>
     <string name="double_tap_to_lock">더블 탭해서 화면 잠금</string>
-    <string name="lock_device_admin_hint">화면 잠금 기능을 사용하려면 관리자 권한을 부여해야 합니다. 이 권한을 제거하기 전까지는 앱을 삭제할 수 없습니다.</string>
+    <string name="lock_device_admin_hint">더블 탭해서 화면을 잠그는 기능을 사용하려면 관리자 권한을 부여해야 합니다. 이 권한을 제거하기 전까지는 앱을 삭제할 수 없습니다.</string>
     <string name="lock_device_admin_warning">관리자 권한을 비활성화하면 더블 탭해서 화면 잠금 기능이 비활성화됩니다.</string>
 </resources>
