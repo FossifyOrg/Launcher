@@ -6,7 +6,7 @@
     <string name="launcher_settings">Definições</string>
     <string name="manage_hidden_icons">Gerir ícones ocultos</string>
     <string name="hidden_icons">Ícones ocultos</string>
-    <string name="hidden_icons_placeholder">Devido a restições do sistema algumas aplicações não podem ser desinstaladas, mas pode, pelo menos, ocultar os seus ícones para evitar ver as mesmas.</string>
+    <string name="hidden_icons_placeholder">Devido a restrições do sistema algumas aplicações não podem ser desinstaladas, mas pode, pelo menos, ocultar os seus ícones para evitar ver as mesmas.</string>
     <string name="home_screen_settings">Ecrã inicial</string>
     <string name="widget_too_big">O widget é muito grande para o ecrã disponível</string>
     <string name="app_drawer_settings">Menu de aplicações</string>
