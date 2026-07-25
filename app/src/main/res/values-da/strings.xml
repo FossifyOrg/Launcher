@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Dobbelttryk for at låse skærmen</string>
     <string name="lock_device_admin_hint">Du skal give administrator-tilladelse for at bruge dobbelttryk for at låse skærmen. Bemærk, at appen kan først afinstalleres, når tilladelsen er fjernet.</string>
     <string name="lock_device_admin_warning">Deaktivering af administratortilladelser vil deaktivere funktionen dobbelttryk for at låse skærmen.</string>
+    <string name="show_app_labels">Vis app-navne</string>
 </resources>
