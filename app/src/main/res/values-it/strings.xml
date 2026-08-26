@@ -18,4 +18,5 @@
     <string name="double_tap_to_lock">Doppio tocco per bloccare lo schermo</string>
     <string name="lock_device_admin_warning">Disattivando i permessi di amministratore disabiliterai la funzionalità di doppio tocco per bloccare lo schermo.</string>
     <string name="auto_show_keyboard_in_app_drawer">Mostra automaticamente la tastiera nel cassetto</string>
+    <string name="show_app_labels">Mostra i nomi delle app</string>
 </resources>
