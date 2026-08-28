@@ -1299,7 +1299,19 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                             .firstOrNull { it.provider.className == item.className }
 
                     if (providerInfo != null) {
-                        placeAppWidget(providerInfo, item)
+                        val boundProvider =
+                            appWidgetManager?.getAppWidgetInfo(item.widgetId)?.provider
+                        if (boundProvider == providerInfo.provider) {
+                            placeAppWidget(providerInfo, item)
+                        } else {
+                            // The stored widget ID is stale, e.g. after restoring the database
+                            // from a backup or after the ID was deleted on grid resize (#197).
+                            // Re-allocate and re-bind it, otherwise the widget stays stuck in
+                            // its initial "loading" layout forever (#146).
+                            post {
+                                bindWidget(item)
+                            }
+                        }
                     } else {
                         removeWidget(item)
                     }
