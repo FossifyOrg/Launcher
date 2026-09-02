@@ -10,4 +10,13 @@
     <string name="manage_hidden_icons">Upravljajte s skritimi ikonami</string>
     <string name="hidden_icons">Skrite ikone</string>
     <string name="hidden_icons_placeholder">Določenih aplikacij zaradi sistemskih omejitev ni mogoče odstraniti, njihove ikone pa skrijete, da jih ne vidite.</string>
+    <string name="app_drawer_settings">Predal aplikacij</string>
+    <string name="close_app_drawer_on_app_open">Zapri predal aplikacij ob odpiranju aplikacije</string>
+    <string name="auto_show_keyboard_in_app_drawer">Samodejno prikaži tipkovnico v predalu</string>
+    <string name="show_app_labels">Prikaži oznake aplikacij</string>
+    <string name="home_screen_settings">Začetni zaslon</string>
+    <string name="widget_too_big">Pripomoček je prevelik za trenutno velikost začetnega zaslona</string>
+    <string name="double_tap_to_lock">Dvakrat tapnite za zaklep zaslona</string>
+    <string name="lock_device_admin_hint">Če želite omogočiti funkcijo dvojnega dotika za zaklepanje zaslona, morate podeliti skrbniško dovoljenje. Upoštevajte, da aplikacije ni mogoče odstraniti, dokler to dovoljenje ni odstranjeno.</string>
+    <string name="lock_device_admin_warning">Če deaktivirate skrbniško dovoljenje, boste onemogočili funkcijo dvojnega dotika za zaklepanje zaslona.</string>
 </resources>
