@@ -269,9 +269,6 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             iconMargin =
                 (context.resources.getDimension(R.dimen.icon_side_margin) * 5 / columnCount).toInt()
             isFirstDraw = true
-            gridItems.filter { it.type == ITEM_TYPE_WIDGET }.forEach {
-                appWidgetHost.deleteAppWidgetId(it.widgetId)
-            }
             widgetViews.forEach { removeView(it) }
             widgetViews.clear()
             redrawGrid()
