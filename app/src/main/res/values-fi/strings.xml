@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Käynnistin</string>
-    <string name="launcher_settings">Käynnistimen asetukset</string>
+    <string name="app_launcher_name">Aloitusnäyttö</string>
+    <string name="launcher_settings">Aloitusnäytön asetukset</string>
     <string name="app_info">Sovelluksen tiedot</string>
-    <string name="touch_hold_widget">Paina vimpainta pitkään ja vedä se aloitusnäytöllesi</string>
+    <string name="touch_hold_widget">Paina pienoisohjelmaa pitkään ja vedä se aloitusnäytöllesi</string>
     <string name="uninstall">Poista asennus</string>
     <string name="hide_icon">Piilota kuvake</string>
     <string name="add_hidden_icons">Lisää piilotettuja kuvakkeita</string>
     <string name="manage_hidden_icons">Hallitse piilotettuja kuvakkeita</string>
     <string name="hidden_icons">Piilotetut kuvakkeet</string>
     <string name="hidden_icons_placeholder">Joitakin sovelluksia ei ole järjestelmärajoitusten vuoksi mahdollista poistaa, mutta voit kuitenkin piilottaa niiden kuvakkeet näkyvistä.</string>
-    <string name="widget_too_big">Vimpain on liian suuri nykyiseen aloitusnäytön kokoon</string>
+    <string name="widget_too_big">Pienoisohjelma on liian suuri nykyiseen aloitusnäytön kokoon</string>
     <string name="home_screen_settings">Kotinäyttö</string>
-    <string name="close_app_drawer_on_app_open">Sulje sovellusvedin, kun uusi sovellus avataan</string>
-    <string name="app_drawer_settings">Sovellusvedin</string>
+    <string name="close_app_drawer_on_app_open">Sulje sovellusvalikko, kun sovellus avataan</string>
+    <string name="app_drawer_settings">Sovellusvalikko</string>
     <string name="lock_device_admin_hint">Näytön kaksoisnapautuslukitus vaatii pääkäyttäjäoikeuksia. Huomio, että sovellusta ei voida poistaa, ennen kuin tämä oikeus on poistettu.</string>
     <string name="double_tap_to_lock">Kaksoisnapauta lukitaksesi näytön</string>
-    <string name="lock_device_admin_warning">Pääkäyttäjäoikeuden poiskytkentä, estää kaksoisnapautuslukituksen toiminnan.</string>
-    <string name="auto_show_keyboard_in_app_drawer">Näytä näppäimistö automaattisesti katsottaessa kaikkia sovelluksia</string>
+    <string name="lock_device_admin_warning">Pääkäyttäjäoikeuden poistaminen estää kaksoisnapautuslukituksen toiminnan.</string>
+    <string name="auto_show_keyboard_in_app_drawer">Avaa näppäimistö automaattisesti sovellusvalikossa</string>
     <string name="show_app_labels">Näytä sovellusten nimet</string>
 </resources>
