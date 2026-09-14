@@ -7,7 +7,7 @@ ksp = "2.3.11"
 detekt = "1.23.8"
 detektCompose = "0.4.28"
 #Room
-room = "2.8.4"
+room = "2.8.5"
 #Fossify
 commons = "6.1.6"
 #Gradle
