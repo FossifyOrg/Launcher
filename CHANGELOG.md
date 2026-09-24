@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.1] - 2026-09-24
+### Changed
+- Updated translations
+
 ## [1.10.0] - 2026-02-14
 ### Added
 - Pressing enter in app drawer launches the first app in search results ([#331])
@@ -137,7 +141,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#282]: https://github.com/FossifyOrg/Launcher/issues/282
 [#331]: https://github.com/FossifyOrg/Launcher/issues/331
 
-[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.10.0...HEAD
+[Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.10.1...HEAD
+[1.10.1]: https://github.com/FossifyOrg/Launcher/compare/1.10.0...1.10.1
 [1.10.0]: https://github.com/FossifyOrg/Launcher/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/FossifyOrg/Launcher/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/FossifyOrg/Launcher/compare/1.7.0...1.8.0
