@@ -1,6 +1,7 @@
 package org.fossify.home.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -89,6 +90,8 @@ class LaunchersAdapter(
                 binding.launcherLabel.text = launcher.title
                 binding.launcherLabel.setTextColor(textColor)
                 binding.launcherLabel.beVisibleIf(activity.config.showDrawerAppLabels)
+                val labelStyle = if (activity.config.boldIconLabels) Typeface.BOLD else Typeface.NORMAL
+                binding.launcherLabel.setTypeface(binding.launcherLabel.typeface, labelStyle)
                 binding.launcherIcon.setPadding(iconPadding, iconPadding, iconPadding, 0)
 
                 if (launcher.drawable != null && binding.launcherIcon.tag == true) {

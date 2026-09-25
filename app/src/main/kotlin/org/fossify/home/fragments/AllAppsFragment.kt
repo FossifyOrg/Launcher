@@ -35,6 +35,7 @@ class AllAppsFragment(
     var ignoreTouches = false
 
     private var launchers = emptyList<AppLauncher>()
+    private var lastBoldIconLabels = false
 
     @SuppressLint("ClickableViewAccessibility")
     override fun setupFragment(activity: MainActivity) {
@@ -48,6 +49,8 @@ class AllAppsFragment(
 
             return@setOnTouchListener false
         }
+
+        lastBoldIconLabels = context.config.boldIconLabels
     }
 
     override fun onAttachedToWindow() {
@@ -64,7 +67,11 @@ class AllAppsFragment(
         val layoutManager = binding.allAppsGrid.layoutManager as MyGridLayoutManager
         if (layoutManager.spanCount != context.config.drawerColumnCount) {
             onConfigurationChanged()
+            lastBoldIconLabels = context.config.boldIconLabels
             // Force redraw due to changed item size
+            (binding.allAppsGrid.adapter as LaunchersAdapter).notifyDataSetChanged()
+        } else if (lastBoldIconLabels != context.config.boldIconLabels) {
+            lastBoldIconLabels = context.config.boldIconLabels
             (binding.allAppsGrid.adapter as LaunchersAdapter).notifyDataSetChanged()
         }
     }

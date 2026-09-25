@@ -45,4 +45,8 @@ class Config(context: Context) : BaseConfig(context) {
     var showHomeAppLabels: Boolean
         get() = prefs.getBoolean(SHOW_HOME_APP_LABELS, true)
         set(showHomeAppLabels) = prefs.edit().putBoolean(SHOW_HOME_APP_LABELS, showHomeAppLabels).apply()
+
+    var boldIconLabels: Boolean
+        get() = prefs.getBoolean(BOLD_ICON_LABELS, false)
+        set(boldIconLabels) = prefs.edit().putBoolean(BOLD_ICON_LABELS, boldIconLabels).apply()
 }
