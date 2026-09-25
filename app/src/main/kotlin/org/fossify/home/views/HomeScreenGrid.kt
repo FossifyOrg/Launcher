@@ -413,7 +413,8 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             if (coveredCell != null) {
                 val coveredFolder = gridItems.firstOrNull {
                     it.type == ITEM_TYPE_FOLDER
-                            && it.left == coveredCell.x && it.top == coveredCell.y
+                        && it.left == coveredCell.x && it.top == coveredCell.y
+                        && it.page == draggedItem!!.page
                 }
 
                 if (
