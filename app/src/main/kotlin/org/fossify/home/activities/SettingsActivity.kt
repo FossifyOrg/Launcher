@@ -2,16 +2,21 @@ package org.fossify.home.activities
 
 import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import org.fossify.commons.dialogs.RadioGroupDialog
 import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.launchMoreAppsFromUsIntent
+import org.fossify.commons.extensions.showErrorToast
+import org.fossify.commons.extensions.toast
 import org.fossify.commons.extensions.updateTextColors
 import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.NavigationIcon
+import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isTiramisuPlus
 import org.fossify.commons.models.FAQItem
 import org.fossify.commons.models.RadioItem
@@ -19,17 +24,24 @@ import org.fossify.home.BuildConfig
 import org.fossify.home.R
 import org.fossify.home.databinding.ActivitySettingsBinding
 import org.fossify.home.extensions.config
+import org.fossify.home.helpers.LayoutBackupHelper
 import org.fossify.home.helpers.MAX_COLUMN_COUNT
 import org.fossify.home.helpers.MAX_ROW_COUNT
 import org.fossify.home.helpers.MIN_COLUMN_COUNT
 import org.fossify.home.helpers.MIN_ROW_COUNT
+import org.fossify.home.helpers.REQUEST_EXPORT_LAYOUT
+import org.fossify.home.helpers.REQUEST_IMPORT_LAYOUT
 import org.fossify.home.receivers.LockDeviceAdminReceiver
+import java.io.IOException
 import java.util.Locale
 import kotlin.system.exitProcess
 
 class SettingsActivity : SimpleActivity() {
 
     private val binding by viewBinding(ActivitySettingsBinding::inflate)
+    private var pendingExport: LayoutBackupHelper.ExportResult? = null
+    private var importMode = LayoutBackupHelper.ImportMode.KEEP_EXISTING
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -55,6 +67,8 @@ class SettingsActivity : SimpleActivity() {
         setupHomeRowCount()
         setupHomeColumnCount()
         setupShowHomeAppLabels()
+        setupExportLayout()
+        setupImportLayout()
         setupLanguage()
         setupManageHiddenIcons()
         updateTextColors(binding.settingsHolder)
@@ -63,7 +77,8 @@ class SettingsActivity : SimpleActivity() {
             binding.settingsColorCustomizationSectionLabel,
             binding.settingsGeneralSettingsLabel,
             binding.settingsDrawerSettingsLabel,
-            binding.settingsHomeScreenLabel
+            binding.settingsHomeScreenLabel,
+            binding.settingsBackupLabel
         ).forEach {
             it.setTextColor(getProperPrimaryColor())
         }
@@ -254,6 +269,149 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsShowHomeAppLabelsHolder.setOnClickListener {
             binding.settingsShowHomeAppLabels.toggle()
             config.showHomeAppLabels = binding.settingsShowHomeAppLabels.isChecked
+        }
+    }
+
+    private fun setupExportLayout() {
+        binding.settingsExportLayoutHolder.setOnClickListener {
+            // reading the grid items hits the database, so it cannot happen on the main thread
+            ensureBackgroundThread {
+                val export = LayoutBackupHelper.exportLayout(this)
+                runOnUiThread {
+                    if (export.exportedCount == 0) {
+                        toast(R.string.layout_export_no_items)
+                        return@runOnUiThread
+                    }
+
+                    pendingExport = export
+                    val filename = LayoutBackupHelper.buildBackupFilename()
+                    try {
+                        startActivityForResult(
+                            LayoutBackupHelper.createExportIntent(filename),
+                            REQUEST_EXPORT_LAYOUT
+                        )
+                    } catch (e: ActivityNotFoundException) {
+                        pendingExport = null
+                        showErrorToast(e)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupImportLayout() {
+        binding.settingsImportLayoutHolder.setOnClickListener {
+            // the file may want cells this device already uses, so ask who wins before
+            // picking it, while the choice can still be explained in full
+            val items = LayoutBackupHelper.ImportMode.entries.map {
+                RadioItem(id = it.ordinal, title = getString(it.labelId()))
+            }
+
+            RadioGroupDialog(
+                activity = this,
+                items = ArrayList(items),
+                checkedItemId = importMode.ordinal,
+                titleId = R.string.layout_import_mode_title,
+                showOKButton = true
+            ) {
+                importMode = LayoutBackupHelper.ImportMode.entries[it as Int]
+                try {
+                    startActivityForResult(
+                        LayoutBackupHelper.createImportIntent(),
+                        REQUEST_IMPORT_LAYOUT
+                    )
+                } catch (e: ActivityNotFoundException) {
+                    showErrorToast(e)
+                }
+            }
+        }
+    }
+
+    private fun LayoutBackupHelper.ImportMode.labelId() = when (this) {
+        LayoutBackupHelper.ImportMode.REPLACE -> R.string.layout_import_mode_replace
+        LayoutBackupHelper.ImportMode.KEEP_EXISTING -> R.string.layout_import_mode_keep
+        LayoutBackupHelper.ImportMode.DISPLACE_EXISTING -> R.string.layout_import_mode_displace
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
+        val uri = resultData?.data
+        if (resultCode != RESULT_OK || uri == null) {
+            if (requestCode == REQUEST_EXPORT_LAYOUT) {
+                pendingExport = null
+            }
+
+            return
+        }
+
+        when (requestCode) {
+            REQUEST_EXPORT_LAYOUT -> {
+                val export = pendingExport ?: return
+                pendingExport = null
+                ensureBackgroundThread { writeLayoutBackup(uri, export) }
+            }
+
+            REQUEST_IMPORT_LAYOUT -> ensureBackgroundThread { readLayoutBackup(uri) }
+        }
+    }
+
+    private fun writeLayoutBackup(uri: Uri, export: LayoutBackupHelper.ExportResult) {
+        try {
+            val output = contentResolver.openOutputStream(uri)
+                ?: throw IOException("could not open $uri for writing")
+
+            output.bufferedWriter().use { it.write(export.json) }
+            runOnUiThread {
+                toast(
+                    getString(
+                        R.string.layout_export_success,
+                        export.exportedCount,
+                        export.skippedCount
+                    )
+                )
+            }
+        } catch (e: IOException) {
+            runOnUiThread { showErrorToast(e) }
+        } catch (_: Exception) {
+            // the document provider backing the picked uri lives in another process and is
+            // free to send back arbitrary unchecked exceptions, so nothing may escape here
+            runOnUiThread { showErrorToast(getString(R.string.layout_export_failed)) }
+        }
+    }
+
+    private fun readLayoutBackup(uri: Uri) {
+        // reading and parsing are reported separately, so that a provider that refuses to
+        // hand over the file is not blamed on the file's contents
+        val json = try {
+            val input = contentResolver.openInputStream(uri)
+                ?: throw IOException("could not open $uri for reading")
+
+            input.bufferedReader().use { it.readText() }
+        } catch (e: IOException) {
+            runOnUiThread { showErrorToast(e) }
+            return
+        } catch (_: Exception) {
+            // the document provider runs in another process and is free to send back
+            // arbitrary unchecked exceptions, so nothing may escape onto this thread
+            runOnUiThread { showErrorToast(getString(R.string.layout_import_read_failed)) }
+            return
+        }
+
+        try {
+            val result = LayoutBackupHelper.importLayout(this, json, importMode)
+            runOnUiThread {
+                toast(
+                    getString(
+                        R.string.layout_import_success,
+                        result.restoredCount,
+                        result.skippedCount
+                    )
+                )
+            }
+        } catch (_: Exception) {
+            // a malformed or truncated file (JSONException) or an unsupported version
+            // (IllegalArgumentException)
+            runOnUiThread { showErrorToast(getString(R.string.layout_import_invalid_file)) }
         }
     }
 

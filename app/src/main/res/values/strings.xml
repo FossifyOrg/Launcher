@@ -19,6 +19,19 @@
     <string name="double_tap_to_lock">Double tap to lock screen</string>
     <string name="lock_device_admin_hint">To enable the double tap to lock screen feature, you need to grant admin permission. Note that the app cannot be uninstalled until this permission is removed.</string>
     <string name="lock_device_admin_warning">Deactivating admin permission will disable the double tap to lock screen feature.</string>
+    <string name="backup_restore">Backup &amp; restore</string>
+    <string name="export_layout">Export home screen layout</string>
+    <string name="import_layout">Import home screen layout</string>
+    <string name="layout_export_success">Layout exported. Saved: %1$d, skipped: %2$d</string>
+    <string name="layout_export_no_items">Nothing to export, your home screen has no icons or folders</string>
+    <string name="layout_export_failed">Could not write the layout backup file</string>
+    <string name="layout_import_mode_title">Import layout</string>
+    <string name="layout_import_mode_keep">Keep current icons, put restored ones in free spots</string>
+    <string name="layout_import_mode_displace">Prefer restored icons, move current ones to free spots</string>
+    <string name="layout_import_mode_replace">Remove current icons and folders first</string>
+    <string name="layout_import_success">Layout imported. Restored: %1$d, skipped: %2$d</string>
+    <string name="layout_import_read_failed">Could not read the selected file</string>
+    <string name="layout_import_invalid_file">This does not look like a launcher layout backup file</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res

@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Backup and restore of the home screen layout ([#94])
 
 ## [1.10.0] - 2026-02-14
 ### Added
@@ -125,6 +127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#63]: https://github.com/FossifyOrg/Launcher/issues/63
 [#65]: https://github.com/FossifyOrg/Launcher/issues/65
 [#74]: https://github.com/FossifyOrg/Launcher/issues/74
+[#94]: https://github.com/FossifyOrg/Launcher/issues/94
 [#100]: https://github.com/FossifyOrg/Launcher/issues/100
 [#106]: https://github.com/FossifyOrg/Launcher/issues/106
 [#115]: https://github.com/FossifyOrg/Launcher/issues/115
