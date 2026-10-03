@@ -47,6 +47,7 @@ class SettingsActivity : SimpleActivity() {
         setupCustomizeColors()
         setupUseEnglish()
         setupDoubleTapToLock()
+        setupBoldIconLabels()
         setupCloseAppDrawerOnOtherAppOpen()
         setupOpenKeyboardOnAppDrawer()
         setupDrawerColumnCount()
@@ -246,6 +247,14 @@ class SettingsActivity : SimpleActivity() {
                     setupHomeColumnCount()
                 }
             }
+        }
+    }
+
+    private fun setupBoldIconLabels() {
+        binding.settingsBoldIconLabels.isChecked = config.boldIconLabels
+        binding.settingsBoldIconLabelsHolder.setOnClickListener {
+            binding.settingsBoldIconLabels.toggle()
+            config.boldIconLabels = binding.settingsBoldIconLabels.isChecked
         }
     }
 
