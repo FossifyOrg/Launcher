@@ -83,7 +83,7 @@ class SettingsActivity : SimpleActivity() {
     private fun refreshMenuItems() {
         binding.settingsToolbar.menu.apply {
             findItem(R.id.more_apps_from_us).isVisible =
-                !resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)
+                resources.getBoolean(org.fossify.commons.R.bool.is_google_play_build)
         }
     }
 
@@ -276,7 +276,7 @@ class SettingsActivity : SimpleActivity() {
         val licenses = 0L
         val faqItems = ArrayList<FAQItem>()
 
-        if (!resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)) {
+        if (resources.getBoolean(org.fossify.commons.R.bool.is_google_play_build)) {
             faqItems.add(
                 FAQItem(
                     title = org.fossify.commons.R.string.faq_2_title_commons,
