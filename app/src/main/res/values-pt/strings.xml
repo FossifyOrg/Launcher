@@ -18,4 +18,5 @@
     <string name="lock_device_admin_hint">Para ativar esta funcionalidade, tem que permitir o acesso de administração. Tenha em atenção se que não conseguirá desinstalar a aplicação sem antes revogar esta permissão.</string>
     <string name="lock_device_admin_warning">Ao desativar a permissão, também desativa a possibilidade de bloquear o ecrã com dois toques.</string>
     <string name="auto_show_keyboard_in_app_drawer">Mostrar o teclado automaticamente na gaveta</string>
+    <string name="show_app_labels">Mostrar texto das aplicações</string>
 </resources>
