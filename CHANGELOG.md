@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fixed search and scrolling becoming slow after long use ([#431])
 
 ## [1.10.0] - 2026-02-14
 ### Added
@@ -136,6 +138,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#278]: https://github.com/FossifyOrg/Launcher/issues/278
 [#282]: https://github.com/FossifyOrg/Launcher/issues/282
 [#331]: https://github.com/FossifyOrg/Launcher/issues/331
+[#431]: https://github.com/FossifyOrg/Launcher/issues/431
 
 [Unreleased]: https://github.com/FossifyOrg/Launcher/compare/1.10.0...HEAD
 [1.10.0]: https://github.com/FossifyOrg/Launcher/compare/1.9.0...1.10.0

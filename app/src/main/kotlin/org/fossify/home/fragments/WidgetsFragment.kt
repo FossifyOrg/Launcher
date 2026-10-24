@@ -54,6 +54,11 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
 
             return@setOnTouchListener false
         }
+
+        binding.searchBar.setupMenu()
+        binding.searchBar.onSearchTextChangedListener = {
+            splitWidgetsByApps()
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -260,10 +265,6 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
 
         binding.searchBar.requireToolbar().beGone()
         binding.searchBar.updateColors()
-        binding.searchBar.setupMenu()
-        binding.searchBar.onSearchTextChangedListener = {
-            splitWidgetsByApps()
-        }
     }
 
     private fun getAppMetadataFromPackage(packageName: String): WidgetsListSection? {

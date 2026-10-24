@@ -48,6 +48,30 @@ class AllAppsFragment(
 
             return@setOnTouchListener false
         }
+
+        binding.allAppsGrid.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                // Hiding is expensive, only do it if focused
+                if (binding.searchBar.hasFocus() && dy > 0 && binding.allAppsGrid.computeVerticalScrollOffset() > 0) {
+                    activity.hideKeyboard()
+                }
+            }
+        })
+
+        binding.searchBar.setupMenu()
+        binding.searchBar.onSearchTextChangedListener = {
+            submitList(launchers)
+        }
+
+        binding.searchBar.binding.topToolbarSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (binding.searchBar.getCurrentQuery().isEmpty()) return@setOnEditorActionListener false
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE,
+                EditorInfo.IME_ACTION_SEARCH,
+                EditorInfo.IME_ACTION_GO -> getAdapter()?.launchFirstApp() == true
+                else -> false
+            }
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -181,36 +205,12 @@ class AllAppsFragment(
         }
 
         binding.allAppsFastscroller.updateColors(context.getProperPrimaryColor())
-        binding.allAppsGrid.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                // Hiding is expensive, only do it if focused
-                if (binding.searchBar.hasFocus() && dy > 0 && binding.allAppsGrid.computeVerticalScrollOffset() > 0) {
-                    activity?.hideKeyboard()
-                }
-            }
-        })
-
         setupDrawerBackground()
         getAdapter()?.updateTextColor(context.getProperTextColor())
 
         binding.searchBar.beVisibleIf(context.config.showSearchBar)
         binding.searchBar.requireToolbar().beGone()
         binding.searchBar.updateColors()
-        binding.searchBar.setupMenu()
-
-        binding.searchBar.onSearchTextChangedListener = {
-            submitList(launchers)
-        }
-
-        binding.searchBar.binding.topToolbarSearch.setOnEditorActionListener { _, actionId, _ ->
-            if (binding.searchBar.getCurrentQuery().isEmpty()) return@setOnEditorActionListener false
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE,
-                EditorInfo.IME_ACTION_SEARCH,
-                EditorInfo.IME_ACTION_GO -> getAdapter()?.launchFirstApp() == true
-                else -> false
-            }
-        }
     }
 
     private fun showNoResultsPlaceholderIfNeeded() {
