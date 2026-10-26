@@ -16,6 +16,7 @@ import android.graphics.Path
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -148,25 +149,23 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
     init {
         ViewCompat.setAccessibilityDelegate(this, accessibilityHelper)
 
-        val customTypeface = FontHelper.getTypeface(context)
         textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.WHITE
             textSize = context.resources.getDimension(org.fossify.commons.R.dimen.smaller_text_size)
             setShadowLayer(2f, 0f, 0f, Color.BLACK)
-            typeface = customTypeface
         }
 
         contrastTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = context.getProperTextColor()
             textSize = context.resources.getDimension(org.fossify.commons.R.dimen.smaller_text_size)
             setShadowLayer(2f, 0f, 0f, context.getProperTextColor().getContrastColor())
-            typeface = customTypeface
         }
+        updateIconLabelTypeface()
 
         folderTitleTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = context.getProperTextColor()
             textSize = context.resources.getDimension(org.fossify.commons.R.dimen.medium_text_size)
-            typeface = customTypeface
+            typeface = FontHelper.getTypeface(context)
         }
 
         dragShadowCirclePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -285,6 +284,19 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             2f, 0f, 0f, context.getProperTextColor().getContrastColor()
         )
         folderBackgroundPaint.color = context.getProperBackgroundColor()
+        updateIconLabelTypeface()
+    }
+
+    private fun updateIconLabelTypeface() {
+        val baseTypeface = FontHelper.getTypeface(context)
+        val iconLabelTypeface = if (context.config.boldIconLabels) {
+            Typeface.create(baseTypeface, Typeface.BOLD)
+        } else {
+            baseTypeface
+        }
+
+        textPaint.typeface = iconLabelTypeface
+        contrastTextPaint.typeface = iconLabelTypeface
     }
 
     fun removeAppIcon(item: HomeScreenGridItem) {

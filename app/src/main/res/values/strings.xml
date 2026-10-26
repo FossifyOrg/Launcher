@@ -17,6 +17,7 @@
     <string name="home_screen_settings">Home screen</string>
     <string name="widget_too_big">Widget is too big for current home screen size</string>
     <string name="double_tap_to_lock">Double tap to lock screen</string>
+    <string name="bold_icon_labels">Bold icon labels</string>
     <string name="lock_device_admin_hint">To enable the double tap to lock screen feature, you need to grant admin permission. Note that the app cannot be uninstalled until this permission is removed.</string>
     <string name="lock_device_admin_warning">Deactivating admin permission will disable the double tap to lock screen feature.</string>
     <!--
