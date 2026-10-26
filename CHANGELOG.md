@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fixed unreadable dark-on-dark text in the icon/folder rename dialog when using light mode ([#198])
 
 ## [1.10.0] - 2026-02-14
 ### Added
@@ -130,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#115]: https://github.com/FossifyOrg/Launcher/issues/115
 [#170]: https://github.com/FossifyOrg/Launcher/issues/170
 [#182]: https://github.com/FossifyOrg/Launcher/issues/182
+[#198]: https://github.com/FossifyOrg/Launcher/issues/198
 [#230]: https://github.com/FossifyOrg/Launcher/issues/230
 [#234]: https://github.com/FossifyOrg/Launcher/issues/234
 [#277]: https://github.com/FossifyOrg/Launcher/issues/277
