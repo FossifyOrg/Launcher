@@ -2,6 +2,8 @@ package org.fossify.home.dialogs
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.view.ContextThemeWrapper
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.fossify.commons.extensions.*
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.home.databinding.DialogRenameItemBinding
@@ -15,7 +17,17 @@ class RenameItemDialog(val activity: Activity, val item: HomeScreenGridItem, val
         val view = binding.root
         binding.renameItemEdittext.setText(item.title)
 
-        activity.getAlertDialogBuilder()
+        // MainActivity uses the forced-dark LauncherTheme so it can draw over the wallpaper.
+        // Building the Material dialog from that context keeps its surface dark even in light
+        // mode, producing dark text on a dark background. Wrap the context in the proper
+        // day/night theme so the dialog follows the system theme like the rest of the app.
+        val builder = if (activity.isDynamicTheme()) {
+            MaterialAlertDialogBuilder(ContextThemeWrapper(activity, activity.getThemeId()))
+        } else {
+            activity.getAlertDialogBuilder()
+        }
+
+        builder
             .setPositiveButton(org.fossify.commons.R.string.ok, null)
             .setNegativeButton(org.fossify.commons.R.string.cancel, null)
             .apply {
