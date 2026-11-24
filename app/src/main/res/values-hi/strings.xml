@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">लांचर</string>
+    <string name="app_launcher_name">लॉन्चर</string>
     <string name="launcher_settings">लॉन्चर सेटिंग्स</string>
-    <string name="app_info">ऐप जानकारी</string>
+    <string name="app_info">ऐप की जानकारी</string>
     <string name="touch_hold_widget">विजेट को देर तक दबाकर रखें और इसे अपनी होम स्क्रीन पर खींचें</string>
     <string name="uninstall">अनइंस्टॉल करें</string>
     <string name="hide_icon">ऑइकन छुपायें</string>
-    <string name="add_hidden_icons">छिपे हुए आइकन जोड़ें</string>
-    <string name="manage_hidden_icons">छुपे हुए आइकन प्रबंधित करें</string>
-    <string name="hidden_icons">छिपे हुए आइकन</string>
+    <string name="add_hidden_icons">छुपे आइकन जोड़ें</string>
+    <string name="manage_hidden_icons">छुपे आइकन प्रबंधित करें</string>
+    <string name="hidden_icons">छुपे आइकन</string>
     <string name="hidden_icons_placeholder">सिस्टम प्रतिबंधों के कारण कुछ ऐप्स को अनइंस्टॉल नहीं किया जा सकता है, लेकिन आप उन्हें देखने से बचने के लिए कम से कम उनके आइकन छिपा सकते हैं।</string>
     <string name="app_drawer_settings">ऐप ड्रॉअर</string>
     <string name="close_app_drawer_on_app_open">ऐप खोलने पर ऐप ड्रॉअर बंद कर दें</string>
+    <string name="auto_show_keyboard_in_app_drawer">एप ड्रॉअर में स्वचालित रूप से किबोर्ड दिखाएं</string>
+    <string name="show_app_labels">एप का नाम दिखाएं</string>
     <string name="home_screen_settings">होम स्क्रीन</string>
-    <string name="widget_too_big">वर्तमान होम स्क्रीन आकार के लिए विजेट बहुत बड़ा है</string>
-    <string name="lock_device_admin_hint">स्क्रीन लॉक करने के लिए डबल-टैप करने वाले फीचर को सक्षम करने के लिए प्रशासनिक अनुमति आवश्यक है। ध्यान रखें कि ये ऐप अनइंस्टॉल नहीं हो पाएगा जब तक ये अनुमति रहेगी।</string>
+    <string name="widget_too_big">विजेट वर्तमान होम स्क्रीन आकार के लिए बहुत बड़ा है</string>
     <string name="double_tap_to_lock">स्क्रीन लॉक करने के लिए डबल टैप करें</string>
-    <string name="lock_device_admin_warning">प्रशासनिक अनुमतियाँ हटाये जाने पर डबल-टैप स्क्रीन लॉक सुविधा अक्षम हो जायेगी।</string>
+    <string name="lock_device_admin_hint">स्क्रीन लॉक करने के लिए डबल-टैप करने वाले फीचर को सक्षम करने के लिए प्रशासनिक अनुमति की आवश्यकता है। ध्यान रखें कि जब तक ये अनुमति रहेगी तब तक ये ऐप अनइंस्टॉल नहीं हो पाएगा।</string>
+    <string name="lock_device_admin_warning">प्रशासनिक अनुमतियाँ हटाये जाने पर डबल-टैप स्क्रीन लॉक की सुविधा अक्षम हो जायेगी।</string>
+    <!--
+        कुछ स्ट्रिंग्स नहीं मिले? 
+        https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res पर बहुत सारे हैं.
+    -->
 </resources>
